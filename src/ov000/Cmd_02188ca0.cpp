@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_ov000_02188ca0(FieldId *id, s32 arg) {
+void SceneCmd_Push09(FieldId *id, s32 arg) {
     gSndQueue.queue->flag1 = 1;
     CmdObj_Push(data_ov000_021ccd50.scene, 9, arg);
     if (id != NULL) {

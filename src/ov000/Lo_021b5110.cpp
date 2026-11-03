@@ -18,7 +18,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(Robo021ca458 *pl);
 BOOL Hit_PointInRotBox(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-void func_ov000_02188ca0(FieldId *c, s32 a);
+void SceneCmd_Push09(FieldId *c, s32 a);
 
 static inline void SetRot(Rot021b5110 *r, u16 x, u16 y, u16 z) {
     r->x = x;
@@ -111,7 +111,7 @@ void FieldMgr_Update(FieldMgr *self) {
                 c.c[0] = r;
                 c.c[1] = g;
                 c.c[2] = b;
-                func_ov000_02188ca0(&c, 1);
+                SceneCmd_Push09(&c, 1);
             }
             break;
         }

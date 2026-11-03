@@ -5,7 +5,7 @@
 extern "C" {
 
 void func_020627fc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 void LoTimer_Init(LoTimer *self) {

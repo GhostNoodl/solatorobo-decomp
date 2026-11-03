@@ -7,7 +7,7 @@
 // Ov002Vt_021ef684_vtbl). Each subclass constructor stores the base vtable, calls
 // ListRow_Init (which clears the base fields), then stores its own vtable and calls its own
 // init. The dtor (ListRow_Unlink inlined) unlinks the row. LoBase021ccb54_021ccbe0_AppendRow appends a row to
-// a list, LoBase021ccb54_021ccbe0_FindRow finds one by index, and func_ov000_021c5028 places and draws the shown
+// a list, LoBase021ccb54_021ccbe0_FindRow finds one by index, and LoBase021ccb54_021ccbe0_DrawRows places and draws the shown
 // rows one below the other. Slot 0x08 of a subclass updates the row, slot 0x0c draws it.
 
 #include "types.h"
@@ -24,10 +24,10 @@ struct ObjBase021cac0c_021cb6f0;
 struct ListRow : public VObj {
     s32 index; // 0x04 set by the creator; LoBase021ccb54_021ccbe0_FindRow looks a row up by it
     s32 unk_08; // ov002's lists keep the row's Param id here (Task021efa1c_Start)
-    s32 x; // 0x0c draw position (fx32), set by func_ov000_021c5028 before the draw slot
+    s32 x; // 0x0c draw position (fx32), set by LoBase021ccb54_021ccbe0_DrawRows before the draw slot
     s32 y;
     s32 z;
-    s32 height; // 0x18 pixels down to the next row (func_ov000_021c5028)
+    s32 height; // 0x18 pixels down to the next row (LoBase021ccb54_021ccbe0_DrawRows)
     s32 width; // 0x1c the window width of the text row (ListRowText_Update)
     union {
         u8 unk_20;

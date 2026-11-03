@@ -118,12 +118,12 @@ namespace m_021d3794 {
 
 extern "C" {
 
-ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self);
+ov006_TaskD37 *ov006_TaskD37_Ctor(ov006_TaskD37 *self);
 
 ov006_TaskD37 *ov006_TaskD37_New(void) {
     ov006_TaskD37 *obj = (ov006_TaskD37 *)Heap_Alloc(sizeof(ov006_TaskD37));
     if (obj != NULL) {
-        obj = func_ov006_021d3874(obj);
+        obj = ov006_TaskD37_Ctor(obj);
     }
     obj->vfunc_08(0x2a, 0xc8);
     return obj;
@@ -173,7 +173,7 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
 }
 
-BOOL func_ov006_021d37d0(UiList *window, UiListItem *node) {
+BOOL ov006_TaskD37_List50OnCursor(UiList *window, UiListItem *node) {
     if (node != NULL) {
         ov006_TaskD37 *t;
         u16 id;
@@ -184,7 +184,7 @@ BOOL func_ov006_021d37d0(UiList *window, UiListItem *node) {
     return TRUE;
 }
 
-ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
+ov006_TaskD37 *ov006_TaskD37_Ctor(ov006_TaskD37 *self) {
     OV006_TASKBASE_CTOR(self);
     *(void **)self = &ov006_TaskD37_vtbl;
     Camera_Ctor(&self->cam);
@@ -396,7 +396,7 @@ const Rot16 data_ov006_021eb702 = {0xfa80, 0x8200, 0};
 void *MsgRes_GetString(void *a, int id);
 void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 UiListItem *ListOwner_GetNth(UiList *self, int n);
-BOOL func_ov006_021d37d0(UiList *window, UiListItem *node);
+BOOL ov006_TaskD37_List50OnCursor(UiList *window, UiListItem *node);
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 ov006_Label *Ov006Vt_021ec2fc_Ctor(void *p);
 Model0218fe1c *Model0218fe1c_Init(void *p);
@@ -515,7 +515,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
         w->vfunc_a8(ListOwner_GetNth(w, 0));
     }
     self->unk50->owner = self;
-    self->unk50->onCursor = func_ov006_021d37d0;
+    self->unk50->onCursor = ov006_TaskD37_List50OnCursor;
     self->unk50->flags |= 4;
     self->unk54 = ov006_NewLo021cadcc();
     self->unk54->width = 0xf8;
@@ -601,7 +601,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
     ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
     self->unk4C = self->unk4A;
-    ov006_Menu_ClearEntries(data_ov006_021ec888);
+    ov006_Menu_ClearEntries(gOv006Menu);
     self->unk44 = 4;
     self->unk48 = self->unk4A;
     TaskList_Insert(self);
@@ -672,7 +672,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
     switch (self->step) {
     case 0:
         if (self->param != 0) {
-            if (data_ov006_021ec888->state == 9) {
+            if (gOv006Menu->state == 9) {
                 self->step = 100;
                 return;
             }
@@ -709,7 +709,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->step++;
     case 11: {
         u16 trg;
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->unk50->flags |= 4;
             self->step = 100;
             return;
@@ -745,7 +745,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->step++;
         break;
     case 21:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->unk5C->flags |= 2;
             self->step = 100;
             return;
@@ -776,7 +776,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->step++;
         break;
     case 31:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             ov006_Label_Close(self->unk58);
             self->step = 100;
             return;
@@ -798,7 +798,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         }
         break;
     case 40:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->step = 100;
             return;
         }
@@ -810,10 +810,10 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->step = 0x1e;
         break;
     case 100:
-        ov006_Menu_ShowObj(data_ov006_021ec888);
+        ov006_Menu_ShowObj(gOv006Menu);
         self->step++;
     case 101:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             return;
         }
         GfxSys_StartFadeOut(0x1e000, 0, 0);
@@ -899,7 +899,7 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
 
 void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
     BOOL done = FALSE;
-    if (self->state == 0xd && self->param != 0 && data_ov006_021ec888->state != 9) {
+    if (self->state == 0xd && self->param != 0 && gOv006Menu->state != 9) {
         ov006_Unk02046a50 *p;
         done = TRUE;
         p = Wh_GetSharedData(gWhMgr, 0);
@@ -926,7 +926,7 @@ void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
     if (self->param == 1) {
         self->unk48 = self->unk4A;
     }
-    ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk44, 2, &self->unk46, 4);
+    ov006_Menu_SetOwnEntry(gOv006Menu, self->unk44, 2, &self->unk46, 4);
 }
 
 void ov006_TaskD37_PostUpdate(ov006_TaskD37 *self) {
@@ -947,7 +947,7 @@ void ov006_TaskD37_PostUpdate(ov006_TaskD37 *self) {
         self->step++;
         break;
     }
-    ov006_Menu_ClearEntries(data_ov006_021ec888);
+    ov006_Menu_ClearEntries(gOv006Menu);
 }
 
 void ov006_TaskD37_Draw(ov006_TaskD37 *self) {
@@ -963,8 +963,8 @@ void ov006_TaskD37_Draw(ov006_TaskD37 *self) {
     ov006_Camera_Apply(&self->cam);
     Model021903b4_Draw(self->unk64);
     Model021903b4_Draw(self->unk6C);
-    if (data_ov006_021ec888 != NULL) {
-        ov006_Menu_ReleaseObj(data_ov006_021ec888);
+    if (gOv006Menu != NULL) {
+        ov006_Menu_ReleaseObj(gOv006Menu);
     }
 }
 

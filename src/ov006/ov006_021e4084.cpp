@@ -48,17 +48,17 @@ ov006_Menu *Ov006Vt_021ec404_DtorDelete(ov006_Menu *self) {
 }
 
 void ov006_Menu_Create(void) {
-    if (data_ov006_021ec888 == NULL) {
+    if (gOv006Menu == NULL) {
         ov006_Menu *obj = (ov006_Menu *)Heap_Alloc(sizeof(ov006_Menu));
         if (obj != NULL) {
             obj = Ov006Vt_021ec404_Ctor(obj);
         }
-        data_ov006_021ec888 = obj;
+        gOv006Menu = obj;
     }
 }
 
 void ov006_Menu_Delete(void) {
-    OV006_DELETE_OBJECT(data_ov006_021ec888);
+    OV006_DELETE_OBJECT(gOv006Menu);
 }
 
 }

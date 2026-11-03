@@ -21,11 +21,11 @@ extern void SceneCmd_Push0e(FieldState *state, s32 a);
 extern void SceneCmd_Push0f(FieldState *state, s32 a);
 extern void func_ov000_021762e4(u16 a, s32 b);
 extern void func_ov000_0214e7ac(s32 a);
-extern void func_ov000_02188d28(u8 *buf);
-extern void func_ov000_02188ca0(u8 *buf, int a);
+extern void SceneCmd_Push0a(u8 *buf);
+extern void SceneCmd_Push09(u8 *buf, int a);
 extern void SceneCmd_Push1e(FieldState *state);
 extern void SceneCmd_Push1f(FieldState *state);
-extern void func_ov000_0218547c(FieldState *state, u16 a, void *res, u16 id);
+extern void SceneCmd_Push11(FieldState *state, u16 a, void *res, u16 id);
 extern void SceneCmd_Push12(FieldState *state, void *res, s32 id);
 extern void MessageQueue021cb980_Push08(FieldPlayer *player, u32 v, s32 id, void *res);
 

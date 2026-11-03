@@ -82,7 +82,7 @@ void func_ov002_021eaf20(Ov002StageFile *self) {
     func_ov002_021e9d7c(bufD, 0x20, self->unk_04, 2, ((u8 (*)(void))LangData_GetLang)());
     Ov002Obj021f07ac_New(bufC, bufD);
     MI_CpuCopy8(self->data + 0xc, &end, 4);
-    func_ov002_021e9b28(end);
+    Ov002Vt_021f0694_New(end);
 }
 
 void *Heap_AllocArray(u32 size);

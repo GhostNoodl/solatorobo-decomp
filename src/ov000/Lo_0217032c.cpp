@@ -8,8 +8,8 @@ extern u8 UiObj_vtbl[];
 extern u8 Lo021cad50_vtbl[];
 BOOL func_ov000_02184498(void *g);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
-void func_02050748(void *p);
-void func_020508f4(void *p, s32 n);
+void TextBox_Init(void *p);
+void TextBox_SetText(void *p, s32 n);
 void *MsgRes_GetString(void *a, s32 b);
 void Obj0215c1bc_SetText(void *p, s32 a, void *b);
 void func_ov000_0215ced8(void *p, s32 a, s32 b);
@@ -19,7 +19,7 @@ static inline void LoMsgInit(u8 *p, s32 n, s32 v) {
     LFLD(s32, p, 0x20) = n;
     LFLD(s32, p, 0x24) = 0;
     LFLD(s32, p, 0x28) = v;
-    func_020508f4(p, n);
+    TextBox_SetText(p, n);
 }
 
 struct Obj0217032c {
@@ -48,7 +48,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     v = MsgRes_GetLines(res, (u16)id, &n, 1);
     p = (u8 *)Heap_Alloc(0x210);
     if (p) {
-        func_02050748(p);
+        TextBox_Init(p);
     }
     self->unk_2c = p;
     LoMsgInit(p, n, v);

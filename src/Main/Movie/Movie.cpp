@@ -132,7 +132,7 @@ static inline void Movie_SetFrameWait(u32 wait) {
     Sys_SetFrameWait(wait);
 }
 
-void func_02043f70(Movie *m) {
+void Movie_Update(Movie *m) {
     char path[0x60];
     u32 lo;
     u32 size;

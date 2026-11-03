@@ -23,7 +23,7 @@ void Ov015Obj292c_Load(Ov015Obj292c *self);
 int Ov015Obj292c_IsLoaded(Ov015Obj292c *self);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
-void func_ov015_022119e8(Ov015Obj290 *self);
+void Ov015Obj290_Reset(Ov015Obj290 *self);
 void func_ov015_021ff9e8(Ov015Obj30 *self);
 BOOL func_ov015_021ffb90(Ov015Obj30 *self);
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self);
@@ -58,7 +58,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             SET_VT(o, Ov015Obj290_vtbl);
             ResSet_Init(&((Ov015Obj290 *)o)->res);
             Model0218fe1c_Init(&((Ov015Obj290 *)o)->model);
-            func_ov015_022119e8((Ov015Obj290 *)o);
+            Ov015Obj290_Reset((Ov015Obj290 *)o);
         }
         self->unk_14 = (Ov015Obj290 *)o;
         o->vfunc_0c();

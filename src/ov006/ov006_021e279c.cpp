@@ -21,7 +21,7 @@ void ov006_Unk021e279c_Load(ov006_Unk021e279c *self) {
         }
     }
     self->unk60 = model;
-    TexObj_SetRes(self->unk60, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    TexObj_SetRes(self->unk60, ResMgr_FindArcType2(data_ov006_021ec864, data_ov006_021ec1a9));
     self->unk60->flags |= 2;
     self->unk60->flags |= 0x80000;
     self->unk60->flags |= 0x400000;

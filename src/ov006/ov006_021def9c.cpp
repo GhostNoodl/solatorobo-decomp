@@ -97,7 +97,7 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
         STD_CopyString(m2->name, data_0214b105);
     }
     self->unk8C = m2;
-    TexObj_SetRes(self->unk8C, func_02035de0(data_0214b105, data_0208cb7c));
+    TexObj_SetRes(self->unk8C, ResMgr_FindArcType2(data_0214b105, data_0208cb7c));
     self->unk8C->flags |= 2;
     self->unk8C->flags |= 0x80000;
     TexObj_SelectImage(self->unk8C, 0, 0xe);
@@ -108,7 +108,7 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
         TexObj_Init(m3, name, 0);
     }
     self->unk90 = m3;
-    TexObj_SetRes(self->unk90, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk90, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
     self->unk90->flags |= 2;
     self->unk90->flags |= 0x80000;
     TexObj_SelectImage(self->unk90, 0, 0x1e);

@@ -37,7 +37,7 @@ BOOL Actor_IsDead(void);
 void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_020627c8(void);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 
 static inline void SaveData_SetNibble(s32 row, s32 idx, u32 value) {
     u32 *p = &gStageFlags->flags[row][idx / 8];
@@ -81,7 +81,7 @@ void func_ov000_02197dec(Obj02197d80 *self, u8 value, s16 sfx) {
         {
             Player021ccd54 *pl = gSceneCmd;
             pl->unk_ac = 1;
-            func_ov000_02182590(&pl->unk_ac);
+            SceneStage_StartScript(&pl->unk_ac);
         }
     }
     func_020627c8();

@@ -11,7 +11,7 @@
 #include "ov000/Group.h"
 #include "Main/Math/Rot16.h"
 
-/* The task with vtable Ov006Vt_021ebfc0_vtbl (func_ov006_021d5b04, task type 1). */
+/* The task with vtable Ov006Vt_021ebfc0_vtbl (Ov006Vt_021ebfc0_Ctor, task type 1). */
 struct ov006_Unk021d5b98 : public ov006_Task {
     u8 unk10[0xc];
     VObj *unk1C;
@@ -499,7 +499,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             STD_CopyString(model->name, data_ov006_021ec864);
         }
         self->unk24 = model;
-        TexObj_SetRes(self->unk24, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
+        TexObj_SetRes(self->unk24, ResMgr_FindArcType2(data_ov006_021ec864, "cefly1pic00"));
         self->unk24->flags |= 2;
         self->unk24->flags |= 0x400000;
         TexObj_SelectImage(self->unk24, 2, 0xffff);
@@ -531,7 +531,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         VecFx32_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
         ((ov006_Bits0e *)&gSceneCmd->pause[6])->b2 = 0;
         gSysState->frameWait = 2;
-        data_ov006_021ec888->unk15E = 1;
+        gOv006Menu->unk15E = 1;
         self->subState++;
         break;
     }
@@ -539,12 +539,12 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         if (!Vram_IsIdle()) {
             break;
         }
-        func_02039518(func_02035de0(data_ov006_021ec864, "cefly1pic00"));
-        func_02039518(func_02035de0(data_ov006_021ec864, "cefly1cmn01"));
+        func_02039518(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1pic00"));
+        func_02039518(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1cmn01"));
         self->subState = 10;
         break;
     case 10:
-        if (gOv006Manager->unk1C != 0 && data_ov006_021ec888->state != 9) {
+        if (gOv006Manager->unk1C != 0 && gOv006Menu->state != 9) {
             ov006_Msg021d6724 msg;
             msg.unk0 = 0;
             msg.unk2 = 0;
@@ -552,7 +552,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             msg.unk4 = 0;
             msg.unk8 = 0;
             msg.unkC = 0;
-            ov006_Menu_SetOwnEntry(data_ov006_021ec888, 7, 3, &msg, 0x10);
+            ov006_Menu_SetOwnEntry(gOv006Menu, 7, 3, &msg, 0x10);
             if (func_02046ab4(gWhMgr) == 0) {
                 self->subState = 20;
             } else {
@@ -564,7 +564,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         break;
     case 20: {
         u16 mask;
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 40;
             break;
         }
@@ -577,7 +577,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             msg.unk4 = 0;
             msg.unk8 = 0;
             msg.unkC = 0;
-            ov006_Menu_SetOwnEntry(data_ov006_021ec888, 8, 3, &msg, 0x10);
+            ov006_Menu_SetOwnEntry(gOv006Menu, 8, 3, &msg, 0x10);
             self->subState++;
         }
         break;
@@ -587,7 +587,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         break;
     case 30: {
         u16 mask;
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 40;
             break;
         }
@@ -598,7 +598,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         self->subState = 40;
     }
     case 40:
-        ov006_Menu_ClearEntries(data_ov006_021ec888);
+        ov006_Menu_ClearEntries(gOv006Menu);
         self->subState = -1;
         result = TRUE;
         break;

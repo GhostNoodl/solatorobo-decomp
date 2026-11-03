@@ -11,7 +11,7 @@
 
 
 // The task host gTaskHost (0x58 bytes, built by TaskHost_Create and freed by
-// TaskHost_Destroy, updated by func_ov000_02180900): a pending task switch and the task it
+// TaskHost_Destroy, updated by TaskHost_Update): a pending task switch and the task it
 // switches to. Its state (unk_04) runs the switch: 5 calls the task's vfunc_10, 6 waits for its
 // vfunc_14, 7 starts it once no task is finishing.
 struct TaskHost {
@@ -25,7 +25,7 @@ struct TaskHost {
         };
     };
     s32 unk_04;
-    VObj res; // vtable ResHandle_vtbl; its vfunc_1c loads (func_ov000_02180900)
+    VObj res; // vtable ResHandle_vtbl; its vfunc_1c loads (TaskHost_Update)
     u8 unk_0c[0x40];
     s32 unk_4c; // inside res
     u8 unk_50[0x4];

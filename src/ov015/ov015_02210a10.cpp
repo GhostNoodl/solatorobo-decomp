@@ -49,7 +49,7 @@ BOOL Ov015Msg_Disappear(Ov015Msg *self) {
     return r;
 }
 
-void func_ov015_02210b3c(Ov015MsgMgr *self) {
+void Ov015MsgMgr_Init(Ov015MsgMgr *self) {
     self->unk_04 = NULL;
     self->unk_08 = 0;
     self->unk_09 = 0;
@@ -57,7 +57,7 @@ void func_ov015_02210b3c(Ov015MsgMgr *self) {
     self->unk_10 = 0;
 }
 
-void func_ov015_02210b58(Ov015MsgMgr *self) {
+void Ov015MsgMgr_DtorBase(Ov015MsgMgr *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);
@@ -67,7 +67,7 @@ void func_ov015_02210b58(Ov015MsgMgr *self) {
     }
 }
 
-int func_ov015_02210bd8(Ov015MsgMgr *self) {
+int Ov015MsgMgr_Load(Ov015MsgMgr *self) {
     if (self->unk_09 == 0) {
         ResMgr_LoadArchive((void *)data_0208cca0, data_0208cb74, 2, 0);
     }
@@ -78,7 +78,7 @@ BOOL func_ov015_02210c28(void) {
     return TRUE;
 }
 
-s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b) {
+s32 Ov015MsgMgr_Update(Ov015MsgMgr *self, Ov015Stat *a, s32 b) {
     s32 r = 0;
     switch (self->unk_0c) {
     case 0:
@@ -106,7 +106,7 @@ u8 Ov015Msg_IsShown(Ov015Msg *self) {
     return self->unk_04;
 }
 
-void func_ov015_02210d04(Ov015MsgMgr *self) {
+void Ov015MsgMgr_Draw(Ov015MsgMgr *self) {
     VObj *o = self->unk_04;
     if (o != NULL) {
         o->vfunc_0c();
@@ -225,7 +225,7 @@ void *Ov015Vt_022131ac_Dtor(Lo021cca40 *self) {
     return self;
 }
 
-void func_ov015_0221102c(void) {
+void Ov015Shared_Create(void) {
     Ov015Shared *p;
     if (gOv015Shared != NULL) {
         void *saved;
@@ -247,7 +247,7 @@ void func_ov015_0221102c(void) {
     gOv015Shared = p;
 }
 
-void func_ov015_022110f0(void) {
+void Ov015Shared_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(gOv015Shared);

@@ -235,9 +235,9 @@ u32 DataRes_GetCount(void *a, int idx);
 void *DataRes_GetTable(void *a, int idx);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
-void func_ov002_021e90dc(void);
+void Ov002Stage_DrawCur(void);
 void func_ov002_021e8f04(s32 id);
-bool func_ov002_021e90ac(void);
+bool Ov002Stage_UpdateCur(void);
 extern VFunc Ov002TaskVt_021ef69c_vtbl[];
 void Obj021c64b4_SetText(TextList *self, void *text);
 void TextList_Raise(TextList *self);
@@ -277,8 +277,8 @@ extern VFunc Ov002TaskVt_021ef99c_vtbl[];
 void Ov002StrTable_Clear(Ov002StrTable *self);
 void func_ov002_021d37f8(Task021ef91c *self);
 extern VFunc Ov002TaskVt_021ef81c_vtbl[];
-void func_ov000_021763c8(void);
-u32 func_ov000_02176538(void);
+void MenuScript_Open(void);
+u32 MenuScript_IsLoaded(void);
 u32 func_ov000_02180838(void *a);
 void Task021ef81c_FreeWindows(Task021ef81c *self);
 
@@ -297,7 +297,7 @@ void Ov002Hud_Init(Ov002Hud *self);
 void Ov002Hud_Load(Ov002Hud *self);
 void Ov002Hud_SetRow(Ov002Hud *self, u8 row, int force);
 void Ov002Hud_Update(Ov002Hud *self);
-void func_ov002_021e2528(Ov002Hud *self);
+void Ov002Hud_Draw(Ov002Hud *self);
 extern VFunc Ov002TaskVt_021efb24_vtbl[];
 void Obj021efe7c_Create(void);
 Obj021efe7c *Obj021efe7c_Get(void);
@@ -460,7 +460,7 @@ void func_ov002_021dfc44(Obj021efef0 *self, u16 id);
 void Obj021efeb8_Init(Obj021efeb8 *self);
 void Obj021efe9c_Init(Obj021efe9c *self);
 void Obj021efed4_Init(Obj021efed4 *self);
-void func_ov002_021eae3c(Ov002StageFile *self);
+void Ov002StageFile_DtorBase(Ov002StageFile *self);
 
 typedef struct Nibbles16 {
     u16 n0 : 4;
@@ -541,7 +541,7 @@ typedef struct Bits021e2f04 {
 
 void func_ov002_021e0280(Obj021eff30 *self);
 void func_ov002_021d7988(Obj021efe5c *self);
-void *func_ov000_0214b724(void *p);
+void *TwlLoader_Unload(void *p);
 
 extern char data_ov002_021effde[];
 extern char data_ov002_021effeb[];
@@ -610,7 +610,7 @@ void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self);
 void func_ov002_021e8cc4(Ov002Stage *self);
 void *Twl0214b6d8_Init(void *p);
 void Loader_Start(void *p, const void *a);
-void func_ov000_0214b810(void *p);
+void TwlLoader_Load(void *p);
 BOOL Loader_IsDone(void *p);
 // The staff-roll configuration (defined in ov002_021ef380.cpp).
 struct Ov002StaffCfg {
@@ -684,7 +684,7 @@ extern VFunc Ov002Vt_021f0694_vtbl[];
 
 Ov002Obj *Ov002Obj021f06e4_New(s32 a, s32 b, s16 c, void *d);
 
-void *func_02035fe8(void *a, void *b);
+void *ResMgr_FindNamedArcType0(void *a, void *b);
 void Ov002Msg021f0ce8_Load(Ov002Msg021f0ce8 *p, const void *src);
 extern VFunc Ov002Vt_021f07ac_vtbl[];
 void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *p);
@@ -734,7 +734,7 @@ extern VFunc Ov002Vt_021f070c_vtbl[];
 extern const u8 data_ov002_021eef74[];
 
 void Ov002Obj021f07d4_Init(Ov002Obj021f07d4 *self);
-void *func_02035d2c(void *a);
+void *ResMgr_GetDataType6(void *a);
 
 #ifdef __cplusplus
 }

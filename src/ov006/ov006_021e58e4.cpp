@@ -93,7 +93,7 @@ static inline void ov006_Menu_Close(ov006_Menu *self) {
     self->unk1C = 0;
 }
 
-void func_ov006_021e58e4(ov006_Menu *self) {
+void ov006_Menu_State09(ov006_Menu *self) {
     switch (self->unk1C) {
     case 1:
     case 4:

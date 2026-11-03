@@ -6,7 +6,7 @@
 // last effect record. Everything follows the empty asm function, so both sections keep definition
 // order. The three handler tables are vtables (two zero words, then 41 handlers); the TU's
 // functions point objects at the handler part. The functions at the end, Ov012Lift_StateAttack2 to
-// func_ov012_021fdfa0, are part of this TU: they read the constants through the .rodata base plus an offset.
+// Ov012Lift_StateAttack3Phase1, are part of this TU: they read the constants through the .rodata base plus an offset.
 // Round dtC also folded in the files of 0x021fa6a0..0x021fab7c and 0x021fe8b4..0x02200200 (each in
 // its own namespace): they point objects at the handler tables and pass the angle tables, which they
 // now reach by the TU's own names instead of u8[] externs. Round dtD folded in 0x02200200..0x02201c70
@@ -481,9 +481,9 @@ namespace m_021fab7c {
 
 extern "C" {
 
-extern void func_ov012_021fb060(Ov012Lift *self);
-extern void func_ov012_021fb300(Ov012Lift *self);
-extern void func_ov012_021fb818(Ov012Lift *self);
+extern void Ov012Lift_UpdatePhase0(Ov012Lift *self);
+extern void Ov012Lift_UpdatePhase1(Ov012Lift *self);
+extern void Ov012Lift_ChooseAttack(Ov012Lift *self);
 static inline Ov003Actor *Ov012_FindActorT(u16 id) {
     return gActorMgr == NULL ? NULL : (Ov003Actor *)ActorMgr_GetActor(gActorMgr, id);
 }
@@ -521,12 +521,12 @@ void Ov012Lift_Update(Ov012Lift *self) {
     k = self->fsm->current;
     switch (self->unk_f0) {
     case 0:
-        func_ov012_021fb060(self);
+        Ov012Lift_UpdatePhase0(self);
         break;
     case 1:
-        func_ov012_021fb300(self);
+        Ov012Lift_UpdatePhase1(self);
         if (Ov012_GameIdle()) {
-            func_ov012_021fb818(self);
+            Ov012Lift_ChooseAttack(self);
         }
         break;
     }
@@ -625,7 +625,7 @@ void Ov012Lift_Update(Ov012Lift *self) {
 namespace m_021fb060 {
 
 extern "C" {
-void func_ov012_021fb060(Ov012Lift *self) {
+void Ov012Lift_UpdatePhase0(Ov012Lift *self) {
     Ov003Actor *o;
     s32 r;
     if (!Ov012_GameIdle()) {
@@ -705,7 +705,7 @@ static inline void Ov012_LiftTick(Ov012Lift *self) {
     }
 }
 
-void func_ov012_021fb300(Ov012Lift *self) {
+void Ov012Lift_UpdatePhase1(Ov012Lift *self) {
     u8 c;
     u8 d;
     s32 id;
@@ -834,7 +834,7 @@ void func_ov012_021fb300(Ov012Lift *self) {
 namespace m_021fb818 {
 
 extern "C" {
-void func_ov012_021fb818(Ov012Lift *self) {
+void Ov012Lift_ChooseAttack(Ov012Lift *self) {
     u16 *hp = self->hp;
     s32 pct;
     u8 k = self->fsm->current;
@@ -1538,15 +1538,15 @@ void Ov012Lift_StateAttack2(Ov012Lift *self) {
 }
 
 extern "C" {
-void func_ov012_021fd708(Ov012Lift *self);
-void func_ov012_021fdfa0(Ov012Lift *self);
+void Ov012Lift_StateAttack3Phase0(Ov012Lift *self);
+void Ov012Lift_StateAttack3Phase1(Ov012Lift *self);
 void Ov012Lift_StateAttack3(Ov012Lift *self) {
     switch (self->unk_f0) {
     case 0:
-        func_ov012_021fd708(self);
+        Ov012Lift_StateAttack3Phase0(self);
         break;
     case 1:
-        func_ov012_021fdfa0(self);
+        Ov012Lift_StateAttack3Phase1(self);
         break;
     }
 }
@@ -1819,7 +1819,7 @@ void Ov012Lift_StateDie(Ov012Lift *self) {
 }
 
 extern "C" {
-void func_ov012_021fd708(Ov012Lift *self) {
+void Ov012Lift_StateAttack3Phase0(Ov012Lift *self) {
     VecFx32 pp;
     VecFx32 v4;
     VecFx32 dd;
@@ -2018,7 +2018,7 @@ static inline void Ov012_VecSub(VecFx32 *o, const VecFx32 *a, const VecFx32 *b) 
 }
 
 
-void func_ov012_021fdfa0(Ov012Lift *self) {
+void Ov012Lift_StateAttack3Phase1(Ov012Lift *self) {
     VecFx32 tg;
     VecFx32 d;
     u16 lim;

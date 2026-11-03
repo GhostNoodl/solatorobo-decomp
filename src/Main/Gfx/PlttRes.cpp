@@ -29,10 +29,10 @@ extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
-u16 func_02041000(int count);
-u16 func_02041020(int count);
-u16 func_02041040(int count);
-u16 func_02041060(int count);
+u16 PlttRes_AllocSlotsKind0(int count);
+u16 PlttRes_AllocSlotsKind2(int count);
+u16 PlttRes_AllocSlotsKind1(int count);
+u16 PlttRes_AllocSlotsKind3(int count);
 
 
 void func_02040dd8(PlttRes *res, int idx, bool load) {
@@ -50,19 +50,19 @@ void func_02040dd8(PlttRes *res, int idx, bool load) {
     if (res->unk_28 == 0) {
         switch (idx) {
         case 1:
-            alloc = func_02041000;
+            alloc = PlttRes_AllocSlotsKind0;
             break;
         case 2:
-            alloc = func_02041020;
+            alloc = PlttRes_AllocSlotsKind2;
             break;
         }
     } else {
         switch (idx) {
         case 1:
-            alloc = func_02041040;
+            alloc = PlttRes_AllocSlotsKind1;
             break;
         case 2:
-            alloc = func_02041060;
+            alloc = PlttRes_AllocSlotsKind3;
             break;
         }
     }

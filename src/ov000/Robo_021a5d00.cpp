@@ -28,7 +28,7 @@ void Body_Update(void *a, s32 b, s32 c, s32 d);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 BOOL StageRes_HasQueued(void);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void Target_Set(ActorSub4c *info, Actor *actor);
@@ -138,7 +138,7 @@ void Robo021ca458_State08(Robo021ca458 *self) {
                 Shared_SetEventActor(a->kind, a->id);
                 g = gSceneCmd;
                 g->stageFlags = 1;
-                func_ov000_02182590((u8 *)g + 0xac);
+                SceneStage_StartScript((u8 *)g + 0xac);
                 if (StageRes_HasQueued()) {
                     done = TRUE;
                 }

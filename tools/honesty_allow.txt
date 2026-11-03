@@ -43,7 +43,7 @@ asm	src/	G3_SetTransMtx	legit: matrix-load asm inline (documented, round strpool
 asm	src/	Box_SetMtx	legit: matrix-load asm inline (documented, round strpool2)
 asm	src/	TexObj_SetTransMtx	legit: matrix-load asm inline (documented, round strpool2)
 asm	src/ov004/	*	legit: DS protect obfuscated code, hand asm in the original
-asm	src/ov000/Lo_021814dc.cpp	func_ov000_02181624	kept: `ldr m, =3` for the OVERLAY_3_ID pool word (honest form swaps r7/r8; mid-file in a TU with .bss)
+asm	src/ov000/Lo_021814dc.cpp	Field_Destroy	kept: `ldr m, =3` for the OVERLAY_3_ID pool word (honest form swaps r7/r8; mid-file in a TU with .bss)
 
 # --- src: pointer-bit tests
 ptrbit	src/Main/Gfx/TextWin.cpp	TW_PlttAddr	legit: the key is a packed handle, not a pointer
@@ -55,7 +55,7 @@ deadstore	src/ov014/ov014_02216ff0.cpp	Ov014Act_02201b94_StateDie	kept: the seco
 deadstore	src/ov015/ov015_022078bc.cpp	Ov015Ship_Load	kept: the second store of the pointer-bit test above
 
 # --- src: dead stores
-deadstore	src/Main/Sys/Sys.cpp	func_0203d6b4	legit: OS_EnableIrq() inlined with its return value discarded
+deadstore	src/Main/Sys/Sys.cpp	Sys_InitHw	legit: OS_EnableIrq() inlined with its return value discarded
 deadstore	src/ov006/ov006_021dc054.cpp	ov006_Label_Update	legit: dead initialised local, the ROM stores the zeros
 
 # --- src: parameters
@@ -94,7 +94,7 @@ noise	src/	+ 0	legit: offset 0 of an indexed access written like its neighbours
 noise	src/	| 0;	legit: field value 0 written like its neighbours
 noise	src/	<< 0	legit: field shift 0 written like its neighbours
 noise	src/	typeof	legit: names the field's anonymous struct type
-noise	src/ov000/Lo_021814dc.cpp	register s32 m	kept: the asm operand of func_ov000_02181624
+noise	src/ov000/Lo_021814dc.cpp	register s32 m	kept: the asm operand of Field_Destroy
 comment	src/	Kept (round auA	kept: the comment of a kept trick
 comment	src/	used to need	legit: history note, the trick is gone
 comment	src/	the old draft used	legit: history note, the trick is gone

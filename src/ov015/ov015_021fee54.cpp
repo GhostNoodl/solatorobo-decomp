@@ -4,7 +4,7 @@ extern "C" {
 
 BOOL Interp_MoveTo(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 
-void func_ov015_021fee54(Ov015CamPair *self) {
+void Ov015CamPair_Mode7(Ov015CamPair *self) {
     Ov015Vec res1;
     Ov015Vec tgt;
     Ov015Vec prev;
@@ -45,7 +45,7 @@ void func_ov015_021fee54(Ov015CamPair *self) {
 void func_ov015_021fd0f4(Ov015CamPair *self, Ov015Vec *out);
 
 
-void func_ov015_021ff044(Ov015CamPair *self) {
+void Ov015CamPair_Mode8(Ov015CamPair *self) {
     Ov015Vec o;
     Ov015Vec res;
     Ov015Vec tgt;

@@ -9,8 +9,8 @@
 // that file is cut off from the TU by the unmatched Ov002StaffModel_Setup, so it declares the pool
 // with this view.
 typedef struct Ov002StaffPool {
-    /* 0x00 */ Ov002StaffNode *head;     // data_ov002_021f0fa0: the run list
-    /* 0x04 */ Ov002Staff *staff;        // data_ov002_021f0fa4
+    /* 0x00 */ Ov002StaffNode *head;     // gOv002StaffPool: the run list
+    /* 0x04 */ Ov002Staff *staff;        // gOv002Staff
     /* 0x08 */ Ov002StaffNode *tail;     // data_ov002_021f0fa8
     /* 0x0c */ Ov002StaffNode *lists[9]; // data_ov002_021f0fac: the per-kind node lists
 } Ov002StaffPool;
@@ -18,7 +18,7 @@ typedef struct Ov002StaffPool {
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern Ov002StaffPool data_ov002_021f0fa0;
+extern Ov002StaffPool gOv002StaffPool;
 #ifdef __cplusplus
 }
 #endif

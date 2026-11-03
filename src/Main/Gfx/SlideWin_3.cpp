@@ -76,7 +76,7 @@ extern void GfxMgr_PutChar(GfxMgr *mgr, u16 c);
 extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern void func_0204cb28(TextWin *win, u32 arg);
-extern void func_02051f70(SlideWinX *win);
+extern void GameScene_StartShake(SlideWinX *win);
 extern const char *Tbl_GetText(u16 id);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
@@ -375,7 +375,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                     win->unk_b8_24 = win->args[0];
                     break;
                 case 34:
-                    func_02051f70(win);
+                    GameScene_StartShake(win);
                     break;
                 case 35:
                     win->style = win->value;

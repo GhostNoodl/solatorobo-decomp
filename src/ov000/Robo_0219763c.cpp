@@ -32,7 +32,7 @@ void Group_UpdateActor(void *a, s32 b, void *c);
 void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_020627c8(void);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 u16 LangData_GetIndex(u32 a, u32 b);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
@@ -87,7 +87,7 @@ static inline void Die0219763c(VObj *obj) {
         {
             FieldState *pl = gSceneCmd;
             ((u8 *)pl)[0xac] = 1;
-            func_ov000_02182590((u8 *)pl + 0xac);
+            SceneStage_StartScript((u8 *)pl + 0xac);
         }
     }
     func_020627c8();

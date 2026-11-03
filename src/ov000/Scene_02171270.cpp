@@ -10,7 +10,7 @@ extern "C" {
 void func_ov000_021b9a84(void *p);
 void func_ov000_021bac78(void *p);
 void func_ov000_021bbbdc(void *p);
-void func_0204ffdc(void *p);
+void TextBox_Draw(void *p);
 void func_ov000_021b8db4(void *p);
 void func_ov000_021b86a4(void *p);
 void func_ov000_0216b880(void *p);
@@ -42,7 +42,7 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         break;
     case 5:
         if (self->unk_2c != NULL) {
-            func_0204ffdc(self->unk_2c);
+            TextBox_Draw(self->unk_2c);
         }
         break;
     case 6:

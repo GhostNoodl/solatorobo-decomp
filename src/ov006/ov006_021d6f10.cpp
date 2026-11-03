@@ -35,8 +35,8 @@ void Ov006Vt_021ebfc0_Draw(ov006_Task021d6f10 *self) {
             self->unk34->vfunc_20();
         }
     }
-    if (data_ov006_021ec888 != NULL) {
-        ov006_Menu_ReleaseObj(data_ov006_021ec888);
+    if (gOv006Menu != NULL) {
+        ov006_Menu_ReleaseObj(gOv006Menu);
     }
 }
 

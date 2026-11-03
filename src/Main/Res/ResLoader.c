@@ -5,7 +5,7 @@ static inline ResRing *GetRing02035450(ResLoader *loader) {
     return &loader->ring;
 }
 
-void func_02035450(ResLoader *loader) {
+void ResLoader_ThreadMain(ResLoader *loader) {
     ResRequest *req = NULL;
     ResFileEntry *entry = NULL;
     u8 lzCtx[0x14];
@@ -49,11 +49,11 @@ ResLoader *ResLoader_Init(ResLoader *loader) {
 // The original keeps numBlocks in a register and multiplies: constant propagation was off here.
 #pragma push
 #pragma opt_propagation off
-void func_02035670(ResLoader *loader) {
+void ResLoader_Start(ResLoader *loader) {
     u32 blockSize;
     u16 numBlocks;
     void *buf;
-    OS_CreateThread(&loader->thread, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+    OS_CreateThread(&loader->thread, (void (*)(void *))ResLoader_ThreadMain, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
     OS_SetThreadStackWarningOffset(&loader->thread, 0x4c);
     blockSize = 0x2000;
     numBlocks = 3;
@@ -67,7 +67,7 @@ void func_02035670(ResLoader *loader) {
 }
 #pragma pop
 
-BOOL func_02035740(ResLoader *loader, ResRequest *req) {
+BOOL ResLoader_Request(ResLoader *loader, ResRequest *req) {
     BOOL result = FALSE;
     if (loader->state == 0) {
         loader->state = 1;
@@ -79,7 +79,7 @@ BOOL func_02035740(ResLoader *loader, ResRequest *req) {
         loader->req.unk_28 = req->unk_28;
         loader->req.index = req->index;
         if (OS_IsThreadTerminated(&loader->thread)) {
-            OS_CreateThread(&loader->thread, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+            OS_CreateThread(&loader->thread, (void (*)(void *))ResLoader_ThreadMain, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
             OS_SetThreadStackWarningOffset(&loader->thread, 0x4c);
         }
         OS_WakeupThreadDirect(&loader->thread);

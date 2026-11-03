@@ -119,7 +119,7 @@ static inline s32 SaveBase_ReadHeader(SaveBase *s, SaveHeader *hdr) {
 }
 
 static inline s32 SaveBase_WriteHeader(SaveBase *s, SaveHeader *hdr) {
-    return func_02047004(gSysCard, s->baseOffset, hdr, s->headerSize);
+    return SysCard_Write(gSysCard, s->baseOffset, hdr, s->headerSize);
 }
 
 static inline u32 SaveBase_DataOffset(SaveBase *s, s32 idx) {

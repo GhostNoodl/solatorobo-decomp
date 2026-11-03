@@ -42,7 +42,7 @@ public:
     s32 unk_58;
     GameSave *unk_5c; // save object (data_ov000_021ccd4c)
     GameSave0208c994 *unk_60;
-    Lo021cad50 *unk_64; // message window (func_ov000_0217bd88)
+    Lo021cad50 *unk_64; // message window (Task021cbb60_ShowMsg)
     s32 unk_68; // frames before the message window can be closed
     void *unk_6c;
     u8 unk_70;

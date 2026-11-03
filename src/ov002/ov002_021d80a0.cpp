@@ -26,7 +26,7 @@ void Ov002Vt_021efe9c_Draw(Obj021efe9c *self) {
 
 
 
-u32 func_0203ebf8(const char *name);
+u32 Vram_GetTexTransferId(const char *name);
 
 
 
@@ -65,7 +65,7 @@ void func_ov002_021d8148(Obj021efe9c *self) {
     if (self->unk_78 != NULL) {
         name = (char *)G3dRes_SetupVram(name, (void *)*self->unk_78);
     }
-    self->unk_84 = func_0203ebf8(name);
+    self->unk_84 = Vram_GetTexTransferId(name);
     self->unk_80 = (NNSG3dRenderObj *)Heap_Alloc(sizeof(NNSG3dRenderObj));
     NNS_G3dRenderObjInit(self->unk_80, self->unk_7c);
     NNS_G3dMdlSetMdlCullModeAll(self->unk_7c, 2);

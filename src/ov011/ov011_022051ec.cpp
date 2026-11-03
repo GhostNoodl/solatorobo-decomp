@@ -57,7 +57,7 @@ extern void Obj0215c1bc_SetText(void *a, s32 b, const char *c);
 extern void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 
 static inline BOOL Ov011Bar_FadeIdle(void) {
     if (gFadeState[3] == 0 && gFadeState[0] == 0) {
@@ -118,7 +118,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->st++;
             self->fsm->timer = 0;
         }

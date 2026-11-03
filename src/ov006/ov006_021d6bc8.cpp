@@ -51,7 +51,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
         if (state == 4) {
             return r;
         }
-        if (state == 0 && data_ov006_021ec888->unk15F == 0) {
+        if (state == 0 && gOv006Menu->unk15F == 0) {
             return 1;
         }
     }
@@ -84,7 +84,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
         EffectMgr_Update(gEffectMgr);
     }
     r = ov006_Race_Update(self);
-    if (state == 0 && data_ov006_021ec888->state != 9) {
+    if (state == 0 && gOv006Menu->state != 9) {
         void *obj = ActorMgr_GetGroup(gActorMgr, 0x7000);
         if (obj != NULL) {
             func_ov000_0218e0bc(obj);

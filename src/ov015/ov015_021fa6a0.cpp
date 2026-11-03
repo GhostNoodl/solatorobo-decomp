@@ -9,7 +9,7 @@ extern u8 Ov015Child_vtbl[];
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void Ov015Main_Shutdown(Ov015Main *self);
-void func_ov015_022110f0(void);
+void Ov015Shared_Delete(void);
 extern void *data_0208cc94;
 extern void *data_0208ccc8;
 extern char data_0214b105[];
@@ -25,10 +25,10 @@ extern u8 Ov015SceneSeq_vtbl[];
 extern u8 Ov015Game_vtbl[];
 extern u8 Ov015Obj30_vtbl[];
 extern u8 Ov015Obj34_vtbl[];
-void func_ov015_0221102c(void);
+void Ov015Shared_Create(void);
 void Ov015Obj30_Init(Ov015Obj30 *self);
 void Ov015Obj34_Init(Ov015Obj34 *self);
-void func_ov015_02211828(Ov015Info38 *p);
+void Ov015Info38_Ctor(Ov015Info38 *p);
 void func_ov015_02200f74(Ov015Game *p);
 void Ov015Obj30_Free(Ov015Obj30 *self);
 void Ov015Obj34_DtorBase(Ov015Obj34 *self);
@@ -62,7 +62,7 @@ static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
             Ov015Obj30_Init(&p->phase1);
             SET_VT(&p->phase2, Ov015Obj34_vtbl);
             Ov015Obj34_Init(&p->phase2);
-            func_ov015_02211828(&p->info);
+            Ov015Info38_Ctor(&p->info);
             func_ov015_02200f74(p);
         }
         c = (VObj *)p;
@@ -160,7 +160,7 @@ void Ov015Fade_Reset(Ov015Fade *self) {
     self->alpha = 0;
 }
 
-void func_ov015_021fa77c(void) {
+void Ov015Main_Create(void) {
     Ov015Main *p;
     if (gOv015Globals.mainSeq != NULL) {
         void *saved;
@@ -187,7 +187,7 @@ void func_ov015_021fa77c(void) {
     gOv015Globals.mainSeq = p;
 }
 
-void func_ov015_021fa868(void) {
+void Ov015Main_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(gOv015Globals.mainSeq);
@@ -207,7 +207,7 @@ void Ov015Main_Shutdown(Ov015Main *self) {
     HEAP_PUSH(saved);
     DELETE_V(self->child);
     HEAP_POP(saved);
-    func_ov015_022110f0();
+    Ov015Shared_Delete();
     HEAP_PUSH(saved);
     DELETE_V(gOv015Globals.fade);
     HEAP_POP(saved);
@@ -260,7 +260,7 @@ BOOL func_ov015_021faa74(Ov015Main *self) {
 }
 
 
-BOOL func_ov015_021faba0(Ov015Main *self) {
+BOOL Ov015Main_Update(Ov015Main *self) {
     BOOL r = TRUE;
     void *saved;
     switch (self->unk_0c) {
@@ -272,7 +272,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
     case 2: {
         Ov015Fade *f;
         s32 kind;
-        func_ov015_0221102c();
+        Ov015Shared_Create();
         gOv015Shared->unk_2c = gStageFlags->bits18.mode ? 1 : 0;
         HEAP_PUSH(saved);
         DELETE_V(gOv015Globals.fade);
@@ -389,7 +389,7 @@ static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int 
     return (u32)(light | (polyMode << 4) | (cullMode << 6) | misc | (polygonID << 24) | (alpha << 16));
 }
 
-void func_ov015_021fb088(Ov015Main *self) {
+void Ov015Main_Draw(Ov015Main *self) {
     Ov015Fade *fd;
     s32 pop;
     u32 polyAttr;

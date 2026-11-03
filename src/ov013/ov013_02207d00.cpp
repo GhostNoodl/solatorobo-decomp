@@ -10,7 +10,7 @@ extern void func_020627dc(s32 a);
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Actor_IsDead(Ov003Actor *a);
-extern void func_ov000_02182590(void *p);
+extern void SceneStage_StartScript(void *p);
 extern void Ov003_AddExp(u16 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
@@ -39,7 +39,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             func_020627dc(5);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             Ov003_AddExp(self->unk_b0->unk_04);
             {
                 ActorSub44 *n = self->unk_44;

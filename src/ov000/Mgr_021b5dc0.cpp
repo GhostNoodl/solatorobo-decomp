@@ -33,7 +33,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
-void **func_02035edc(const char *a, const char *b);
+void **ResMgr_FindArcType6(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
 void Camera_SetAnim(Camera *cam, void *anim);
 void FieldProp_SetViewScale(FieldProp *n, s32 v);
@@ -156,7 +156,7 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     self->step = NULL;
     self->unk_1f2 = 0;
     if (g->unk_ca.c[0] == 0x10 && g->unk_ca.c[1] == 0 && (g->unk_ca.c[2] == 0 || g->unk_ca.c[2] == 3)) {
-        void **res = func_02035edc(data_ov000_021cc82c, data_ov000_021cc83d);
+        void **res = ResMgr_FindArcType6(data_ov000_021cc82c, data_ov000_021cc83d);
         if (res != NULL && *res != NULL) {
             Camera_SetAnim(&cam->base, NNS_G3dGetAnmByIdx(*res, 0));
             self->unk_1f2 = 0x52;

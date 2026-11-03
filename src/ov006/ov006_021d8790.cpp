@@ -43,7 +43,7 @@ static inline BOOL ov006_FadeDone(int ch) {
 u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
     switch (self->unk6E) {
     case 0:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             if (!ov006_FadeIdle()) {
                 GfxSys_StartFadeIn(0x1000, 0, 0);
                 GfxSys_StartFadeIn(0x1000, 0, 1);
@@ -52,11 +52,11 @@ u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
         }
         break;
     case 1:
-        ov006_Menu_ShowObj(data_ov006_021ec888);
+        ov006_Menu_ShowObj(gOv006Menu);
         self->unk6E = 2;
         break;
     case 2:
-        if (data_ov006_021ec888->state != 9) {
+        if (gOv006Menu->state != 9) {
             GfxSys_StartFadeOut(0x1000, 0, 0);
             GfxSys_StartFadeOut(0x1000, 0, 1);
             self->unk6E = 3;

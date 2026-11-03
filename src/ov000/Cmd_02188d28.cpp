@@ -13,7 +13,7 @@ void *DataRes_GetTable(void *a, int idx);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, u16 d, u16 e);
 BOOL func_020624d8(void);
 
-void func_ov000_02188d28(FieldId *id) {
+void SceneCmd_Push0a(FieldId *id) {
     if (!ActorMgr_FindPlayer()) {
         CmdObj_Push(data_ov000_021ccd50.scene, 0xb, 0);
     }

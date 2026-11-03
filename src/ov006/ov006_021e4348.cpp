@@ -25,12 +25,12 @@ void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
 int WM_GetLinkLevel(void);
 BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data);
-void func_ov006_021e5050(ov006_Menu *self);
-void func_ov006_021e5604(ov006_Menu *self);
-void func_ov006_021e51f8(ov006_Menu *self);
-void func_ov006_021e4d38(ov006_Menu *self);
-void func_ov006_021e4ed4(ov006_Menu *self);
-void func_ov006_021e58e4(ov006_Menu *self);
+void ov006_Menu_State04(ov006_Menu *self);
+void ov006_Menu_State05(ov006_Menu *self);
+void ov006_Menu_State06(ov006_Menu *self);
+void ov006_Menu_State07(ov006_Menu *self);
+void ov006_Menu_State08(ov006_Menu *self);
+void ov006_Menu_State09(ov006_Menu *self);
 
 static inline void ov006_Menu_SetState(ov006_Menu *self, int state) {
     self->state = state;
@@ -80,25 +80,25 @@ void ov006_Menu_Load(ov006_Menu *self) {
         ov006_Menu_SetState(self, 3);
         break;
     case 4:
-        func_ov006_021e5050(self);
+        ov006_Menu_State04(self);
         break;
     case 5:
-        func_ov006_021e5604(self);
+        ov006_Menu_State05(self);
         break;
     case 6:
-        func_ov006_021e51f8(self);
+        ov006_Menu_State06(self);
         break;
     case 7:
-        func_ov006_021e4d38(self);
+        ov006_Menu_State07(self);
         break;
     case 8:
-        func_ov006_021e4ed4(self);
+        ov006_Menu_State08(self);
         break;
     case 9:
-        func_ov006_021e58e4(self);
+        ov006_Menu_State09(self);
         break;
     }
-    if (data_ov006_021ec888->state == 0) {
+    if (gOv006Menu->state == 0) {
         return;
     }
     if ((u16)((u16)self->state + 0xfffc) > 2) {

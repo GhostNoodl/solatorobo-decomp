@@ -104,7 +104,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
 
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 void func_ov011_02205460(Ov011Act7da4 *self, u16 t, s32 c);
 
 #pragma force_active on
@@ -118,7 +118,7 @@ void Ov011Act7da4_State21(Ov011Act7da4 *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->st++;
         }
         break;
@@ -171,7 +171,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->st++;
         }
         break;
@@ -222,7 +222,7 @@ void Ov011Act7da4_State24(Ov011Act7da4 *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -281,7 +281,7 @@ void Ov011Act7da4_State22(Ov011Act7da4 *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->timer = 0;
             self->fsm->st++;
         }

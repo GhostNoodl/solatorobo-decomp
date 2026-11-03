@@ -17,7 +17,7 @@ BOOL Ov006Vt_021ec040_Start(ov006_Task021ec040 *self) {
     case 1:
         if (gFinishingTask != NULL) {
             gFinishingTask->vfunc_4c();
-            data_ov006_021ec888->unk15E = 2;
+            gOv006Menu->unk15E = 2;
             ov006_Task021ec040_SetupPrices(self);
             ov006_Task021ec040_BuildShopList(self);
             return TRUE;

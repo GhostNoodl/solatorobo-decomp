@@ -70,7 +70,7 @@ struct ov006_MenuNode : public VObj {
 
 struct Lo021cad50;
 
-/* Holds one dialog window (vtable ov006_ObjectHolder_vtbl; func_ov006_021e58e4 opens an ov000
+/* Holds one dialog window (vtable ov006_ObjectHolder_vtbl; ov006_Menu_State09 opens an ov000
    Lo021cad50 in it). */
 typedef struct ov006_ObjectHolder {
     void *vtbl;
@@ -85,7 +85,7 @@ typedef struct ov006_MenuEntry {
 } ov006_MenuEntry;
 
 /* The ov006 menu object (0x1dc bytes; vtable 021ec404, made by ov006_Menu_Create), the singleton
- * data_ov006_021ec888. */
+ * gOv006Menu. */
 typedef struct ov006_Menu {
     void *vtbl;
     void *vtbl2;
@@ -114,7 +114,7 @@ typedef struct ov006_Menu {
 } ov006_Menu;
 
 extern ov006_Manager *gOv006Manager;
-extern ov006_Menu *data_ov006_021ec888;
+extern ov006_Menu *gOv006Menu;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *p);

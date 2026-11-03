@@ -13,7 +13,7 @@ extern void *gTaskHost;
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
 void func_ov000_0216f23c(void *p, s32 a);
-BOOL func_ov000_02180900(void *p);
+BOOL TaskHost_Update(void *p);
 void ListBuffer021cb940_Release(void *p);
 
 s32 ListBuffer021cb940_GetWindowMode(ListBuffer021cb940 *self) {

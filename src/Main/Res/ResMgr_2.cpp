@@ -14,11 +14,11 @@ extern int FS_ReadFileAsync(FSFile *file, void *buf, int size);
 extern BOOL FS_OpenFile(FSFile *file, const char *path);
 extern u32 FS_GetLength(FSFile *file);
 extern ResList *ResList_Dtor(ResList *list);
-extern void func_0203835c(ResData *data);
+extern void ResData_Free(ResData *data);
 extern void Heap_Free(void *ptr);
 extern void Heap_FreeLo(void *ptr);
 
-void func_020381cc(ResMgr *mgr, ResNode *node) {
+void ResMgr_FreeNodeData(ResMgr *mgr, ResNode *node) {
     if (node->type == 7) {
         void *heap = gSysState->cur;
         ResList *list;
@@ -45,7 +45,7 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
             node->u.data[3] = NULL;
         }
     } else {
-        func_0203835c((ResData *)&node->type);
+        ResData_Free((ResData *)&node->type);
     }
 }
 
@@ -81,7 +81,7 @@ void *ResMgr_ReadFile(ResMgr *mgr, const char *path, u32 size, void *buf) {
         data->data[i] = NULL;            \
     }
 
-void func_0203835c(ResData *data) {
+void ResData_Free(ResData *data) {
     switch (data->type) {
     case 0:
         RES_DATA_FREE(0);

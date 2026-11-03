@@ -11,7 +11,7 @@
 // The ctor appends the object to the list in gOv002Stage (head at 0xdc, tail at 0xe0,
 // linked through next); an object can own up to eight others (children, each pointing back
 // through owner). Vtable Ov002Vt_021f0734_vtbl: slot 0x08 Ov002Obj_IsLoaded (loaded: unk_0c >= 3),
-// 0x0c..0x18 the load steps func_ov002_021e4dd4 runs while unk_0c goes 0..3.
+// 0x0c..0x18 the load steps Ov002Obj_Run runs while unk_0c goes 0..3.
 struct Ov002Obj : public VObj {
     s32 unk_04; // kind, -1 until set
     s32 unk_08;
@@ -82,7 +82,7 @@ typedef struct Ov002ObjLink {
     s32 id;
     char *arc;  // archive, NULL: a loose file
     char *name; // file name
-    u32 task;   // texture upload (func_0203ebf8 / Vram_IsTransferDone)
+    u32 task;   // texture upload (Vram_GetTexTransferId / Vram_IsTransferDone)
     u32 *res;   // loaded file
     u8 loaded;
     u8 alt;     // not found in the archive: loaded as its own file into res2
@@ -97,7 +97,7 @@ struct Ov002Obj021f07d4 : public Ov002Obj {
     NNSG3dResMdl *unk_60;
     NNSG3dResTex *unk_64;
     NNSG3dRenderObj renderObj;
-    u32 unk_bc;   // texture upload (func_0203ebf8 / Vram_IsTransferDone)
+    u32 unk_bc;   // texture upload (Vram_GetTexTransferId / Vram_IsTransferDone)
     Ov002ObjLink links[8];
     s32 linkCount;
     VecFx32 trans; // NNS_G3dGlbSetBaseTrans (Ov002Obj021f07d4_Draw)
@@ -309,10 +309,10 @@ SIZE_ASSERT(Ov002StageFile, 0x64);
 // Stage context (0x2cc, vtable Ov002Vt_021f0674_vtbl), gOv002Stage, built by
 // Ov002Stage_Create / func_ov002_021e8f04 (ctor Ov002Stage_Init, dtor Ov002Stage_Release).
 // It loads the stage file, runs the stage objects in its list and fades the screens in and out
-// (func_ov002_021e7ea8).
+// (Ov002Stage_Update).
 struct Ov002Stage : public VObj {
-    s32 state;    // func_ov002_021e7ea8: 0..7
-    s32 step;     // the state's sub-step (func_ov002_021e828c, func_ov002_021e86a0)
+    s32 state;    // Ov002Stage_Update: 0..7
+    s32 step;     // the state's sub-step (Ov002Stage_State1, Ov002Stage_State2)
     s32 unk_0c;   // screen being drawn: 1, or 2 (compared with Ov002Obj::unk_08)
     u8 unk_10;    // objects still running
     u8 unk_11[3];
@@ -364,11 +364,11 @@ void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self);
 void Ov002Obj021f075c_RemoveAnims(Ov002Obj021f075c *self);
 void Ov002Stage_Create(void);
 void Ov002Stage_Delete(void);
-BOOL func_ov002_021e7ea8(Ov002Stage *self);
-void func_ov002_021e8b3c(Ov002Stage *self);
+BOOL Ov002Stage_Update(Ov002Stage *self);
+void Ov002Stage_Draw(Ov002Stage *self);
 Ov002Obj *Ov002Obj021f07d4_New(s32 start, s32 end, s32 screen, bool b, u8 a);
 Ov002Obj *Ov002Obj021f075c_New(s32 start, s32 end, s32 screen, s32 d, s32 e);
-Ov002Obj *func_ov002_021e9b28(s32 end);
+Ov002Obj *Ov002Vt_021f0694_New(s32 end);
 void func_ov002_021e9e40(s32 idx);
 
 #ifdef __cplusplus

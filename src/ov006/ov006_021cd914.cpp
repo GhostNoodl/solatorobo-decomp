@@ -17,7 +17,7 @@ u16 DataRes_ReadEntry(void *res, int a, int b, u32 idx);
 void DataRes_WriteEntry(void *res, int a, int b, u32 idx, u16 v);
 void func_020627fc(u8 v);
 void func_0206280c(u16 v);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 
 static inline void ov006_SetInfo(u16 id) {
     ov006_SlotManagerInfo *info = ov006_GetCourseInfo(id);
@@ -172,7 +172,7 @@ void ov006_Manager_Mode01to07(int type, void *obj, int arg) {
             {
                 u8 *p = (u8 *)gSceneCmd + 0xac;
                 *p = 1;
-                func_ov000_02182590(p);
+                SceneStage_StartScript(p);
             }
         }
         break;

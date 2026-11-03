@@ -5,7 +5,7 @@
 extern "C" {
 
 // Appends an item, as UiList_AddItem without the item's unk_08 / unk_0c.
-void func_ov000_02159f94(Lo021cb5a8 *self, s32 id, const char *name) {
+void Lo021cb5a8_AddItem(Lo021cb5a8 *self, s32 id, const char *name) {
     UiListItem *n = (UiListItem *)Heap_Alloc(sizeof(UiListItem));
     UiListItem *t;
     UiListItem *nx;

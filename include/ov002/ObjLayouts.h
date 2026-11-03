@@ -25,8 +25,8 @@ struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
 SIZE_ASSERT(Ov002RowList, 0xf4);
 
 // The text lists of Task021ef69c_Start and Task021ef91c_Start are ov000's TextList
-// (ov000/TextList.h): onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
-// the cursor (func_ov002_021d18d4).
+// (ov000/TextList.h): onDecide gets the chosen row (Task021ef69c_List3cOnDecide), onCursor the row under
+// the cursor (Task021ef69c_List3cOnCursor).
 
 // Animated model (0x70, vtable Ov002Vt_021efe3c_vtbl; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
 // Ov002Mdl021efe3c_Load loads model file `name` and animation file `anmName` from archive `arc`;
@@ -40,7 +40,7 @@ struct Ov002Mdl021efe3c : public VObj {
     EffectFile *file;           // the model file (Vram_FreeRes releases it)
     NNSG3dResMdl *mdl;
     NNSG3dRenderObj *renderObj; // Heap_Alloc, freed on the alternate heap
-    u32 texTask;                // texture upload (func_0203ebf8 / Vram_IsTransferDone)
+    u32 texTask;                // texture upload (Vram_GetTexTransferId / Vram_IsTransferDone)
     NNSG3dAnmObj *anm[3];       // Heap_AllocHi
     s32 frame;
     s32 frameCount;
@@ -125,7 +125,7 @@ struct Obj021efeb8 : public VObj {
     u32 *unk_78;                 // resource handle: *unk_78 is the model file
     NNSG3dResMdl *unk_7c;        // the model in that file
     NNSG3dRenderObj *unk_80;     // Heap_Alloc
-    u32 unk_84;                  // texture upload (func_0203ebf8 / Vram_IsTransferDone)
+    u32 unk_84;                  // texture upload (Vram_GetTexTransferId / Vram_IsTransferDone)
     NNSG3dAnmObj *unk_88;        // Heap_AllocHi
     NNSG3dAnmObj *unk_8c;
     void *unk_90;                // an animation object (021efe9c) or a Model (021efed4)
@@ -200,7 +200,7 @@ struct Obj021efe6c : public VObj {
 };
 SIZE_ASSERT(Obj021efe6c, 0xc8);
 
-// Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90.top):
+// Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in gOv002BoardRef.top):
 // the board and its current mode object (Obj021efe7c_SetPhase builds mode unk_0c: 021eff74, 021eff50, ...).
 struct Obj021efe7c : public VObj {
     Obj021efe6c *board;
@@ -438,7 +438,7 @@ struct Ov002Hud : public VObj {
     /* 0x10 */ Model *unk_10;
     /* 0x14 */ Ov002Caption *captions[5];
     /* 0x28 */ Ov002HudInfo *info;
-    /* 0x2c */ s16 unk_2c[2][5]; // func_ov002_021e28b0 draws unk_2c[0][i] + unk_2c[1][i], clamped to 0..99
+    /* 0x2c */ s16 unk_2c[2][5]; // Ov002Hud_DrawBody draws unk_2c[0][i] + unk_2c[1][i], clamped to 0..99
     /* 0x40 */ u8 row; // row of data_ov002_021ef058 the captions show
     /* 0x41 */ u8 pending; // bit n: model n (unk_04..unk_10) still waits on Model_IsReady
     /* 0x42 */ u8 unk_42[2];

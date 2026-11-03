@@ -22,7 +22,7 @@ void MsgRes_OpenLocalized(void *p, const void *a, const void *b);
 void Ov015Result_Draw(Ov015Result *self) {
     Ov015ResultPanel *o;
     if (gOv002Stage != NULL) {
-        func_ov002_021e8b3c(gOv002Stage);
+        Ov002Stage_Draw(gOv002Stage);
     }
     if (self->state < 0x14) {
         return;
@@ -379,15 +379,15 @@ extern u8 Lo021cadcc_vtbl[];
 extern u8 Ov015Vt_02212d3c_vtbl[];
 BOOL MsgRes_Bind(void *p);
 s32 MsgRes_GetLines(void *p, u16 id, void *buf, s32 n);
-void *func_02035de0(void *a, void *b);
+void *ResMgr_FindArcType2(void *a, void *b);
 void TextWin_Init(void *p);
 void *MsgRes_GetString(void *a, s32 b);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 void TextWin_RenderToVram(void *p);
-void func_ov015_02208544(Ov015UiText *self);
+void Ov015UiText_ClearText(Ov015UiText *self);
 s32 func_0204c2f4(void *p, s32 n, void *src);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_ov015_0220866c(Ov015UiText *self, void *msg);
+void Ov015UiText_SetText(Ov015UiText *self, void *msg);
 
 static inline void Ov015T_SetPos(UiObj *o, s16 x, s16 y, s16 z) {
     o->posX = x;
@@ -415,7 +415,7 @@ BOOL Ov015Msg_Setup(Ov015Msg *self) {
         STD_CopyString(m->name, (char *)file);
     }
     self->model = m;
-    TexObj_SetRes(self->model, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->model, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
     self->model->flags |= 2;
     TexObj_SelectImage((Model *)(self->model), 0, 0x1d);
     self->model->unk_150 = -0xccd;
@@ -465,7 +465,7 @@ BOOL Ov015Msg_Setup(Ov015Msg *self) {
         SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
         SET_VT(p, Ov015Vt_02212d3c_vtbl);
-        func_ov015_02208544((Ov015UiText *)p);
+        Ov015UiText_ClearText((Ov015UiText *)p);
     }
     self->textBox = (Ov015UiText *)p;
     Ov015T_SetPos(p, 0, 0x7b, -0x99a);
@@ -481,7 +481,7 @@ BOOL Ov015Msg_Setup(Ov015Msg *self) {
         FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
         o = self->label;
         o->unk_84->vfunc_1c(o->posX + o->width - 0x14, o->posY + o->height - 0xc, -0xcbd);
-        func_ov015_0220866c(self->textBox, self->pages[0]);
+        Ov015UiText_SetText(self->textBox, self->pages[0]);
     }
     return TRUE;
 }

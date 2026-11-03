@@ -6,9 +6,9 @@
 
 extern "C" {
 
-void func_0206298c(void) {
+void Unk0214a418_Create(void) {
     Unk0214a418 *p;
-    if (data_0214a418 != NULL) {
+    if (gUnk0214a418 != NULL) {
         return;
     }
     gSysState->cur = gSysState->heapLo;
@@ -21,9 +21,9 @@ void func_0206298c(void) {
         p->unk_10 = NULL;
         p->unk_14 = NULL;
     }
-    data_0214a418 = p;
+    gUnk0214a418 = p;
     gSysState->cur = gSysState->heapHi;
-    gFadeFunc = func_02062aa0;
+    gFadeFunc = Unk0214a418_FadeFunc;
     gFadeFuncArg = 0;
 }
 
@@ -37,26 +37,26 @@ static inline void Unk0214a418_Dtor(Unk0214a418 *p) {
     p->unk_14 = NULL;
 }
 
-void func_02062a24(void) {
+void Unk0214a418_Delete(void) {
     void *saved = gSysState->cur;
     Unk0214a418 *p;
     gSysState->cur = gSysState->heapLo;
-    p = data_0214a418;
+    p = gUnk0214a418;
     if (p != NULL) {
         if (p != NULL) {
             Unk0214a418_Dtor(p);
             Heap_Free(p);
         }
-        data_0214a418 = NULL;
+        gUnk0214a418 = NULL;
     }
     gSysState->cur = saved;
 }
 
-s32 func_02062aa0(s32 arg) {
-    if (data_0214a418 == NULL) {
+s32 Unk0214a418_FadeFunc(s32 arg) {
+    if (gUnk0214a418 == NULL) {
         return 0;
     }
-    return func_02062ac8(data_0214a418, arg);
+    return Unk0214a418_Run(gUnk0214a418, arg);
 }
 
 
@@ -190,7 +190,7 @@ static inline Model *ST_NewModel2(Unk0214a418 *p) {
     }
     return m;
 }
-s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
+s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
     SysTaskArg *arg = (SysTaskArg *)argv;
     u8 again;
     u32 size;

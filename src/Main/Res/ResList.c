@@ -1,6 +1,6 @@
 #include "Main/Res/ResMgr.h"
 
-extern void func_0203835c(void *data);
+extern void ResData_Free(void *data);
 
 ResList *ResList_Init(ResList *list) {
     list->head = NULL;
@@ -11,7 +11,7 @@ ResList *ResList_Dtor(ResList *list) {
     ResNode *node = list->head;
     ResNode *next;
     while (node != NULL) {
-        func_0203835c(&node->type);
+        ResData_Free(&node->type);
         next = node->next;
         ResMgr_FreeNode_020366d0(gResMgr, node);
         node = next;
@@ -75,7 +75,7 @@ void *ResList_FindPath(ResList *list, const char *dir, const char *name) {
     return result;
 }
 
-RES_LIST_FIND_FUNC(func_02034cec, 1)
+RES_LIST_FIND_FUNC(ResList_FindType1, 1)
 RES_LIST_FIND_FUNC(ResList_FindType2, 2)
 RES_LIST_FIND_FUNC(ResList_FindType3, 3)
 RES_LIST_FIND_FUNC(ResList_FindType4, 4)
@@ -106,7 +106,7 @@ extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedScreenData(void *data, void *out);
 
-void func_02035094(ResList *list, ResRequest *req) {
+void ResList_AddEntry(ResList *list, ResRequest *req) {
     ResFileEntry *entry;
     int type;
     ResNode *node;
@@ -123,7 +123,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         }
     }
     if (node == NULL) {
-        node = func_0203662c(gResMgr);
+        node = ResMgr_AllocNode(gResMgr);
         node->state = 6;
         if (list->head == NULL) {
             list->head = node;

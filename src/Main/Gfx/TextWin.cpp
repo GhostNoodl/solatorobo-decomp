@@ -542,7 +542,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -558,7 +558,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -600,9 +600,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -1087,7 +1087,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -1103,7 +1103,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -1145,9 +1145,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -1788,7 +1788,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -1804,7 +1804,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -1846,9 +1846,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -2314,7 +2314,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -2330,7 +2330,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -2372,9 +2372,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -2712,7 +2712,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -2728,7 +2728,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -2770,9 +2770,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -2793,7 +2793,7 @@ extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern int NNS_G2dCharCanvasDrawChar(const void *canvas, const void *font, int x, int y, int color, u16 c);
 
-void func_0204e358(TextWin *win) {
+void TextWin_DrawChr(TextWin *win) {
     s32 color;
     const char *s;
     s32 hi;
@@ -3531,7 +3531,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void) {
+u8 *GfxSys_Get3DState(void) {
     return gGfxSys->unk_8b0;
 }
 
@@ -3574,7 +3574,7 @@ void GfxGe_PopMtx(s32 num, ...) {
     NNS_G3dGeBufferOP_N(0x12, (u32 *)&num, 1);
 }
 
-void func_0204f49c(TextWinEx *win) {
+void TextWinEx_Reset(TextWinEx *win) {
     int i;
     win->spacing = 2;
     *(u32 *)((u8 *)win + 0xb8) = 0;
@@ -3637,9 +3637,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -3913,7 +3913,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -3929,7 +3929,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 // Clears a glyph block's VRAM, given the main and sub OBJ character bases.
 static inline void TextWin_ClearVramAt(VramBlock *b, u8 *main, u8 *sub) {
@@ -3952,7 +3952,7 @@ void TextWinEx_Release(TextWinEx *win) {
             win->blockIds[i] = 0;
         }
     }
-    func_0204f49c(win);
+    TextWinEx_Reset(win);
 }
 
 BOOL TextWinEx_Update(TextWinEx *win) {
@@ -4178,9 +4178,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -4504,7 +4504,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -4520,7 +4520,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -4589,7 +4589,7 @@ static inline BOOL TextWin_IsState4(int idx) {
     return gFadeState[idx] == 4 ? TRUE : FALSE;
 }
 
-BOOL func_0204fd60(TextWinTitle *t) {
+BOOL TextWinTitle_Update(TextWinTitle *t) {
     if (!t->active) {
         return TRUE;
     }
@@ -4669,9 +4669,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -4683,8 +4683,8 @@ extern void Gfx3D_SendDL(void *obj, int a);
 extern void Gfx3D_DrawPrimScaled(int a, s32 b, s32 c, u16 d);
 extern BOOL Vram_IsTransferDone(void *id);
 extern u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
-void func_020508f4(TextBox *box, u32 arg);
-void func_02050b50(TextBox *box);
+void TextBox_SetText(TextBox *box, u32 arg);
+void TextBox_BuildModel(TextBox *box);
 
 #define OBJ_DELETE_LINE(l) { \
         void *saved_ = gSysState->cur; \
@@ -4736,7 +4736,7 @@ static inline void G3i_Translate(s32 x, s32 y, s32 z) {
     *(vu32 *)0x4000470 = (u32)y;
     *(vu32 *)0x4000470 = (u32)z;
 }
-void func_0204ffdc(TextBox *box) {
+void TextBox_Draw(TextBox *box) {
     TextBoxLine *ln;
     BOOL busy;
     BOOL ready;
@@ -4789,7 +4789,7 @@ void func_0204ffdc(TextBox *box) {
             box->flag6 = 0;
             if (box->unk_024 < box->unk_028) {
                 box->unk_002 = 0x3c;
-                func_020508f4(box, box->unk_020);
+                TextBox_SetText(box, box->unk_020);
             } else {
                 box->flag7 = 1;
                 GfxSys_SetFadePlanes(0x3f, -1);
@@ -4900,7 +4900,7 @@ void func_0204ffdc(TextBox *box) {
     }
     }
     if (!box->flag4) {
-        func_02050b50(box);
+        TextBox_BuildModel(box);
     }
 }
 
@@ -5171,7 +5171,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -5187,7 +5187,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -5237,7 +5237,7 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box) {
+void TextBox_Init(TextBox *box) {
     int i;
     box->unk_000 = 0;
     box->unk_003 = 0;
@@ -5261,7 +5261,7 @@ void func_02050748(TextBox *box) {
     box->unk_20c = 0;
 }
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -5535,7 +5535,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -5551,7 +5551,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -5593,9 +5593,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box) {
+void TextBox_Release(TextBox *box) {
     void *saved;
     int i;
     saved = gSysState->cur;
@@ -5684,7 +5684,7 @@ BOOL TextWin_ParseTag(TextScanParser *p, const char **s);
 
 // Splits the string into the box's lines. The copy is written `*dst = start[i]; dst++;`:
 // `*dst++ = start[i]` makes MWCC give dst a new object below the named locals (round loopt).
-void func_020508f4(TextBox *box, const char *str) {
+void TextBox_SetText(TextBox *box, const char *str) {
     TextBoxLine *line;
     char *dst;
     NNSG2dFont *font;
@@ -6041,7 +6041,7 @@ extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 gFadeState[];
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
@@ -6057,7 +6057,7 @@ void GfxGe_Color(u32 color);
 
 void GfxGe_PopMtx(s32 num, ...);
 
-void func_0204f49c(TextWinEx *win);
+void TextWinEx_Reset(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -6099,9 +6099,9 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void TextBox_Init(TextBox *box);
 
-void func_020507d8(TextBox *box);
+void TextBox_Release(TextBox *box);
 
 void TextWin_EnableAlpha(TextWin *win);
 
@@ -6112,7 +6112,7 @@ extern void func_02041c18(Model *model, int a);
 extern void *func_0204fc4c(TextWin *win, const u16 *cmd, void *oam, u16 *count);
 
 // Updates the text box cursor model: creates it on first use, then animates its position and alpha.
-void func_02050b50(TextBox *box) {
+void TextBox_BuildModel(TextBox *box) {
     s32 r;
     s16 s;
     s32 y;
@@ -6611,7 +6611,7 @@ extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
 extern void ResMgr_LoadArchive(void *a, void *b, int c, int d);
 extern const char *data_0208cc90;
 extern const char *data_0208b9cc[];
-void func_02051f70(SlideWin *win);
+void GameScene_StartShake(SlideWin *win);
 
 static inline Model *SlideModel_Init(Model *model, const char *name, const char *file, int a) {
     PlttRes_Init_02041218(&model->pltt);
@@ -6674,7 +6674,7 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
                         break;
                     case 0x22:
                         if (skip == 0) {
-                            func_02051f70(win);
+                            GameScene_StartShake(win);
                         }
                         break;
                     case 0x23:
@@ -6787,9 +6787,9 @@ void Obj3DLayer_SetCur(Obj3DLayer *layer, u32 v) {
     layer->cur = v;
 }
 
-void func_020520fc(Obj3DRender *render);
+void Obj3DRender_AlphaCallback(Obj3DRender *render);
 
-void func_02052160(Obj3DRender *render);
+void Obj3DRender_SetAlphaCallback(Obj3DRender *render);
 
 s32 func_020534c4(s32 x);
 
@@ -6804,7 +6804,7 @@ namespace m_SceneShake {
 
 extern "C" {
 
-void func_02051f70(GameScene *scene) {
+void GameScene_StartShake(GameScene *scene) {
     FieldState *state = gSceneCmd;
     scene->shakeTime = 0;
     scene->shakePhase = -1;
@@ -6888,7 +6888,7 @@ extern s8 data_02149ef4;
 
 void Obj3DLayer_SetCur(Obj3DLayer *layer, u32 v);
 
-void func_020520fc(Obj3DRender *render) {
+void Obj3DRender_AlphaCallback(Obj3DRender *render) {
     GfxSys *sys;
     s32 limit;
     u32 attr;
@@ -6908,8 +6908,8 @@ void func_020520fc(Obj3DRender *render) {
     mtl->polyAttr = (attr & 0xc0e0ffbf) | 0xc0 | (alpha << 16) | (Gfx3DState_NextPolyId(sys->unk_8b0) << 24);
 }
 
-void func_02052160(Obj3DRender *render) {
-    render->callback = func_020520fc;
+void Obj3DRender_SetAlphaCallback(Obj3DRender *render) {
+    render->callback = Obj3DRender_AlphaCallback;
     render->callbackMode = 2;
 }
 
@@ -7019,25 +7019,25 @@ extern void Model0218fe1c_ClearLoop(Obj3DAnimObj *a);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, u32 mat, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, u32 mat, u32 flag);
 
-void func_0205221c(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot);
+void Obj3DAnim_UpdateSlot(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot);
 
-void func_02052178(Obj3DAnim *anim) {
+void Obj3DAnim_UpdateSlots(Obj3DAnim *anim) {
     Obj3DAnimGroup *g;
     int i;
     int j;
     if (anim->hasExtra == 1) {
-        func_0205221c(anim, 1, &anim->sub.extra[0]);
+        Obj3DAnim_UpdateSlot(anim, 1, &anim->sub.extra[0]);
     }
     for (i = 0; i < 3; i++) {
         g = anim->sub.groups;
         for (j = 0; j < 5; j++, g++) {
             Obj3DAnimSlot *slot = &g->slots[i];
             slot->idx = j;
-            func_0205221c(anim, i, slot);
+            Obj3DAnim_UpdateSlot(anim, i, slot);
         }
     }
     if (anim->hasExtra == 1) {
-        func_0205221c(anim, 2, &anim->sub.extra[1]);
+        Obj3DAnim_UpdateSlot(anim, 2, &anim->sub.extra[1]);
     }
 
 }
@@ -7117,7 +7117,7 @@ static inline void AnimSlot_SetupObj(Obj3DAnimSlot *slot) {
     Model0218fe1c_SetRes(slot->obj, slot->mdl, 0, 1);
     slot->obj->unk_b4 = 0;
     o = slot->obj;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)Obj3DRender_SetAlphaCallback);
     o->unk_c2_5 = 0;
     Model0218fe1c_ClearLoop(slot->obj);
     mdl = slot->obj->mdl;
@@ -7140,7 +7140,7 @@ static inline void AnimSlot_SetupObjS00(Obj3DAnimSlot *slot) {
     Model0218fe1c_SetAnim(slot->obj, "s00", 0, 1);
     slot->obj->unk_b4 = 0;
     o = slot->obj;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)Obj3DRender_SetAlphaCallback);
     o->unk_c2_5 = 0;
     Model0218fe1c_ClearLoop(slot->obj);
     mdl = slot->obj->mdl;
@@ -7211,7 +7211,7 @@ static inline void AnimSlot_Start(Obj3DAnim *anim, Obj3DAnimSlot *slot) {
     AnimSlot_Call(anim, slot, slot->cur, 7);
 }
 
-void func_0205221c(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot) {
+void Obj3DAnim_UpdateSlot(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot) {
     if (slot->b2 == 1) {
         AnimSlot_Call(anim, slot, slot->next, 5);
         slot->b2 = 0;
@@ -7414,7 +7414,7 @@ s32 Obj3DAnimCls::func_02052bec(s32 state, Obj3DAnimSlot *slot) {
         Model0218fe1c_SetAnim(slot->obj, "s01", 0, 1);
         slot->obj->unk_b4 = 0;
         o = slot->obj;
-        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
+        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)Obj3DRender_SetAlphaCallback);
         o->unk_c2_5 = 0;
         Model0218fe1c_SetLoop(slot->obj);
         mdl = slot->obj->mdl;

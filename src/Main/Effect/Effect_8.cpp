@@ -255,11 +255,11 @@ EffectPartSet *MainVt_0208c364_DtorDelete(EffectPartSet *parts) {
     return parts;
 }
 
-BOOL func_02068d54(EffectPartSet *parts) {
+BOOL MainVt_0208c364_Step(EffectPartSet *parts) {
     return TRUE;
 }
 
-void func_02068d5c(EffectPartSet *parts) {
+void MainVt_0208c364_Draw(EffectPartSet *parts) {
 }
 
 EffectPartSet *MainVt_0208c364_Dtor(EffectPartSet *parts) {

@@ -28,9 +28,9 @@ extern void Gfx3DState_SetDefaults(void *obj);
 extern BOOL func_02046ac4(void);
 extern void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 extern void GX_DispOn(void);
-void func_0204af00(SceneMgr *mgr);
+void SceneMgr_Update(SceneMgr *mgr);
 
-void func_0204ae14(void) {
+void SceneMgr_Create(void) {
     if (gSceneMgr == NULL) {
         SceneMgr *mgr;
         Movie *movie;
@@ -63,8 +63,8 @@ void func_0204ae14(void) {
     func_0206e858();
 }
 
-void func_0204aee8(void) {
-    func_0204af00(gSceneMgr);
+void SceneMgr_Run(void) {
+    SceneMgr_Update(gSceneMgr);
 }
 
 static inline void Scene_SetNext(SceneDesc *desc) {
@@ -87,7 +87,7 @@ static inline void Scene_SetSubOverlay(SceneMgr *mgr, s32 id, s32 idx) {
     mgr->subOverlays[idx] = id;
 }
 
-void func_0204af00(SceneMgr *mgr) {
+void SceneMgr_Update(SceneMgr *mgr) {
     s32 i;
     SceneEntry *entry;
     switch (mgr->state) {

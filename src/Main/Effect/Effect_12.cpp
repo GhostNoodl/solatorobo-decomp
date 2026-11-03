@@ -103,7 +103,7 @@ void EffectPartSet_Reset(EffectPartSet *s) {
     s->funcs[6] = EffectPartSet_None_pmf;
 }
 
-BOOL func_0206a218(EffectPartSet *s) {
+BOOL MainVt_0208c850_Step(EffectPartSet *s) {
     BOOL ret = TRUE;
     s32 i;
     EffectPartSlot *slot;

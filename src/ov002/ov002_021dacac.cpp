@@ -72,7 +72,7 @@ void Obj021eff74_Init(Obj021eff74 *self) {
     }
     self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xfa), 2, 0xffff, 0xffff);
     m = self->unk_0c;
-    m->vfunc_a8(ListOwner_GetNth(m, data_ov002_021f0f90.unk_00));
+    m->vfunc_a8(ListOwner_GetNth(m, gOv002BoardRef.unk_00));
     self->unk_0c->flags &= ~0x20000;
     self->unk_0c->flags &= ~0x40000;
     self->unk_0c->flags &= ~0x10000;
@@ -98,7 +98,7 @@ void Obj021eff74_Init(Obj021eff74 *self) {
     self->unk_10->slideMode = 1;
     self->unk_10->vfunc_08();
     {
-        u8 kind = data_ov002_021f0f90.unk_00;
+        u8 kind = gOv002BoardRef.unk_00;
         if (self->unk_10 != NULL) {
             void *str;
             void *g2 = gMsgRes;

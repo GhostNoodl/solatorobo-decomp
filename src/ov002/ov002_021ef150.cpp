@@ -121,11 +121,11 @@ extern void *data_ov002_021ef634[];
 extern VFunc Ov000Vt_021cc9f8_vtbl[];
 extern VFunc Lo021cadcc_vtbl[];
 extern VFunc Lo021cb5a8_vtbl[];
-void *func_02035d8c(void *a, void *b);
+void *ResMgr_FindArcType0(void *a, void *b);
 void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src);
 u32 func_ov002_021e4c30(int which);
 u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
-void func_ov000_021c3af4(Ov002RowList *self);
+void LoBase021ccb54_021ccbe0_CtorBase(Ov002RowList *self);
 void ListRow_Init(ListRow *self);
 void ListRowGauge_Init(ListRowGauge *self);
 void func_ov000_021c2c0c(ListRowGauge *self, void *a);
@@ -155,7 +155,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
     g = gMsgRes;
     for (i = 0; i < 7; i++) {
         func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))LangData_GetLang)());
-        Ov002LevelTable_Load(&self->unk_4c[i], *(u8 **)func_02035d8c(self->unk_f4, buf));
+        Ov002LevelTable_Load(&self->unk_4c[i], *(u8 **)ResMgr_FindArcType0(self->unk_f4, buf));
     }
     {
         Ov002RowList *p = (Ov002RowList *)Heap_Alloc(sizeof(Ov002RowList));
@@ -163,7 +163,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
             *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
             *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
-            func_ov000_021c3af4(p);
+            LoBase021ccb54_021ccbe0_CtorBase(p);
         }
         self->unk_3c = p;
         p->width = 0xdb;
@@ -400,7 +400,7 @@ extern "C" {
 extern VFunc Lo021cb5a8_vtbl[];
 extern VFunc Ov000Vt_021ccadc_vtbl[];
 extern VFunc Ov000Vt_021cca58_vtbl[];
-void *func_02035d8c(void *a, void *b);
+void *ResMgr_FindArcType0(void *a, void *b);
 void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src);
 void Ov002StrTable_Load(Ov002StrTable *self, u8 *src);
 char *Ov002StrTable_GetLabel(Ov002StrTable *self, u32 idx);
@@ -431,8 +431,8 @@ void Task021ef91c_Start(Task021ef91c *self) {
         return;
     }
     g = gMsgRes;
-    Ov002LevelTable_Load(&self->unk_94, *(u8 **)func_02035d8c(self->unk_44, self->unk_7c));
-    Ov002StrTable_Load(&self->unk_ac, *(u8 **)func_02035d8c(self->unk_44, self->unk_64));
+    Ov002LevelTable_Load(&self->unk_94, *(u8 **)ResMgr_FindArcType0(self->unk_44, self->unk_7c));
+    Ov002StrTable_Load(&self->unk_ac, *(u8 **)ResMgr_FindArcType0(self->unk_44, self->unk_64));
     {
         p = (UiObj *)Heap_Alloc(0xe0);
         if (p != NULL) {

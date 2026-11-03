@@ -14,7 +14,7 @@ static inline void ov002_Node_Unlink(ListRow *node) {
 }
 
 // Insertion-sorts the rows of a row list by cmp, then reselects row unk_a8.
-void func_ov002_021e34fc(LoBase021ccb54_021ccbe0 *self, s32 (*cmp)(void *, void *)) {
+void LoBase021ccb54_021ccbe0_SortRows(LoBase021ccb54_021ccbe0 *self, s32 (*cmp)(void *, void *)) {
     ListRow *head = self->unk_94;
     ListRow *p;
     ListRow *next;

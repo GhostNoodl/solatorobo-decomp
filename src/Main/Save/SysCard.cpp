@@ -8,7 +8,7 @@ static inline BOOL SysCard_Begin(SysCard *card) {
     if (card->state == 8) {
         return FALSE;
     }
-    if (!func_02036328()) {
+    if (!ResMgr_IsIdle()) {
         return FALSE;
     }
     SysCard_Lock(card);
@@ -28,7 +28,7 @@ static inline BOOL SysCard_IsReady(void) {
     return (u8)CARD_GetCurrentBackupType() == 1 ? TRUE : FALSE;
 }
 
-void func_02046c6c(void) {
+void SysCard_Create(void) {
     SysCard *card;
     if (gSysCard != NULL) {
         return;
@@ -112,7 +112,7 @@ void SysCard_OnReadDone(void *arg) {
     SysCard_SetState(gSysCard, 2);
 }
 
-s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
+s32 SysCard_Write(SysCard *card, u32 dst, const void *src, u32 len) {
     if (card->state == 8) {
         return 2;
     }
@@ -129,12 +129,12 @@ s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
         SysCard_End(card);
         return 2;
     }
-    CARDi_RequestStreamCommand((u32)src, dst, len, func_02047198, card, TRUE, 8, 10, 2);
+    CARDi_RequestStreamCommand((u32)src, dst, len, SysCard_OnWriteDone, card, TRUE, 8, 10, 2);
     SysCard_CheckError(gSysCard, 11);
     return 0;
 }
 
-void func_02047198(void *arg) {
+void SysCard_OnWriteDone(void *arg) {
     SysCard_SetState(gSysCard, 6);
     if (gSysCard->callback != NULL) {
         gSysCard->callback(gSysCard->callbackArg);

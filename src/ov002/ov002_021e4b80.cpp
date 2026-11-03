@@ -131,7 +131,7 @@ void Ov002Obj_AddChild(Ov002Obj *self, Ov002Obj *item) {
 namespace m_021e4dd4 {
 extern "C" {
 
-BOOL func_ov002_021e4dd4(Ov002Obj *self) {
+BOOL Ov002Obj_Run(Ov002Obj *self) {
     BOOL r = TRUE;
     switch (self->unk_0c) {
     case 0:
@@ -449,14 +449,14 @@ extern "C" {
 extern char data_ov002_021f0640[];
 void *ResList_FindType4(void *a, void *b);
 void *ResList_FindType5(void *a, void *b);
-void *func_02035ccc(void *a);
-void func_02035cfc(void *a);
+void *ResMgr_GetDataType4(void *a);
+void ResMgr_GetDataType5(void *a);
 void G3dRes_DropTexData(u32 a);
 void *NNS_G3dGetResDataByName(void *a, char *name);
 void NNSi_G3dModifyMatFlag(void *mdl, BOOL a, u32 flag);
 void *STD_ConcatenateString(char *dst, const char *src);
 BOOL G3dRes_SetupVram(const char *name, u32 res);
-u32 func_0203ebf8(void);
+u32 Vram_GetTexTransferId(void);
 BOOL NNS_G3dBindMdlTex(void *mdl, void *tex);
 BOOL NNS_G3dBindMdlPltt(void *mdl, void *tex);
 
@@ -510,7 +510,7 @@ BOOL Ov002Obj021f07d4_Load(Ov002Obj021f07d4 *self) {
             if (!ResMgr_IsLoaded(self->res.name, 4)) {
                 break;
             }
-            res = func_02035ccc(self->res.name);
+            res = ResMgr_GetDataType4(self->res.name);
         }
         self->unk_5c = (u32 *)res;
         self->unk_10++;
@@ -530,7 +530,7 @@ BOOL Ov002Obj021f07d4_Load(Ov002Obj021f07d4 *self) {
         if (self->unk_5c != NULL) {
             G3dRes_SetupVram(path, *self->unk_5c);
         }
-        self->unk_bc = func_0203ebf8();
+        self->unk_bc = Vram_GetTexTransferId();
         NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x40);
         NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x80);
         NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x200);
@@ -585,7 +585,7 @@ BOOL Ov002Obj021f07d4_Load(Ov002Obj021f07d4 *self) {
                 }
                 e->res = r;
             } else {
-                func_02035cfc(e->name);
+                ResMgr_GetDataType5(e->name);
             }
         }
         self->unk_10++;
@@ -631,7 +631,7 @@ BOOL Ov002Obj021f07d4_Load(Ov002Obj021f07d4 *self) {
             }
             NNS_G3dBindMdlTex(self->unk_60, tex);
             NNS_G3dBindMdlPltt(self->unk_60, tex);
-            e->task = func_0203ebf8();
+            e->task = Vram_GetTexTransferId();
         }
         self->unk_10++;
     case 31: {
@@ -902,7 +902,7 @@ BOOL Ov002Obj021f075c_Load(Ov002Obj021f075c *self) {
             if (ResMgr_IsLoaded(self->res.name, 6) == 0) {
                 break;
             }
-            self->unk_60 = (void **)func_02035d2c(self->res.name);
+            self->unk_60 = (void **)ResMgr_GetDataType6(self->res.name);
         }
     case 10:
         self->unk_10 = -1;
@@ -1302,7 +1302,7 @@ BOOL Ov002Obj021f06bc_Load(Ov002Obj021f06bc *self) {
         }
         self->unk_10++;
     case 2: {
-        void *t = func_02035fe8(self->unk_4c, self->unk_6c);
+        void *t = ResMgr_FindNamedArcType0(self->unk_4c, self->unk_6c);
         if (t != NULL) {
             Ov002Snd021f0cf8_Load(&self->snd, t);
         }
@@ -1393,7 +1393,7 @@ BOOL Ov002Obj021f07ac_Load(Ov002Obj021f07ac *self) {
 BOOL Ov002Obj021f07ac_Setup(Ov002Obj021f07ac *self) {
     s8 **r;
     if (self->unk_14 != 0) {
-        void *t = func_02035fe8(self->unk_4c, self->unk_6c);
+        void *t = ResMgr_FindNamedArcType0(self->unk_4c, self->unk_6c);
         if (t == NULL) {
             self->unk_08 = 0;
         } else {
@@ -2014,7 +2014,7 @@ void Ov002Stage_Create(void) {
 
 void *Ov002Vt_021f0684_Dtor(Ov002StageFile *self) {
     *(VFunc **)self = Ov002Vt_021f0684_vtbl;
-    func_ov002_021eae3c(self);
+    Ov002StageFile_DtorBase(self);
     return self;
 }
 
@@ -2029,7 +2029,7 @@ void *Ov002Vt_021f0674_DtorDelete(Ov002Stage *self) {
     *(VFunc **)self = Ov002Vt_021f0674_vtbl;
     Ov002Stage_Release(self);
     *(VFunc **)&self->file = Ov002Vt_021f0684_vtbl;
-    func_ov002_021eae3c(&self->file);
+    Ov002StageFile_DtorBase(&self->file);
     Heap_Free(self);
     return self;
 }
@@ -2120,9 +2120,9 @@ static inline void GXS_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu
 
 int GfxSys_GetFadeLevel(int a);
 void Gfx3DState_SetDefaults(void *p);
-BOOL func_ov002_021e828c(Ov002Stage *self);
-BOOL func_ov002_021e86a0(Ov002Stage *self);
-BOOL func_ov002_021e8828(Ov002Stage *self);
+BOOL Ov002Stage_State1(Ov002Stage *self);
+BOOL Ov002Stage_State2(Ov002Stage *self);
+BOOL Ov002Stage_UpdateObjs(Ov002Stage *self);
 void Ov002Stage_FreeObjs(Ov002Stage *self);
 
 static inline void ov002_SetBright(int v) {
@@ -2140,7 +2140,7 @@ static inline void ov002_SetState(Ov002Stage *self, s32 st) {
 }
 
 static inline s32 FxM7ea8(s32 a, s32 b) { return (s32)(((s64)a * b + 0x800) >> 12); }
-BOOL func_ov002_021e7ea8(Ov002Stage *self) {
+BOOL Ov002Stage_Update(Ov002Stage *self) {
     BOOL ret = TRUE;
     Gfx3DState *gx;
     BOOL done;
@@ -2186,17 +2186,17 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         break;
     }
     case 1:
-        if (!func_ov002_021e828c(self)) {
+        if (!Ov002Stage_State1(self)) {
             break;
         }
         ov002_SetState(self, 2);
     case 2:
-        if (!func_ov002_021e86a0(self)) {
+        if (!Ov002Stage_State2(self)) {
             break;
         }
         ov002_SetState(self, 3);
     case 3:
-        func_ov002_021e8828(self);
+        Ov002Stage_UpdateObjs(self);
         if (self->unk_10 == 0) {
             ov002_SetState(self, 4);
         }
@@ -2210,7 +2210,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
                 self->unk_144 += 0x1000;
             }
         }
-        if (func_ov002_021e8828(self)) {
+        if (Ov002Stage_UpdateObjs(self)) {
             break;
         }
         b = 0;
@@ -2277,7 +2277,7 @@ namespace m_021e828c {
 extern "C" {
 
 extern void *data_ov002_021f0104[];
-void *func_02035c9c(void *a);
+void *ResMgr_GetDataType0(void *a);
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 
 static inline BOOL ov002_ResReady(Ov002Stage *self) {
@@ -2285,12 +2285,12 @@ static inline BOOL ov002_ResReady(Ov002Stage *self) {
     if (self->unk_20 != NULL) {
         if (ResMgr_IsArchiveLoaded((u8 *)self + 0x24, (u8 *)self + 0x48, 0)) {
             r = TRUE;
-            self->unk_68 = (u8 **)(func_02035fe8((u8 *)self + 0x24, (u8 *)self + 0x48));
+            self->unk_68 = (u8 **)(ResMgr_FindNamedArcType0((u8 *)self + 0x24, (u8 *)self + 0x48));
         }
     } else {
         if (ResMgr_IsLoaded((char *)((u8 *)self + 0x48), 0)) {
             r = TRUE;
-            self->unk_68 = (u8 **)(func_02035c9c((u8 *)self + 0x48));
+            self->unk_68 = (u8 **)(ResMgr_GetDataType0((u8 *)self + 0x48));
         }
     }
     return r;
@@ -2312,7 +2312,7 @@ static inline void ov002_ResFree(Ov002Stage *self) {
     }
 }
 
-BOOL func_ov002_021e828c(Ov002Stage *self) {
+BOOL Ov002Stage_State1(Ov002Stage *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
@@ -2408,7 +2408,7 @@ Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *o
 
 void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c);
 
-BOOL func_ov002_021e86a0(Ov002Stage *self) {
+BOOL Ov002Stage_State2(Ov002Stage *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0: {
@@ -2453,7 +2453,7 @@ BOOL func_ov002_021e86a0(Ov002Stage *self) {
     return r;
 }
 
-BOOL func_ov002_021e4dd4(Ov002Obj *n);
+BOOL Ov002Obj_Run(Ov002Obj *n);
 
 void Ov002Stage_RemoveObj(Ov002Stage *self, void *n);
 
@@ -2469,7 +2469,7 @@ static inline BOOL ov002_inRange8828(Ov002Stage *self) {
     return r;
 }
 
-BOOL func_ov002_021e8828(Ov002Stage *self) {
+BOOL Ov002Stage_UpdateObjs(Ov002Stage *self) {
     BOOL ret = TRUE;
     BOOL busy = FALSE;
     BOOL in;
@@ -2483,7 +2483,7 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
     }
     for (n = (Ov002Obj *)(self->head); n != NULL; n = next) {
         next = (n->next);
-        r = func_ov002_021e4dd4(n);
+        r = Ov002Obj_Run(n);
         if (n->unk_04 == 7 && self->unk_0c == n->unk_08) {
             {
                 s32 *sv = (s32 *)((u8 *)n + 0x50);
@@ -2552,7 +2552,7 @@ BOOL Ov002Obj_IsLoaded(Ov002Obj *self) {
     return self->unk_0c >= 3;
 }
 
-void func_ov002_021e8b3c(Ov002Stage *self) {
+void Ov002Stage_Draw(Ov002Stage *self) {
     Ov002Obj *o;
     u32 mask;
     if (self->state != 4 && self->state != 5) {
@@ -2769,17 +2769,17 @@ void func_ov002_021e8f04(s32 idx) {
 namespace m_021e90ac {
 extern "C" {
 
-bool func_ov002_021e90ac(void) {
+bool Ov002Stage_UpdateCur(void) {
     BOOL r;
     if (gOv002Stage == NULL) {
         r = FALSE;
     } else {
-        r = func_ov002_021e7ea8(gOv002Stage);
+        r = Ov002Stage_Update(gOv002Stage);
     }
     return r;
 }
 
-void func_ov002_021e90dc(void) {
+void Ov002Stage_DrawCur(void) {
     Ov002Stage *self = gOv002Stage;
     Ov002Obj *o;
     u32 mask;
@@ -3185,7 +3185,7 @@ static inline void func_ov002_021e4cd8_inline(Ov002Obj *self) {
     }
     ctx->tail = self;
 }
-Ov002Obj *func_ov002_021e9b28(s32 end) {
+Ov002Obj *Ov002Vt_021f0694_New(s32 end) {
     Ov002Obj *p = (Ov002Obj *)Heap_Alloc(0x4c);
     if (p != NULL) {
         *(VFunc **)p = Ov002Vt_021f0734_vtbl;

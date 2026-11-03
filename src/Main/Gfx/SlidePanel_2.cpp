@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02054254(SlidePanel *panel);
+void SlidePanel_Reset(SlidePanel *panel);
 
 
 

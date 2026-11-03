@@ -506,7 +506,7 @@ static inline void Ov012Spawn_Set(Ov012SpawnDesc *d, u16 k) {
 
 extern "C" {
 extern Ov003Actor *Factory_New4000(Ov012SpawnDesc *d);
-extern void func_ov000_02182590(void *p);
+extern void SceneStage_StartScript(void *p);
 }
 
 

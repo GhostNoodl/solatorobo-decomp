@@ -22,7 +22,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0214bc10(void);
+void SceneResSet_Close08(void);
 void func_ov000_0214c210(void);
 
 void Obj021b8ecc_Release(Obj021b8ecc *self) {
@@ -31,7 +31,7 @@ void Obj021b8ecc_Release(Obj021b8ecc *self) {
     HEAP_DELETE_VOBJ(self->unk_14);
     HEAP_DELETE_MODEL(self->unk_20);
     HEAP_DELETE_VOBJ(self->unk_04);
-    func_ov000_0214bc10();
+    SceneResSet_Close08();
     func_ov000_0214c210();
 }
 
@@ -71,11 +71,11 @@ extern u8 UiObj_vtbl[];
 extern u8 Menu021ca94c_vtbl[];
 extern void *gSndMgr;
 void LangData_LocalizePath(void *buf, const char *s);
-void func_ov000_0214bb80(void);
+void SceneResSet_Open08(void);
 void func_ov000_0214c1ac(void);
 BOOL func_ov000_0214c270(void);
-BOOL func_ov000_0214bc6c(void);
-s32 func_ov000_0214bc94(void);
+BOOL SceneResSet_IsLoaded08(void);
+s32 SceneResSet_Bind08(void);
 void *func_02061d54(s32 id);
 void *func_02061df0(u16 id);
 void *func_02061e7c(u16 id);
@@ -142,7 +142,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         LangData_LocalizePath(buf, data_ov000_021cc858[0]);
         LFLD(s32, self->unk_04, 0x44) = 7;
         self->unk_04->vfunc_1c(buf);
-        func_ov000_0214bb80();
+        SceneResSet_Open08();
         func_ov000_0214c1ac();
         self->state = 2;
         break;
@@ -154,7 +154,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         if (!self->unk_04->vfunc_2c()) {
             break;
         }
-        if (!func_ov000_0214bc6c()) {
+        if (!SceneResSet_IsLoaded08()) {
             break;
         }
         self->state = 4;
@@ -211,7 +211,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
                 Robo021ca458_RestoreHp();
             }
         }
-        func_ov000_0214bc94();
+        SceneResSet_Bind08();
         o = (VObj *)Heap_Alloc(0x21c);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, UiObj_vtbl);

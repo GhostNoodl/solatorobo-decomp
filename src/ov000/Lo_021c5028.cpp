@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_021c5028(LoBase021ccb54_021ccbe0 *self, s32 unused, const VecFx32 *pos) {
+void LoBase021ccb54_021ccbe0_DrawRows(LoBase021ccb54_021ccbe0 *self, s32 unused, const VecFx32 *pos) {
     ListRow *p = self->unk_94;
     s32 i = 0;
     s32 y = pos->y + self->unk_e0;

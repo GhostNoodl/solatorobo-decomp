@@ -34,7 +34,7 @@ static inline u16 Pad_ReadFiltered(void) {
     return key & ~((key & 0x40) << 1) & ~((key & 0x20) >> 1);
 }
 
-void func_0203d1b4(void) {
+void Pad_Create(void) {
     Pad *pad;
     int i;
     if (gPad != NULL) {
@@ -60,7 +60,7 @@ void func_0203d1b4(void) {
     gSysState->cur = gSysState->heapHi;
 }
 
-void func_0203d298(Pad *pad) {
+void Pad_Update(Pad *pad) {
     u16 bit;
     int i;
     pad->prev = pad->cur;

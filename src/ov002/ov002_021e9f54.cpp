@@ -6,7 +6,7 @@ void *Ov002Vt_021f0674_Dtor(Ov002Stage *self) {
     *(VFunc **)self = Ov002Vt_021f0674_vtbl;
     Ov002Stage_Release(self);
     *(VFunc **)&self->file = Ov002Vt_021f0684_vtbl;
-    func_ov002_021eae3c(&self->file);
+    Ov002StageFile_DtorBase(&self->file);
     return self;
 }
 

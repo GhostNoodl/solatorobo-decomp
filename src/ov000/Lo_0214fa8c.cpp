@@ -37,7 +37,7 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_0214fa8c(Obj0214fa8c *self) {
+void Lo021caa44_DrawScaled(Obj0214fa8c *self) {
     GfxSys *g;
     s64 scale;
     s32 width;

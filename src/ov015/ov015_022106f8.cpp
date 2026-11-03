@@ -49,7 +49,7 @@ BOOL Ov015Msg_Appear(Ov015Msg *self) {
 
 s32 func_0204c2f4(void *p, s32 n, void *src);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_ov015_0220866c(Ov015UiText *self, void *msg);
+void Ov015UiText_SetText(Ov015UiText *self, void *msg);
 
 BOOL Ov015Msg_Run(Ov015Msg *self) {
     BOOL r = TRUE;
@@ -70,7 +70,7 @@ BOOL Ov015Msg_Run(Ov015Msg *self) {
                 FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
                 o = self->label;
                 o->unk_84->vfunc_1c(o->posX + o->width - 0x14, o->posY + o->height - 0xc, -0xcbd);
-                func_ov015_0220866c(self->textBox, self->pages[n]);
+                Ov015UiText_SetText(self->textBox, self->pages[n]);
             }
         } else {
             r = FALSE;

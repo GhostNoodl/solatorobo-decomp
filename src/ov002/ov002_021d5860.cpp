@@ -25,7 +25,7 @@ extern VFunc Lo021cadcc_vtbl[];
 extern VFunc Ov002Vt_021efca4_vtbl[];
 extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
-void *func_02035de0(void *a, void *b);
+void *ResMgr_FindArcType2(void *a, void *b);
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
@@ -80,7 +80,7 @@ void Task021efc24_Start(Task021efc24 *self) {
     u32 count;
     UiListItem *e;
     self->unk_74 = gStageFlags->bits18.unk_3 + 0x8000;
-    res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
+    res = ResMgr_FindArcType2(data_ov002_021efaf1, data_0208ccc0);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
         PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));

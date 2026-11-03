@@ -13,9 +13,9 @@ extern u8 Ov015Node_vtbl[];
 void *Camera_Ctor(void *p);
 u8 *func_02070744(u16 id);
 void Ov015CamPair_Init(Ov015CamPair *self);
-void func_ov015_02210b3c(Ov015MsgMgr *self);
-void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
-void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
+void Ov015MsgMgr_Init(Ov015MsgMgr *self);
+void Ov015Info38_Set(Ov015Info38 *self, u16 id, s32 mode);
+void Ov015FishInfo_Init(Ov015FishInfo *self, u16 a, const void *src);
 void *Ov015Fish_Ctor(Ov015Fish *self);
 void func_ov015_02209364(Ov015Fish *self);
 
@@ -50,7 +50,7 @@ BOOL Ov015Game_Setup(Ov015Game *self) {
         Ov015MsgMgr *p = (Ov015MsgMgr *)Heap_Alloc(sizeof(Ov015MsgMgr));
         if (p != NULL) {
             SET_VT(p, Ov015MsgMgr_vtbl);
-            func_ov015_02210b3c(p);
+            Ov015MsgMgr_Init(p);
         }
         self->unk_90 = p;
     }
@@ -63,7 +63,7 @@ BOOL Ov015Game_Setup(Ov015Game *self) {
     }
     self->fishList = l;
     n = func_ov015_02211160(gOv015Shared, ids, 3);
-    func_ov015_02211890(&self->info, gOv015Shared->unk_08, self->ship->modelIdx);
+    Ov015Info38_Set(&self->info, gOv015Shared->unk_08, self->ship->modelIdx);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
@@ -72,7 +72,7 @@ BOOL Ov015Game_Setup(Ov015Game *self) {
         Ov015Node *nd;
         if (e != NULL) e = (Ov015Fish *)Ov015Fish_Ctor(e);
         e->id = id;
-        func_ov015_02209024(&e->info, e->id, def);
+        Ov015FishInfo_Init(&e->info, e->id, def);
         e->info.unk_20 = self->info.unk_20;
         e->info.unk_24 = self->info.unk_24;
         func_ov015_02209364(e);
@@ -119,7 +119,7 @@ BOOL Ov015Ship_Load(Ov015Ship *p);
 s32 ResSet_UpdateLoad(void *a);
 BOOL Ov015Fish_IsLoaded(Ov015Fish *self);
 void LangData_LocalizePath(char *buf, const char *name);
-int func_ov015_02210bd8(Ov015MsgMgr *self);
+int Ov015MsgMgr_Load(Ov015MsgMgr *self);
 BOOL Ov015Ship_Setup(Ov015Ship *self);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
@@ -127,7 +127,7 @@ void Model0218fe1c_SetLoop(void *a);
 BOOL func_ov015_02209500(Ov015Fish *self);
 BOOL func_ov015_02210c28(void);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
-s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b);
+s32 Ov015MsgMgr_Update(Ov015MsgMgr *self, Ov015Stat *a, s32 b);
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
 void func_ov015_0220101c(Ov015Game *self);
@@ -259,7 +259,7 @@ BOOL Ov015Game_Update(Ov015Game *self) {
         }
         d = c & d;
         if (self->unk_90 != NULL) {
-            d &= func_ov015_02210bd8(self->unk_90);
+            d &= Ov015MsgMgr_Load(self->unk_90);
         }
         if (d) {
             self->step = 0x1e;
@@ -306,7 +306,7 @@ BOOL Ov015Game_Update(Ov015Game *self) {
         Ov015MsgMgr *m = self->unk_90;
         data_ov015_02213328 = (data_ov015_02213328 + 1) & 0xff;
         if (m != NULL) {
-            if (func_ov015_02210c30(m, &data_ov015_0221332c, 0x28)) {
+            if (Ov015MsgMgr_Update(m, &data_ov015_0221332c, 0x28)) {
                 self->phase1.unk_0c = 1;
             } else {
                 self->phase1.unk_0c = 0;
@@ -331,7 +331,7 @@ BOOL Ov015Game_Update(Ov015Game *self) {
     case 0x32:
         Ov015_ModelsReset(self->unk_20);
         if (self->unk_90 == NULL || self->phase2.step < 2 ||
-            !func_ov015_02210c30(self->unk_90, &data_ov015_0221332c, 0x32)) {
+            !Ov015MsgMgr_Update(self->unk_90, &data_ov015_0221332c, 0x32)) {
             func_ov015_021fb5d4(self->hud);
             if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, self->fishList->head->fish,
                                      self->cam, &self->info)) {

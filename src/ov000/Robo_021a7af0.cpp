@@ -39,7 +39,7 @@ void Field_ShakeCamera(u8 a, u8 b);
 s32 SndMgr_PlayPan(void *mgr, s32 id, s32 pan);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(u16 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 void Model0218fe1c_SetAnimDelay(void *model, u16 delay, BOOL force);
 s32 Rand_PlusMinus(s32 max);
 u32 Rand_UpTo(u32 max);
@@ -522,7 +522,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                         func_020627dc(5);
                         g = gSceneCmd;
                         g->stageFlags = stop;
-                        func_ov000_02182590((u8 *)g + 0xac);
+                        SceneStage_StartScript((u8 *)g + 0xac);
                     }
                 }
                 if (stop) {
@@ -704,7 +704,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     Shared_SetEventActor(t->kind, t->id);
                     g = gSceneCmd;
                     g->stageFlags = 1;
-                    func_ov000_02182590((u8 *)g + 0xac);
+                    SceneStage_StartScript((u8 *)g + 0xac);
                 }
             }
             self->fsm->timer = 0;

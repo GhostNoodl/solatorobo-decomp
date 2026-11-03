@@ -10,7 +10,7 @@ extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern void Field_ShakeCamera(u8 a, u8 b);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 
 void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
     ActorSub40 *s = self->fsm;
@@ -22,7 +22,7 @@ void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
         func_020627dc(5);
         g = (u8 *)gSceneCmd;
         g[0xac] = 1;
-        func_ov000_02182590(g + 0xac);
+        SceneStage_StartScript(g + 0xac);
         Model0218fe1c_SetAnim(self->model, data_ov014_02217a4e, 0xcd, 0);
         Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
         Model0218fe1c_SetLoop(self->model);

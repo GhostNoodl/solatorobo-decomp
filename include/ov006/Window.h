@@ -35,7 +35,7 @@ extern u8 Lo021cad50_vtbl[];
 extern u8 Lo021cae48_vtbl[];
 extern u8 Ov000Vt_021ccbe0_vtbl[];
 extern u8 Ov000Vt_021ccb54_vtbl[];
-void func_ov000_021c3af4(LoBase021ccb54_021ccbe0 *self);
+void LoBase021ccb54_021ccbe0_CtorBase(LoBase021ccb54_021ccbe0 *self);
 void Lo021ccb54_ClearLabels(ov006_HudList *self);
 
 // The ov000 window methods the ov006 menus call (text arguments are message strings).
@@ -148,7 +148,7 @@ static inline ov006_HudList *ov006_NewHudList(void) {
         *(void **)w = UiObj_vtbl;
         w->vfunc_28();
         *(void **)w = Ov000Vt_021ccbe0_vtbl;
-        func_ov000_021c3af4(w);
+        LoBase021ccb54_021ccbe0_CtorBase(w);
         *(void **)w = Ov000Vt_021ccb54_vtbl;
         Lo021ccb54_ClearLabels(w);
     }

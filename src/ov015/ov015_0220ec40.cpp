@@ -20,7 +20,7 @@ extern char data_ov015_02213100[];
 void *MsgRes_GetString(void *a, s32 b);
 void UiList021cb4a8_SetLabel(void *a, void *b);
 const char *Tbl_GetText(u16 id);
-void func_ov000_021c3af4(void *p);
+void LoBase021ccb54_021ccbe0_CtorBase(void *p);
 void Lo021ccb54_ClearLabels(void *p);
 void ListRow_Init(void *p);
 void Lo021cca40_Init(void *p);
@@ -99,7 +99,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
         SET_VT(p, Ov000Vt_021ccbe0_vtbl);
-        func_ov000_021c3af4(p);
+        LoBase021ccb54_021ccbe0_CtorBase(p);
         SET_VT(p, Ov000Vt_021ccb54_vtbl);
         Lo021ccb54_ClearLabels(p);
     }

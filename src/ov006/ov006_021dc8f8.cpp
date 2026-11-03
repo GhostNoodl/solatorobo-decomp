@@ -24,7 +24,7 @@ void Ov006Marker_Load(Ov006Marker *self) {
         }
     }
     self->model = model;
-    TexObj_SetRes(self->model, func_02035de0(file, data_ov006_021ec185));
+    TexObj_SetRes(self->model, ResMgr_FindArcType2(file, data_ov006_021ec185));
     self->model->flags |= 2;
     self->model->flags |= 0x80000;
     TexObj_SetOamFunc(self->model, 0xf, (void *)ov006_Unk021dc6b4_ShiftPalette, 0);

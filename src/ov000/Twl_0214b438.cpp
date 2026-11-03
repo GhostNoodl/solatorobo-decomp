@@ -19,7 +19,7 @@ extern void *data_ov000_021ccd20;
 /* Nothing in the NDS build calls these, so keep the linker from stripping them. */
 #pragma force_active on
 
-void func_ov000_0214b438(void) {
+void TwlScene_Create(void) {
     void *p;
     if (data_ov000_021ccd20 != NULL) {
         return;
@@ -38,28 +38,28 @@ void func_ov000_0214b438(void) {
     func_0222ec1c();
 }
 
-void func_ov000_0214b490(void) {
+void TwlScene_Delete(void) {
     if (data_ov000_021ccd20 == NULL) {
         return;
     }
     HEAP_DELETE_FN(data_ov000_021ccd20, func_0222ec00);
 }
 
-BOOL func_ov000_0214b4fc(void) {
+BOOL TwlScene_Update(void) {
     if (data_ov000_021ccd20 != NULL) {
         func_0222edbc(data_ov000_021ccd20);
     }
     return TRUE;
 }
 
-void func_ov000_0214b520(void) {
+void TwlScene_Draw(void) {
     if (data_ov000_021ccd20 == NULL) {
         return;
     }
     func_0222edf4(data_ov000_021ccd20);
 }
 
-BOOL func_ov000_0214b540(void) {
+BOOL TwlScene_IsDone(void) {
     BOOL ret = TRUE;
     if (OS_IsRunOnTwl()) {
         ret = func_0222edf8(data_ov000_021ccd20);

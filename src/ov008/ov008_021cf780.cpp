@@ -22,7 +22,7 @@ s32 Ov008Menu_GetPadBottom(void) {
     return 3;
 }
 
-BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
+BOOL Ov008Mgr_MenuOnDecide(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     if (sel == NULL) {
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
@@ -45,7 +45,7 @@ BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
     return TRUE;
 }
 
-BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
+BOOL Ov008Mgr_MenuOnCursor(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     u16 id;
     if (sel == NULL) {
@@ -58,7 +58,7 @@ BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
     return TRUE;
 }
 
-BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
+BOOL Ov008Mgr_DialogOnDecide(Ov008Menu *self, Ov008Sel *sel) {
     u16 id;
     if (sel == NULL) {
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);

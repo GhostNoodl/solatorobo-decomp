@@ -9,7 +9,7 @@ extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 DataRes_Unpack(DataRes *res, u8 *buf, s32 a);
-extern s32 func_02062370(u8 *buf);
+extern s32 StageVars_Load(u8 *buf);
 extern s32 SceneStage_Deserialize(u8 *dst, u8 *buf);
 
 typedef struct StageFlagsInit {
@@ -21,7 +21,7 @@ extern const StageFlagsInit data_02082be4;
 static inline void StageFlags_LoadBuf(StageFlags *f) {
     s32 n = 0;
     n += DataRes_Unpack(gDataRes, f->buf, 0);
-    n += func_02062370(f->buf + n);
+    n += StageVars_Load(f->buf + n);
     SceneStage_Deserialize(&gSceneCmd->stageFlags, f->buf + n);
     data_02fe1534.unk_04 = f->unk_518_16;
     data_02fe1534.unk_06 = f->unk_518_28;

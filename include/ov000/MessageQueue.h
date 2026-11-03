@@ -130,7 +130,7 @@ public:
 };
 
 // The field's message queue (vtable Ov000Vt_021cb980_vtbl, 0x120 bytes, base MessageQueue with vtable
-// Ov000Vt_021cb9b0_vtbl, init func_ov000_02171464): gMessageQueue, made by func_ov000_021814dc.
+// Ov000Vt_021cb9b0_vtbl, init func_ov000_02171464): gMessageQueue, made by Field_Create.
 // MessageQueue021cb980_HandleMsg creates its two buffers. Main reads it as FieldPlayer (Main/Sys/Field.h).
 class MessageQueue021cb980 : public MessageQueue {
 public:

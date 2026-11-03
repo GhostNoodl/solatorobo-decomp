@@ -100,7 +100,7 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
             }
         }
         self->model = model;
-        TexObj_SetRes(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+        TexObj_SetRes(self->model, ResMgr_FindArcType2(data_ov006_021ec864, data_ov006_021ec1a9));
         self->model->flags |= 2;
         self->model->flags &= ~0x80000;
         self->model->flags |= 0x400000;

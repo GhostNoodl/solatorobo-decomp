@@ -6,7 +6,7 @@ extern "C" {
 
 
 
-u32 func_0203ebf8(const char *name);
+u32 Vram_GetTexTransferId(const char *name);
 
 
 
@@ -38,7 +38,7 @@ void Ov002Mdl021efe3c_Load(Ov002Mdl021efe3c *self) {
     if (self->file != NULL) {
         name = (const char *)G3dRes_SetupVram(name, self->file->data);
     }
-    self->texTask = func_0203ebf8(name);
+    self->texTask = Vram_GetTexTransferId(name);
     NNS_G3dRenderObjInit(self->renderObj, self->mdl);
     anms = (void **)ResList_FindType6(res, self->anmName);
     ov002_strSet(buf, &self->anmName, sizeof(buf));

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021eae3c(Ov002StageFile *self) {
+void Ov002StageFile_DtorBase(Ov002StageFile *self) {
     Ov002StageFile_Free(self);
 }
 

@@ -49,7 +49,7 @@ BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data) {
     if (data->unk44 != 0x401336) {
         return FALSE;
     }
-    return ov006_Menu_UpdateNode(data_ov006_021ec888, data);
+    return ov006_Menu_UpdateNode(gOv006Menu, data);
 }
 
 static inline ov006_MenuEntry *ov006_Menu_GetEntry(ov006_Menu *self, u32 idx) {
@@ -57,7 +57,7 @@ static inline ov006_MenuEntry *ov006_Menu_GetEntry(ov006_Menu *self, u32 idx) {
 }
 
 static inline void ov006_Menu_UpdateConnection(void) {
-    ov006_Menu *menu = data_ov006_021ec888;
+    ov006_Menu *menu = gOv006Menu;
     int status;
     if (menu->unk15F != 0) {
         return;
@@ -68,11 +68,11 @@ static inline void ov006_Menu_UpdateConnection(void) {
         status = Wh_GetError(gWhMgr);
     }
     if (status == 0) {
-        data_ov006_021ec888->unk15F = data_ov006_021ec888->unk15E;
-        data_ov006_021ec888->unk160 = 0x14;
+        gOv006Menu->unk15F = gOv006Menu->unk15E;
+        gOv006Menu->unk160 = 0x14;
     } else if (status == 5) {
-        if (data_ov006_021ec888->unk160 != 0) {
-            data_ov006_021ec888->unk160--;
+        if (gOv006Menu->unk160 != 0) {
+            gOv006Menu->unk160--;
         }
     }
 }
@@ -96,7 +96,7 @@ u32 ov006_CopyOwnerInfo(void *dst, u32 size) {
 
 static inline u16 ov006_Menu_GetEntryMask(int type, u16 mask) {
     u16 result = 0;
-    if (data_ov006_021ec888 != NULL) {
+    if (gOv006Menu != NULL) {
         u16 i;
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
@@ -114,7 +114,7 @@ static inline u16 ov006_Menu_GetEntryMask(int type, u16 mask) {
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask) {
     u16 result = 0;
     u16 i;
-    if (data_ov006_021ec888 != NULL) {
+    if (gOv006Menu != NULL) {
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
             if (mask & bit) {

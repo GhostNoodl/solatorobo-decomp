@@ -8,7 +8,7 @@ struct Ov008Pos16 {
 };
 
 extern Ov008Pos16 data_ov008_021d02fc[];
-void func_ov008_021cf040(Ov008Mgr *m);
+void Ov008Mgr_DrawScene(Ov008Mgr *m);
 BOOL Model021903b4_Draw(void *p);
 void func_ov008_021ccf44(Ov008Panel *p);
 
@@ -19,7 +19,7 @@ static inline void Ov008_SetPos(Model *e, Ov008Pos16 *p) {
     e->unk_110 = y << 12;
 }
 
-void func_ov008_021cec20(Ov008Mgr *m) {
+void Ov008Mgr_Draw(Ov008Mgr *m) {
     if (m->unk_d8 != NULL) {
         Ov008_DrawModel2(m->unk_d8);
     }
@@ -29,7 +29,7 @@ void func_ov008_021cec20(Ov008Mgr *m) {
         Ov008_DrawModel2(m->unk_e8);
         m->unk_e8->unk_085 &= 0xfb;
     }
-    func_ov008_021cf040(m);
+    Ov008Mgr_DrawScene(m);
     if (m->state >= 5 && m->unk_c8 != NULL && m->unk_d0 != NULL) {
         m->cam.v00();
         Model021903b4_Draw(m->unk_c8);
@@ -58,7 +58,7 @@ void func_ov008_021cec20(Ov008Mgr *m) {
     }
 }
 
-void func_ov008_021cee4c(Ov008Mgr *m) {
+void Ov008Mgr_UpdateCaption(Ov008Mgr *m) {
     if (m->panel == NULL || m->caption == NULL || m->menu == NULL) {
         return;
     }

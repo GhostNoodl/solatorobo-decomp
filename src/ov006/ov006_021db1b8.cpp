@@ -19,7 +19,7 @@ void ov006_BroadcastSlotEntries(u16 a) {
     for (i = 0; i < 4; i++) {
         ov006_Slot *slot = ov006_SlotManager_GetSlot(gOv006SlotManager, i);
         if (slot != NULL && slot->aid != 0xff) {
-            ov006_Menu_SetEntryAt(data_ov006_021ec888, slot->aid, a, 3, &slot->sub3C, 0x10);
+            ov006_Menu_SetEntryAt(gOv006Menu, slot->aid, a, 3, &slot->sub3C, 0x10);
         }
     }
 }

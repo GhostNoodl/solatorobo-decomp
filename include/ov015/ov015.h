@@ -287,7 +287,7 @@ struct Ov015Main : public VObj {
     VObj *child;
 };
 
-// gOv015Globals: the running main sequence (func_ov015_021fa77c) and the screen fade it
+// gOv015Globals: the running main sequence (Ov015Main_Create) and the screen fade it
 // creates (Ov015_GetFade returns it).
 struct Ov015Globals {
     Ov015Main *mainSeq;
@@ -335,7 +335,7 @@ struct Ov015ItemEnt {
 };
 
 // Data shared by the ov015 sequences (0x30 bytes, vtable Ov015Vt_02213200_vtbl, built by
-// func_ov015_0221102c into gOv015Shared).
+// Ov015Shared_Create into gOv015Shared).
 struct Ov015Shared : public VObj {
     s32 unk_04; // sequence kind (Ov015Main::unk_04)
     u16 unk_08; // item id (price from func_0206ef88)
@@ -349,8 +349,8 @@ SIZE_ASSERT(Ov015Shared, 0x30);
 extern Ov015Shared *gOv015Shared;
 
 // Node callbacks (NNS_G3dRenderObjSetInitFunc installs the one that sets the NODEDESC callback).
-void func_ov015_02208424(NNSG3dRS *rs);
-void func_ov015_02208474(NNSG3dRS *rs);
+void Ov015Ship_CaptureNodeMtx(NNSG3dRS *rs);
+void Ov015Ship_SetCaptureCb(NNSG3dRS *rs);
 void func_ov015_02208f7c(NNSG3dRS *rs);
 void func_ov015_022090fc(NNSG3dRS *rs);
 void func_ov015_02211954(NNSG3dRS *rs);
@@ -502,7 +502,7 @@ struct Ov015Obj34;
 struct Ov015Ship;
 struct Ov015Game;
 struct Ov015Info38;
-// Node matrix (rotation rows and translation) and the node id it is captured for (func_ov015_02208424).
+// Node matrix (rotation rows and translation) and the node id it is captured for (Ov015Ship_CaptureNodeMtx).
 struct Ov015ShipMtx {
     Ov015Vec m[4];
     u8 id;
@@ -670,7 +670,7 @@ struct Ov015Ship {
     Ov015Vec unk_d4c;
 };
 OV015_SIZE(Ov015Ship, 0xd58);
-// Fish info block (0x38 bytes, vtable Ov015Info38_vtbl, ctor func_ov015_02211828).
+// Fish info block (0x38 bytes, vtable Ov015Info38_vtbl, ctor Ov015Info38_Ctor).
 struct Ov015Info38 : public VObj {
     u16 id;
     u8 unk_06[0x2];
@@ -958,9 +958,9 @@ struct Ov015Msg : public VObj {
 };
 SIZE_ASSERT(Ov015Msg, 0x144);
 
-// Text window with a portrait model (0xb4 bytes, vtables UiObj_vtbl -> Ov015Vt_02212d3c_vtbl, init func_ov015_02208544).
+// Text window with a portrait model (0xb4 bytes, vtables UiObj_vtbl -> Ov015Vt_02212d3c_vtbl, init Ov015UiText_ClearText).
 struct Ov015UiText : public UiObj {
-    TextWin *unk_84; // deleted and rebuilt by func_ov015_02208a28
+    TextWin *unk_84; // deleted and rebuilt by Ov015UiText_LoadText
     char text[0x20]; // filled by func_ov015_02208bac
     s32 textId;
     s32 unk_ac;
@@ -968,7 +968,7 @@ struct Ov015UiText : public UiObj {
 };
 SIZE_ASSERT(Ov015UiText, 0xb4);
 
-// Event message manager, vtable Ov015MsgMgr_vtbl (0x14 bytes, init func_ov015_02210b3c).
+// Event message manager, vtable Ov015MsgMgr_vtbl (0x14 bytes, init Ov015MsgMgr_Init).
 struct Ov015MsgMgr : public VObj {
     VObj *unk_04;
     union {
@@ -1024,7 +1024,7 @@ BOOL Ov015Result_Update(Ov015Result *self);
 void Ov015Result_Draw(Ov015Result *self);
 }
 
-// Fishing tackle object (0x290 bytes, vtable Ov015Obj290_vtbl, init func_ov015_022119e8), with
+// Fishing tackle object (0x290 bytes, vtable Ov015Obj290_vtbl, init Ov015Obj290_Reset), with
 // its own animation and model; gOv015Obj290 points to it.
 struct Ov015Obj290 : public VObj {
     s32 unk_04;

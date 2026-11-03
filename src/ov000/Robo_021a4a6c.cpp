@@ -58,7 +58,7 @@ void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void Target_Set(void *body, void *p);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 
 static inline BOOL IsBusy_021a4a6c(FieldState *g) {
     return g->head != g->tail;
@@ -350,7 +350,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
                         Shared_SetEventActor(t->kind, t->id);
                         FieldState *g = gSceneCmd;
                         g->stageFlags = 1;
-                        func_ov000_02182590((u8 *)g + 0xac);
+                        SceneStage_StartScript((u8 *)g + 0xac);
                     }
                     self->fsm->st = 10;
                     break;

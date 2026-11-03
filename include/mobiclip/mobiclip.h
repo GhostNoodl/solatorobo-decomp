@@ -7,7 +7,7 @@
 
 #ifdef __cplusplus
 
-// Data source of a movie. data_0208b2ac is the vtable of the file stream implementation.
+// Data source of a movie. MoFileStream_vtbl is the vtable of the file stream implementation.
 struct MoStream {
     /* 0x00 */ // vtable
     virtual void unk_vf00();

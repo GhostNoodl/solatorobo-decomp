@@ -56,7 +56,7 @@ extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627ec(u16 a);
-extern void func_ov000_02182590(void *p);
+extern void SceneStage_StartScript(void *p);
 
 #define OV003BR_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003BR_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -272,7 +272,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             {
                 u8 *ac = &gSceneCmd->stageFlags;
                 *ac = 1;
-                func_ov000_02182590(ac);
+                SceneStage_StartScript(ac);
             }
         }
         self->fsm->st++;

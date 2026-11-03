@@ -23,7 +23,7 @@ Ov003Player *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
 void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 void Ov003_AddExp(u16 id);
 void Group_UpdateActor(void *mgr, s32 a, void *obj);
 
@@ -65,7 +65,7 @@ extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOO
             {
                 FieldState *g = gSceneCmd;
                 g->stageFlags = 1;
-                func_ov000_02182590(&g->stageFlags);
+                SceneStage_StartScript(&g->stageFlags);
             }
         }
         if (mark) {

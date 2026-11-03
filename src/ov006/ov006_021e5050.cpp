@@ -39,7 +39,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Menu *self) {
     self->unk26 = 1;
 }
 
-void func_ov006_021e5050(ov006_Menu *self) {
+void ov006_Menu_State04(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         self->unk28 = 0;

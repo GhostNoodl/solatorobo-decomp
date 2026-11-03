@@ -32,7 +32,7 @@ void ov006_Unk021dcf7c_Load(ov006_Unk021dcf7c *self) {
         }
     }
     self->unkC = model;
-    TexObj_SetRes(self->unkC, func_02035de0(file, data_ov006_021ec191));
+    TexObj_SetRes(self->unkC, ResMgr_FindArcType2(file, data_ov006_021ec191));
     self->unkC->flags |= 2;
     self->unkC->flags |= 0x80000;
     TexObj_SelectImage(self->unkC, 0, 0);
@@ -48,7 +48,7 @@ void ov006_Unk021dcf7c_Load(ov006_Unk021dcf7c *self) {
         }
     }
     self->unk10 = model;
-    TexObj_SetRes(self->unk10, func_02035de0(file, data_ov006_021ec19d));
+    TexObj_SetRes(self->unk10, ResMgr_FindArcType2(file, data_ov006_021ec19d));
     self->unk10->flags |= 2;
     self->unk10->flags |= 0x80000;
     TexObj_SelectImage(self->unk10, 0, 0xffff);

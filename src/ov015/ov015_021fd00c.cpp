@@ -1,4 +1,4 @@
-// func_ov015_021fd900 inlines three full camera bodies. With the default inline size limit,
+// Ov015CamPair_Mode2 inlines three full camera bodies. With the default inline size limit,
 // MWCC stops inlining the Ov015Vec constructors and copies inside them.
 #pragma inline_max_size(512)
 
@@ -7,15 +7,15 @@
 extern "C" {
 
 void func_ov015_021fb240(Ov015Vec *dst, const Ov015Vec *src);
-void func_ov015_021fd288(Ov015CamPair *self);
-void func_ov015_021fd634(Ov015CamPair *self);
-void func_ov015_021fd900(Ov015CamPair *self);
-void func_ov015_021fe218(Ov015CamPair *self);
-void func_ov015_021fe548(Ov015CamPair *self);
-void func_ov015_021fe814(Ov015CamPair *self);
-void func_ov015_021feb34(Ov015CamPair *self);
-void func_ov015_021fee54(Ov015CamPair *self);
-void func_ov015_021ff044(Ov015CamPair *self);
+void Ov015CamPair_Mode1(Ov015CamPair *self);
+void Ov015CamPair_Mode0(Ov015CamPair *self);
+void Ov015CamPair_Mode2(Ov015CamPair *self);
+void Ov015CamPair_Mode3(Ov015CamPair *self);
+void Ov015CamPair_Mode4(Ov015CamPair *self);
+void Ov015CamPair_Mode5(Ov015CamPair *self);
+void Ov015CamPair_Mode6(Ov015CamPair *self);
+void Ov015CamPair_Mode7(Ov015CamPair *self);
+void Ov015CamPair_Mode8(Ov015CamPair *self);
 extern u8 data_ov015_0221253c[];
 
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v) {
@@ -32,31 +32,31 @@ void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v) {
     func_ov015_021fb240((Ov015Vec *)&self->target, v);
     switch (mode) {
     case 1:
-        func_ov015_021fd288(self);
+        Ov015CamPair_Mode1(self);
         break;
     case 0:
-        func_ov015_021fd634(self);
+        Ov015CamPair_Mode0(self);
         break;
     case 2:
-        func_ov015_021fd900(self);
+        Ov015CamPair_Mode2(self);
         break;
     case 3:
-        func_ov015_021fe218(self);
+        Ov015CamPair_Mode3(self);
         break;
     case 4:
-        func_ov015_021fe548(self);
+        Ov015CamPair_Mode4(self);
         break;
     case 5:
-        func_ov015_021fe814(self);
+        Ov015CamPair_Mode5(self);
         break;
     case 6:
-        func_ov015_021feb34(self);
+        Ov015CamPair_Mode6(self);
         break;
     case 7:
-        func_ov015_021fee54(self);
+        Ov015CamPair_Mode7(self);
         break;
     case 8:
-        func_ov015_021ff044(self);
+        Ov015CamPair_Mode8(self);
         break;
     }
 }
@@ -120,7 +120,7 @@ static inline s32 Ov015Cam_Approach(s32 cur, s32 tgt, s32 eps, s32 k) {
     return cur;
 }
 
-void func_ov015_021fd288(Ov015CamPair *self) {
+void Ov015CamPair_Mode1(Ov015CamPair *self) {
     Ov015Vec cam;
     Ov015Vec tgt;
     Ov015Vec res;
@@ -175,7 +175,7 @@ void func_ov015_021fd288(Ov015CamPair *self) {
     Ov015SetFovy(&self->cam1, 0x1e000);
 }
 
-void func_ov015_021fd634(Ov015CamPair *self) {
+void Ov015CamPair_Mode0(Ov015CamPair *self) {
     Ov015Vec res;
     Ov015Vec o;
     Ov015Vec d;
@@ -345,7 +345,7 @@ static inline void Ov015Cam_ZoomIn(Ov015CamPair *self) {
     Ov015SetFovy(&self->cam1, 0x1e000);
 }
 
-void func_ov015_021fd900(Ov015CamPair *self) {
+void Ov015CamPair_Mode2(Ov015CamPair *self) {
     if (self->timer > 0x1e) {
         if (data_ov015_0221332c.unk_00 > 0xfa000) {
             Ov015Cam_ZoomOut(self);
@@ -361,7 +361,7 @@ void func_ov015_021fd900(Ov015CamPair *self) {
     }
 }
 
-void func_ov015_021fe218(Ov015CamPair *self) {
+void Ov015CamPair_Mode3(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec r;
     Ov015Mtx33 m;
@@ -403,7 +403,7 @@ void func_ov015_021fe218(Ov015CamPair *self) {
     Ov015SetFovy(&self->cam1, 0x1e000);
 }
 
-void func_ov015_021fe548(Ov015CamPair *self) {
+void Ov015CamPair_Mode4(Ov015CamPair *self) {
     Ov015Vec o;
     Ov015Vec res;
     Ov015Vec d;
@@ -444,7 +444,7 @@ void func_ov015_021fe548(Ov015CamPair *self) {
 }
 
 
-void func_ov015_021fe814(Ov015CamPair *self) {
+void Ov015CamPair_Mode5(Ov015CamPair *self) {
     Ov015Vec a;
     Ov015Vec o;
     Ov015Vec res;
@@ -489,7 +489,7 @@ void func_ov015_021fe814(Ov015CamPair *self) {
     Ov015SetFovy(&self->cam1, 0x1e000);
 }
 
-void func_ov015_021feb34(Ov015CamPair *self) {
+void Ov015CamPair_Mode6(Ov015CamPair *self) {
     Ov015Vec a;
     Ov015Vec o;
     Ov015Vec res;

@@ -62,7 +62,7 @@ bool TaskList_HasTasks_021735e8(void);
 void ListRow_Unlink(void *self);
 void SndQueue_Push_0204aab0(ov006_Unk02097e48 *a);
 
-ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
+ov006_Task0 *Ov006Vt_021ebc98_Ctor(ov006_Task0 *self) {
     ov006_Task_Ctor(self);
     *(void **)self = &Ov006Vt_021ebc98_vtbl;
     self->unk10 = 1;
@@ -124,7 +124,7 @@ BOOL Ov006Vt_021ebc98_Start(ov006_Task0 *self) {
         if (gFinishingTask != NULL) {
             gFinishingTask->vfunc_4c();
             ov006_Manager_DispatchMenuCb(2, 0, 0);
-            data_ov006_021ec888->unk15E = 2;
+            gOv006Menu->unk15E = 2;
             return TRUE;
         }
         break;
@@ -262,7 +262,7 @@ ov006_MsgBox *ov006_MsgBox_Dtor(ov006_MsgBox *self) {
     return self;
 }
 
-ov006_Task1 *func_ov006_021d5b04(ov006_Task1 *self) {
+ov006_Task1 *Ov006Vt_021ebfc0_Ctor(ov006_Task1 *self) {
     int i;
     ov006_Task_Ctor(self);
     *(void **)self = &Ov006Vt_021ebfc0_vtbl;

@@ -1,7 +1,7 @@
 #ifndef OV000_LOTICKER_H
 #define OV000_LOTICKER_H
 
-// The field message ticker (ctor func_ov000_0216bf30, 0x3d8 bytes, allocated by ListBuffer021cb940_Update,
+// The field message ticker (ctor LoTicker_Init, 0x3d8 bytes, allocated by ListBuffer021cb940_Update,
 // which builds res[] with __cxa_vec_ctor at 0x360). Messages are queued in the ring msgs[read..write),
 // moved one at a time into a free slot (func_ov000_0216c018), slid in and dropped out by
 // func_ov000_0216c310 and drawn by func_ov000_0216c6fc between the two icon texts of their kind.
@@ -67,12 +67,12 @@ extern const LoTickerIcons data_ov000_021c9bb4[];
 void LoTextHolder_Init(LoTextHolder *self);
 LoTextHolder *LoTextHolder_Dtor(LoTextHolder *self);
 void func_ov000_0216bae4(LoTextHolder *self, void *text);
-void func_ov000_0216bbec(LoTicker *self);
+void LoTicker_InitTexts(LoTicker *self);
 void LoTicker_Clear(LoTicker *self);
 void func_ov000_0216be58(LoTicker *self);
 void func_ov000_0216be94(LoTicker *self);
-void func_ov000_0216bf30(LoTicker *self);
-void func_ov000_0216bf90(LoTicker *self);
+void LoTicker_Init(LoTicker *self);
+void LoTicker_Release(LoTicker *self);
 void func_ov000_0216c018(LoTicker *self);
 void func_ov000_0216c310(LoTicker *self);
 void func_ov000_0216c6fc(LoTicker *self);

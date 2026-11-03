@@ -109,7 +109,7 @@ static inline void ResRing_Setup(ResRing *ring, void *buf, u32 blockSize, u16 nu
     ring->flags = (ring->flags & ~1) | 1;
 }
 
-void func_02035450(struct ResLoader *loader);
+void ResLoader_ThreadMain(struct ResLoader *loader);
 
 #ifdef __cplusplus
 }

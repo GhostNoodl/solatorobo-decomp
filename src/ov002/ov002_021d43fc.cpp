@@ -331,7 +331,7 @@ void Task021efba4_PostUpdate(void) {
 }
 
 void Task021efba4_Draw(Task021efba4 *self) {
-    func_ov002_021e2528(self->hud);
+    Ov002Hud_Draw(self->hud);
 }
 
 Task021efb24 *Task021efb24_New(void) {

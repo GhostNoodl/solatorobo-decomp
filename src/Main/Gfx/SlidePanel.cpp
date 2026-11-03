@@ -10,11 +10,11 @@ u16 Pad_GetRelease(void) {
     return gPad->release;
 }
 
-void func_02054254(SlidePanel *panel) {
+void SlidePanel_Reset(SlidePanel *panel) {
     SLIDEPANEL_RESET(panel)
 }
 
-void func_020543bc(SlidePanel *panel) {
+void SlidePanel_Unload(SlidePanel *panel) {
     SLIDEPANEL_UNLOAD(panel)
 }
 

@@ -131,7 +131,7 @@ extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627ec(u16 a);
-extern void func_ov000_02182590(void *p);
+extern void SceneStage_StartScript(void *p);
 
 #define OV003LF_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003LF_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -203,7 +203,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
         {
             u8 *ac = &gSceneCmd->stageFlags;
             *ac = 1;
-            func_ov000_02182590(ac);
+            SceneStage_StartScript(ac);
         }
     }
 }
@@ -358,7 +358,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
                     {
                         u8 *ac = &gSceneCmd->stageFlags;
                         *ac = 1;
-                        func_ov000_02182590(ac);
+                        SceneStage_StartScript(ac);
                     }
                 }
             }

@@ -41,7 +41,7 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *e) {
     MI_CpuFill16(e->unk2, 0, sizeof(e->unk2));
 }
 
-void func_ov006_021e4ed4(ov006_Menu *self) {
+void ov006_Menu_State08(ov006_Menu *self) {
     int i;
 
     switch (self->stateTime) {

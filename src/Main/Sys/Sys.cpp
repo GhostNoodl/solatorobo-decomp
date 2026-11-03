@@ -26,7 +26,7 @@ extern s32 GX_ResetBankForSubOBJ(void);
 extern s32 GX_ResetBankForSubOBJExtPltt(void);
 extern void GX_SetBankForLCDC(int a);
 extern s32 GX_DisableBankForLCDC(void);
-void func_0203d824(void);
+void Sys_VBlankIntr(void);
 
 extern void OS_Init(void);
 extern void OS_EnableITCM(void);
@@ -40,7 +40,7 @@ extern void func_0228f87c(int a);
 extern void func_0228f808(void *info);
 extern void func_0228f7bc(void);
 
-void func_0203d5c4(void) {
+void Sys_Init(void) {
     UnkSys *sys;
     OS_Init();
     OS_EnableITCM();
@@ -78,7 +78,7 @@ void func_0203d5c4(void) {
     }
 }
 
-void func_0203d6b4(void) {
+void Sys_InitHw(void) {
     int dt[8];
     GXi_DmaId = 3;
     GX_Init();
@@ -88,7 +88,7 @@ void func_0203d6b4(void) {
     OS_InitTick();
     RTC_Init();
     Sys_ResetVram();
-    OS_SetIrqFunction(1, func_0203d824);
+    OS_SetIrqFunction(1, Sys_VBlankIntr);
     OS_EnableIrqMask(1);
     {
         // OS_EnableIrq() inlined, its return value (the old IME) discarded.
@@ -123,7 +123,7 @@ void func_0203d80c(void) {
     gSysState->unk_30 = 1;
 }
 
-void func_0203d824(void) {
+void Sys_VBlankIntr(void) {
     UnkSys *sys = gSysState;
     if (++sys->frameCount >= 0x1499700) {
         sys->frameCount = 0x1499700 - 1;

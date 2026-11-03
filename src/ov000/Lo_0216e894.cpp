@@ -10,7 +10,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *gSndMgr;
 
@@ -40,7 +40,7 @@ void LoTimer_Finish(LoTimer *self) {
         func_0206280c(v);
         g = gSceneCmd;
         ((u8 *)g)[0xac] = 1;
-        func_ov000_02182590((u8 *)g + 0xac);
+        SceneStage_StartScript((u8 *)g + 0xac);
     }
     self->state = 9;
 }

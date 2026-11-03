@@ -12,7 +12,7 @@ extern void SND_DestroyWaveArc(void *waveArc);
 extern void *SND_GetWaveDataAddress(SndWaveArc *waveArc, int index);
 extern void SND_SetWaveDataAddress(SndWaveArc *waveArc, int index, void *data);
 
-void func_020310c4(void *data, void *arc, u32 fileId) {
+void SndArcLd_ClearFileAddress(void *data, void *arc, u32 fileId) {
     void *prev;
     u32 state;
     if (arc == NULL) {
@@ -27,29 +27,29 @@ void func_020310c4(void *data, void *arc, u32 fileId) {
     OS_RestoreInterrupts(state);
 }
 
-void func_0203111c(void *data, u32 size, u32 arc, u32 fileId) {
-    func_020310c4(data, (void *)arc, fileId);
+void SndArcLd_DisposeSeq(void *data, u32 size, u32 arc, u32 fileId) {
+    SndArcLd_ClearFileAddress(data, (void *)arc, fileId);
     SND_InvalidateSeqData(data, (u8 *)data + size);
 }
 
-void func_02031144(void *data, u32 size, u32 arc, u32 fileId) {
-    func_020310c4(data, (void *)arc, fileId);
+void SndArcLd_DisposeBank(void *data, u32 size, u32 arc, u32 fileId) {
+    SndArcLd_ClearFileAddress(data, (void *)arc, fileId);
     SND_InvalidateBankData(data, (u8 *)data + size);
     SND_DestroyBank(data);
 }
 
-void func_02031174(void *data, u32 size, u32 arc, u32 fileId) {
-    func_020310c4(data, (void *)arc, fileId);
+void SndArcLd_DisposeWaveArc(void *data, u32 size, u32 arc, u32 fileId) {
+    SndArcLd_ClearFileAddress(data, (void *)arc, fileId);
     SND_InvalidateWaveData(data, (u8 *)data + size);
     SND_DestroyWaveArc(data);
 }
 
-void func_020311a4(void *data, u32 size, u32 arc, u32 fileId) {
-    func_020310c4(data, (void *)arc, fileId);
+void SndArcLd_DisposeWaveArcTable(void *data, u32 size, u32 arc, u32 fileId) {
+    SndArcLd_ClearFileAddress(data, (void *)arc, fileId);
     SND_DestroyWaveArc(data);
 }
 
-void func_020311c4(void *data, u32 size, u32 waveArc, u32 index) {
+void SndArcLd_DisposeWave(void *data, u32 size, u32 waveArc, u32 index) {
     if (data == SND_GetWaveDataAddress((SndWaveArc *)waveArc, index)) {
         SND_SetWaveDataAddress((SndWaveArc *)waveArc, index, NULL);
     }
@@ -60,7 +60,7 @@ extern u32 SND_GetWaveDataCount(const SndWaveArc *waveArc);
 extern void DC_StoreRange(const void *startAddr, u32 nBytes);
 
 // LoadSingleWave: loads one wave of a wave archive into the heap, unless it is already loaded.
-BOOL func_0203120c(SndWaveArc *waveArc, int index, u32 fileId, NNSSndHeap *heap) {
+BOOL SndArcLd_LoadWave(SndWaveArc *waveArc, int index, u32 fileId, NNSSndHeap *heap) {
     u32 count;
     u32 *p;
     u32 waveOffset;
@@ -81,7 +81,7 @@ BOOL func_0203120c(SndWaveArc *waveArc, int index, u32 fileId, NNSSndHeap *heap)
     if (heap == NULL) {
         return FALSE;
     }
-    buffer = NNS_SndHeapAlloc(heap, waveSize + 0x20, func_020311c4, (u32)waveArc, index);
+    buffer = NNS_SndHeapAlloc(heap, waveSize + 0x20, SndArcLd_DisposeWave, (u32)waveArc, index);
     if (buffer == NULL) {
         return FALSE;
     }

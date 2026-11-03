@@ -38,7 +38,7 @@ ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void TaskList_Insert(Task *self);
-BOOL func_ov006_021d1df8(UiList *window, UiListItem *node);
+BOOL ov006_TaskD1F_List54OnCursor(UiList *window, UiListItem *node);
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 
 static inline void ov006_Caption_SetPos(ov006_Caption *c, int x, int y) {
@@ -88,7 +88,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
         self->unk54->vfunc_a8(ListOwner_GetNth(self->unk54, 0));
     }
     self->unk54->owner = self;
-    self->unk54->onCursor = func_ov006_021d1df8;
+    self->unk54->onCursor = ov006_TaskD1F_List54OnCursor;
     {
         void *p = Heap_Alloc(0x708);
         if (p != NULL) {
@@ -152,7 +152,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     {
         u8 buf[0x18];
         ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5), buf);
-        ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
+        ov006_Menu_SetOwnEntry(gOv006Menu, self->unk49, 1, buf, 0x18);
     }
     if (self->param != 0) {
         self->unk48 = 0;

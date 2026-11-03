@@ -6,8 +6,8 @@ extern VFunc Lo021cadcc_vtbl[];
 extern VFunc Lo021cae48_vtbl[];
 extern VFunc Lo021cb5a8_vtbl[];
 extern VFunc UiList021cb4a8_vtbl[];
-void func_ov000_02176560(void);
-void func_ov000_02176590(u16 v);
+void MenuScript_Bind(void);
+void MenuScript_Run(u16 v);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
@@ -32,7 +32,7 @@ void Task021ef81c_Start(Task021ef81c *self) {
         return;
     }
     g = gMsgRes;
-    func_ov000_02176560();
+    MenuScript_Bind();
 
     p = (UiObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
@@ -150,7 +150,7 @@ void Task021ef81c_Start(Task021ef81c *self) {
     self->unk_3c->onDecide = Task021ef81c_List3cOnDecide;
     self->unk_3c->onCursor = Task021ef81c_List3cOnCursor;
     self->unk_3c->owner = self;
-    func_ov000_02176590(((u32)self->param));
+    MenuScript_Run(((u32)self->param));
 
     blk = gDataRes->data + 0x110;
     tbl = DataRes_GetTable(gDataRes, 8);

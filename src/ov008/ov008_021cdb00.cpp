@@ -21,7 +21,7 @@ void *ResSet_Init(void *p);
 void LangData_LocalizePath(char *dst, const char *src);
 void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *arc, const char *name);
-void func_ov000_0214bb80(void);
+void SceneResSet_Open08(void);
 void func_ov000_0214c1ac(void);
 
 static inline Ov008Anim *Ov008_NewAnim(void) {
@@ -53,7 +53,7 @@ static inline Ov008Pic *Ov008_NewLoader(void) {
     return p;
 }
 
-void func_ov008_021cdb00(Ov008Mgr *self) {
+void Ov008Mgr_LoadRes(Ov008Mgr *self) {
     char name[0x20];
     char path[0x20];
     Ov008Pic *p;
@@ -116,7 +116,7 @@ void func_ov008_021cdb00(Ov008Mgr *self) {
     STD_CopyString(path, data_ov008_021d04d1);
     STD_ConcatenateString(path, data_ov008_021d04d9);
     StageRes_Open(self->unk_fc, path, data_ov008_021d04e1);
-    func_ov000_0214bb80();
+    SceneResSet_Open08();
     func_ov000_0214c1ac();
 }
 

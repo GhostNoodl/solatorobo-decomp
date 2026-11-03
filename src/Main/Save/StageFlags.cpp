@@ -10,7 +10,7 @@ extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 DataRes_Unpack(DataRes *res, u8 *buf, s32 a);
-extern s32 func_02062370(u8 *buf);
+extern s32 StageVars_Load(u8 *buf);
 extern s32 SceneStage_Deserialize(u8 *dst, u8 *buf);
 
 typedef struct StageFlagsInit {
@@ -73,7 +73,7 @@ void StageFlags_Reset(StageFlags *f) {
 
 
 extern s32 DataRes_Pack(DataRes *res, u8 *buf, s32 size);
-extern s32 func_020622ec(u8 *buf, s32 size);
+extern s32 StageVars_Save(u8 *buf, s32 size);
 extern s32 SceneStage_Serialize(u8 *src, u8 *buf, s32 size);
 extern u16 *StageRes_FindSlot(u32 id);
 extern u16 func_020600cc(u16 *obj, StageVec *pos, u16 *rot, u16 *id);
@@ -99,7 +99,7 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
     s32 n = 0;
     u16 v;
     n += DataRes_Pack(gDataRes, f->buf, sizeof(f->buf));
-    n += func_020622ec(f->buf + n, sizeof(f->buf) - n);
+    n += StageVars_Save(f->buf + n, sizeof(f->buf) - n);
     SceneStage_Serialize(&gSceneCmd->stageFlags, f->buf + n, sizeof(f->buf) - n);
     f->unk_518_16 = data_02fe1534.unk_04;
     v = data_02fe1534.unk_06;

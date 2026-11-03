@@ -22,7 +22,7 @@ void Group_UpdateActor(void *a, s32 b, void *c);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627c8(void);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 u16 LangData_GetIndex(u32 a, u32 b);
 
 static inline s32 FxMul02196258(s32 a, s32 b) {
@@ -65,7 +65,7 @@ static inline void Die02196258(VObj *obj) {
         {
             FieldState *pl = gSceneCmd;
             ((u8 *)pl)[0xac] = 1;
-            func_ov000_02182590((u8 *)pl + 0xac);
+            SceneStage_StartScript((u8 *)pl + 0xac);
         }
     }
     {

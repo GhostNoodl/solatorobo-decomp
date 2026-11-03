@@ -52,7 +52,7 @@ void Ov014Act_0220f9d0_StateHurt(Ov014Act_0220f9d0 *self) {
 extern char data_ov014_02217d88[];
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_ov000_02182590(void *p);
+extern void SceneStage_StartScript(void *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
@@ -74,7 +74,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         func_020627dc(5);
         g = gSceneCmd;
         g->stageFlags = 1;
-        func_ov000_02182590((u8 *)g + 0xac);
+        SceneStage_StartScript((u8 *)g + 0xac);
         Model0218fe1c_SetAnim(self->model, data_ov014_02217d88, 0x19a, 0);
         Model0218fe1c_SetAnimSpeed(self->model, 0x400);
         Model0218fe1c_ClearLoop(self->model);

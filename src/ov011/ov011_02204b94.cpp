@@ -19,7 +19,7 @@ Ov011PhotoCfg data_ov011_02207be0 = {
     data_ov011_02207500[0], data_ov011_02207500[1], data_ov011_02207500[0], "photo01", "photo00",
 };
 ResSet *ResSet_ReleaseAll(ResSet *p);
-BOOL func_02036328(void);
+BOOL ResMgr_IsIdle(void);
 BOOL Actor_IsReady(void *self);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 
@@ -87,7 +87,7 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
             r = FALSE;
             self->unk_394 = 1;
         }
-        if (r && !Twl0214b570_IsDone(self->unk_364) && r && func_02036328()) {
+        if (r && !Twl0214b570_IsDone(self->unk_364) && r && ResMgr_IsIdle()) {
             Twl0214b570_Poll(self->unk_364);
             r = FALSE;
         }
@@ -97,7 +97,7 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
             r = FALSE;
             self->unk_394 = 1;
         }
-        if (r && !Twl0214b570_IsDone(self->unk_368) && r && func_02036328()) {
+        if (r && !Twl0214b570_IsDone(self->unk_368) && r && ResMgr_IsIdle()) {
             Twl0214b570_Poll(self->unk_368);
             r = FALSE;
         }

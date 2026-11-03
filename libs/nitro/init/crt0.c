@@ -5,7 +5,7 @@
 
 void __call_static_initializers(void);
 void _fp_init(void);
-void func_0203d5c4(void);
+void Sys_Init(void);
 extern char data_0208d940[];
 extern char data_020925e0[];
 extern char data_02092600[];
@@ -134,7 +134,7 @@ asm void Entry(void) {
     ldr r0, =OS_IrqHandler
     str r0, [r1]
     bl _fp_init
-    bl func_0203d5c4
+    bl Sys_Init
     bl __call_static_initializers
     bl INITi_CallStaticInitializers
     ldr r1, =0x4000006

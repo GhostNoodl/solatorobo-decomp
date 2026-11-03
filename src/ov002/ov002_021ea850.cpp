@@ -86,7 +86,7 @@ void *Ov002Vt_021f0734_Dtor(Ov002Obj *self) {
 
 void *Ov002Vt_021f0684_DtorDelete(Ov002StageFile *self) {
     *(VFunc **)self = Ov002Vt_021f0684_vtbl;
-    func_ov002_021eae3c(self);
+    Ov002StageFile_DtorBase(self);
     Heap_Free(self);
     return self;
 }

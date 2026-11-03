@@ -17,7 +17,7 @@ static inline void ov002_G3Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov002_021eea74(Ov002Staff *self) {
+void Ov002Staff_DrawFade(Ov002Staff *self) {
     s32 t = FX_Div(self->clock.timer, 0x78000);
     u8 alpha;
     if (t >= 0x1000) {

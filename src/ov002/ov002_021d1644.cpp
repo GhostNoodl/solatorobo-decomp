@@ -4,7 +4,7 @@ extern "C" {
 
 void Task021ef71c_Draw(Task021ef71c *self) {
     if (self->unk_68 == 0 && self->state == 0xd && self->unk_64 == 1) {
-        func_ov002_021e90dc();
+        Ov002Stage_DrawCur();
     }
 }
 
@@ -52,10 +52,10 @@ BOOL func_ov002_021d178c(Task021ef71c *self) {
         }
     case 1:
         if (gPad->trig & 2) {
-            func_ov002_021e9b28(gOv002Stage->unk_d0);
+            Ov002Vt_021f0694_New(gOv002Stage->unk_d0);
             self->unk_5c = 7;
         }
-        if (!func_ov002_021e90ac()) {
+        if (!Ov002Stage_UpdateCur()) {
             Ov002Stage_Delete_021e916c();
             self->unk_64 = 0;
             self->unk_5c++;
@@ -89,12 +89,12 @@ Task021ef69c *Task021ef69c_New(void) {
     return p;
 }
 
-BOOL func_ov002_021d18d4(TextList *self, ListRow021cca70 *row) {
+BOOL Task021ef69c_List3cOnCursor(TextList *self, ListRow021cca70 *row) {
     Obj021c64b4_SetText(self, row->unk_40);
     return TRUE;
 }
 
-BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev) {
+BOOL Task021ef69c_List3cOnDecide(TextList *self, ListRow021cca70 *ev) {
     Task021ef69c *owner = (Task021ef69c *)self->owner;
     if (ev->item.unk_0a != 0) {
         if (ev->scale <= 0x99a) {

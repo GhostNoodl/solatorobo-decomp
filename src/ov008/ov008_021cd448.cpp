@@ -8,13 +8,13 @@ extern "C" {
 extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void Camera_Dtor(void *p);
-void func_ov008_021cd500(Ov008Mgr *m);
-void func_ov008_021cd584(Ov008Mgr *m);
-void func_ov000_0214bc10(void);
+void Ov008Mgr_Init(Ov008Mgr *m);
+void Ov008Mgr_FreeAll(Ov008Mgr *m);
+void SceneResSet_Close08(void);
 void func_ov000_0214c210(void);
 extern void *ResHandle_vtbl;
 
-void func_ov008_021cd448(void) {
+void Ov008Mgr_Create(void) {
     Ov008Mgr *p;
     if (gOv008Mgr != NULL) {
         return;
@@ -22,7 +22,7 @@ void func_ov008_021cd448(void) {
     p = (Ov008Mgr *)Heap_Alloc(0x120);
     if (p != NULL) {
         Camera_Ctor(&p->cam);
-        func_ov008_021cd500(p);
+        Ov008Mgr_Init(p);
     }
     gOv008Mgr = p;
 }
@@ -31,10 +31,10 @@ void Ov008Mgr_Delete(void) {
     if (gOv008Mgr == NULL) {
         return;
     }
-    OV008_FREE(gOv008Mgr, Ov008Mgr *, (func_ov008_021cd584(p_), Camera_Dtor(&p_->cam), Heap_Free(p_)));
+    OV008_FREE(gOv008Mgr, Ov008Mgr *, (Ov008Mgr_FreeAll(p_), Camera_Dtor(&p_->cam), Heap_Free(p_)));
 }
 
-void func_ov008_021cd500(Ov008Mgr *m) {
+void Ov008Mgr_Init(Ov008Mgr *m) {
     m->unk_00 = 0;
     m->state = 1;
     m->unk_c4 = NULL;
@@ -63,7 +63,7 @@ void func_ov008_021cd500(Ov008Mgr *m) {
     m->unk_11c = 0x80000;
 }
 
-void func_ov008_021cd584(Ov008Mgr *m) {
+void Ov008Mgr_FreeAll(Ov008Mgr *m) {
     OV008_FREE_D(m->unk_c8, Model0218fe1c_FreeAnims);
     OV008_FREE_D(m->unk_d0, Model0218fe1c_FreeAnims);
     OV008_FREE_M(m->unk_d8);
@@ -99,7 +99,7 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_V(m->talk, v04);
     ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
     ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
-    func_ov000_0214bc10();
+    SceneResSet_Close08();
     func_ov000_0214c210();
 }
 
@@ -123,9 +123,9 @@ void LangData_LocalizePath(char *dst, const char *src);
 void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
-void func_ov000_0214bb80(void);
+void SceneResSet_Open08(void);
 void func_ov000_0214c1ac(void);
-BOOL func_ov000_0214bc6c(void);
+BOOL SceneResSet_IsLoaded08(void);
 BOOL func_ov000_0214c270(void);
 
 Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {

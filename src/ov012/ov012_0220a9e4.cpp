@@ -1377,7 +1377,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         {
             u8 *g = (u8 *)gSceneCmd;
             g[0xac] = 1;
-            func_ov000_02182590(g + 0xac);
+            SceneStage_StartScript(g + 0xac);
         }
         Ov012_ResetF0(self);
         self->unk_f0 |= 0x200000;

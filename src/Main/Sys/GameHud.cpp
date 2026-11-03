@@ -2,7 +2,7 @@
 #include "Main/Sys/Field.h"
 #include "Main/Gfx/Gfx3D.h"
 
-// Field-scene HUD drawing (func_02056e74).
+// Field-scene HUD drawing (MainVt_0208bbc8_DrawHud).
 
 class GameHudObj {
 public:
@@ -102,7 +102,7 @@ static inline BOOL GameHudObj_IsVisible(GameHudObj *obj) {
     return obj->visible ? TRUE : FALSE;
 }
 
-void func_02056e74(GameScene *scene, GameHud *hud) {
+void MainVt_0208bbc8_DrawHud(GameScene *scene, GameHud *hud) {
     u16 col;
     s32 y;
     s32 base;

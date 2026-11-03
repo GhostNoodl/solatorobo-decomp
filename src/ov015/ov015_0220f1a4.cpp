@@ -272,13 +272,13 @@ BOOL Ov015Result_Update(Ov015Result *self) {
             self->unk_0c = 0x79000;
             break;
         default:
-            func_ov002_021e9b28(0);
+            Ov002Vt_021f0694_New(0);
             self->unk_0c = 0;
             break;
         }
         self->state = 10;
     case 10:
-        if (gOv002Stage != NULL) func_ov002_021e7ea8(gOv002Stage);
+        if (gOv002Stage != NULL) Ov002Stage_Update(gOv002Stage);
         {
             s32 v = self->unk_0c;
             Ov002Stage *g = gOv002Stage;
@@ -308,10 +308,10 @@ BOOL Ov015Result_Update(Ov015Result *self) {
             DELETE_V(self->panel);
             HEAP_POP(saved);
             Ov015_SetStageSkip(-1);
-            func_ov002_021e9b28(gOv002Stage->unk_d0);
+            Ov002Vt_021f0694_New(gOv002Stage->unk_d0);
             self->state = 0x1e;
         }
-        if (gOv002Stage != NULL) func_ov002_021e7ea8(gOv002Stage);
+        if (gOv002Stage != NULL) Ov002Stage_Update(gOv002Stage);
         break;
     }
     case 0x1e: {
@@ -319,7 +319,7 @@ BOOL Ov015Result_Update(Ov015Result *self) {
         if (gOv002Stage == NULL) {
             busy = 0;
         } else {
-            busy = func_ov002_021e7ea8(gOv002Stage);
+            busy = Ov002Stage_Update(gOv002Stage);
         }
         if (busy == 0) {
             Ov002Stage_Delete();

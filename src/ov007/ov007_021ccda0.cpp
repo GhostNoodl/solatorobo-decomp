@@ -7,21 +7,21 @@
 extern "C" {
 
 #pragma force_active on
-void func_ov007_021ccda0(void) {
+void Ov007Scene_Create(void) {
     Ov007Scene *p = (Ov007Scene *)Heap_Alloc(0x6c);
     if (p != NULL) {
-        func_ov007_021cce28(p);
+        Ov007Scene_Init(p);
     }
     gOv007Scene = p;
 }
 
-void func_ov007_021ccdc8(void) {
+void Ov007Scene_Delete(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     if (gOv007Scene != NULL) {
         Ov007Scene *p = gOv007Scene;
         if (p != NULL) {
-            func_ov007_021ccec0(p);
+            Ov007Scene_Release(p);
             Heap_Free(p);
         }
         gOv007Scene = NULL;
@@ -31,7 +31,7 @@ void func_ov007_021ccdc8(void) {
 
 #pragma force_active reset
 
-void func_ov007_021cce28(Ov007Scene *s) {
+void Ov007Scene_Init(Ov007Scene *s) {
     s32 i;
     s->timer = 0;
     s->mode = 0;
@@ -66,14 +66,14 @@ void func_ov007_021cce28(Ov007Scene *s) {
     s->player = NULL;
 }
 
-void func_ov007_021ccec0(Ov007Scene *s) {
+void Ov007Scene_Release(Ov007Scene *s) {
     OV007_FREE_V(s->pic, v04);
     OV007_FREE_V(s->menu, v04);
     OV007_FREE_V(s->player, v04);
-    func_ov007_021ccf9c(s);
+    Ov007Scene_FreeRes(s);
 }
 
-void func_ov007_021ccf9c(Ov007Scene *s) {
+void Ov007Scene_FreeRes(Ov007Scene *s) {
     s32 i;
     void *saved;
     s->unk_64 = 0;
@@ -93,7 +93,7 @@ void func_ov007_021ccf9c(Ov007Scene *s) {
     }
 }
 
-s32 func_ov007_021cd270(Ov007Scene *s) {
+s32 Ov007Scene_Update(Ov007Scene *s) {
     Ov007Pic *pic;
     Ov007Player *pl;
     s->timer += 0x1000;
@@ -137,13 +137,13 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
         }
         break;
     case 3:
-        func_ov007_021cd628(s);
+        Ov007Scene_State3(s);
         break;
     case 4:
-        func_ov007_021cef80(s);
+        Ov007Scene_State4(s);
         break;
     case 5:
-        func_ov007_021ce038(s);
+        Ov007Scene_State5(s);
         break;
     case 7:
         if (s->sub == 0 && func_ov000_02189068(gSceneCmd)) {
@@ -213,7 +213,7 @@ void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s) {
 
 extern "C" {
 
-void func_ov007_021cd628(Ov007Scene *s) {
+void Ov007Scene_State3(Ov007Scene *s) {
     Ov007V *p;
     Model *m;
     Ov007Menu8 *t;
@@ -464,7 +464,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
 
 extern "C" {
 
-void func_ov007_021cdff0(Ov007Rs *rs) {
+void Ov007Rs_PolyIdCallback(Ov007Rs *rs) {
     u32 v;
     Ov007RsMat *q;
     q = rs->unk_b0;
@@ -472,8 +472,8 @@ void func_ov007_021cdff0(Ov007Rs *rs) {
     q->unk_0c = (v & ~0x3f000000) | (Gfx3DState_NextPolyId((Gfx3DState *)gGfxSys->unk_8b0) << 24);
 }
 
-void func_ov007_021ce020(Ov007Rs *rs) {
-    rs->unk_1c = (void *)func_ov007_021cdff0;
+void Ov007Rs_SetPolyIdCallback(Ov007Rs *rs) {
+    rs->unk_1c = (void *)Ov007Rs_PolyIdCallback;
     rs->unk_90 = 2;
 }
 
@@ -641,7 +641,7 @@ static inline BOOL Ov007_HasMsgN(s32 r, s32 w, s32 id) {
 }
 
 // Kept (round auA honesty audit): the volatile read of gSceneCmd is a scheduling lever (used by
-// func_ov007_021ce038), no honest form found; the file has .data and the function is mid-file,
+// Ov007Scene_State5), no honest form found; the file has .data and the function is mid-file,
 // so it can't be cut out to a dsd gap.
 static inline BOOL Ov007_HasMsg(s32 r, s32 w, s32 id) {
     Ov007MsgQ *q = (Ov007MsgQ *)*(volatile u32 *)&gSceneCmd;
@@ -701,7 +701,7 @@ static inline void Ov007Mdl_SetCb(Ov007Model *m, void *cb) {
 
 extern "C" {
 
-void func_ov007_021ce038(Ov007Scene *s) {
+void Ov007Scene_State5(Ov007Scene *s) {
     char buf[0x20];
     switch (s->sub) {
     case 0: {
@@ -817,7 +817,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         s->unk_30->unk_b4 = 0;
         Model0218fe1c_SetLoop(s->unk_30);
-        Ov007Mdl_SetCb(s->unk_30, (void *)func_ov007_021ce020);
+        Ov007Mdl_SetCb(s->unk_30, (void *)Ov007Rs_SetPolyIdCallback);
         NNSi_G3dModifyPolygonAttrMask(s->unk_30->unk_04, 1, 0x3f000000);
         NNSi_G3dModifyPolygonAttrMask(s->unk_30->unk_04, 1, 0x1f0000);
         s->unk_40 = 0x1000;
@@ -918,7 +918,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         break;
     case 9:
         if (Ov007_FadeDone()) {
-            func_ov007_021ccf9c(s);
+            Ov007Scene_FreeRes(s);
             s->state = 4;
             s->sub = 0;
             s->idx = 0;
@@ -1105,7 +1105,7 @@ static inline void Ov007_SetupView1(void) {
 
 extern "C" {
 
-void func_ov007_021cef80(Ov007Scene *s) {
+void Ov007Scene_State4(Ov007Scene *s) {
     char buf[0x20];
     Ov007Pic *p;
     switch (s->sub) {
@@ -1117,7 +1117,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         s->sub = 1;
         return;
     case 1:
-        if (!func_02036328()) {
+        if (!ResMgr_IsIdle()) {
             return;
         }
         OV007_FREE_V(s->pic, v04);
@@ -1161,7 +1161,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
     }
 }
 
-void func_ov007_021cf1d8(Ov007Scene *s) {
+void Ov007Scene_Draw(Ov007Scene *s) {
     switch (s->state) {
     case 3:
         if (Ov007_FadeDone()) {

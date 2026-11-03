@@ -44,7 +44,7 @@ u32 data_02097dd4;
 NamePool *gTexNamePool;
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
-void func_0203e300(NamePool *pool, int count);
+void NamePool_Init(NamePool *pool, int count);
 
 static inline void *Sys_Alloc(u32 size) {
     u32 irq = OS_DisableInterrupts();
@@ -65,7 +65,7 @@ void NamePool_CreateTex(void) {
     gSysState->cur = gSysState->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
-        func_0203e300(pool, 0x60);
+        NamePool_Init(pool, 0x60);
     }
     gTexNamePool = pool;
     gSysState->cur = gSysState->heapHi;
@@ -76,7 +76,7 @@ void NamePool_CreatePltt(void) {
     gSysState->cur = gSysState->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
-        func_0203e300(pool, 0x60);
+        NamePool_Init(pool, 0x60);
     }
     gPlttNamePool = pool;
     gSysState->cur = gSysState->heapHi;
@@ -119,7 +119,7 @@ void NamePool_SetPlttKey(const char *name, u32 value) {
     pool->hash = NamePool_Hash(name);
 }
 
-NameNode *func_0203e1d0(NamePool *pool, u32 key) {
+NameNode *NamePool_Add(NamePool *pool, u32 key) {
     NameNode *node = pool->freeList;
     NameNode *next = node->next;
     pool->freeList = next;
@@ -158,7 +158,7 @@ static inline NameNode *NamePool_Find(NamePool *pool, u32 key) {
     return NULL;
 }
 
-NameNode *func_0203e25c(NamePool *pool, u32 key) {
+NameNode *NamePool_Release(NamePool *pool, u32 key) {
     NameNode *node = NamePool_Find(pool, key);
     NameNode *next;
     if (--node->refCount != 0) {
@@ -188,7 +188,7 @@ NameNode *func_0203e25c(NamePool *pool, u32 key) {
     return NULL;
 }
 
-void func_0203e300(NamePool *pool, int count) {
+void NamePool_Init(NamePool *pool, int count) {
     NameNode *nodes;
     int i;
     pool->nodes = (NameNode *)Sys_Alloc04(count * sizeof(NameNode), 4);
@@ -247,7 +247,7 @@ extern void GXS_BeginLoadOBJExtPltt(void);
 extern void GXS_LoadOBJExtPltt(u32 src, u32 dst, u32 size);
 extern void GXS_EndLoadOBJExtPltt(void);
 
-void func_0203e3e8(void) {
+void Vram_InitTransfers(void) {
     int i;
     for (i = 0; i < 64; i++) {
         *(u32 *)&gVramTransfers[i] = 0;
@@ -373,7 +373,7 @@ BOOL Vram_IsIdle(void) {
     return TRUE;
 }
 
-void func_0203e6bc(void) {
+void Vram_FlushTransfers(void) {
     VramTransfer *t;
     u32 dst;
     u32 src;
@@ -476,7 +476,7 @@ static inline NameNode *NamePool_Lookup(NamePool *pool) {
     return NULL;
 }
 
-u32 func_0203e8e0(u32 size, int is4x4, int opt) {
+u32 Vram_AllocTex(u32 size, int is4x4, int opt) {
     NamePool *pool = gTexNamePool;
     u32 key;
     if (pool != NULL) {
@@ -489,7 +489,7 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
     if (key != 0) {
         gGfxSys->unk_024 += ((key & 0x7fff0000) >> 16) << 4;
         if (pool != NULL) {
-            func_0203e1d0(pool, key);
+            NamePool_Add(pool, key);
         }
     }
     return key;
@@ -497,7 +497,7 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
 
 int Vram_FreeTex(u32 key) {
     int r;
-    if (gTexNamePool != NULL && func_0203e25c(gTexNamePool, key) != NULL) {
+    if (gTexNamePool != NULL && NamePool_Release(gTexNamePool, key) != NULL) {
         return 0;
     }
     r = NNS_GfdFreeLnkTexVram(key);
@@ -508,7 +508,7 @@ int Vram_FreeTex(u32 key) {
     return r;
 }
 
-u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
+u32 Vram_AllocPltt(u32 size, int is4pltt, int opt) {
     NamePool *pool = gPlttNamePool;
     u32 key;
     if (pool != NULL) {
@@ -521,7 +521,7 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
     if (key != 0) {
         gGfxSys->unk_028 += ((key & 0xffff0000) >> 16) << 3;
         if (pool != NULL) {
-            func_0203e1d0(pool, key);
+            NamePool_Add(pool, key);
         }
     }
     return key;
@@ -529,7 +529,7 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
 
 int Vram_FreePltt(u32 key) {
     int r;
-    if (gPlttNamePool != NULL && func_0203e25c(gPlttNamePool, key) != NULL) {
+    if (gPlttNamePool != NULL && NamePool_Release(gPlttNamePool, key) != NULL) {
         return 0;
     }
     r = NNS_GfdFreeLnkPlttVram(key);
@@ -540,7 +540,7 @@ int Vram_FreePltt(u32 key) {
     return r;
 }
 
-u32 func_0203ebf8(void) {
+u32 Vram_GetTexTransferId(void) {
     return gTexTransferId;
 }
 

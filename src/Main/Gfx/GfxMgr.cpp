@@ -10,8 +10,8 @@ extern void GfxMgr_Init(GfxMgr *mgr);
 extern void *GfxMgr_AllocCharBlock(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
 extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);
 extern VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block);
-extern ResList *func_02035934(const char *name);
-extern void *func_02034cec(ResList *list, const char *name);
+extern ResList *ResMgr_LoadArcListSync(const char *name);
+extern void *ResList_FindType1(ResList *list, const char *name);
 
 void *func_02039720(void) {
     return data_02097ce4;
@@ -21,7 +21,7 @@ void *func_0203972c(void *arg1, void *arg2) {
     return func_0203a984(gGfxMgr, arg1, arg2);
 }
 
-void func_02039750(void) {
+void GfxMgr_Create(void) {
     GfxMgr *mgr;
     int j;
     int i;
@@ -35,7 +35,7 @@ void func_02039750(void) {
         mgr->fonts[i] = NULL;
         for (j = 0; j < 9; j++) {
             if (i == data_020827f8[j].index) {
-                mgr->fonts[i] = (GfxFont *)func_02034cec(func_02035934(data_020827f8[j].name), data_020827f8[j].name);
+                mgr->fonts[i] = (GfxFont *)ResList_FindType1(ResMgr_LoadArcListSync(data_020827f8[j].name), data_020827f8[j].name);
                 mgr->fontHeights[i] = mgr->fonts[i]->res->info[6];
             }
         }

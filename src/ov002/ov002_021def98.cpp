@@ -16,13 +16,13 @@ extern Fn021def98 data_ov002_021eef8c[];
 extern Id021def98 data_ov002_021eef90[];
 extern VFunc Ov002Vt_021f0044_vtbl[];
 
-void func_ov000_021c3af4(void *self);
+void LoBase021ccb54_021ccbe0_CtorBase(void *self);
 void ListRow_Init(void *self);
 void Obj021f002c_Init(Obj021f002c *self);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
-void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
+void LoBase021ccb54_021ccbe0_SortRows(void *self, s32 (*cmp)(void *, void *));
 
 Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     u16 id;
@@ -37,7 +37,7 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
         *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
-        func_ov000_021c3af4(p);
+        LoBase021ccb54_021ccbe0_CtorBase(p);
         *(VFunc **)p = Ov002Vt_021f0044_vtbl;
     }
     p->rows = 6;
@@ -79,7 +79,7 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         s32 k = self->unk_34;
         void *r;
         Obj021eff50 *w;
-        func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
+        LoBase021ccb54_021ccbe0_SortRows(p, data_ov002_021eef8c[k].fn);
         r = MsgRes_GetString(gMsgRes, data_ov002_021eef90[k].id);
         w = self->owner;
         Obj0215bb14_SetText(((void *)w->unk_20), r);

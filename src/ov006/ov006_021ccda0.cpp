@@ -23,8 +23,8 @@ void ov006_SlotManager_Create(void);
 void ov006_Menu_Load(ov006_Menu *a);
 void ov006_Menu_DrawHolder(ov006_Menu *a);
 BOOL ov006_Menu_RequestShutdown(ov006_Menu *a);
-ov006_Task *func_ov006_021d54b0(void *mem);
-ov006_Task *func_ov006_021d5b04(void *mem);
+ov006_Task *Ov006Vt_021ebc98_Ctor(void *mem);
+ov006_Task *Ov006Vt_021ebfc0_Ctor(void *mem);
 ov006_Task *Ov006Vt_021ec040_Ctor(void *mem);
 int ov006_Manager_SwitchTask(ov006_Manager *self);
 int func_ov006_021cd4c0(ov006_Manager *self);
@@ -151,8 +151,8 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
             self->subState++;
             break;
         case 1:
-            ov006_Menu_Load(data_ov006_021ec888);
-            if (data_ov006_021ec888->state == 0) {
+            ov006_Menu_Load(gOv006Menu);
+            if (gOv006Menu->state == 0) {
                 break;
             }
             ov006_Manager_ModeTable[gOv006Manager->unk14](1, done, done);
@@ -182,7 +182,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
         result = FALSE;
         break;
     }
-    if (data_ov006_021ec888 != NULL && data_ov006_021ec888->state != 0 && data_ov006_021ec888->state != 1) {
+    if (gOv006Menu != NULL && gOv006Menu->state != 0 && gOv006Menu->state != 1) {
         gSysState->unk_1f = one;
     }
     return result;
@@ -193,8 +193,8 @@ void ov006_Manager_Draw(ov006_Manager *self) {
     if (task != NULL && task->state >= 3) {
         task->vfunc_1c();
     }
-    if (data_ov006_021ec888 != NULL) {
-        ov006_Menu_DrawHolder(data_ov006_021ec888);
+    if (gOv006Menu != NULL) {
+        ov006_Menu_DrawHolder(gOv006Menu);
     }
 }
 
@@ -207,9 +207,9 @@ BOOL func_ov006_021cd2a8(ov006_Manager *self) {
 }
 
 static inline void ov006_Update021ec888(void) {
-    ov006_Menu_Load(data_ov006_021ec888);
-    if (data_ov006_021ec888->unk15F != 0) {
-        data_ov006_021ec888->unk15F--;
+    ov006_Menu_Load(gOv006Menu);
+    if (gOv006Menu->unk15F != 0) {
+        gOv006Menu->unk15F--;
     }
 }
 
@@ -231,13 +231,13 @@ BOOL ov006_Manager_SwitchTask(ov006_Manager *self) {
         case 0:
             task = (ov006_Task *)Heap_Alloc(0x14);
             if (task != NULL) {
-                task = func_ov006_021d54b0(task);
+                task = Ov006Vt_021ebc98_Ctor(task);
             }
             break;
         case 1:
             task = (ov006_Task *)Heap_Alloc(0x88);
             if (task != NULL) {
-                task = func_ov006_021d5b04(task);
+                task = Ov006Vt_021ebfc0_Ctor(task);
             }
             break;
         case 2:
@@ -303,13 +303,13 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
     BOOL result = FALSE;
     switch (self->subState) {
     case 0:
-        if (data_ov006_021ec888->state != 1) {
-            ov006_Menu_RequestShutdown(data_ov006_021ec888);
+        if (gOv006Menu->state != 1) {
+            ov006_Menu_RequestShutdown(gOv006Menu);
         }
         self->subState++;
     case 1:
         ov006_Update021ec888();
-        if (data_ov006_021ec888->state == 1) {
+        if (gOv006Menu->state == 1) {
             ov006_Menu_Delete();
             ov006_DeleteSlotManager();
             self->subState++;

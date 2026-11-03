@@ -3,7 +3,7 @@
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
 
-// HUD block of the field scene (at 0xc0; the one func_02056e74 draws).
+// HUD block of the field scene (at 0xc0; the one MainVt_0208bbc8_DrawHud draws).
 struct SlideHud {
     /* 0x000 */ u32 active : 1;
     /* 0x000 */ u32 shown : 1;
@@ -99,7 +99,7 @@ extern Model *Model_Init_0204e238(void *model, const char *name, const char *fil
 extern char *Model_GetName(Model *model);
 extern void *Model_GetFileName(Model *model);
 extern void func_0204e29c(Model *model);
-extern void func_02054254(SlidePanel *panel);
+extern void SlidePanel_Reset(SlidePanel *panel);
 extern void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 extern BOOL func_020544e4(SlidePanel *panel, BOOL sound);
 extern BOOL ResMgr_IsArchiveLoaded(const char *name, void *arcName, u16 id);
@@ -125,7 +125,7 @@ extern s32 FX_Div(s32 a, s32 b);
 extern void func_020556a0(SlideHud *hud, s8 *text);
 extern void func_02055bbc(SlideScene *scene);
 extern void func_02055cbc(SlideScene *scene);
-extern void func_02052178(SlideScene *scene);
+extern void Obj3DAnim_UpdateSlots(SlideScene *scene);
 extern BOOL FieldMsg_IsBusy(SlideScene *scene);
 extern BOOL func_02055aa4(SlideScene *scene);
 extern BOOL Field_HasEvent_02055844(void);
@@ -137,7 +137,7 @@ extern BOOL func_020559c8(SlideHud *hud);
 extern BOOL Field_IsEventQueued(s32 id);
 extern BOOL Field_IsIdle_02055a4c(void);
 extern void func_02055a78(void);
-extern u8 *func_0204f354(void);
+extern u8 *GfxSys_Get3DState(void);
 extern void *func_02055a9c(u8 *p);
 extern void func_02055a90(void *p);
 
@@ -209,7 +209,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
     count = 0;
     for (i = 0, panel = scene->panels; i < 5; i++, panel++) {
         if (panel->flag4) {
-            func_02054254(panel);
+            SlidePanel_Reset(panel);
             scene->unk_b64 = 10;
             scene->unk_b5c = 0;
         }
@@ -230,7 +230,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 }
             }
             res = ResMgr_GetArchiveList(Model_GetName(panel->nextModel), Model_GetFileName(panel->nextModel), 2);
-            func_02054254(panel);
+            SlidePanel_Reset(panel);
             TexObj_SetRes(panel->nextModel, ResList_FindType2(res, Model_GetFileName(panel->nextModel)));
             if (panel->flag22) {
                 func_02054b70(panel->nextModel);
@@ -404,7 +404,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
     }
     func_02055bbc(scene);
     func_02055cbc(scene);
-    func_02052178(scene);
+    Obj3DAnim_UpdateSlots(scene);
     scene->pressed = 0;
     if (!scene->loaded || FieldMsg_IsBusy(scene)) {
         return TRUE;
@@ -478,7 +478,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
             if (!Field_IsIdle_02055a4c()) {
                 func_02055a78();
             }
-            func_02055a90(func_02055a9c(func_0204f354()));
+            func_02055a90(func_02055a9c(GfxSys_Get3DState()));
         }
         if (scene->unk_b8_0 == 0 || scene->flag7 == 1) {
             if (Pad_GetTrig() & 2) {

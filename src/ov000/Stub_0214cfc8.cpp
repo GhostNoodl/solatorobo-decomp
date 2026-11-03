@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_0214cfc8(Lo021cad50 *self) {
+void Lo021cad50_DeleteTexts(Lo021cad50 *self) {
     s32 i;
     for (i = 0; i < 12; i++) {
         TextWin *p = (TextWin *)self->unk_98[i];

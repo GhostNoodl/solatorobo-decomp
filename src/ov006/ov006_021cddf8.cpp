@@ -5,7 +5,7 @@ extern "C" {
 
 extern void *gTaskHost;
 void *TaskHost_RequestSwitch(void *a, int b, int c);
-void func_ov000_021736dc(void);
+void TaskList_DeleteAll(void);
 void *Param_Get(u32 id);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void ov006_SetupDefaultSlots(void);
@@ -26,7 +26,7 @@ void ov006_Manager_Mode08(int type, UiList *obj, int arg) {
         if (obj != NULL) {
             TaskHost_RequestSwitch(gTaskHost, 0x2a, arg);
         } else {
-            func_ov000_021736dc();
+            TaskList_DeleteAll();
         }
         break;
     case 5:

@@ -16,7 +16,7 @@ typedef struct ov006_ModelHolder {
 extern "C" {
 #endif
 
-void *func_02035de0(const char *a, const char *b);
+void *ResMgr_FindArcType2(const char *a, const char *b);
 
 #ifdef __cplusplus
 }

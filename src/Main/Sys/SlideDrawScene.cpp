@@ -70,7 +70,7 @@ extern "C" {
 
 extern const SlideCol3 data_020829c8;
 
-u8 *func_0204f354(void);
+u8 *GfxSys_Get3DState(void);
 void *func_02055a9c(u8 *p);
 void GfxGe_StoreMtx(u32 mode, ...);
 void GfxGe_Identity(void);
@@ -97,7 +97,7 @@ void func_0205311c(SlideDrawScene *scene);
 s32 SlidePanel_GetTarget_02054894(SlidePanel *panel);
 s32 SlidePanel_GetEdge_020548c8(SlidePanel *panel);
 void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
-void func_020543bc(SlidePanel *panel);
+void SlidePanel_Unload(SlidePanel *panel);
 void Model_SetAlpha(Model *model, u32 v);
 void func_02050e94(Model *model);
 void func_02056cb8(Model *model);
@@ -113,7 +113,7 @@ void Model_SetPolyId(Model *model, u32 v);
 void func_02056d50(Model *model);
 
 // One local `i` holds the fade scale and is then the panel counter (round mtA).
-void func_02056230(SlideDrawScene *scene) {
+void MainVt_0208bbc8_DrawSlides(SlideDrawScene *scene) {
     s32 i;
     s16 y;
     s32 sx;
@@ -131,8 +131,8 @@ void func_02056230(SlideDrawScene *scene) {
     SlidePanel *panel = NULL;
     s32 dy;
 
-    gfx = func_0204f354();
-    pltt = func_02055a9c(func_0204f354());
+    gfx = GfxSys_Get3DState();
+    pltt = func_02055a9c(GfxSys_Get3DState());
     sx = scene->shakeX & ~0xfff;
     sy = scene->shakeY & ~0xfff;
     GfxGe_StoreMtx(0);
@@ -256,7 +256,7 @@ void func_02056230(SlideDrawScene *scene) {
             if (panel->unk_20 == 0x1000) {
                 panel->flag4 = 1;
                 if (!panel->flag27) {
-                    func_020543bc(panel);
+                    SlidePanel_Unload(panel);
                     continue;
                 }
             }

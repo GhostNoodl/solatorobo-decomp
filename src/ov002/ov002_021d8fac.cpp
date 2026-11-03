@@ -68,13 +68,13 @@ void Ov002Vt_021efed4_Draw(Obj021efed4 *self) {
 
 
 
-u32 func_0203ebf8(const char *name);
+u32 Vram_GetTexTransferId(const char *name);
 
 
 
 
 
-void *func_02035de0(const char *file, const char *name);
+void *ResMgr_FindArcType2(const char *file, const char *name);
 
 
 void TexObj_SetOamFunc(void *a, int b, void *c, int d);
@@ -112,7 +112,7 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
     if (self->unk_78 != NULL) {
         name = (char *)G3dRes_SetupVram(buf, (void *)*self->unk_78);
     }
-    self->unk_84 = func_0203ebf8(name);
+    self->unk_84 = Vram_GetTexTransferId(name);
     self->unk_80 = (NNSG3dRenderObj *)Heap_Alloc(sizeof(NNSG3dRenderObj));
     NNS_G3dRenderObjInit(self->unk_80, self->unk_7c);
     NNS_G3dRenderObjSetCallBack(self->unk_80, (NNSG3dSbcCallBackFunc)Ov002_ScaleAlphaMatCb, NULL, 4, NNS_G3D_SBC_CALLBACK_TIMING_B);
@@ -134,7 +134,7 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
             STD_CopyString(m->name, file);
         }
         self->unk_90 = m;
-        TexObj_SetRes((Model *)self->unk_90, func_02035de0(data_0208cc94, data_0208cc88));
+        TexObj_SetRes((Model *)self->unk_90, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
         ((Model *)self->unk_90)->flags |= 2;
         ((Model *)self->unk_90)->unk_150 = -0x2000;
         TexObj_SetOamFuncArg((Model *)self->unk_90, 6, self);

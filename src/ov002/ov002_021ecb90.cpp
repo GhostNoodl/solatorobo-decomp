@@ -8,8 +8,8 @@ extern "C" {
 // constant index into data_ov002_021f0fac as base + 0x20), so they are defined before the first
 // function. MWCC lays these three out in the reverse of this order.
 Ov002StaffNode *data_ov002_021f0fa8;
-Ov002Staff *data_ov002_021f0fa4;
-Ov002StaffNode *data_ov002_021f0fa0;
+Ov002Staff *gOv002Staff;
+Ov002StaffNode *gOv002StaffPool;
 Ov002StaffNode *data_ov002_021f0fac[9];
 
 }
@@ -199,7 +199,7 @@ void Ov002StaffPhoto_Init(Ov002StaffPhoto *self) {
 void Ov002StaffPhoto_Release(Ov002StaffPhoto *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_WITH(self->photo, func_ov000_0214b724);
+    DELETE_WITH(self->photo, TwlLoader_Unload);
     HEAP_POP(saved);
 }
 
@@ -220,7 +220,7 @@ BOOL Ov002StaffPhoto_Load(Ov002StaffPhoto *self) {
         break;
     }
     case 1:
-        func_ov000_0214b810(self->photo);
+        TwlLoader_Load(self->photo);
         if (Loader_IsDone(self->photo)) {
             return TRUE;
         }
@@ -377,7 +377,7 @@ void Ov002StaffText_Start(Ov002StaffText *self) {
     if (self->line[0].text != NULL) {
         Ov002StaffText *m;
         self->line[0].x = data_ov002_021f0d88.w20 - ((self->line[0].text->width >> 1) << 12);
-        m = data_ov002_021f0fa4->text;
+        m = gOv002Staff->text;
         if (m != NULL) {
             self->line[0].y += m->line[0].y & 0xfff;
         }
@@ -386,7 +386,7 @@ void Ov002StaffText_Start(Ov002StaffText *self) {
     if (self->line[1].text != NULL) {
         Ov002StaffText *m;
         self->line[1].x = data_ov002_021f0d88.w20 - ((self->line[1].text->width >> 1) << 12);
-        m = data_ov002_021f0fa4->text;
+        m = gOv002Staff->text;
         if (m != NULL) {
             self->line[1].y += m->line[0].y & 0xfff;
         }
@@ -418,7 +418,7 @@ BOOL Ov002StaffText_Run(Ov002StaffText *self) {
     if (self->line[0].text == NULL) {
         return FALSE;
     }
-    data_ov002_021f0fa4->text = self;
+    gOv002Staff->text = self;
     dt = self->clock.step;
     switch (self->entry->unk_0c) {
     case 0:
@@ -611,8 +611,8 @@ void Ov002Staff_Create(s32 id) {
         p->loader = NULL;
         func_ov002_021edf98_setC(p, 1);
     }
-    data_ov002_021f0fa4 = p;
-    data_ov002_021f0fa0 = NULL;
+    gOv002Staff = p;
+    gOv002StaffPool = NULL;
     data_ov002_021f0fa8 = NULL;
     for (i = 0; i < 9; i++) {
         data_ov002_021f0fac[i] = NULL;
@@ -629,7 +629,7 @@ extern "C" {
 
 void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
-void func_ov002_021ee024(void) {
+void Ov002Staff_Delete(void) {
     void *saved;
     Ov002StaffNode *n;
     Ov002StaffNode *next;
@@ -637,11 +637,11 @@ void func_ov002_021ee024(void) {
     Ov002Staff *x;
     void *s3;
     HEAP_PUSH(saved);
-    x = data_ov002_021f0fa4;
+    x = gOv002Staff;
     if (x != NULL) {
         if (x != NULL) {
             SndMgr_StopStrm_0204a284(gSndMgr, -1);
-            for (n = data_ov002_021f0fa0; n != NULL; n = next) {
+            for (n = gOv002StaffPool; n != NULL; n = next) {
                 s32 k = n->entry->kind;
                 Ov002StaffNode *c;
                 Ov002StaffNode *prev;
@@ -662,7 +662,7 @@ void func_ov002_021ee024(void) {
                 if (n->prev != NULL) {
                     n->prev->next = n->next;
                 } else {
-                    data_ov002_021f0fa0 = n->next;
+                    gOv002StaffPool = n->next;
                 }
                 if (n->next != NULL) {
                     n->next->prev = n->prev;
@@ -688,7 +688,7 @@ void func_ov002_021ee024(void) {
             }
             Heap_Free(x);
         }
-        data_ov002_021f0fa4 = NULL;
+        gOv002Staff = NULL;
     }
     HEAP_POP(saved);
 }
@@ -715,10 +715,10 @@ extern "C" {
 extern char data_ov002_021f0e06[];
 extern ov002_Disp021ee1a8 *gSceneCmd;
 
-int func_0200779c(char *dst, const char *fmt, ...);
+int sprintf(char *dst, const char *fmt, ...);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
 void Ov002StaffLoader_Parse(Ov002StaffLoader *self);
-BOOL func_ov002_021ee55c(Ov002Staff *self, u16 start, int count);
+BOOL Ov002Staff_SpawnEntries(Ov002Staff *self, u16 start, int count);
 void func_ov002_021ee7f8(Ov002Staff *self);
 
 static inline BOOL ov002_Staff_IsPaused(Ov002Staff *s) {
@@ -745,9 +745,9 @@ static inline void ov002_Staff_SetNext(Ov002Staff *s, s32 state) {
     }
 }
 
-void func_ov002_021ee1a8(void) {
+void Ov002Staff_Step(void) {
     Ov002StaffLoader *o;
-    Ov002Staff *s = (Ov002Staff *)data_ov002_021f0fa4;
+    Ov002Staff *s = (Ov002Staff *)gOv002Staff;
 
     ov002_Staff_Update(s);
     s->clock.flags.paused = 0;
@@ -775,7 +775,7 @@ void func_ov002_021ee1a8(void) {
             s->loader = o;
             id = s->id;
             LangData_LocalizePath(dir, data_ov002_021f0d88.dir2);
-            func_0200779c(num, data_ov002_021f0e06, id);
+            sprintf(num, data_ov002_021f0e06, id);
             Tbl_Format_02070874(path, data_ov002_021f0d88.pathFmt, num);
             o->vfunc_24(dir, path);
             s->clock.sub = 4;
@@ -798,7 +798,7 @@ void func_ov002_021ee1a8(void) {
             s->spawned = 0;
             s->clock.sub++;
         case 1:
-            if (!func_ov002_021ee55c(s, s->spawned, 0x20)) {
+            if (!Ov002Staff_SpawnEntries(s, s->spawned, 0x20)) {
                 s->spawned += 0x20;
                 break;
             }
@@ -842,18 +842,18 @@ void func_ov002_021ee1a8(void) {
 namespace m_021ee4d0 {
 extern "C" {
 
-void func_ov002_021ee4d0(void) {
-    Ov002Staff *o4 = data_ov002_021f0fa4;
+void Ov002Staff_Draw(void) {
+    Ov002Staff *o4 = gOv002Staff;
     BOOL flag = gGfxSys->unk_a30_4 ? TRUE : FALSE;
     Ov002StaffNode *v;
     if (o4->clock.state != 3 && o4->clock.state != 7) {
         return;
     }
-    for (v = data_ov002_021f0fa0; v != NULL; v = v->next) {
+    for (v = gOv002StaffPool; v != NULL; v = v->next) {
         v->vfunc_0c(flag);
     }
     if (o4->clock.state == 3) {
-        func_ov002_021eea74(o4);
+        Ov002Staff_DrawFade(o4);
     }
 }
 
@@ -902,7 +902,7 @@ struct N7_55c : N3_55c {
     N7_55c() { vt = Ov002Vt_021f0e14_vtbl; ((VObj *)this)->vfunc_10(); }
 };
 
-BOOL func_ov002_021ee55c(Ov002Staff *self, s32 start, s32 count) {
+BOOL Ov002Staff_SpawnEntries(Ov002Staff *self, s32 start, s32 count) {
     Ov002StaffScript *hdr = self->loader->script;
     Ov002StaffEntry *e = (Ov002StaffEntry *)(hdr + 1) + start;
     s32 end = start + count;
@@ -982,7 +982,7 @@ static inline void ov002_unlink7f8(Ov002StaffNode *n) {
     if (n->prev != NULL) {
         n->prev->next = n->next;
     } else {
-        data_ov002_021f0fa0 = n->next;
+        gOv002StaffPool = n->next;
     }
     if (n->next != NULL) {
         n->next->prev = n->prev;
@@ -1012,7 +1012,7 @@ void func_ov002_021ee7f8(Ov002Staff *self) {
     Ov002StaffNode *next;
     switch (self->clock.sub) {
     case 0:
-        n = data_ov002_021f0fa0;
+        n = gOv002StaffPool;
         self->text = NULL;
         for (; n != NULL; n = next) {
             next = n->next;
@@ -1032,7 +1032,7 @@ void func_ov002_021ee7f8(Ov002Staff *self) {
         {
             Ov002StaffNode *m;
             Ov002StaffNode *mnext;
-            for (m = data_ov002_021f0fa0; m != NULL; m = mnext) {
+            for (m = gOv002StaffPool; m != NULL; m = mnext) {
                 mnext = m->next;
                 ov002_unlink7f8(m);
             }

@@ -260,7 +260,7 @@ extern const char *data_0208ccb4;
 extern const char *data_0208ccac;
 extern char data_0208d2b4[];
 extern char data_0208d2b9[];
-extern int func_0200779c(char *dst, const char *fmt, ...);
+extern int sprintf(char *dst, const char *fmt, ...);
 
 void func_02070b98(s32 id, char *dst, int unused, int num) {
     char numBuf[8];
@@ -275,11 +275,11 @@ void func_02070b98(s32 id, char *dst, int unused, int num) {
         fmt = data_0208ccb4;
         break;
     }
-    func_0200779c(numBuf, data_0208d2b4);
+    sprintf(numBuf, data_0208d2b4);
     STD_CopyString(name, (const char *)Tbl_GetOffset(Tbl_FindEntryT(type, id), 1));
     STD_ConcatenateString(name, numBuf);
     Tbl_Format(dst, fmt, name);
-    func_0200779c(numBuf, data_0208d2b9, num);
+    sprintf(numBuf, data_0208d2b9, num);
     STD_CopyString(name, data_0208ccac);
     STD_ConcatenateString(name, numBuf);
     Tbl_Format(dst, dst, name);

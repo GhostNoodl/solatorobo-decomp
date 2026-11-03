@@ -42,7 +42,7 @@ static inline void ov006_Menu_Advance(ov006_Menu *self) {
 }
 
 static inline void ov006_Menu_Error(int code) {
-    ov006_Menu *menu = data_ov006_021ec888;
+    ov006_Menu *menu = gOv006Menu;
     if (menu->state == 9) {
         return;
     }
@@ -51,7 +51,7 @@ static inline void ov006_Menu_Error(int code) {
     menu->unk1C = code;
 }
 
-void func_ov006_021e5604(ov006_Menu *self) {
+void ov006_Menu_State05(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         gSysState->vblankFunc = NULL;
@@ -80,7 +80,7 @@ void func_ov006_021e5604(ov006_Menu *self) {
         net->param.unkC = 1;
         WH_CalcBufferSizes_02044a0c(&net->param);
         MI_CpuFill8(gWhMgr->buf, 0, 0x200);
-        menu = data_ov006_021ec888;
+        menu = gOv006Menu;
         for (i = 0; i < 4; i++) {
             ov006_MenuEntry *e = &menu->entries[i];
             e->unk0_0 = 0;

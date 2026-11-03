@@ -10,7 +10,7 @@ typedef struct StageVars {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ union {
         u16 unk_02;
-        u8 unk_02_bytes[2]; // saved byte by byte with unk_52..unk_5a (func_020622ec / func_02062370)
+        u8 unk_02_bytes[2]; // saved byte by byte with unk_52..unk_5a (StageVars_Save / StageVars_Load)
     };
     /* 0x04 */ u16 unk_04;
     /* 0x06 */ u16 unk_06;

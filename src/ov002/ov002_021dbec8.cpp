@@ -9,7 +9,7 @@ namespace K { extern "C" const char data_ov002_021efe26[]; }
 
 extern "C" {
 
-void *func_02035de0(const char *file, const char *name);
+void *ResMgr_FindArcType2(const char *file, const char *name);
 void TexObj_SetOamFunc(void *a, int b, void *c, int d);
 void *func_ov002_021e0488(void *a, void *b, void *c, u16 *d);
 
@@ -71,7 +71,7 @@ void Obj021eff10_Enter(Obj021eff10 *self, Obj021eff50 *owner) {
         char *file = ((char *)K::data_ov002_021efe26);
         TexObj_Init(&m->model, nm, 0);
         STD_CopyString(m->model.name, file);
-        TexObj_SetRes(&m->model, func_02035de0(file, nm));
+        TexObj_SetRes(&m->model, ResMgr_FindArcType2(file, nm));
     }
     m->model.flags |= 2;
     m->model.unk_150 = -0x2000;
@@ -96,7 +96,7 @@ void Obj021eff10_Enter(Obj021eff10 *self, Obj021eff50 *owner) {
         }
         self->unk_10 = mdl;
     }
-    TexObj_SetRes(self->unk_10, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk_10, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x2000;
     TexObj_SetOamFunc(self->unk_10, 6, (void *)func_ov002_021e0488, 0);

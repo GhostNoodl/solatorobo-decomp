@@ -92,7 +92,7 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
             game->unk18F = 0;
         }
         gSysState->frameWait = 1;
-        data_ov006_021ec888->unk15E = 2;
+        gOv006Menu->unk15E = 2;
         if (ov006_FadeIdle()) {
             GfxSys_StartFadeOut(0x1000, 0, 0);
             GfxSys_StartFadeOut(0x1000, 0, 1);

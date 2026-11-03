@@ -49,7 +49,7 @@ static inline void ov006_Menu_Advance(ov006_Menu *self) {
 }
 
 static inline void ov006_Menu_Error(int code) {
-    ov006_Menu *menu = data_ov006_021ec888;
+    ov006_Menu *menu = gOv006Menu;
     if (menu->state == 9) {
         return;
     }
@@ -82,7 +82,7 @@ static inline BOOL ov006_Menu_SetEntry(ov006_Menu *self, u8 enabled) {
     return result;
 }
 
-void func_ov006_021e51f8(ov006_Menu *self) {
+void ov006_Menu_State06(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         gSysState->vblankFunc = NULL;
@@ -145,7 +145,7 @@ void func_ov006_021e51f8(ov006_Menu *self) {
         WH_CalcBufferSizes_02044a0c(&net->param);
         Wh_SetGameInfo(gWhMgr, self->unkF4, 0x66);
         MI_CpuFill8(gWhMgr->buf, 0, 0x200);
-        menu = data_ov006_021ec888;
+        menu = gOv006Menu;
         for (i = 0; i < 4; i++) {
             ov006_MenuEntry *e = &menu->entries[i];
             e->unk0_0 = 0;
@@ -165,7 +165,7 @@ void func_ov006_021e51f8(ov006_Menu *self) {
         if (gWhMgr->state != 5) {
             return;
         }
-        ov006_Menu_SetEntry(data_ov006_021ec888, TRUE);
+        ov006_Menu_SetEntry(gOv006Menu, TRUE);
         gSysState->vblankFunc = ov006_Menu_VBlankA;
         self->stateTime = 0x1e;
         return;
@@ -187,7 +187,7 @@ void func_ov006_021e51f8(ov006_Menu *self) {
         }
         return;
     case 0x1f:
-        if (!ov006_Menu_HasPeer(data_ov006_021ec888)) {
+        if (!ov006_Menu_HasPeer(gOv006Menu)) {
             ov006_Menu_Error(4);
         }
         if (self->unk15C != gWhMgr->unk32 || gWhMgr->unk32 <= 1) {

@@ -2,9 +2,9 @@
 
 extern "C" {
 
-// Row comparators of the item list (data_ov002_021eef8c, func_ov002_021e34fc): by the item's
+// Row comparators of the item list (data_ov002_021eef8c, LoBase021ccb54_021ccbe0_SortRows): by the item's
 // Param entry byte 2, then by id.
-int func_ov002_021e4674(Obj021f002c *a, Obj021f002c *b) {
+int Obj021f002c_CompareByCat(Obj021f002c *a, Obj021f002c *b) {
     u8 ca;
     u16 ia;
     u16 ib;
@@ -30,7 +30,7 @@ int func_ov002_021e4674(Obj021f002c *a, Obj021f002c *b) {
     return r;
 }
 
-int func_ov002_021e46c4(Obj021f002c *a, Obj021f002c *b) {
+int Obj021f002c_CompareByCatRev(Obj021f002c *a, Obj021f002c *b) {
     u8 ca;
     u16 ia;
     u16 ib;

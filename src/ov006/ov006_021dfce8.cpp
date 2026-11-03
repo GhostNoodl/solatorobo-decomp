@@ -127,7 +127,7 @@ void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
         STD_CopyString(m1->name, data_0214b105);
     }
     item->unk14 = m1;
-    TexObj_SetRes(item->unk14, func_02035de0(data_0214b105, data_0208cb7c));
+    TexObj_SetRes(item->unk14, ResMgr_FindArcType2(data_0214b105, data_0208cb7c));
     item->unk14->flags |= 2;
     item->unk14->flags |= 0x80000;
     TexObj_SelectImage(item->unk14, 0, 0xd);

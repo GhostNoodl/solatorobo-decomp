@@ -830,8 +830,8 @@ extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern BOOL AnimCtrl_SetAnim(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void SceneCmd_Push25(void *p, s32 a);
-extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
-extern void func_ov009_02201eac(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase0(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase1(Ov009ActVt_0221707c *self);
 
 void Ov009Act_02200b48_StateMove(Ov009Act_02200b48 *self) {
     VecFx32 v;
@@ -961,8 +961,8 @@ extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern BOOL AnimCtrl_SetAnim(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void SceneCmd_Push25(void *p, s32 a);
-extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
-extern void func_ov009_02201eac(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase0(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase1(Ov009ActVt_0221707c *self);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (gActorMgr == NULL) {
@@ -1006,8 +1006,8 @@ extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern BOOL AnimCtrl_SetAnim(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void SceneCmd_Push25(void *p, s32 a);
-extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
-extern void func_ov009_02201eac(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase0(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase1(Ov009ActVt_0221707c *self);
 
 void Ov009ActVt_0221707c_Init(Ov009ActVt_0221707c *self) {
     Ov003Actor_Init(self);
@@ -1121,8 +1121,8 @@ void Ov009ActVt_0221707c_Update(Ov009ActVt_0221707c *self) {
 namespace m_02201848 {
 extern "C" {
 
-extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
-extern void func_ov009_02201eac(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase0(Ov009ActVt_0221707c *self);
+extern void Ov009ActVt_0221707c_StateAttackPhase1(Ov009ActVt_0221707c *self);
 
 void Ov009ActVt_0221707c_StateIdle(Ov009ActVt_0221707c *self) {
     if (self->fsm->st == 0) {
@@ -1135,10 +1135,10 @@ void Ov009ActVt_0221707c_StateIdle(Ov009ActVt_0221707c *self) {
 void Ov009ActVt_0221707c_StateAttack(Ov009ActVt_0221707c *self) {
     switch (self->unk_f5) {
     case 0:
-        func_ov009_0220189c(self);
+        Ov009ActVt_0221707c_StateAttackPhase0(self);
         break;
     case 1:
-        func_ov009_02201eac(self);
+        Ov009ActVt_0221707c_StateAttackPhase1(self);
         break;
     }
 }
@@ -1173,7 +1173,7 @@ extern void Model0218fe1c_PauseAnim(void *p);
 extern void Model0218fe1c_ResumeAnim(void *p);
 
 static inline void Ov009_VSet(VecFx32 *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
-void func_ov009_0220189c(Ov009ActVt_0221707c *self) {
+void Ov009ActVt_0221707c_StateAttackPhase0(Ov009ActVt_0221707c *self) {
     VecFx32 v;
     Ov009Rot r;
     EffectObj *o;
@@ -1325,7 +1325,7 @@ extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 extern Ov003Actor *Target_Get(void *p);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 
-void func_ov009_02201eac(Ov009ActVt_0221707c *self) {
+void Ov009ActVt_0221707c_StateAttackPhase1(Ov009ActVt_0221707c *self) {
     Ov003Actor *list[32];
     VecFx32 v;
     VecFx32 w;
@@ -1909,7 +1909,7 @@ extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern void Model0218fe1c_PauseAnim(void *p);
 extern void Model0218fe1c_ResumeAnim(void *p);
-extern void func_ov009_0220387c(Ov009Act_02202788 *self);
+extern void Ov009Act_02202788_SpawnShot(Ov009Act_02202788 *self);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
@@ -2005,7 +2005,7 @@ void Ov009Act_02202788_StateShoot(Ov009Act_02202788 *self) {
         break;
     case 10: {
         Model0218fe1c_PauseAnim(self->model);
-        func_ov009_0220387c(self);
+        Ov009Act_02202788_SpawnShot(self);
         tp.x -= self->pos.x;
         tp.y -= self->pos.y;
         tp.z -= self->pos.z;
@@ -2213,7 +2213,7 @@ extern "C" {
 extern u8 data_ov009_02215e9c[];
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov009SpawnDesc2 *d, VecFx32 *pos, Ov009Rot16 *rot, u16 a);
 
-void func_ov009_0220387c(Ov009Act_02202788 *self) {
+void Ov009Act_02202788_SpawnShot(Ov009Act_02202788 *self) {
     Ov009SpawnDesc2 desc;
     VecFx32 p;
     Ov003Actor *o;

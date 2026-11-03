@@ -13,7 +13,7 @@ s32 ResSet_UpdateLoad(void *a);
 void Ov015Vt_02213200_Dtor(void) {
 }
 
-void func_ov015_02211828(Ov015Info38 *self) {
+void Ov015Info38_Ctor(Ov015Info38 *self) {
     SET_VT(self, Ov015Info38_vtbl);
     self->id = 0xffff;
     self->unk_08 = 0;
@@ -38,7 +38,7 @@ void *Ov015Info38_DtorDelete(Ov015Info38 *self) {
     return self;
 }
 
-void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode) {
+void Ov015Info38_Set(Ov015Info38 *self, u16 id, s32 mode) {
     u8 *info;
     s32 t;
     self->id = id;
@@ -86,7 +86,7 @@ void func_ov015_022119d0(NNSG3dRS *rs) {
     rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
-void func_ov015_022119e8(Ov015Obj290 *self) {
+void Ov015Obj290_Reset(Ov015Obj290 *self) {
     self->vfunc_08();
     self->unk_04 = 0;
     self->unk_0c = 0;

@@ -20,9 +20,9 @@ void ov006_Gauge_Update(ov006_Gauge *self);
 void ov006_Gauge_Draw(ov006_Gauge *self);
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void func_ov006_021d2ff0(ov006_TaskD1F *self);
-void func_ov006_021d30d4(ov006_TaskD1F *self);
-void func_ov006_021d3224(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step01(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step02(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step03(ov006_TaskD1F *self);
 void ov006_UpdateNetSlots(void);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_ShowObj(ov006_Menu *self);
@@ -47,7 +47,7 @@ static inline void ov006_TaskD1F_Exit(ov006_TaskD1F *self, int a) {
 }
 
 void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
-    if (self->step != 3 && data_ov006_021ec888->state == 9) {
+    if (self->step != 3 && gOv006Menu->state == 9) {
         self->step = 3;
         self->subStep = 0;
         return;
@@ -56,13 +56,13 @@ void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
     case 0:
         break;
     case 1:
-        func_ov006_021d2ff0(self);
+        ov006_TaskD1F_Step01(self);
         break;
     case 2:
-        func_ov006_021d30d4(self);
+        ov006_TaskD1F_Step02(self);
         break;
     case 3:
-        func_ov006_021d3224(self);
+        ov006_TaskD1F_Step03(self);
         break;
     case 4:
         ov006_TaskD1F_Exit(self, 1);
@@ -75,7 +75,7 @@ void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
     }
 }
 
-void func_ov006_021d2ff0(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Step01(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk54->flags |= 4;
@@ -115,7 +115,7 @@ static inline BOOL ov006_IsReady(int type) {
     return r;
 }
 
-void func_ov006_021d30d4(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Step02(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk64->flags &= ~2;
@@ -158,7 +158,7 @@ void func_ov006_021d30d4(ov006_TaskD1F *self) {
     }
 }
 
-void func_ov006_021d3224(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Step03(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk54->flags |= 4;
@@ -166,10 +166,10 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
         self->unk60->flags |= 4;
         self->unk64->flags |= 2;
         self->unk60->flags |= 2;
-        ov006_Menu_ShowObj(data_ov006_021ec888);
+        ov006_Menu_ShowObj(gOv006Menu);
         self->subStep++;
     case 1:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             return;
         }
         GfxSys_StartFadeOut(0x1e000, 0, 0);
@@ -205,8 +205,8 @@ void ov006_TaskD1F_Draw(ov006_TaskD1F *self) {
     for (i = 0; i < 4; i++) {
         ov006_Gauge_Draw(self->gauges[i]);
     }
-    if (data_ov006_021ec888 != NULL) {
-        ov006_Menu_ReleaseObj(data_ov006_021ec888);
+    if (gOv006Menu != NULL) {
+        ov006_Menu_ReleaseObj(gOv006Menu);
     }
 }
 

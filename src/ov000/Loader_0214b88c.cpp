@@ -42,7 +42,7 @@ BOOL ResMgr_IsArchiveLoaded(void *a, char *name, s32 b);
 void *ResMgr_GetArchiveList(void *a, char *name, s32 b);
 Data02034f5c *ResList_FindType5(void *a, char *name);
 char *G3dRes_SetupVram(char *name, u32 a);
-void *func_0203ebf8(char *name);
+void *Vram_GetTexTransferId(char *name);
 Data0202aca0 *NNS_G3dGetTex(u32 a);
 BOOL Vram_IsTransferDone(void *a);
 void StageRes_Init(VObj *obj);
@@ -94,7 +94,7 @@ void func_ov000_0214b910(Loader *self) {
         if (entry != NULL) {
             name = G3dRes_SetupVram(name, entry->unk_00);
         }
-        self->unk_14 = func_0203ebf8(name);
+        self->unk_14 = Vram_GetTexTransferId(name);
         self->unk_18 = NNS_G3dGetTex(entry->unk_00)->unk_08;
         self->unk_0c = 3;
         break;
@@ -122,7 +122,7 @@ static inline SceneRes *CreateLoader(void) {
     return obj;
 }
 
-void func_ov000_0214ba18(void) {
+void SceneResSet_Open04(void) {
     char path[0x20];
     gSceneResSet.unk_04 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
@@ -130,7 +130,7 @@ void func_ov000_0214ba18(void) {
     StageRes_Open(gSceneResSet.unk_04, path, data_ov000_021ca907);
 }
 
-void func_ov000_0214baa8(void) {
+void SceneResSet_Close04(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     if (gSceneResSet.unk_04 != NULL) {
@@ -142,7 +142,7 @@ void func_ov000_0214baa8(void) {
     gSysState->cur = saved;
 }
 
-BOOL func_ov000_0214bb04(void) {
+BOOL SceneResSet_IsLoaded04(void) {
     BOOL ret = TRUE;
     if (!StageRes_IsAllLoaded(gSceneResSet.unk_04)) {
         ret = FALSE;
@@ -150,7 +150,7 @@ BOOL func_ov000_0214bb04(void) {
     return ret;
 }
 
-s32 func_ov000_0214bb2c(void) {
+s32 SceneResSet_Bind04(void) {
     s32 ret = gSceneResSet.unk_04->vfunc_34();
     if (ret != 0) {
         return ret;
@@ -158,11 +158,11 @@ s32 func_ov000_0214bb2c(void) {
     return StageRes_Bind(gSceneResSet.unk_04);
 }
 
-void func_ov000_0214bb5c(void) {
+void SceneResSet_Run04(void) {
     gSceneResSet.unk_04->vfunc_38(1);
 }
 
-void func_ov000_0214bb80(void) {
+void SceneResSet_Open08(void) {
     char path[0x20];
     gSceneResSet.unk_08 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
@@ -170,7 +170,7 @@ void func_ov000_0214bb80(void) {
     StageRes_Open(gSceneResSet.unk_08, path, data_ov000_021ca917);
 }
 
-void func_ov000_0214bc10(void) {
+void SceneResSet_Close08(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     if (gSceneResSet.unk_08 != NULL) {
@@ -182,7 +182,7 @@ void func_ov000_0214bc10(void) {
     gSysState->cur = saved;
 }
 
-BOOL func_ov000_0214bc6c(void) {
+BOOL SceneResSet_IsLoaded08(void) {
     BOOL ret = TRUE;
     if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         ret = FALSE;
@@ -190,7 +190,7 @@ BOOL func_ov000_0214bc6c(void) {
     return ret;
 }
 
-s32 func_ov000_0214bc94(void) {
+s32 SceneResSet_Bind08(void) {
     s32 ret = gSceneResSet.unk_08->vfunc_34();
     if (ret != 0) {
         return ret;

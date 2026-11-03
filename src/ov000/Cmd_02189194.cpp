@@ -55,7 +55,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 void func_ov000_02188ed0(SceneCmd *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void MessageQueue021cb980_Push05(void *p);
-BOOL func_ov000_02181d70(SceneStage *self, u16 id);
+BOOL SceneStage_LoadGroup(SceneStage *self, u16 id);
 void func_02062424(FieldId *id);
 void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 void LoTicker_Clear(void *p);
@@ -287,7 +287,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
         if (IsMode(3)) {
             break;
         }
-        if (!func_ov000_02181d70(&self->stage, 0xffff)) {
+        if (!SceneStage_LoadGroup(&self->stage, 0xffff)) {
             break;
         }
         func_02062424(&self->unk_cd);

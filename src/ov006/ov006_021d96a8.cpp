@@ -48,7 +48,7 @@ static inline void ov006_HideAll(ov006_Task021ec040 *self) {
 BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     BOOL ret = TRUE;
     BOOL send = FALSE;
-    if (gOv006Manager->unk1C != 0 && data_ov006_021ec888->state != 9) {
+    if (gOv006Manager->unk1C != 0 && gOv006Menu->state != 9) {
         send = TRUE;
         Wh_GetSharedData(gWhMgr, 0);
     }
@@ -97,7 +97,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         break;
     case 3:
         if (self->unk1C->value != self->unk1C->shown || self->unk18->value != self->unk18->shown) {
-            if ((gPad->trig & 1) || data_ov006_021ec888->state == 9) {
+            if ((gPad->trig & 1) || gOv006Menu->state == 9) {
                 Lo021cae48_SetValue(self->unk18, 0, 1);
                 Lo021cae48_SetValue(self->unk1C, gStageFlags->unk_020, 1);
             } else {
@@ -113,7 +113,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         break;
     case 4:
         if (self->unk34 >= 0x14) {
-            if (data_ov006_021ec888->state == 9) {
+            if (gOv006Menu->state == 9) {
                 self->subState = 0x32;
             } else if (gPad->trig & 1) {
                 SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
@@ -129,13 +129,13 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         self->subState++;
         break;
     case 11:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 0x32;
         } else if (ov006_PartIs5(self->unk28)) {
             if (self->unk2C != 0) {
                 ov006_HideAll(self);
                 if (send) {
-                    ov006_Menu_RequestShutdown(data_ov006_021ec888);
+                    ov006_Menu_RequestShutdown(gOv006Menu);
                 }
                 gOv006Manager->unk20 = 1;
                 self->subState = 0x1e;
@@ -163,7 +163,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
             break;
         }
     case 0x16:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 0x32;
         } else if (ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->aid == 0) {
             u16 k = *(u16 *)(gWhMgr + 0x32);
@@ -176,7 +176,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         }
         break;
     case 0x17:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 0x32;
         } else if (ov006_Menu_GetEntryMask_021e60e8(0xb, 1) != 0) {
             ov006_HideAll(self);
@@ -189,7 +189,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         GfxSys_StartFadeOut(0x14000, 0, 1);
         self->subState++;
     case 0x1f:
-        if (data_ov006_021ec888->state == 9) {
+        if (gOv006Menu->state == 9) {
             self->subState = 0x32;
         } else if (ov006_FadeDone(0) && ov006_FadeDone(1)) {
             ret = FALSE;
@@ -201,10 +201,10 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         self->unk28->flags |= 2;
         GfxSys_StartFadeIn(0x1000, 0, 0);
         GfxSys_StartFadeIn(0x1000, 0, 1);
-        ov006_Menu_ShowObj(data_ov006_021ec888);
+        ov006_Menu_ShowObj(gOv006Menu);
         self->subState++;
     case 0x33:
-        if (data_ov006_021ec888->state != 9) {
+        if (gOv006Menu->state != 9) {
             ov006_HideAll(self);
             GfxSys_StartFadeOut(0x1e000, 0, 0);
             GfxSys_StartFadeOut(0x1e000, 0, 1);
@@ -226,7 +226,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     self->unk28->vfunc_1c();
     self->unk24->vfunc_1c();
     if (send) {
-        ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk3C, 2, self->unk3E, 4);
+        ov006_Menu_SetOwnEntry(gOv006Menu, self->unk3C, 2, self->unk3E, 4);
     }
     return ret;
 }

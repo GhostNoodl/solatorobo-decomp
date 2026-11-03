@@ -12,10 +12,10 @@ extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
-u16 func_02041000(int count);
-u16 func_02041020(int count);
-u16 func_02041040(int count);
-u16 func_02041060(int count);
+u16 PlttRes_AllocSlotsKind0(int count);
+u16 PlttRes_AllocSlotsKind2(int count);
+u16 PlttRes_AllocSlotsKind1(int count);
+u16 PlttRes_AllocSlotsKind3(int count);
 
 
 extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);

@@ -20,7 +20,7 @@ typedef struct LoTimer {
             u32 b3 : 1;
             u32 b4 : 1;
             u32 b5 : 1;
-            u32 b6 : 1; // the end reports to the stage (func_020627fc / func_ov000_02182590)
+            u32 b6 : 1; // the end reports to the stage (func_020627fc / SceneStage_StartScript)
             u32 b7 : 1; // counting
             u32 b8 : 1;
             u32 b9 : 1;

@@ -1,6 +1,6 @@
 #include "mobiclip/mobiclip.h"
 
-// MoStream implementation that reads from a NitroSDK FSFile. data_0208b2ac is its vtable.
+// MoStream implementation that reads from a NitroSDK FSFile. MoFileStream_vtbl is its vtable.
 
 extern "C" {
 

@@ -68,7 +68,7 @@ typedef struct FieldCam {
 SIZE_ASSERT(FieldCam, 0x120);
 
 // The field state gSceneCmd (ctor func_ov000_02188ba0, 0x214 bytes, built by
-// func_ov000_021814dc). It starts with the event command runner that ov000/CmdObj.h declares
+// Field_Create). It starts with the event command runner that ov000/CmdObj.h declares
 // (state, the 16-entry event ring, the step callback) and holds the field camera.
 typedef struct FieldState {
     /* 0x000 */ s32 state;
@@ -86,7 +86,7 @@ typedef struct FieldState {
     /* 0x0a6 */ u16 unk_a6;
     /* 0x0a8 */ u16 unk_a8;
     /* 0x0aa */ u8 unk_aa[2];
-    // 0xac..0xc7: the stage flag sub-object of SceneStage_FreeScripts / func_ov000_02182590
+    // 0xac..0xc7: the stage flag sub-object of SceneStage_FreeScripts / SceneStage_StartScript
     /* 0x0ac */ u8 stageFlags; // start of the stage flag block (StageFlags_SaveBuf / LoadBuf)
     /* 0x0b0 */ s32 unk_b0;
     /* 0x0b4 */ u16 unk_b4;

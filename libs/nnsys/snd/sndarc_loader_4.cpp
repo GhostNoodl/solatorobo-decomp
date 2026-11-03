@@ -4,7 +4,7 @@ extern "C" {
 extern void DC_StoreRange(void *buffer, u32 size);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-void func_020311a4(void *data, u32 size, u32 arc, u32 fileId);
+void SndArcLd_DisposeWaveArcTable(void *data, u32 size, u32 arc, u32 fileId);
 
 extern SndWaveArc data_020961f0; // static wave archive header buffer
 }
@@ -33,7 +33,7 @@ extern "C" void *LoadWaveArcTable(u32 fileId, NNSSndHeap *heap, BOOL setAddress)
         if (setAddress) {
             arc = NNS_SndArcGetCurrent();
         }
-        waveArc = (SndWaveArc *)NNS_SndHeapAlloc(heap, sizeof(SndWaveArc) + size2 + 0x20, (NNSSndHeapDisposeCallback)func_020311a4, (u32)arc, fileId);
+        waveArc = (SndWaveArc *)NNS_SndHeapAlloc(heap, sizeof(SndWaveArc) + size2 + 0x20, (NNSSndHeapDisposeCallback)SndArcLd_DisposeWaveArcTable, (u32)arc, fileId);
         if (waveArc == NULL) {
             return NULL;
         }

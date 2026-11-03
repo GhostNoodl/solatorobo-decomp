@@ -9301,3 +9301,24 @@ worse, `honesty_scan.py` exit 0. Scratch is in the session scratchpad `mtB/`: `s
 | `0220ae90` func_ov015_0220ae90 | 5 / 0 | 192 | 5 / 0 | — |
 
 - No new data. No renames.
+
+## Main-loop, manager and list helpers named: no new match (round nmL)
+
+Readability only; every function stays byte-identical, and only symbol names change. The baseline was built at `a3e8172f` (8118 matched). All objects that build were compared with it section by section (code, data and relocations with the renames mapped, defined symbols): 0 of 1895 differ (the draft objects ninja does not build were skipped). Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, `ninja report` at 8118 matched, `check_drafts.py --score` and `honesty_scan.py` exit 0. There are 333 pairs in `renames_final.txt` (326 `func_*`, 7 `data_*`). No new name was in use before (no swaps or cycles), every new name is fresh against all symbols.txt files and every identifier in src/include/libs and `tools/honesty_allow.txt`, and `__sinit_ov002_021ef1f0` is untouched.
+
+**Counts by module:**
+
+| main | ov000 | ov002 | ov006 | ov007 | ov008 | ov009 | ov012 | ov013 | ov014 | ov015 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 112 | 88 | 31 | 23 | 12 | 14 | 3 | 5 | 4 | 12 | 29 |
+
+**What was named, and the evidence:**
+- **The `main` loop** (`GameMain.cpp`): each `Create` allocates its singleton once (`Pad_Create`, `GfxMgr_Create`, `SysCard_Create`, `SceneMgr_Create`), and each per-frame call steps one (`Pad_Update`, `GfxMgr_Update`, `Movie_Update`, `Sys_UpdateFold` (the lid-close handler), `SceneMgr_Run` -> `SceneMgr_Update`, the `gSceneMgr->state` machine). Also `Sys_Init`/`Sys_InitHw`/`Sys_VBlankIntr` and the VRAM transfer queue (`Vram_InitTransfers`, `Vram_FlushTransfers`).
+- **Resources:** `ResMgr_*`/`ResLoader_*`/`ResList_*`, `SndArcLd_*`, `PlttRes_AllocSlotsKind0..3`, `NamePool_*`, `SceneResSet_*`, and `MoFileStream_vtbl` (`data_0208b2ac`).
+- **Scene and stage drivers:** `Field_*`, `SceneStage_*`, the `SceneCmd_RunNN_Exit/Update/Draw` hooks, `Ov002Stage_*`, `Ov002Session_*`, `Ov002Staff_*`, `Ov015Main_*`, `Ov007Scene_*`, `TwlScene_*`, and `Ov008Mgr_Create/Init/FreeAll/LoadRes/IsResReady/Setup/BuildMenu/UpdateCaption/DrawScene` (the `Ov008Mgr_Update` states 1, 2, 4 and 6).
+- **State tables and steps:** `ov006_Menu_State04..09` (`ov006_Menu_Load`'s switch), `ov006_TaskD1F_Step01..03`, `Task021cbb60_Seq/ModeNN`, `Ov015CamPair_Mode0..8`, the ov009/ov014 `StateAttackPhaseN` bodies (the phase switch in `StateAttack`), and the `SpawnChild`/`SpawnShot` helpers.
+- **Vtable slots:** `MainVt_0208bbc8_DrawSlides`/`DrawHud` (0xac/0xb4), `Lo021cb5a8` 0xf0..0xfc (`RemoveItem`, `AddItem`, `DrawBack`, `DrawItemModels`), `Lo021cad50_DeleteTexts` (sets each text's delete flag, bit 2 of the task flags), `Lo021caa44_DrawScaled`, `Task021ef530_ShowMsg`, the `EffectPartSet` slots, `LoBase021ccb54_021ccbe0_CtorBase/DrawRows/DrawCursor/DrawArrows`.
+- **List callbacks:** `<Owner>_List<field>On{Decide,Cursor}` as before (`ov006_TaskD37_List50OnCursor`, `Task021ef69c_List3cOnCursor/OnDecide`, `Ov008Mgr_MenuOnDecide`, ...). `LoBase021ccb54_021ccbe0_SortRows` is the insertion sort of `unk_94`; its two comparators are `Obj021f002c_CompareByCat`/`CompareByCatRev`.
+- **Globals:** `gOv006Menu`, `gUnk0214a418`, `gOv002Staff`, `gOv002Session`, `gOv002StaffPool`, `gOv002BoardRef` (singletons, each with a typed declaration).
+
+**Left unnamed:** the SDK statics (card, PM, FS, WM, CTRDG, NNS snd: identity not certain), the Lang/Tbl/Param lookups (`func_020701d4` and friends), the WH functions, the `StageVars` setters, the shared UiList and actor slots (as in nmK), the `LoBase021ccb54_021ccbe0` slots 0x78/0x7c, the ov010 `Obj022020c8` handler table, ov004, and the many single-caller helpers (hit tests, `Group*`, `FieldProp*`, `TexObj*`, `NNSG3dRS` callbacks) whose role the code does not make clear.

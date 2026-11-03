@@ -30,7 +30,7 @@ static inline void EffG3_Vtx(s16 x, s16 y, s16 z) {
 
 extern const u16 data_02082bdc[];
 
-void func_0206ab0c(EffectPartSet *s) {
+void EffectPartSet_DrawSlots(EffectPartSet *s) {
     EffectPartSlot *slot;
     VecFx32 v;
     s16 x0;

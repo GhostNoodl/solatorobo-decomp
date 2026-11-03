@@ -11,7 +11,7 @@ extern u8 Ov015Hud_vtbl[];
 extern char data_ov015_022128ab[];
 void LangData_LocalizePath(char *buf, const char *name);
 extern u8 Ov015MsgMgr_vtbl[];
-void func_ov015_02210b58(void *p);
+void Ov015MsgMgr_DtorBase(void *p);
 
 s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
     s32 m = st->unk_28;
@@ -171,7 +171,7 @@ void *Ov015Hud_DtorDelete(Ov015Hud *self) {
 
 void *Ov015MsgMgr_DtorDelete(Ov015MsgMgr *self) {
     SET_VT(self, Ov015MsgMgr_vtbl);
-    func_ov015_02210b58(self);
+    Ov015MsgMgr_DtorBase(self);
     Heap_Free(self);
     return self;
 }

@@ -47,7 +47,7 @@ static inline s32 GetD0(LoBase021ccb54_021ccbe0 *self) {
     return self->unk_d0;
 }
 
-void func_ov000_021c5324(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
+void LoBase021ccb54_021ccbe0_DrawArrows(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
     Model *m;
     s32 x = (self->width >> 1) + (pos[0] >> 12) + 4;
     if (self->unk_cc > 0) {

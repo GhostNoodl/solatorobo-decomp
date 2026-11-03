@@ -948,7 +948,7 @@ typedef struct ObjPoolPlayer {
 extern "C" {
 
 extern ObjPoolPlayer *ActorMgr_FindPlayer(void);
-extern void func_ov000_02182590(u8 *p);
+extern void SceneStage_StartScript(u8 *p);
 
 extern void *gActorMgr;
 extern void *gGroup;
@@ -973,7 +973,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
         {
             u8 *p = &gSceneCmd->stageFlags;
             *p = TRUE;
-            func_ov000_02182590(p);
+            SceneStage_StartScript(p);
         }
         data_02fe1534.unk_10 = 0xffff;
     }
@@ -1044,7 +1044,7 @@ BOOL ObjPool_TestPlayerFlags(ObjPool *pool, ObjPoolEntry *entry) {
     {
         u8 *p = &gSceneCmd->stageFlags;
         *p = TRUE;
-        func_ov000_02182590(p);
+        SceneStage_StartScript(p);
     }
     data_02fe1534.unk_10 = 0xffff;
     return TRUE;
@@ -2157,7 +2157,7 @@ int StageCmd_Op05(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 id = a & ~0x8000;
         u16 g = (a >> 12) & 8;
-        func_ov000_0218547c(state, slot->args[0], g ? gMsgRes : (void *)res->sub, id);
+        SceneCmd_Push11(state, slot->args[0], g ? gMsgRes : (void *)res->sub, id);
     }
     return 0;
 }
@@ -2350,7 +2350,7 @@ int StageCmd_Op0f(StageResSlot *slot) {
     buf[0] = slot->args[0];
     buf[1] = slot->args[1];
     buf[2] = slot->args[2];
-    func_ov000_02188d28(buf);
+    SceneCmd_Push0a(buf);
     return 1;
 }
 
@@ -2362,7 +2362,7 @@ int StageCmd_Op10(StageResSlot *slot) {
     buf[0] = slot->args[0];
     buf[1] = slot->args[1];
     buf[2] = slot->args[2];
-    func_ov000_02188ca0(buf, 1);
+    SceneCmd_Push09(buf, 1);
     return 1;
 }
 
@@ -2619,7 +2619,7 @@ extern void MessageQueue021cb980_Push13(FieldPlayer *player, int mode, u16 a);
 extern void SceneCmd_Push15(FieldState *state, u16 a);
 extern void SceneCmd_Push16(FieldState *state, u16 a);
 
-extern void func_ov000_02182590(u8 *p);
+extern void SceneStage_StartScript(u8 *p);
 extern void SceneCmd_Push06(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
 extern void func_ov000_0218372c(FieldState *state, u16 a);
 extern void SceneCmd_Push08(FieldState *state);
@@ -2823,7 +2823,7 @@ extern void SceneCmd_Push15(FieldState *state, u16 a);
 
 extern void SceneCmd_Push16(FieldState *state, u16 a);
 
-extern void func_ov000_02182590(u8 *p);
+extern void SceneStage_StartScript(u8 *p);
 
 extern void SceneCmd_Push06(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
 
@@ -2860,7 +2860,7 @@ int StageCmd_Op1b(StageResSlot *slot) {
     {
         FieldState *state = gSceneCmd;
         state->stageFlags = TRUE;
-        func_ov000_02182590(&state->stageFlags);
+        SceneStage_StartScript(&state->stageFlags);
     }
     return -0x62;
 }
@@ -5132,7 +5132,7 @@ BOOL func_020621f8(void) {
     return r;
 }
 
-void func_0206222c(void) {
+void StageVars_Reset(void) {
     StageVars *shared = &data_02fe1534;
     MIi_CpuClear16(0, shared, 0x82);
     shared->unk_04 = 0;
@@ -5167,7 +5167,7 @@ void func_0206228c(void) {
     data_02fe1534.unk_14 &= ~0x3c0;
 }
 
-int func_020622ec(u8 *buf, u32 size) {
+int StageVars_Save(u8 *buf, u32 size) {
     MI_CpuFill8(buf, 0, size);
     buf[0] = data_02fe1534.unk_02_bytes[0];
     buf[1] = data_02fe1534.unk_02_bytes[1];
@@ -5184,7 +5184,7 @@ int func_020622ec(u8 *buf, u32 size) {
     return 12;
 }
 
-int func_02062370(u8 *buf) {
+int StageVars_Load(u8 *buf) {
     data_02fe1534.unk_02_bytes[0] = buf[0];
     data_02fe1534.unk_02_bytes[1] = buf[1];
     data_02fe1534.unk_52_bytes[0] = buf[2];

@@ -18,7 +18,7 @@ public:
         struct {
             u32 unk_04_0 : 1; // fading (Task_Update)
             u32 unk_04_1 : 1; // fade out requested
-            u32 unk_04_2 : 1; // removed: func_ov000_02173784 unlinks and deletes the task
+            u32 unk_04_2 : 1; // removed: TaskList_DeleteFlagged unlinks and deletes the task
             u32 unk_04_3 : 1;
             u32 unk_04_4 : 1; // Task_SetFlag4 / ClearFlag4
             u32 unk_04_5 : 1;

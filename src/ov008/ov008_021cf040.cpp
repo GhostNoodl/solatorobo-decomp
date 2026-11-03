@@ -63,7 +63,7 @@ void TexObj_SetOamFuncArg(void *a, int b, int c);
 
 // One local holds first the sprite unk_e0 and then the panel unk_f8. Two typed locals
 // (or a typed alias) change the register allocation, so it stays void * with casts.
-void func_ov008_021cf040(Ov008Mgr *m) {
+void Ov008Mgr_DrawScene(Ov008Mgr *m) {
     void *p;
     Ov008Item *item;
     VecFx32 v;

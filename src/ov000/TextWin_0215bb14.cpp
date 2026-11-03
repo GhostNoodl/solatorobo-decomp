@@ -16,7 +16,7 @@ typedef struct {
 
 extern "C" {
 extern const u32 TextWinEx_vtbl[];
-void func_0204f49c(void *win);
+void TextWinEx_Reset(void *win);
 void TextWin_RenderToVram(TextWin *win);
 
 static inline TextWin *TextWin_New(void) {
@@ -34,7 +34,7 @@ static inline TextWinEx *TextWinEx_New(void) {
         *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
         *(const u32 **)win = TextWinEx_vtbl;
-        func_0204f49c(win);
+        TextWinEx_Reset(win);
     }
     return win;
 }

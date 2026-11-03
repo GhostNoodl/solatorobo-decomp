@@ -629,7 +629,7 @@ struct Lo021cca40 : public ListRow {
 SIZE_ASSERT(Lo021cca40, 0x48);
 
 // Row list: vtable Ov000Vt_021ccbe0_vtbl (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
-// then func_ov000_021c3af4) over the base vtable Ov000Vt_021ccb54_vtbl; ov002's subclass Ov002Vt_021f0044_vtbl
+// then LoBase021ccb54_021ccbe0_CtorBase) over the base vtable Ov000Vt_021ccb54_vtbl; ov002's subclass Ov002Vt_021f0044_vtbl
 // keeps the size. Both dtors release it with LoBase021ccb54_021ccbe0_Release. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
 // Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of ListRowText_Draw .. 021c56c0.
 struct LoBase021ccb54_021ccbe0 : public UiObj {

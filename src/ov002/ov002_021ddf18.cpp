@@ -12,7 +12,7 @@ extern VFunc Ov000Vt_021ccbe0_vtbl[];
 extern VFunc Ov002Vt_021f0044_vtbl[];
 extern VFunc Ov002Vt_021ef684_vtbl[];
 extern VFunc Ov002Vt_021f002c_vtbl[];
-void func_ov000_021c3af4(void *self);
+void LoBase021ccb54_021ccbe0_CtorBase(void *self);
 void ListRow_Init(void *self);
 void Obj021f002c_Init(Obj021f002c *self);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
@@ -109,7 +109,7 @@ void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner) {
         *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
         *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
-        func_ov000_021c3af4(p);
+        LoBase021ccb54_021ccbe0_CtorBase(p);
         *(VFunc **)p = Ov002Vt_021f0044_vtbl;
     }
     self->unk_08 = (Ov002RowList *)p;

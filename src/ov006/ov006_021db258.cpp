@@ -45,7 +45,7 @@ void ov006_UpdateNetSlots(void) {
     int k;
     u8 i2;
     u8 i;
-    if (!gOv006Manager->unk1C || data_ov006_021ec888 == NULL) {
+    if (!gOv006Manager->unk1C || gOv006Menu == NULL) {
         return;
     }
     if (gWhMgr->state != 5) {

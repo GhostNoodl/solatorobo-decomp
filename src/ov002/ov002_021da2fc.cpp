@@ -4,10 +4,10 @@ extern "C" {
 
 void Obj021efe7c_Create(void) {
     Obj021efe7c *p;
-    if (data_ov002_021f0f90.top != NULL) {
+    if (gOv002BoardRef.top != NULL) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(data_ov002_021f0f90.top);
+        DELETE_VOBJ(gOv002BoardRef.top);
         HEAP_POP(saved);
     }
     p = (Obj021efe7c *)Heap_Alloc(sizeof(Obj021efe7c));
@@ -18,13 +18,13 @@ void Obj021efe7c_Create(void) {
         p->unk_0c = 0;
         p->unk_10 = 0;
     }
-    data_ov002_021f0f90.top = p;
+    gOv002BoardRef.top = p;
 }
 
 void Obj021efe7c_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(data_ov002_021f0f90.top);
+    DELETE_VOBJ(gOv002BoardRef.top);
     HEAP_POP(saved);
 }
 
@@ -36,7 +36,7 @@ Obj021efe7c *Ov002Vt_021efe7c_DtorDelete(Obj021efe7c *self) {
 }
 
 Obj021efe7c *Obj021efe7c_Get(void) {
-    return data_ov002_021f0f90.top;
+    return gOv002BoardRef.top;
 }
 
 }

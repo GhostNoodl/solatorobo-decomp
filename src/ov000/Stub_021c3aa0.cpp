@@ -19,7 +19,7 @@ void ListRowText_Draw(ListRowText *self) {
     self->win->vfunc_20();
 }
 
-void func_ov000_021c3af4(LoBase021ccb54_021ccbe0 *self) {
+void LoBase021ccb54_021ccbe0_CtorBase(LoBase021ccb54_021ccbe0 *self) {
     self->flags |= 0x40000;
     self->flags |= 0x10;
     self->unk_84 = 0;

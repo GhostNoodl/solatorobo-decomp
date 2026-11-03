@@ -83,7 +83,7 @@ static inline s8 ov002_021e28b0_Clamp(Ov002Hud *self, int i) {
     return v;
 }
 
-void func_ov002_021e28b0(Ov002Hud *self) {
+void Ov002Hud_DrawBody(Ov002Hud *self) {
     ov002_021e28b0_SetPos(self->unk_10, 0x5e000, -0x4a000);
     Model_PlayPart(self->unk_10, 9);
     ov002_021e28b0_SetPos(self->unk_10, 0x66000, -0x4a000);

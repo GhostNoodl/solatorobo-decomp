@@ -9,7 +9,7 @@ void *ResMgr_GetArchiveList(void *a, void *b, int c);
 void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
-void func_ov015_02208a28(Ov015UiText *self, void *p);
+void Ov015UiText_LoadText(Ov015UiText *self, void *p);
 s32 TexObj_GetCellWidth(void *m, void *anim);
 s32 TexObj_GetCellHeight(void *m, void *anim);
 extern u8 TextWin_vtbl[];
@@ -127,7 +127,7 @@ void Ov015Ship_Draw(Ov015Ship *self) {
     }
 }
 
-void func_ov015_02208424(NNSG3dRS *rs) {
+void Ov015Ship_CaptureNodeMtx(NNSG3dRS *rs) {
     Ov015ShipMtx *t = &gOv015Ship->nodeMtx;
     s32 id = (rs->flag & 0x10) ? rs->currentNodeDesc : -1;
     if (id != t->id) {
@@ -138,8 +138,8 @@ void func_ov015_02208424(NNSG3dRS *rs) {
     rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = 0;
 }
 
-void func_ov015_02208474(NNSG3dRS *rs) {
-    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = func_ov015_02208424;
+void Ov015Ship_SetCaptureCb(NNSG3dRS *rs) {
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = Ov015Ship_CaptureNodeMtx;
     rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
@@ -161,7 +161,7 @@ Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, 
     return e;
 }
 
-void func_ov015_02208544(Ov015UiText *self) {
+void Ov015UiText_ClearText(Ov015UiText *self) {
     self->flags |= 0x10000;
     self->unk_84 = 0;
     MIi_CpuClearFast(0, self->text, 0x20);
@@ -193,7 +193,7 @@ void Ov015Vt_02212d3c_Setup(Ov015UiText *self) {
     self->flags &= ~2;
 }
 
-void func_ov015_0220866c(Ov015UiText *self, void *msg) {
+void Ov015UiText_SetText(Ov015UiText *self, void *msg) {
     if (msg == NULL) {
         return;
     }
@@ -205,7 +205,7 @@ void func_ov015_0220866c(Ov015UiText *self, void *msg) {
         self->unk_b0 = 0xf;
         return;
     }
-    func_ov015_02208a28(self, self->text);
+    Ov015UiText_LoadText(self, self->text);
 }
 
 struct Ov015Bits0c {
@@ -226,7 +226,7 @@ void Ov015Vt_02212d3c_PreUpdate(Ov015UiText *self) {
             self->unk_b0 = 0;
         }
         if (self->unk_b0 == 7) {
-            func_ov015_02208a28(self, self->text);
+            Ov015UiText_LoadText(self, self->text);
         }
     }
     if (((Ov015Bits0c *)&self->flags)->b1 == 1) {
@@ -280,7 +280,7 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     self->unk_84->Render();
 }
 
-void func_ov015_02208a28(Ov015UiText *self, void *name) {
+void Ov015UiText_LoadText(Ov015UiText *self, void *name) {
     void *saved;
     TextWin *o;
     TextWin *p;
@@ -473,7 +473,7 @@ void *Ov015FishInfo_DtorDelete(Ov015FishInfo *self) {
 
 #define OV015_MUL64(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src) {
+void Ov015FishInfo_Init(Ov015FishInfo *self, u16 a, const void *src) {
     s32 v;
     self->id = a;
     MI_CpuCopy8(src, &self->unk_06, 0x14);

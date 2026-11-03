@@ -9,7 +9,7 @@ s32 History_PickFlagged(void *s, s32 *list, s32 count, BOOL push);
 BOOL History_SetState(void *s, s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(u16 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 BOOL StageRes_HasQueued(void);
 void StageRes_Push207(s32 a, s32 b);
 
@@ -24,7 +24,7 @@ static inline Actor *FindActor021a09b8(u16 id) {
 static inline void Ping021a09b8(void) {
     FieldState *g = gSceneCmd;
     g->stageFlags = 1;
-    func_ov000_02182590((u8 *)g + 0xac);
+    SceneStage_StartScript((u8 *)g + 0xac);
 }
 
 s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {

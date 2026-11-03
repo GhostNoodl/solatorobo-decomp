@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void func_ov002_021ccda0(void) {
+void Ov002Session_Create(void) {
     Ov002Session *p;
-    if (data_ov002_021f0f80 != NULL) {
+    if (gOv002Session != NULL) {
         return;
     }
     p = (Ov002Session *)Heap_Alloc(sizeof(Ov002Session));
@@ -13,17 +13,17 @@ void func_ov002_021ccda0(void) {
         p->state = 0;
         p->unk_08 = -1;
     }
-    data_ov002_021f0f80 = p;
+    gOv002Session = p;
 }
 
-void func_ov002_021ccde4(void) {
+void Ov002Session_Delete(void) {
     void *saved;
     Ov002Session *p;
-    if (data_ov002_021f0f80 == NULL) {
+    if (gOv002Session == NULL) {
         return;
     }
     HEAP_PUSH(saved);
-    p = data_ov002_021f0f80;
+    p = gOv002Session;
     if (p != NULL) {
         if (p != NULL) {
             if (p->state >= 1) {
@@ -33,12 +33,12 @@ void func_ov002_021ccde4(void) {
             }
             Heap_Free(p);
         }
-        data_ov002_021f0f80 = NULL;
+        gOv002Session = NULL;
     }
     HEAP_POP(saved);
 }
 
-void func_ov002_021cceb4(Ov002Session *self) {
+void Ov002Session_Update(Ov002Session *self) {
     switch (self->state) {
     case 0:
         if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 1) {
@@ -78,7 +78,7 @@ void func_ov002_021cceb4(Ov002Session *self) {
     }
 }
 
-void func_ov002_021cd068(Ov002Session *self) {
+void Ov002Session_Draw(Ov002Session *self) {
 }
 
 Task021ef530 *Task021ef530_New(void) {
@@ -186,8 +186,8 @@ void Task021ef530_Start(Task021ef530 *self) {
     self->unk_40->vfunc_74(MsgRes_GetString(g, 0x4f), 3, 0xffff, 0xffff);
     self->unk_40->vfunc_74(MsgRes_GetString(g, 0xd9), 4, 0xffff, 0xffff);
     self->unk_40->vfunc_74(MsgRes_GetString(g, 0xdd), 5, 0xffff, 0xffff);
-    self->unk_4c = data_ov002_021f0f80->unk_08;
-    data_ov002_021f0f80->unk_08 = -1;
+    self->unk_4c = gOv002Session->unk_08;
+    gOv002Session->unk_08 = -1;
     if (self->unk_4c == -1) {
         self->unk_4c = 0;
     }

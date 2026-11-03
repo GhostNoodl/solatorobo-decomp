@@ -63,7 +63,7 @@ void Task021ef530_SwitchTo(Task021ef530 *self, int arg) {
     TaskHost_RequestSwitch(gTaskHost, arg, 0);
 }
 
-void func_ov002_021cd92c(Task021ef530 *self, int kind) {
+void Task021ef530_ShowMsg(Task021ef530 *self, int kind) {
     void *msg = gMsgRes;
     void *str = data_ov002_021ef3f8;
     switch (kind) {
@@ -111,11 +111,11 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
     s8 v;
     keys = gPad->trig;
     sel = (s8)UiList_GetCurrent(self->unk_40)->id;
-    v = data_ov002_021f0f80->unk_08;
+    v = gOv002Session->unk_08;
     if (v != -1) {
         self->unk_4c = -1;
         sel = v;
-        data_ov002_021f0f80->unk_08 = -1;
+        gOv002Session->unk_08 = -1;
     }
     if (self->unk_4c != sel) {
         keys = 0;
@@ -124,7 +124,7 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
         switch (sel) {
         case 0:
             if (!self->unk_48_0) {
-                data_ov002_021f0f80->unk_08 = 0;
+                gOv002Session->unk_08 = 0;
                 GfxSys_StartFadeOut(self->fadeLen, 2, 0);
                 SceneCmd_Push1f(gSceneCmd);
                 self->vfunc_0c(0);
@@ -136,7 +136,7 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
         case 1:
             if (!self->unk_48_2) {
                 Task *o;
-                data_ov002_021f0f80->unk_08 = 1;
+                gOv002Session->unk_08 = 1;
                 o = TaskHost_RequestSwitch(gTaskHost, 0x1a, 0);
                 o->parent = NULL;
                 FIELD(o, 0x3c, s32) = self->id;
@@ -149,18 +149,18 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
             }
             break;
         case 2:
-            data_ov002_021f0f80->unk_08 = 2;
+            gOv002Session->unk_08 = 2;
             self->vfunc_60(6, 0);
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             break;
         case 3:
-            data_ov002_021f0f80->unk_08 = 3;
+            gOv002Session->unk_08 = 3;
             gStageFlags->unk_009 = 0;
             self->vfunc_60(7, 0);
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             break;
         case 4:
-            data_ov002_021f0f80->unk_08 = 4;
+            gOv002Session->unk_08 = 4;
             TaskHost_RequestSwitch(gTaskHost, 0x11, 0)->parent = NULL;
             gTaskSwitchPending = 1;
             gTaskHost->flag0 = 0;
@@ -179,7 +179,7 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
                     buf[1] = data_02fe1534.unk_54;
                     buf[2] = data_02fe1534.unk_56;
                     SceneCmd_Push26(gSceneCmd);
-                    func_ov000_02188ca0(buf, 1);
+                    SceneCmd_Push09(buf, 1);
                     func_02062524();
                 }
                 t = gMessageQueue;

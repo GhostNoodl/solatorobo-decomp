@@ -89,7 +89,7 @@ extern ResMgr *gResMgr;
 
 #define RES_MGR_HASH_TABLE(mgr) ((mgr)->hashTable)
 
-extern ResNode *func_0203662c(ResMgr *mgr);
+extern ResNode *ResMgr_AllocNode(ResMgr *mgr);
 extern void ResMgr_FreeNode_020366d0(ResMgr *mgr, ResNode *node);
 
 // Strings

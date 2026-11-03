@@ -12,7 +12,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 Gfx3DState_NextPolyIdB(void *a);
 
-void func_ov000_0216bf30(LoTicker *self) {
+void LoTicker_Init(LoTicker *self) {
     s32 i;
     self->speed = 0x1000;
     for (i = 0; i < 0x10; i++) {
@@ -27,7 +27,7 @@ void func_ov000_0216bf30(LoTicker *self) {
     self->cur = NULL;
 }
 
-void func_ov000_0216bf90(LoTicker *self) {
+void LoTicker_Release(LoTicker *self) {
     s32 i;
     LoTicker_Clear(self);
     for (i = 0; i < 10; i++) {

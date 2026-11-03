@@ -29,8 +29,8 @@ void Ov006Vt_021ec040_Draw(ov006_Task021ec040 *self) {
     if (self->subState < 0x32) {
         return;
     }
-    if (data_ov006_021ec888 != NULL) {
-        ov006_Menu_ReleaseObj(data_ov006_021ec888);
+    if (gOv006Menu != NULL) {
+        ov006_Menu_ReleaseObj(gOv006Menu);
     }
 }
 

@@ -19,7 +19,7 @@ extern void *func_0201998c(int arena);
 extern void NamePool_CreateTex(void);
 extern void NamePool_CreatePltt(void);
 extern void OS_WaitVBlankIntr(void);
-extern void func_0203e6bc(void);
+extern void Vram_FlushTransfers(void);
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
 extern void NNS_FndFreeToExpHeap(void *heap, void *ptr);
@@ -29,7 +29,7 @@ static inline BOOL PAD_DetectFold(void) {
     return (*(volatile u16 *)0x2ffffa8 & 0x8000) >> 15;
 }
 
-void func_0203d8e8(void) {
+void Sys_UpdateFold(void) {
     if (PAD_DetectFold()) {
         if (func_020472c4(gSysCard) != 0 || gSysState->unk_1f != 0 || gSysState->unk_31 != 0) {
             if (gSysState->lcdOn == 1) {
@@ -87,7 +87,7 @@ void Sys_WaitFrame(UnkSys *sys) {
     }
     do {
         OS_WaitVBlankIntr();
-        func_0203e6bc();
+        Vram_FlushTransfers();
     } while (sys->frameWait - 1 > sys->vcount);
 }
 

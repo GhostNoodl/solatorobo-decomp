@@ -79,7 +79,7 @@ class Task021ef69c : public Task {
 public:
     TextList *unk_3c;
     Lo021cb5a8 *unk_40;
-    ListRow021cca70 *unk_44; // the decided row while it is raised (func_ov002_021d18e8)
+    ListRow021cca70 *unk_44; // the decided row while it is raised (Task021ef69c_List3cOnDecide)
     Model *unk_48; // number drawing (func_ov002_021d1f70)
     Model *unk_4c;
     s32 unk_50;

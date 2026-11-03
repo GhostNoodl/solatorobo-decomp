@@ -6,7 +6,7 @@
 extern "C" {
 
 void func_020627fc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 // The model matrix callback (Model::unk_15c, called by the TexObj draw for affine entries) that
@@ -55,7 +55,7 @@ void func_ov000_0216da78(LoTimer *self) {
         func_020627fc(4);
         d = gSceneCmd;
         d->stageFlags = 1;
-        func_ov000_02182590((u8 *)d + 0xac);
+        SceneStage_StartScript((u8 *)d + 0xac);
         SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
     }
 }
@@ -70,7 +70,7 @@ bool TaskList_HasTasks_021735e8(void);
 BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_020627fc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 
@@ -115,7 +115,7 @@ static inline void Done0216dae4(LoTimer *self) {
         func_020627fc(4);
         d = gSceneCmd;
         d->stageFlags = 1;
-        func_ov000_02182590((u8 *)d + 0xac);
+        SceneStage_StartScript((u8 *)d + 0xac);
         SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
     }
 }

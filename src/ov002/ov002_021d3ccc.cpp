@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021764c4(void);
+void MenuScript_Close(void);
 
 void Task021ef81c_FreeWindows(Task021ef81c *self) {
     void *saved;
@@ -18,7 +18,7 @@ void Task021ef81c_FreeWindows(Task021ef81c *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_48);
     HEAP_POP(saved);
-    func_ov000_021764c4();
+    MenuScript_Close();
 }
 
 }

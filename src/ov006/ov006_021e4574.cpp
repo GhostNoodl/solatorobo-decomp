@@ -19,7 +19,7 @@ int ov006_Menu_NextUniqueId(ov006_Menu *self);
 void ov006_Menu_DrawHolder(ov006_Menu *self) {
     ov006_ModelHolder *holder;
 
-    if (data_ov006_021ec888->state == 0 || (holder = self->unk1D4) == NULL) {
+    if (gOv006Menu->state == 0 || (holder = self->unk1D4) == NULL) {
         return;
     }
     if (holder->unkC >= 4) {
@@ -34,7 +34,7 @@ void ov006_Menu_DrawHolder(ov006_Menu *self) {
 
 void ov006_Menu_ReleaseObj(ov006_Menu *self) {
     Lo021cad50 *obj;
-    if (data_ov006_021ec888->state != 0 && (obj = self->unk1D8->obj) != NULL) {
+    if (gOv006Menu->state != 0 && (obj = self->unk1D8->obj) != NULL) {
         obj->vfunc_20();
     }
 }

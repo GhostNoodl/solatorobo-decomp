@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc Lo021cb5a8_vtbl[];
 extern VFunc Hud021cca10_vtbl[];
-void func_ov000_021c3af4(void *self);
+void LoBase021ccb54_021ccbe0_CtorBase(void *self);
 void ListRow_Init(void *self);
 void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
@@ -26,7 +26,7 @@ void func_ov002_021d0b98(Task021ef89c *self) {
             *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
             *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
-            func_ov000_021c3af4(p);
+            LoBase021ccb54_021ccbe0_CtorBase(p);
         }
         self->unk_3c = (Ov002RowList *)p;
         p->rows = 7;

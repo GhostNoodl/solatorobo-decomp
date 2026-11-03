@@ -47,7 +47,7 @@ static inline void Node02159e40_Delete(Node02159e40 *o) {
     Heap_Free(o);
 }
 
-void func_ov000_02159e40(Owner02159e40 *self, Node02159e40 *node) {
+void Lo021cb5a8_RemoveItem(Owner02159e40 *self, Node02159e40 *node) {
     if (node == self->head) {
         self->head = node->next;
         if (self->head != NULL) {

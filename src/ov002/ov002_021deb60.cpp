@@ -64,7 +64,7 @@ extern Id021dec74 data_ov002_021eef90[];
 
 void func_0206ecd4(int a, void *b, u16 c);
 
-void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
+void LoBase021ccb54_021ccbe0_SortRows(void *self, s32 (*cmp)(void *, void *));
 
 void func_ov002_021dec74(Obj021efef0 *self) {
     u16 btn = gPad->trig;
@@ -103,7 +103,7 @@ void func_ov002_021dec74(Obj021efef0 *self) {
         s32 k = self->unk_34;
         void *r;
         Obj021eff50 *w;
-        func_ov002_021e34fc(self->unk_0c, data_ov002_021eef8c[k].fn);
+        LoBase021ccb54_021ccbe0_SortRows(self->unk_0c, data_ov002_021eef8c[k].fn);
         r = MsgRes_GetString(gMsgRes, data_ov002_021eef90[k].id);
         w = self->owner;
         Obj0215bb14_SetText(((void *)w->unk_20), r);

@@ -8,9 +8,9 @@ extern "C" {
 extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void Camera_Dtor(void *p);
-void func_ov008_021cd500(Ov008Mgr *m);
-void func_ov008_021cd584(Ov008Mgr *m);
-void func_ov000_0214bc10(void);
+void Ov008Mgr_Init(Ov008Mgr *m);
+void Ov008Mgr_FreeAll(Ov008Mgr *m);
+void SceneResSet_Close08(void);
 void func_ov000_0214c210(void);
 extern void *ResHandle_vtbl;
 
@@ -34,9 +34,9 @@ void LangData_LocalizePath(char *dst, const char *src);
 void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
-void func_ov000_0214bb80(void);
+void SceneResSet_Open08(void);
 void func_ov000_0214c1ac(void);
-BOOL func_ov000_0214bc6c(void);
+BOOL SceneResSet_IsLoaded08(void);
 BOOL func_ov000_0214c270(void);
 
 }
@@ -72,7 +72,7 @@ static inline Ov008Pic *Ov008_NewText(void) {
 
 extern "C" {
 
-BOOL func_ov008_021cddc8(Ov008Mgr *m) {
+BOOL Ov008Mgr_IsResReady(Ov008Mgr *m) {
     BOOL r = TRUE;
     if (((Ov008V *)m->unk_d4)->v2c() == 0) {
         r = FALSE;
@@ -98,7 +98,7 @@ BOOL func_ov008_021cddc8(Ov008Mgr *m) {
     if (!StageRes_IsAllLoaded(m->unk_fc)) {
         r = FALSE;
     }
-    if (!func_ov000_0214bc6c()) {
+    if (!SceneResSet_IsLoaded08()) {
         r = FALSE;
     }
     if (!func_ov000_0214c270()) {

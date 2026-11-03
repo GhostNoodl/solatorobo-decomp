@@ -71,11 +71,11 @@ BOOL func_020314f4(void *handle, int playerNo, int bankNo, int playerPrio, const
         return FALSE;
     }
     heap = NNSi_SndPlayerAllocHeap(playerNo, seqPlayer);
-    if (func_02030b84(bankNo, NNS_SND_ARC_LOAD_BANK | NNS_SND_ARC_LOAD_WAVE, heap, FALSE, &bank) != SND_ARC_LOAD_SUCCESS) {
+    if (SndArcLd_LoadBank(bankNo, NNS_SND_ARC_LOAD_BANK | NNS_SND_ARC_LOAD_WAVE, heap, FALSE, &bank) != SND_ARC_LOAD_SUCCESS) {
         NNSi_SndPlayerFreeSeqPlayer(seqPlayer);
         return FALSE;
     }
-    if (func_02030aa0(seqNo, NNS_SND_ARC_LOAD_SEQ, heap, FALSE, (void **)&seq) != SND_ARC_LOAD_SUCCESS) {
+    if (SndArcLd_LoadSeq(seqNo, NNS_SND_ARC_LOAD_SEQ, heap, FALSE, (void **)&seq) != SND_ARC_LOAD_SUCCESS) {
         NNSi_SndPlayerFreeSeqPlayer(seqPlayer);
         return FALSE;
     }
@@ -92,7 +92,7 @@ BOOL func_020315f8(void *handle, int playerNo, int bankNo, int playerPrio, const
     if (seqPlayer == NULL) {
         return FALSE;
     }
-    if (func_02030b84(bankNo, NNS_SND_ARC_LOAD_BANK | NNS_SND_ARC_LOAD_WAVE, NNSi_SndPlayerAllocHeap(playerNo, seqPlayer), FALSE, &bank) != SND_ARC_LOAD_SUCCESS) {
+    if (SndArcLd_LoadBank(bankNo, NNS_SND_ARC_LOAD_BANK | NNS_SND_ARC_LOAD_WAVE, NNSi_SndPlayerAllocHeap(playerNo, seqPlayer), FALSE, &bank) != SND_ARC_LOAD_SUCCESS) {
         NNSi_SndPlayerFreeSeqPlayer(seqPlayer);
         return FALSE;
     }

@@ -63,7 +63,7 @@ extern ShadowArc data_ov000_021c9d80;
 extern Mtx33 data_020928b4;
 extern GxState NNS_G3dGlb;
 
-ShadowRes *func_02035e34(void *file, void *name);
+ShadowRes *ResMgr_FindArcType4(void *file, void *name);
 void Vram_FreeRes(void *file);
 int ResMgr_IsLoaded(void *a, int b);
 void *ResMgr_Load(void *a, int b, int c);
@@ -131,7 +131,7 @@ static inline void Shadow_Init(Shadow *self) {
 static inline void Shadow_Destroy(Shadow *self) {
     self->vtbl = Ov000Vt_021cc438_vtbl;
     if (self->res != NULL) {
-        Vram_FreeRes(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
+        Vram_FreeRes(ResMgr_FindArcType4(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
     }
     if (self->state != 0) {
         ResMgr_ReleaseByName(gResMgr, data_ov000_021c9d80.file, 7, 0);

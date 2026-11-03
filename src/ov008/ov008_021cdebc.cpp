@@ -38,13 +38,13 @@ extern void *UiList_vtbl;
 extern void *Ov000Vt_021cb1b0_vtbl;
 extern void *Ov000Vt_021cb0b8_vtbl;
 extern void *gSndMgr;
-void func_ov008_021cdb00(Ov008Mgr *m);
-BOOL func_ov008_021cddc8(Ov008Mgr *m);
-void func_ov008_021cdebc(Ov008Mgr *m);
-void func_ov008_021cfa38(Ov008Mgr *m);
-void func_ov008_021cee4c(Ov008Mgr *m);
+void Ov008Mgr_LoadRes(Ov008Mgr *m);
+BOOL Ov008Mgr_IsResReady(Ov008Mgr *m);
+void Ov008Mgr_Setup(Ov008Mgr *m);
+void Ov008Mgr_BuildMenu(Ov008Mgr *m);
+void Ov008Mgr_UpdateCaption(Ov008Mgr *m);
 void func_ov008_021cce38(Ov008Caption *p);
-BOOL func_ov008_021cf878(void);
+BOOL Ov008Mgr_DialogOnDecide(void);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
@@ -78,7 +78,7 @@ void func_02041c18(void *a, void *b);
 void TexObj_SetOamFunc(void *a, int b, void *f, int c);
 void TexObj_SetAllOamFuncs(void *a, void *f);
 BOOL StageRes_Bind(void *p);
-s32 func_ov000_0214bc94(void);
+s32 SceneResSet_Bind08(void);
 void TextWin_Init(TextWin *win);
 void SndQueue_Push_0204aab0(void *p);
 void Shared_ClearMark(void);
@@ -97,7 +97,7 @@ static inline Ov008Model *Ov008_NewMdl(void) {
 
 extern "C" {
 
-void func_ov008_021cdebc(Ov008Mgr *m) {
+void Ov008Mgr_Setup(Ov008Mgr *m) {
     VecFx32 pos = data_ov008_021d02d0;
     VecFx32 tgt = data_ov008_021d02dc;
     Ov008Rot3 rot = data_ov008_021d02c8;
@@ -236,7 +236,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     m->panel = pn;
 
     StageRes_Bind(m->unk_fc);
-    func_ov000_0214bc94();
+    SceneResSet_Bind08();
 
     t = (Ov008Talk *)Heap_Alloc(0x21c);
     if (t != NULL) {

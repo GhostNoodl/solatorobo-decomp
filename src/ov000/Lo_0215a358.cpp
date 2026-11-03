@@ -8,7 +8,7 @@
 extern "C" {
 void func_02041c18(Model *m, s32 a);
 
-void func_ov000_0215a358(Lo021cb5a8 *self, s32 enable, s32 *pos) {
+void Lo021cb5a8_DrawItemModels(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     s16 z;
     UiListItem *item;
     s32 ox;

@@ -9,7 +9,7 @@ extern u32 MainVt_0208c840_vtbl[];
 extern u32 MainVt_0208c868_vtbl[];
 extern void EffectObj_Unregister(EffectObj *obj);
 extern void EffectEmitter_Release(EffectEmitter *em);
-extern void func_0206ab0c(EffectPartSet *s);
+extern void EffectPartSet_DrawSlots(EffectPartSet *s);
 
 static inline void EffectEmitter_Dtor(EffectEmitter *em) {
     *(u32 **)em = MainVt_0208c868_vtbl;
@@ -51,8 +51,8 @@ EffectPartSet *MainVt_0208c850_DtorDelete(EffectPartSet *s) {
     return s;
 }
 
-void func_0206c420(EffectPartSet *s) {
-    func_0206ab0c(s);
+void MainVt_0208c850_Draw(EffectPartSet *s) {
+    EffectPartSet_DrawSlots(s);
 }
 
 EffectPartSet *MainVt_0208c850_Dtor(EffectPartSet *s) {

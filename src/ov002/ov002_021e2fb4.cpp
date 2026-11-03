@@ -5,7 +5,7 @@ extern "C" {
 
 extern char data_ov002_021effec[];
 extern char data_ov002_021efff8[];
-void *func_020360b8(void *a, void *b);
+void *ResMgr_FindNamedArcType2(void *a, void *b);
 void TexObj_SetAllOamFuncs(Model *m, void *fn);
 void func_02041c18(Model *m, u8 a);
 void Obj021f002c_CreateText(Obj021f002c *self);
@@ -31,7 +31,7 @@ void Obj021f002c_Update(Obj021f002c *self) {
                 }
             }
             self->model = m;
-            TexObj_SetRes(self->model, func_020360b8(data_ov002_021efff8, data_ov002_021effec));
+            TexObj_SetRes(self->model, ResMgr_FindNamedArcType2(data_ov002_021efff8, data_ov002_021effec));
             self->model->flags |= 2;
             self->model->flags |= 0x80000;
             self->model->flags |= 0x100000;

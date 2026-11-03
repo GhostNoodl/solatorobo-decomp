@@ -209,7 +209,7 @@ extern void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 
 void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
     VecFx32 v;
@@ -284,7 +284,7 @@ void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
             func_020627dc(4);
             g = (u8 *)gSceneCmd;
             g[0xac] = 1;
-            func_ov000_02182590(g + 0xac);
+            SceneStage_StartScript(g + 0xac);
             self->fsm->st++;
         }
         break;

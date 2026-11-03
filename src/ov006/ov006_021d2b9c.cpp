@@ -16,9 +16,9 @@ void ov006_Gauge_Update(ov006_Gauge *self);
 void ov006_Gauge_Draw(ov006_Gauge *self);
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void func_ov006_021d2ff0(ov006_TaskD1F *self);
-void func_ov006_021d30d4(ov006_TaskD1F *self);
-void func_ov006_021d3224(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step01(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step02(ov006_TaskD1F *self);
+void ov006_TaskD1F_Step03(ov006_TaskD1F *self);
 void ov006_UpdateNetSlots(void);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_ShowObj(ov006_Menu *self);
@@ -68,7 +68,7 @@ void ov006_TaskD1F_PreUpdate(ov006_TaskD1F *self) {
         if (self->param != 0) {
             ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC = self->unk4A;
             ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5), buf);
-            ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
+            ov006_Menu_SetOwnEntry(gOv006Menu, self->unk49, 1, buf, 0x18);
         } else {
             ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC = self->unk4A;
         }

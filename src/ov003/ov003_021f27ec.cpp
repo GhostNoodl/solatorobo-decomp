@@ -134,7 +134,7 @@ extern Ov003MActor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 extern void SceneCmd_Push27(void *g, s32 a, s32 b, s32 c);
-extern void func_ov000_02188ca0(Ov003MCol *c, s32 a);
+extern void SceneCmd_Push09(Ov003MCol *c, s32 a);
 void Ov003Multi_StartCapture(Ov003Multi *self);
 
 static inline void VSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
@@ -286,7 +286,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
     col.r = cr;
     col.g = cg;
     col.b = cb;
-    func_ov000_02188ca0(&col, 1);
+    SceneCmd_Push09(&col, 1);
 }
 
 }

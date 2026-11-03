@@ -26,14 +26,14 @@ BOOL MsgRes_BindGlobal(void);
 BOOL func_ov000_021b9010(void *p);
 BOOL func_ov000_021ba92c(void *p);
 BOOL func_ov000_021bb8dc(void *p);
-BOOL func_0204fd60(void *p);
+BOOL TextWinTitle_Update(void *p);
 BOOL func_ov000_021b8994(void *p);
 BOOL func_ov000_021bb33c(void *p);
 BOOL func_ov000_021b8284(void *p);
-void func_ov000_02182524(SceneStage *self);
+void SceneStage_RunCur(SceneStage *self);
 void func_ov000_0216b550(Lo0216b474 *p);
 void Obj021bbc68_Release(void *p);
-void func_020507d8(void *p);
+void TextBox_Release(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
 void Obj021b8ecc_Release(void *p);
@@ -100,7 +100,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         tk = (LoTicker *)Heap_Alloc(sizeof(LoTicker));
         if (tk != NULL) {
             __cxa_vec_ctor(tk->res, 10, sizeof(LoTextHolder), (void (*)(void *))LoTextHolder_Init, (void (*)(void *))LoTextHolder_Dtor);
-            func_ov000_0216bf30(tk);
+            LoTicker_Init(tk);
         }
         self->ticker = tk;
         func_ov000_021bce90();
@@ -110,7 +110,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         if (!MsgRes_BindGlobal()) {
             return;
         }
-        func_ov000_0216bbec(self->ticker);
+        LoTicker_InitTexts(self->ticker);
         self->unk_20 |= 2;
         self->state = 3;
         break;
@@ -132,7 +132,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
             if (self->win != NULL) {
                 self->win->OnSkip();
             }
-            func_ov000_02182524(&SceneCmd_Get()->stage);
+            SceneStage_RunCur(&SceneCmd_Get()->stage);
             if (self->state == 11) {
                 self->state = 3;
             }
@@ -151,8 +151,8 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         }
         break;
     case 5:
-        if (!func_0204fd60(self->unk_2c)) {
-            HEAP_DELETE_FN(self->unk_2c, func_020507d8);
+        if (!TextWinTitle_Update(self->unk_2c)) {
+            HEAP_DELETE_FN(self->unk_2c, TextBox_Release);
             self->state = 3;
         }
         break;

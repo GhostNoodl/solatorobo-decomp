@@ -15,8 +15,8 @@ void List021c6474_Append(TextList *self, ListRow *row);
 void TextList_SelectByKey(TextList *self, s32 index);
 u16 func_0206f788(u16 id);
 void *func_0206eed0(u16 id);
-BOOL func_ov002_021d18d4(TextList *self, ListRow021cca70 *row);
-BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev);
+BOOL Task021ef69c_List3cOnCursor(TextList *self, ListRow021cca70 *row);
+BOOL Task021ef69c_List3cOnDecide(TextList *self, ListRow021cca70 *ev);
 
 typedef struct {
     u16 a;
@@ -74,8 +74,8 @@ void Task021ef69c_Start(Task021ef69c *self) {
             }
         }
     }
-    self->unk_3c->onCursor = (TextListFn)func_ov002_021d18d4;
-    self->unk_3c->onDecide = (TextListFn)func_ov002_021d18e8;
+    self->unk_3c->onCursor = (TextListFn)Task021ef69c_List3cOnCursor;
+    self->unk_3c->onDecide = (TextListFn)Task021ef69c_List3cOnDecide;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     TextList_SelectByKey(self->unk_3c, data_ov002_021f0f84[2]);

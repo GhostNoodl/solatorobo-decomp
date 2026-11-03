@@ -64,7 +64,7 @@ extern char data_ov002_021effd2[];
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_InitLines(Ov002Text2 *a, int b);
-void *func_02035de0(const char *file, const char *name);
+void *ResMgr_FindArcType2(const char *file, const char *name);
 void TexObj_SetAllOamFuncs(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
 
@@ -144,7 +144,7 @@ void Ov002Hud_Load(Ov002Hud *self) {
     {
         char *file = buf;
         char *name = data_ov002_021effbc;
-        data = func_02035de0(file, name);
+        data = ResMgr_FindArcType2(file, name);
         self->unk_0c = ov002_Model_New(name, file);
     }
     TexObj_SetRes(self->unk_0c, data);
@@ -155,7 +155,7 @@ void Ov002Hud_Load(Ov002Hud *self) {
     {
         char *file = data_ov002_021effc8;
         char *name = data_ov002_021effd2;
-        data = func_02035de0(file, name);
+        data = ResMgr_FindArcType2(file, name);
         self->unk_10 = ov002_Model_New(name, file);
     }
     TexObj_SetRes(self->unk_10, data);

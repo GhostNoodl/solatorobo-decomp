@@ -52,7 +52,7 @@ void ov006_Unk021dd450_Load(ov006_Unk021dd450 *self) {
     }
     self->unk1C = model;
     LangData_LocalizePath(file, data_ov006_021ec178);
-    TexObj_SetRes(self->unk1C, func_02035de0(file, data_ov006_021ec191));
+    TexObj_SetRes(self->unk1C, ResMgr_FindArcType2(file, data_ov006_021ec191));
     self->unk1C->flags |= 2;
     self->unk1C->flags |= 0x80000;
     self->unk1C->unk_150 = -0x2000;

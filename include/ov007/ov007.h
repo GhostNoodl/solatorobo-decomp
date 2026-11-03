@@ -192,7 +192,7 @@ struct Ov007Model {
 };
 OV007_SIZE(Ov007Model, 0xe8);
 
-// The render-object callback state passed to func_ov007_021ce020 / func_ov007_021cdff0.
+// The render-object callback state passed to Ov007Rs_SetPolyIdCallback / Ov007Rs_PolyIdCallback.
 struct Ov007RsMat {
     u8 unk_00[0xc];
     u32 unk_0c;
@@ -391,12 +391,12 @@ extern Ov007Scene *gOv007Scene;
 extern void *UiObj_vtbl;
 extern void *Lo021cad50_vtbl;
 
-void func_ov007_021cce28(Ov007Scene *s);
-void func_ov007_021ccec0(Ov007Scene *s);
-void func_ov007_021ccf9c(Ov007Scene *s);
-void func_ov007_021cd628(Ov007Scene *s);
-void func_ov007_021cef80(Ov007Scene *s);
-void func_ov007_021ce038(Ov007Scene *s);
+void Ov007Scene_Init(Ov007Scene *s);
+void Ov007Scene_Release(Ov007Scene *s);
+void Ov007Scene_FreeRes(Ov007Scene *s);
+void Ov007Scene_State3(Ov007Scene *s);
+void Ov007Scene_State4(Ov007Scene *s);
+void Ov007Scene_State5(Ov007Scene *s);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
 void Obj0215c1bc_SetText(void *self, u32 flags, char *str);
@@ -561,7 +561,7 @@ static inline void Ov007_FreePage(Ov007Scene *s) {
 
 extern "C" {
 u8 Gfx3DState_NextPolyId(Gfx3DState *p);
-void func_ov007_021cdff0(Ov007Rs *rs);
+void Ov007Rs_PolyIdCallback(Ov007Rs *rs);
 void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s);
 }
 

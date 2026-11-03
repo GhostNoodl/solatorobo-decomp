@@ -16,7 +16,7 @@ extern int __pformatter(void *(*WriteProc)(void *, const char *, u32), void *Wri
 
 extern void (*data_0208de70)(void *a, void *b, void *c);
 
-void *func_020076f4(void *osc, const char *Buffer, u32 NumChars) {
+void *__StringWrite(void *osc, const char *Buffer, u32 NumChars) {
     u32 CharsToBeWritten;
     __OutStrCtrl *Oscp = (__OutStrCtrl *)osc;
     CharsToBeWritten = ((Oscp->CharsWritten + NumChars) <= Oscp->MaxCharCount) ? NumChars : Oscp->MaxCharCount - Oscp->CharsWritten;
@@ -25,13 +25,13 @@ void *func_020076f4(void *osc, const char *Buffer, u32 NumChars) {
     return (void *)1;
 }
 
-int func_02007738(char *s, u32 n, const char *format, va_list arg) {
+int vsnprintf(char *s, u32 n, const char *format, va_list arg) {
     int end;
     __OutStrCtrl osc;
     osc.CharStr = s;
     osc.MaxCharCount = n;
     osc.CharsWritten = 0;
-    end = __pformatter(func_020076f4, &osc, format, arg, 0);
+    end = __pformatter(__StringWrite, &osc, format, arg, 0);
     if (s) {
         if (end < n) {
             s[end] = '\0';
@@ -42,10 +42,10 @@ int func_02007738(char *s, u32 n, const char *format, va_list arg) {
     return end;
 }
 
-int func_0200779c(char *s, const char *format, ...) {
+int sprintf(char *s, const char *format, ...) {
     va_list args;
     va_start(args, format);
-    return func_02007738(s, (u32)-1, format, args);
+    return vsnprintf(s, (u32)-1, format, args);
 }
 
 void func_020077f0(void *a, void *b, void *c);

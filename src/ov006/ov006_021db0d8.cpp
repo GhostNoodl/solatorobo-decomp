@@ -26,10 +26,10 @@ static inline void ov006_SlotSub_Copy(ov006_SlotSub *dst, const ov006_SlotSub *s
 void ov006_SyncSlotEntries(void) {
     u8 i;
     if (gOv006Manager->unk1C) {
-        if (data_ov006_021ec888 == NULL) {
+        if (gOv006Menu == NULL) {
             return;
         }
-        if (data_ov006_021ec888->state != 5 && data_ov006_021ec888->state != 6) {
+        if (gOv006Menu->state != 5 && gOv006Menu->state != 6) {
             return;
         }
     }

@@ -5,7 +5,7 @@ extern "C" {
 extern Ov015Globals gOv015Globals;
 void Ov015Ship_Draw(Ov015Ship *p);
 void Ov015Fish_Draw(Ov015Fish *self);
-void func_ov015_02210d04(Ov015MsgMgr *self);
+void Ov015MsgMgr_Draw(Ov015MsgMgr *self);
 void Ov015Obj292c_Draw(Ov015Obj292c *self);
 BOOL Model021903b4_Draw(void *a);
 void func_ov015_0220101c(Ov015Game *self);
@@ -74,7 +74,7 @@ void Ov015Game_Draw(Ov015Game *self) {
         if (self->phase1.step >= 3) {
             Ov015_022022ac_Draw(self);
         }
-        if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
+        if (self->unk_90 != NULL) Ov015MsgMgr_Draw(self->unk_90);
         break;
     case 0x32:
     case 0x3c:
@@ -82,7 +82,7 @@ void Ov015Game_Draw(Ov015Game *self) {
             Ov015Hud_Draw(self->hud);
         }
         Ov015_022022ac_Draw(self);
-        if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
+        if (self->unk_90 != NULL) Ov015MsgMgr_Draw(self->unk_90);
         NNS_G3dGeFlushBuffer();
         break;
     case 0x46:

@@ -117,7 +117,7 @@ void Ov000TaskVt_021ccc94_Start(VObj *self) {
         return;
     }
     *(s32 *)((u8 *)self + 0x20) = 0x1000;
-    data_ov002_021f0f90.unk_00 = 0;
+    gOv002BoardRef.unk_00 = 0;
     TaskList_Insert(self);
 }
 

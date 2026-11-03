@@ -155,7 +155,7 @@ void SaveBase_State12(SaveBase *s) {
             s->step = 8;
             break;
         case 8:
-            if (func_02047004(gSysCard, SaveBase_DataOffset(s, s->curSlot), data, s->dataSize) != 1) {
+            if (SysCard_Write(gSysCard, SaveBase_DataOffset(s, s->curSlot), data, s->dataSize) != 1) {
                 s->step = 9;
             }
             break;

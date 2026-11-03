@@ -57,7 +57,7 @@ static inline void Twl0214b570_update(Twl0214b570 *self) {
 
 #pragma force_active on
 
-TwlLoader *func_ov000_0214b724(TwlLoader *self) {
+TwlLoader *TwlLoader_Unload(TwlLoader *self) {
     if (self->unk_08 != 0) {
         switch (self->unk_04) {
         case 0:
@@ -87,7 +87,7 @@ TwlLoader *func_ov000_0214b724(TwlLoader *self) {
     return self;
 }
 
-void func_ov000_0214b810(TwlLoader *self) {
+void TwlLoader_Load(TwlLoader *self) {
     if (self->unk_08 == 1) {
         switch (self->unk_04) {
         case 0:

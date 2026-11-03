@@ -7,7 +7,7 @@
 #include "ov002/ObjLayouts.h"
 
 // The staff roll: a script file of timed entries, one node object per entry, all driven by the
-// clock of the staff object (data_ov002_021f0fa4).
+// clock of the staff object (gOv002Staff).
 
 // One script entry (0x14 bytes). Ov002StaffLoader_Parse fixes it up after loading.
 typedef struct Ov002StaffEntry {
@@ -76,7 +76,7 @@ struct Ov002StaffNode : public VObj {
     /* 0x04 */ Ov002StaffClock clock;
     /* 0x20 */ Ov002StaffEntry *entry;
     /* 0x24 */ s32 screen; // 0 or 1; 2 draws on both
-    /* 0x28 */ Ov002StaffNode *prev; // run list (data_ov002_021f0fa0 .. data_ov002_021f0fa8), by time
+    /* 0x28 */ Ov002StaffNode *prev; // run list (gOv002StaffPool .. data_ov002_021f0fa8), by time
     /* 0x2c */ Ov002StaffNode *next;
     /* 0x30 */ Ov002StaffNode *link; // per-kind list (data_ov002_021f0fac[kind])
 };
@@ -130,11 +130,11 @@ typedef struct Ov002Staff {
 
 extern "C" {
 
-// The run list's head and tail and the staff object (data_ov002_021f0fa0 / 021f0fa8 / 021f0fa4)
+// The run list's head and tail and the staff object (gOv002StaffPool / 021f0fa8 / 021f0fa4)
 // are defined in ov002_021ecb90.cpp next to their users.
 extern Ov002StaffNode *data_ov002_021f0fac[9];
 
-void func_ov002_021eea74(Ov002Staff *self);
+void Ov002Staff_DrawFade(Ov002Staff *self);
 
 }
 

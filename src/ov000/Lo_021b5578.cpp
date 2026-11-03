@@ -34,7 +34,7 @@ void func_0206dedc(char *buf, u8 *ids);
 void func_0206dfd4(char *buf, u8 *ids);
 void ResMgr_LoadArchive(void *a, char *buf, s32 b, s32 c);
 BOOL ResMgr_IsArchiveLoaded(void *a, char *buf, s32 b);
-void **func_02035fe8(void *a, char *buf);
+void **ResMgr_FindNamedArcType0(void *a, char *buf);
 Ent021b5578 *func_0206e1bc(LangBlockA *r);
 u16 LangData_GetIndex(u32 a, u32 b);
 u8 *Tbl_Elem_020704b4(u16 id);
@@ -119,12 +119,12 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
         if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
-        r_0 = func_02035fe8(t->unk_08, buf);
+        r_0 = ResMgr_FindNamedArcType0(t->unk_08, buf);
         if (r_0 != NULL) {
             self->unk_0c = *r_0;
         }
         func_0206dde4(buf, ids);
-        r_0 = func_02035fe8(t->unk_08, buf);
+        r_0 = ResMgr_FindNamedArcType0(t->unk_08, buf);
         if (r_0 != NULL) {
             self->blockA = (LangBlockA *)*r_0;
         }
@@ -307,7 +307,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
         if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
-        r_3 = func_02035fe8(t->unk_08, buf);
+        r_3 = ResMgr_FindNamedArcType0(t->unk_08, buf);
         if (r_3 != NULL) {
             self->blockB = (LangBlockB *)*r_3;
         }

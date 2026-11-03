@@ -199,7 +199,7 @@ void func_02039e0c(GfxMgr *mgr) {
     mgr->unk_680 = 0;
 }
 
-void func_02039f84(GfxMgr *mgr) {
+void GfxMgr_Update(GfxMgr *mgr) {
     VramBlock *block;
     GfxPltt *pltt;
     int id;

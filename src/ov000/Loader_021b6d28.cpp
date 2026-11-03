@@ -13,7 +13,7 @@ void **ResList_FindType5(void *list, const char *name);
 void **ResList_FindType6(void *list, const char *name);
 void **ResList_FindPath(void *list, const char *name, const char *ext);
 BOOL G3dRes_SetupVram(const char *name, void *data);
-u32 func_0203ebf8(void);
+u32 Vram_GetTexTransferId(void);
 BOOL Vram_IsTransferDone(u32 task);
 void G3dRes_DropTexData(void *data);
 
@@ -21,7 +21,7 @@ static inline u32 Load021b6d28(const char *name, void **res) {
     if (res != NULL) {
         G3dRes_SetupVram(name, *res);
     }
-    return func_0203ebf8();
+    return Vram_GetTexTransferId();
 }
 
 BOOL func_ov000_021b6d28(FieldPropLoader *self) {

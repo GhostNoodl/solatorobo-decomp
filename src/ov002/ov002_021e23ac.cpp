@@ -55,16 +55,16 @@ void Ov002Hud_Update(Ov002Hud *self) {
     }
 }
 
-void func_ov002_021e28b0(Ov002Hud *self);
+void Ov002Hud_DrawBody(Ov002Hud *self);
 
 void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model);
 
-void func_ov002_021e2528(Ov002Hud *self) {
+void Ov002Hud_Draw(Ov002Hud *self) {
     s32 i;
     if (self->pending) {
         return;
     }
-    func_ov002_021e28b0(self);
+    Ov002Hud_DrawBody(self);
     {
         Model *m = self->unk_08;
         m->unk_10c = 0;

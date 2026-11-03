@@ -92,9 +92,9 @@ extern void GX_SetBankForBG(int a);
 extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void GfxMgr_FreeAll(GfxMgr *mgr, int state);
-extern u32 func_0203e8e0(u32 size, int is4x4, int opt);
+extern u32 Vram_AllocTex(u32 size, int is4x4, int opt);
 extern int Vram_FreeTex(u32 key);
-extern u32 func_0203ea6c(u32 size, int is4pltt, int opt);
+extern u32 Vram_AllocPltt(u32 size, int is4pltt, int opt);
 extern int Vram_FreePltt(u32 key);
 extern void *NNS_GfdDefaultFuncAllocTexVram;
 extern void *NNS_GfdDefaultFuncFreeTexVram;
@@ -120,9 +120,9 @@ static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
 }
 
 static inline void GfxSys_SetVramFuncs(void) {
-    NNS_GfdDefaultFuncAllocTexVram = (void *)func_0203e8e0;
+    NNS_GfdDefaultFuncAllocTexVram = (void *)Vram_AllocTex;
     NNS_GfdDefaultFuncFreeTexVram = (void *)Vram_FreeTex;
-    NNS_GfdDefaultFuncAllocPlttVram = (void *)func_0203ea6c;
+    NNS_GfdDefaultFuncAllocPlttVram = (void *)Vram_AllocPltt;
     NNS_GfdDefaultFuncFreePlttVram = (void *)Vram_FreePltt;
 }
 

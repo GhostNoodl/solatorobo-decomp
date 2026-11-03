@@ -30,7 +30,7 @@ Obj0219bf90 *ActorMgr_FindPlayer(void);
 void func_020627b4(void);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02182590(u8 *p);
+void SceneStage_StartScript(u8 *p);
 s32 StageRes_HasQueued(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *gSndMgr;
@@ -43,7 +43,7 @@ void func_ov000_021974b0(Obj021975b4 *self) {
     {
         FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;
-        func_ov000_02182590(&pl->stageFlags);
+        SceneStage_StartScript(&pl->stageFlags);
     }
     if (StageRes_HasQueued() == 1 && p != NULL && p->unk_b28_0 == 0) {
         p->unk_15 = 3;
@@ -71,7 +71,7 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     {
         FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;
-        func_ov000_02182590(&pl->stageFlags);
+        SceneStage_StartScript(&pl->stageFlags);
     }
     if (StageRes_HasQueued() != 1) {
         return;

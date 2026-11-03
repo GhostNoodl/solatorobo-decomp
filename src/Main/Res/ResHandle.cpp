@@ -30,7 +30,7 @@ extern ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcNam
 extern void ResMgr_LoadNode(ResMgr *mgr, ResNode *node);
 extern void Sys_WaitVBlank(UnkSys *sys);
 extern void *ResList_FindType0(ResList *list, const char *name);
-extern void *func_02034cec(ResList *list, const char *name);
+extern void *ResList_FindType1(ResList *list, const char *name);
 extern void *ResList_FindType3(ResList *list, const char *name);
 extern void *ResList_FindType4(ResList *list, const char *name);
 extern void *ResList_FindType5(ResList *list, const char *name);
@@ -302,7 +302,7 @@ void *ResHandle_GetData(ResHandle *handle) {
         case 0:
             RES_HANDLE_GET_ARC_DATA(0, ResList_FindType0);
         case 1:
-            RES_HANDLE_GET_ARC_DATA(1, func_02034cec);
+            RES_HANDLE_GET_ARC_DATA(1, ResList_FindType1);
         case 2:
             RES_HANDLE_GET_ARC_DATA(2, ResList_FindType2);
         case 3:

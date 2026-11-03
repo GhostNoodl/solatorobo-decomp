@@ -26,7 +26,7 @@ extern void *ActorMgr_FindPlayer(void);
 extern BOOL Actor_IsDead(void *p);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_ov000_02182590(u8 *p);
+extern void SceneStage_StartScript(u8 *p);
 extern u32 Rand_UpTo(u32 max);
 
 #define OV003_FX32_CONST(x) ((s32)(((x) > 0) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
@@ -84,7 +84,7 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
             func_020627dc(4);
             g = gSceneCmd;
             g->stageFlags = 1;
-            func_ov000_02182590(&g->stageFlags);
+            SceneStage_StartScript(&g->stageFlags);
             self->fsm->timer = 0;
             self->fsm->st++;
         } else {

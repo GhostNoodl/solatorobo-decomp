@@ -12,19 +12,19 @@ extern u32 FS_TryLoadTable(void *buf, u32 size);
 extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
 extern ResLoader *ResLoader_Init(ResLoader *loader);
-extern void func_02035670(ResLoader *loader);
+extern void ResLoader_Start(ResLoader *loader);
 extern void ResLoader_Destroy(ResLoader *loader);
-extern void func_020363d8(ResMgr *mgr);
-extern void func_020381cc(ResMgr *mgr, ResNode *node);
+extern void ResMgr_Init(ResMgr *mgr);
+extern void ResMgr_FreeNodeData(ResMgr *mgr, ResNode *node);
 extern void *ResMgr_ReadFile(ResMgr *mgr, const char *path, u32 size, void *buf);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
-extern void func_02036cd8(ResMgr *mgr, ResNode *node);
-extern void func_02036de0(ResMgr *mgr, ResNode *node);
-extern void func_02037270(ResMgr *mgr, ResNode *node);
-extern void func_02037544(ResMgr *mgr, ResNode *node);
-extern void func_02037640(ResMgr *mgr, ResNode *node);
-extern void func_0203773c(ResMgr *mgr, ResNode *node);
-extern BOOL func_02037bb8(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType1(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType2(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType3(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType4(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType5(ResMgr *mgr, ResNode *node);
+extern void ResMgr_LoadType6(ResMgr *mgr, ResNode *node);
+extern BOOL ResMgr_LoadType7Step(ResMgr *mgr, ResNode *node);
 extern const char data_0208b354[]; // ".nftr"
 extern const char data_0208b35a[]; // ".ncer"
 extern const char data_0208b360[]; // ".nanr"
@@ -62,7 +62,7 @@ extern void *ResList_FindType4(ResList *list, const char *name);
 extern void *ResList_FindType5(ResList *list, const char *name);
 extern void *ResList_FindType6(ResList *list, const char *name);
 
-ResList *func_02035934(const char *name) {
+ResList *ResMgr_LoadArcListSync(const char *name) {
     ResList *result = NULL;
     ResNode *node = ResMgr_Request(gResMgr, name, NULL, 7, 1);
     ResMgr *mgr;
@@ -156,10 +156,10 @@ BOOL ResMgr_IsArchiveLoaded(const char *name, const char *arcName, u16 id) {
         return result;                                              \
     }
 
-RES_MGR_GET_DATA(func_02035c9c, 0)
-RES_MGR_GET_DATA(func_02035ccc, 4)
-RES_MGR_GET_DATA(func_02035cfc, 5)
-RES_MGR_GET_DATA(func_02035d2c, 6)
+RES_MGR_GET_DATA(ResMgr_GetDataType0, 0)
+RES_MGR_GET_DATA(ResMgr_GetDataType4, 4)
+RES_MGR_GET_DATA(ResMgr_GetDataType5, 5)
+RES_MGR_GET_DATA(ResMgr_GetDataType6, 6)
 
 ResList *ResMgr_GetArcList(const char *name) {
     ResList *result = NULL;
@@ -184,11 +184,11 @@ ResList *ResMgr_GetArcList(const char *name) {
         return result;                                              \
     }
 
-RES_MGR_GET_ARC_DATA(func_02035d8c, ResList_FindType0)
-RES_MGR_GET_ARC_DATA(func_02035de0, ResList_FindType2)
-RES_MGR_GET_ARC_DATA(func_02035e34, ResList_FindType4)
-RES_MGR_GET_ARC_DATA(func_02035e88, ResList_FindType5)
-RES_MGR_GET_ARC_DATA(func_02035edc, ResList_FindType6)
+RES_MGR_GET_ARC_DATA(ResMgr_FindArcType0, ResList_FindType0)
+RES_MGR_GET_ARC_DATA(ResMgr_FindArcType2, ResList_FindType2)
+RES_MGR_GET_ARC_DATA(ResMgr_FindArcType4, ResList_FindType4)
+RES_MGR_GET_ARC_DATA(ResMgr_FindArcType5, ResList_FindType5)
+RES_MGR_GET_ARC_DATA(ResMgr_FindArcType6, ResList_FindType6)
 
 ResList *ResMgr_GetArchiveList(const char *name, const char *arcName, u16 id) {
     ResList *result = NULL;
@@ -228,12 +228,12 @@ ResList *ResMgr_GetArchiveList(const char *name, const char *arcName, u16 id) {
     return result; \
 }
 
-RES_MGR_GET_NAMED_ARC_DATA(func_02035fe8, ResList_FindType0, 0)
-RES_MGR_GET_NAMED_ARC_DATA(func_020360b8, ResList_FindType2, 2)
-RES_MGR_GET_NAMED_ARC_DATA(func_02036188, ResList_FindType4, 4)
-RES_MGR_GET_NAMED_ARC_DATA(func_02036258, ResList_FindType6, 6)
+RES_MGR_GET_NAMED_ARC_DATA(ResMgr_FindNamedArcType0, ResList_FindType0, 0)
+RES_MGR_GET_NAMED_ARC_DATA(ResMgr_FindNamedArcType2, ResList_FindType2, 2)
+RES_MGR_GET_NAMED_ARC_DATA(ResMgr_FindNamedArcType4, ResList_FindType4, 4)
+RES_MGR_GET_NAMED_ARC_DATA(ResMgr_FindNamedArcType6, ResList_FindType6, 6)
 
-BOOL func_02036328(void) {
+BOOL ResMgr_IsIdle(void) {
     BOOL result = FALSE;
     ResNode *node;
     ResNode *list = gResMgr->head;
@@ -260,10 +260,10 @@ void ResMgr_Create(void) {
         return;
     }
     gResMgr = (ResMgr *)Heap_AllocLo(sizeof(ResMgr), 4);
-    func_020363d8(gResMgr);
+    ResMgr_Init(gResMgr);
 }
 
-void func_020363d8(ResMgr *mgr) {
+void ResMgr_Init(ResMgr *mgr) {
     u32 size;
     int i;
     ResLoader *loader;
@@ -279,7 +279,7 @@ void func_020363d8(ResMgr *mgr) {
     }
     mgr->loader = loader;
     gSysState->cur = gSysState->heapHi;
-    func_02035670(mgr->loader);
+    ResLoader_Start(mgr->loader);
     for (i = 0; i < RES_MGR_NODE_COUNT; i++) {
         MI_CpuFill8(&mgr->pool[i], 0, sizeof(ResNode));
     }
@@ -291,7 +291,7 @@ void func_020363d8(ResMgr *mgr) {
     MATHi_CRC16InitTableRev(mgr->hashTable, 0xa001);
 }
 
-void func_020364c0(ResMgr *mgr) {
+void ResMgr_Update(ResMgr *mgr) {
     ResNode *node;
     if (func_02046e28(gSysCard)) {
         return;
@@ -334,7 +334,7 @@ ResNode *ResMgr_Find(ResMgr *mgr, const char *name, int type) {
     return node;
 }
 
-ResNode *func_0203662c(ResMgr *mgr) {
+ResNode *ResMgr_AllocNode(ResMgr *mgr) {
     ResNode *node = mgr->freeNode;
     int i;
     if (node != NULL) {
@@ -391,7 +391,7 @@ void ResMgr_ReleaseNode(ResMgr *mgr, ResNode *node, BOOL force) {
     if (node->state == 4) {
         ResMgr_StopLoading(mgr);
     }
-    func_020381cc(mgr, node);
+    ResMgr_FreeNodeData(mgr, node);
     prev = node->prev;
     next = node->next;
     if (prev != NULL) {
@@ -459,7 +459,7 @@ ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int 
             }
         }
     } else {
-        node = func_0203662c(mgr);
+        node = ResMgr_AllocNode(mgr);
         node->refCount = 1;
         node->state = 2;
         node->type = type;
@@ -492,7 +492,7 @@ ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int 
         loading = ResMgr_FindState(mgr, 4);
         if (loading != NULL) {
             ResMgr_StopLoading(mgr);
-            func_020381cc(mgr, loading);
+            ResMgr_FreeNodeData(mgr, loading);
             loading->state = 2;
         }
     }
@@ -527,31 +527,31 @@ void ResMgr_LoadNode(ResMgr *mgr, ResNode *node) {
         }
         break;
     case 1:
-        func_02036cd8(mgr, node);
+        ResMgr_LoadType1(mgr, node);
         break;
     case 2:
-        func_02036de0(mgr, node);
+        ResMgr_LoadType2(mgr, node);
         break;
     case 3:
-        func_02037270(mgr, node);
+        ResMgr_LoadType3(mgr, node);
         break;
     case 4:
-        func_02037544(mgr, node);
+        ResMgr_LoadType4(mgr, node);
         break;
     case 5:
-        func_02037640(mgr, node);
+        ResMgr_LoadType5(mgr, node);
         break;
     case 6:
-        func_0203773c(mgr, node);
+        ResMgr_LoadType6(mgr, node);
         break;
     case 7:
-        while (func_02037bb8(mgr, node)) {
+        while (ResMgr_LoadType7Step(mgr, node)) {
         }
         break;
     }
 }
 
-void func_02036cd8(ResMgr *mgr, ResNode *node) {
+void ResMgr_LoadType1(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     switch (mgr->loadStep) {
     case 0:
@@ -602,7 +602,7 @@ static inline bool ResMgr_IsReadDone(ResMgr *mgr) {
         mgr->loadStep = nextStep;                                   \
     }
 
-void func_02036de0(ResMgr *mgr, ResNode *node) {
+void ResMgr_LoadType2(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     switch (mgr->loadStep) {
     case 0:
@@ -689,7 +689,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
 }
 
 
-void func_02037270(ResMgr *mgr, ResNode *node) {
+void ResMgr_LoadType3(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     switch (mgr->loadStep) {
     case 0:
@@ -753,8 +753,8 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
         }                                                           \
     }
 
-RES_LOAD_SINGLE(func_02037544, data_0208b37e)
-RES_LOAD_SINGLE(func_02037640, data_0208b385)
+RES_LOAD_SINGLE(ResMgr_LoadType4, data_0208b37e)
+RES_LOAD_SINGLE(ResMgr_LoadType5, data_0208b385)
 
 
 #define RES_LOAD_OPTIONAL(slot, ext, nextStep)                      \
@@ -775,7 +775,7 @@ RES_LOAD_SINGLE(func_02037640, data_0208b385)
     FS_CloseFile(&mgr->file);                                      \
     mgr->loadStep = nextStep;
 
-void func_0203773c(ResMgr *mgr, ResNode *node) {
+void ResMgr_LoadType6(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     switch (mgr->loadStep) {
     case 0:
@@ -821,8 +821,8 @@ typedef struct ResArcHeader {
 
 extern const char data_0208b3af[];
 extern ResList *ResList_Init(ResList *list);
-extern void func_02035094(ResList *list, ResRequest *req);
-extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
+extern void ResList_AddEntry(ResList *list, ResRequest *req);
+extern BOOL ResLoader_Request(ResLoader *loader, ResRequest *req);
 extern void ResLoader_Sleep(ResLoader *loader);
 extern u8 *ResRing_GetReadPtr(ResRing *ring);
 extern u32 ResRing_GetReadSize(ResRing *ring);
@@ -844,7 +844,7 @@ static inline BOOL ResName_Match(const char *a, const char *b) {
     return TRUE;
 }
 
-BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
+BOOL ResMgr_LoadType7Step(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     BOOL again;
     ResRequest *req;
@@ -944,7 +944,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
                 break;
             }
             ResMgr_ReadFile(mgr, NULL, ResRing_GetReadSize(ring), buf);
-            if (func_02035740(mgr->loader, req)) {
+            if (ResLoader_Request(mgr->loader, req)) {
                 mgr->loadStep = 30;
                 again = TRUE;
             } else {
@@ -965,7 +965,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         }
         break;
     case 20:
-        if (func_02035740(mgr->loader, req)) {
+        if (ResLoader_Request(mgr->loader, req)) {
             mgr->loadStep = 30;
             again = TRUE;
         }
@@ -1009,7 +1009,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         }
         ResLoader_Sleep(mgr->loader);
     case 41:
-        func_02035094((ResList *)req->unk_00, req);
+        ResList_AddEntry((ResList *)req->unk_00, req);
         req->data = NULL;
         req->index++;
         if (((ResArcHeader *)req->unk_04)->count > req->index) {

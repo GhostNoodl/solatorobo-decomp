@@ -16,7 +16,7 @@ typedef struct Ov002BoardRef {
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern Ov002BoardRef data_ov002_021f0f90;
+extern Ov002BoardRef gOv002BoardRef;
 #ifdef __cplusplus
 }
 #endif

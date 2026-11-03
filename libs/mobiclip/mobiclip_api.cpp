@@ -6,7 +6,7 @@ extern "C" {
 
 
 extern const char data_02005068[];
-extern const u32 data_0208b2ac[];
+extern const u32 MoFileStream_vtbl[];
 
 extern void OSi_ReferSymbol(const char *string);
 extern void *MoMem_Alloc(u32 size);
@@ -28,7 +28,7 @@ MoPlayer *Mo_OpenFile(void *file, u32 flags) {
     if (stream != NULL) {
         stream->length = 0;
         stream->position = 0;
-        *(const u32 **)stream = data_0208b2ac;
+        *(const u32 **)stream = MoFileStream_vtbl;
     }
     if (stream == NULL) {
         return NULL;

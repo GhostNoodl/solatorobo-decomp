@@ -41,7 +41,7 @@ void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void Field_ShakeCamera(s32 a, s32 b);
 void func_02062410(void);
-void func_ov000_02182590(void *p);
+void SceneStage_StartScript(void *p);
 BOOL StageRes_FindSlotByIds(u16 *ids);
 void SceneCmd_Push20(void *g);
 BOOL Model0218fe1c_IsAnimDone(void *a);
@@ -182,7 +182,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
             {
                 FieldState *g = gSceneCmd;
                 g->stageFlags = 1;
-                func_ov000_02182590((u8 *)g + 0xac);
+                SceneStage_StartScript((u8 *)g + 0xac);
             }
             {
                 Ids021ad130 ids = data_ov000_021ca018;

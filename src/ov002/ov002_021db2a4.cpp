@@ -24,7 +24,7 @@ static inline u8 *ov002_Menu_GetSel(u8 *m) {
 static inline void ov002_Menu_Close(Obj021eff74 *self) {
     self->unk_0c->flags |= 2;
     self->unk_10->flags |= 2;
-    data_ov002_021f0f90.unk_00 = self->unk_14;
+    gOv002BoardRef.unk_00 = self->unk_14;
     self->unk_18 = 2;
     if (self->unk_08 == 2 || self->unk_08 == 3) {
         GfxSys_StartFadeOut(0xa000, 2, -1);

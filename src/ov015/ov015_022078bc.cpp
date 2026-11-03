@@ -94,7 +94,7 @@ BOOL Ov015Ship_Setup(Ov015Ship *self) {
     Model0218fe1c_SetRes(&self->model, self, 0, 1);
     Model0218fe1c_SetAnim(&self->model, "ang00", 0x1000, 0);
     Model0218fe1c_SetLoop(&self->model);
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_02208474);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), Ov015Ship_SetCaptureCb);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->nodeMtx.id = Model_FindResIdxByName(&self->model, self->res.anmName, "ang05");

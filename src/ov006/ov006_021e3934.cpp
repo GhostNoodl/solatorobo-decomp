@@ -182,7 +182,7 @@ void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a) {
         STD_CopyString(model->name, file);
     }
     self->model = model;
-    TexObj_SetRes(self->model, func_02035de0(file, name));
+    TexObj_SetRes(self->model, ResMgr_FindArcType2(file, name));
     self->model->flags |= 2;
     self->model->flags |= 0x80000;
     self->model->flags |= 0x400000;

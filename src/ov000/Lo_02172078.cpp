@@ -12,7 +12,7 @@ extern void *gTaskHost;
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
 void func_ov000_0216f23c(void *p, s32 a);
-BOOL func_ov000_02180900(void *p);
+BOOL TaskHost_Update(void *p);
 void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
@@ -49,7 +49,7 @@ void MessageQueue021cb980_Update(VObj *self) {
     }
     func_ov000_0216f23c((u8 *)self + 8, 0);
     if (gTaskHost != NULL) {
-        func_ov000_02180900(gTaskHost);
+        TaskHost_Update(gTaskHost);
     }
 }
 

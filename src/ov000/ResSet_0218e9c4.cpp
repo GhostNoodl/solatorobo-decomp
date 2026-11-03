@@ -229,23 +229,23 @@ void ResSet_SetFile(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u8 d) 
 extern "C" {
 ResHandle *ResList_FindType4(void *arc, const char *name);
 BOOL G3dRes_SetupVram(const char *name, void *data);
-void *func_0203ebf8(void);
+void *Vram_GetTexTransferId(void);
 ResHandle *ResList_FindType6(void *arc, const char *name);
 ResHandle *ResList_FindPath(void *arc, const char *name, const char *ext);
 void G3dRes_DropTexData(void *a);
 void ResMgr_LoadArchive(const char *name, const char *ext, s32 type, s32 d);
 BOOL ResMgr_IsArchiveLoaded(const char *name, const char *ext, s32 type);
-ResHandle *func_02036188(const char *name, const char *ext);
-ResHandle *func_02036258(const char *name, const char *ext);
-ResHandle *func_02035fe8(const char *name, const char *ext);
-ResHandle *func_02035e88(const char *name, const char *ext);
+ResHandle *ResMgr_FindNamedArcType4(const char *name, const char *ext);
+ResHandle *ResMgr_FindNamedArcType6(const char *name, const char *ext);
+ResHandle *ResMgr_FindNamedArcType0(const char *name, const char *ext);
+ResHandle *ResMgr_FindArcType5(const char *name, const char *ext);
 }
 
 static inline void *ResSet_Bind(ResHandle *h, const char *name) {
     if (h != NULL) {
         G3dRes_SetupVram(name, h->unk_00);
     }
-    return func_0203ebf8();
+    return Vram_GetTexTransferId();
 }
 
 static inline void ResSet_Free(ResHandle *h) {
@@ -331,7 +331,7 @@ extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
             break;
         case 21:
             if (self->owned_1 && ResMgr_IsArchiveLoaded(self->entries[0].name, self->entries[0].ext, 4)) {
-                self->entries[0].handle = func_02036188(self->entries[0].name, self->entries[0].ext);
+                self->entries[0].handle = ResMgr_FindNamedArcType4(self->entries[0].name, self->entries[0].ext);
                 self->unk_00++;
             }
             if (self->entries[0].handle != NULL) {
@@ -366,7 +366,7 @@ extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
             break;
         case 31:
             if (self->owned_2 && ResMgr_IsArchiveLoaded(self->entries[1].name, self->entries[1].ext, 6)) {
-                self->entries[1].handle = func_02036258(self->entries[1].name, self->entries[1].ext);
+                self->entries[1].handle = ResMgr_FindNamedArcType6(self->entries[1].name, self->entries[1].ext);
                 self->unk_00 = 40;
                 again = TRUE;
             }
@@ -390,7 +390,7 @@ extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
                 STD_CopyString(buf, self->entries[2].ext);
                 STD_ConcatenateString(buf, data_ov000_021cc41d);
                 if (ResMgr_IsArchiveLoaded(self->entries[2].name, buf, 0)) {
-                    self->entries[2].handle = func_02035fe8(self->entries[2].name, buf);
+                    self->entries[2].handle = ResMgr_FindNamedArcType0(self->entries[2].name, buf);
                     self->unk_00 = 50;
                     again = TRUE;
                 }
@@ -415,7 +415,7 @@ extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
                 STD_CopyString(buf, self->entries[3].ext);
                 STD_ConcatenateString(buf, data_ov000_021cc424);
                 if (ResMgr_IsArchiveLoaded(self->entries[3].name, buf, 0)) {
-                    self->entries[3].handle = func_02035fe8(self->entries[3].name, buf);
+                    self->entries[3].handle = ResMgr_FindNamedArcType0(self->entries[3].name, buf);
                     self->unk_00 = 60;
                     again = TRUE;
                 }
@@ -436,7 +436,7 @@ extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
             break;
         case 61:
             if (self->owned_5 && ResMgr_IsLoaded(self->entries[4].name, 7)) {
-                self->entries[4].handle = func_02035e88(self->entries[4].name, self->entries[4].ext);
+                self->entries[4].handle = ResMgr_FindArcType5(self->entries[4].name, self->entries[4].ext);
                 self->unk_00++;
                 again = TRUE;
             }

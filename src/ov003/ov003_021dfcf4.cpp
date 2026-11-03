@@ -73,7 +73,7 @@ extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 extern void SceneCmd_Push27(FieldState *g, s32 a, s32 b, s32 c);
-extern void func_ov000_02188ca0(FieldId *c, s32 a);
+extern void SceneCmd_Push09(FieldId *c, s32 a);
 
 static inline BOOL Ov003Fv_HasEvent(FieldState *g, s32 id) {
     s32 i = g->head;
@@ -184,7 +184,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
                 col.c[0] = r;
                 col.c[1] = g;
                 col.c[2] = b;
-                func_ov000_02188ca0(&col, 1);
+                SceneCmd_Push09(&col, 1);
             }
             self->work->state++;
         }
@@ -286,7 +286,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
                 col.c[0] = r;
                 col.c[1] = g;
                 col.c[2] = b;
-                func_ov000_02188ca0(&col, 1);
+                SceneCmd_Push09(&col, 1);
             }
             self->work->state++;
         }
