@@ -48,7 +48,7 @@ extern void Model0218fe1c_Setup(void *model, void *p, void *info);
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern void Model0218fe1c_SetLoop(void *model);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 void func_ov003_021ec9e0(Ov003Gimmick *self) {
     ActorSub40 *w = self->fsm;
@@ -170,7 +170,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
             Model0218fe1c_SetLoop(self->model);
             SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
-            func_ov000_0218996c(0xf, 0x14);
+            Field_ShakeCamera(0xf, 0x14);
             self->velY = 0;
             self->fsm->st++;
             self->fsm->timer = 0;

@@ -33,7 +33,7 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 u8 *Target_GetActor(void *p);
 void func_ov000_02199f88(void *t, void *self);
 u16 func_ov000_02198da8(void *body, u16 angle);
@@ -117,7 +117,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         } else {
             SndMgr_PlayVolume(data_02097e4c, 0x30a, -1, -1, -1);
         }
-        func_ov000_0218996c(8, 0xc);
+        Field_ShakeCamera(8, 0xc);
         a = FindActor_021ac844(self->unk_b1c);
         if (a != NULL) {
             pose.pos.x = self->pos.x;

@@ -10,7 +10,7 @@ public:
 
 extern "C" {
 
-void func_ov000_021c4cac(Obj021c4cac *self, s32 a, s32 b, s32 c) {
+void LoBase021ccb54_021ccbe0_DrawBody(Obj021c4cac *self, s32 a, s32 b, s32 c) {
     self->vfunc_60(a, b, c);
     self->vfunc_64(a, b, c);
     if (self->unk_f0 != 0) {

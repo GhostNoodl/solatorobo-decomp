@@ -2,7 +2,7 @@
 
 extern "C" {
 
-// Called each tick for the three labels of a Lo021ccb54 (func_ov000_021c56c0); does nothing.
+// Called each tick for the three labels of a Lo021ccb54 (Ov000Vt_021ccb54_PreUpdate); does nothing.
 void func_ov000_0215f330(UiLabel *self) {
 }
 

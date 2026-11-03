@@ -18,7 +18,7 @@ static inline BOOL Lo_IsShown(Lo021cae48 *self) {
     return self->flag5 == 0 ? TRUE : FALSE;
 }
 
-void func_ov000_0215db70(Lo021cae48 *self, s32 a, s32 *pos, s32 d) {
+void Lo021cae48_DrawBody(Lo021cae48 *self, s32 a, s32 *pos, s32 d) {
     s32 px;
     s32 py;
     s32 x;

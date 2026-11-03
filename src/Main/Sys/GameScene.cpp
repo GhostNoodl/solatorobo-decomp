@@ -27,17 +27,17 @@ BOOL func_02055aa4(GameScene *scene) {
         }
         type = scene->fadeType;
         if (type == 0xff) {
-            func_0203c9e8(0x3f, -1);
-            func_0203cc58(scene->fadeFrames << 12, 2, -1);
+            GfxSys_SetFadePlanes(0x3f, -1);
+            GfxSys_StartFadeOut(scene->fadeFrames << 12, 2, -1);
         } else if (type == 0xfe) {
-            func_0203c9e8(0x3f, 0);
-            func_0203cc58(scene->fadeFrames << 12, 2, 0);
+            GfxSys_SetFadePlanes(0x3f, 0);
+            GfxSys_StartFadeOut(scene->fadeFrames << 12, 2, 0);
         } else if (type == 0xfd) {
-            func_0203c9e8(0x3f, 0);
-            func_0203cc58(scene->fadeFrames << 12, 1, 0);
+            GfxSys_SetFadePlanes(0x3f, 0);
+            GfxSys_StartFadeOut(scene->fadeFrames << 12, 1, 0);
         } else if (type == 0xfc) {
-            func_0203c9e8(0x3f, -1);
-            func_0203cc58(scene->fadeFrames << 12, 1, -1);
+            GfxSys_SetFadePlanes(0x3f, -1);
+            GfxSys_StartFadeOut(scene->fadeFrames << 12, 1, -1);
         }
         return TRUE;
     }

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_ov000_0215d1a4(void) {
+s32 Lo021cad50_GetPadBottom(void) {
     return 0x9;
 }
 

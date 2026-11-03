@@ -28,7 +28,7 @@ void func_ov002_021e3620(UiList *self, u16 id, s32 b) {
     Obj02153c48_CreateText(obj, self->font, 0, 0, 0);
 }
 
-BOOL func_ov002_021e364c(void) {
+BOOL Ov002RowList_OnChildDone(void) {
     return TRUE;
 }
 
@@ -40,7 +40,7 @@ int Ov002RowList_GetHeight(VObj *self) {
     return a + c;
 }
 
-BOOL func_ov002_021e36a0(void) {
+BOOL Ov002RowList_GetPadLeft(void) {
     return FALSE;
 }
 

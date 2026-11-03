@@ -17,7 +17,7 @@ void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 static inline void Nop0215d1ac(Obj0215d1ac *self) {
 }
 
-void func_ov000_0215d1ac(Obj0215d1ac *self) {
+void Lo021cad50_PreUpdate(Obj0215d1ac *self) {
     switch (self->state) {
     case 0:
         if (self->flags & 0x20000) {

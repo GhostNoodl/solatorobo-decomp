@@ -38,11 +38,11 @@ u8 *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 max);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
-void func_ov000_0218996c(s32 a, s32 b);
+void Field_ShakeCamera(s32 a, s32 b);
 void func_02062410(void);
 void func_ov000_02182590(void *p);
 BOOL func_0205b29c(u16 *ids);
-void func_ov000_02186dbc(void *g);
+void SceneCmd_Push20(void *g);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 BOOL History_SetState(void *st, s32 a, s32 b);
@@ -172,7 +172,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                     }
                 }
                 SndMgr_PlayAtPitch(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
-                func_ov000_0218996c(0x14, 0x3c);
+                Field_ShakeCamera(0x14, 0x3c);
                 self->model->visible = 0;
                 self->unk_3c->unk_19 = 0;
             }
@@ -188,7 +188,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 Ids021ad130 ids = data_ov000_021ca018;
                 Ids16_021ad130 ids16 = data_ov000_021c9ff2;
                 if (!QHas021ad130(ids.w) && !func_0205b29c(ids16.v)) {
-                    func_ov000_02186dbc(data_ov000_021ccd54);
+                    SceneCmd_Push20(data_ov000_021ccd54);
                 }
             }
             ((St021ad130 *)self->fsm)->state++;

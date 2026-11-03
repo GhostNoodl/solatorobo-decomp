@@ -111,15 +111,15 @@ VObj *Ov000Vt_021cac0c_Dtor(VObj *self) {
     return self;
 }
 
-s32 func_ov000_0216374c(void) {
+s32 LoBase021cafc0_021cb0b8_GetLineSpacing(void) {
     return 0x4;
 }
 
-s32 func_ov000_02163754(void) {
+s32 LoBase021cafc0_021cb0b8_GetPadBottom(void) {
     return 0x4;
 }
 
-s32 func_ov000_0216375c(Obj02163648 *self) {
+s32 LoBase021cafc0_021cb0b8_IsLoaded(Obj02163648 *self) {
     s32 ret = UiList_IsLoaded(self);
     Model *model = self->unk_d4;
     if (model != NULL && !Model_IsIdle(model)) {
@@ -206,7 +206,7 @@ VObj *Lo021cae48_Dtor(VObj *self) {
     return self;
 }
 
-s32 func_ov000_02163ab8(void) {
+s32 Lo021cad50_GetLineSpacing(void) {
     return 0x2;
 }
 
@@ -227,7 +227,7 @@ VObj *Lo021cadcc_DtorDelete(VObj *self) {
     return self;
 }
 
-s32 func_ov000_02163b50(void) {
+s32 Lo021cadcc_GetPadBottom(void) {
     return 0x3;
 }
 
@@ -264,11 +264,11 @@ VObj *Ov000Vt_021cb1b0_Dtor(VObj *self) {
     return self;
 }
 
-s32 func_ov000_02163c78(void) {
+s32 Lo021cb5a8_GetLineSpacing(void) {
     return 0x4;
 }
 
-s32 func_ov000_02163c80(void) {
+s32 Lo021cb5a8_GetPadBottom(void) {
     return 0x1;
 }
 
@@ -301,11 +301,11 @@ s32 Lo021cb3a8_GetHeight(Obj02163648 *self) {
     return a + b + self->vfunc_38();
 }
 
-s32 func_ov000_02163db8(void) {
+s32 Lo021cb3a8_GetLineSpacing(void) {
     return 0x4;
 }
 
-s32 func_ov000_02163dc0(void) {
+s32 Lo021cb3a8_GetPadBottom(void) {
     return 0x5;
 }
 
@@ -355,7 +355,7 @@ VObj *UiList_DtorDelete(VObj *self) {
     return self;
 }
 
-s32 func_ov000_02163f8c(void) {
+s32 UiList_GetLineSpacing(void) {
     return 0x4;
 }
 

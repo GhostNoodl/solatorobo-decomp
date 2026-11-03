@@ -55,8 +55,8 @@ void Actor_TurnToActor(Actor *self, void *other, s32 step);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void Target_Set(void *body, void *p);
-void func_02062764(s32 a, s32 b);
-void func_020627a0(u16 a, u16 b);
+void Shared_ChangeFlags(s32 a, s32 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_ov000_02182590(void *p);
 void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 
@@ -346,8 +346,8 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     Actor_SendMsgU8(t, self->id, 9);
                     Target_Set(sub, self);
                     if (sub->unk_18_1) {
-                        func_02062764(0x3c0, 0x200);
-                        func_020627a0(t->kind, t->id);
+                        Shared_ChangeFlags(0x3c0, 0x200);
+                        Shared_SetEventActor(t->kind, t->id);
                         FieldState *g = data_ov000_021ccd54;
                         g->stageFlags = 1;
                         func_ov000_02182590((u8 *)g + 0xac);

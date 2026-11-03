@@ -39,7 +39,7 @@ void Ov015Scene2a88_PreUpdate(Task *self) {
     self->vfunc_4c();
 }
 
-BOOL func_ov015_02202e20(Task *self) {
+BOOL Ov015Task_TryReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = data_ov000_021ccd40->id;
@@ -55,7 +55,7 @@ static inline bool Ov015_IsCurrent(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-bool func_ov015_02202e74(Task *self) {
+bool Ov015Task_IsCurrent(Task *self) {
     BOOL r = Ov015_IsCurrent(self);
     return r;
 }
@@ -96,7 +96,7 @@ void Ov015Scene2a88_Draw(Ov015Scene2a88 *self) {
     TexObj_DrawCell(model, arg, anim, 0);
 }
 
-BOOL func_ov015_02202f44(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2a08_List80OnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
             ((Ov015Scene2a08 *)self->owner)->unk_a4 = 1;
@@ -108,7 +108,7 @@ BOOL func_ov015_02202f44(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02202fa8(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2a08_List80OnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2a08 *o = (Ov015Scene2a08 *)self->owner;
     void *d = data_02149ef8;
     void *m;
@@ -313,8 +313,8 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
         UiList *o = self->unk_80;
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
-    self->unk_80->onDecide = func_ov015_02202f44;
-    self->unk_80->onCursor = func_ov015_02202fa8;
+    self->unk_80->onDecide = Ov015Scene2a08_List80OnDecide;
+    self->unk_80->onCursor = Ov015Scene2a08_List80OnCursor;
     self->unk_80->owner = self;
     self->unk_80->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);

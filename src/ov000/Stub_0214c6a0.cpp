@@ -89,7 +89,7 @@ void func_ov000_0214c6b4(Obj0214c668 *self, s32 a, s32 b, s32 c) {
     self->unk_0c |= 2;
 }
 
-void func_ov000_0214c750(Obj0214c668 *self) {
+void Menu021ca94c_Init(Obj0214c668 *self) {
     self->unk_84 = 0;
     self->unk_88 = 0;
     self->unk_8c = 0;

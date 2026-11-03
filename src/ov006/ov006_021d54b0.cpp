@@ -58,7 +58,7 @@ void func_ov006_021ccddc(ov006_Task *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
 void TaskHost_Destroy(void);
 void TaskHost_Create(int a, int b);
-bool func_ov000_021735e8(void);
+bool TaskList_HasTasks_021735e8(void);
 void ListRow_Unlink(void *self);
 void func_0204aab0(ov006_Unk02097e48 *a);
 
@@ -115,7 +115,7 @@ BOOL Ov006Vt_021ebc98_IsLoaded(void) {
     return ((ResMgr_IsLoaded(data_0208cc94, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ec864, 7)) != 0;
 }
 
-BOOL Ov006Vt_021ebc98_Setup(ov006_Task0 *self) {
+BOOL Ov006Vt_021ebc98_Start(ov006_Task0 *self) {
     switch (self->subState) {
     case 0:
         TaskHost_Create(0x23, 0);
@@ -134,7 +134,7 @@ BOOL Ov006Vt_021ebc98_Setup(ov006_Task0 *self) {
 
 BOOL Ov006Vt_021ebc98_Update(void) {
     BOOL result = TRUE;
-    if (!func_ov000_021735e8()) {
+    if (!TaskList_HasTasks_021735e8()) {
         result = FALSE;
     }
     return result;
@@ -157,11 +157,11 @@ static inline void ov006_SetUnk021ccd40(Task *p) {
     data_ov000_021ccd40 = p;
 }
 
-void ov006_Task_SetCurrent(Task *p) {
+void Ov006Task_SetCurrent(Task *p) {
     ov006_SetUnk021ccd40(p);
 }
 
-void ov006_Task_ReleaseCurrent(Task *self) {
+void Ov006Task_ReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
         ov006_SetUnk021ccd40(NULL);
     }
@@ -211,7 +211,7 @@ void Ov006Task_SetFlag4(Task *self) {
     self->unk_04_4 = 1;
 }
 
-BOOL func_ov006_021d58c0(void) {
+BOOL Ov006Task_IsReady(void) {
     return TRUE;
 }
 
@@ -226,13 +226,13 @@ static inline void ov006_Emblem_Dtor(ov006_Emblem *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_Emblem *Ov006TaskVt_021ebe40_DtorDelete(ov006_Emblem *self) {
+ov006_Emblem *ov006_Emblem_DtorDelete(ov006_Emblem *self) {
     ov006_Emblem_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-ov006_Emblem *Ov006TaskVt_021ebe40_Dtor(ov006_Emblem *self) {
+ov006_Emblem *ov006_Emblem_Dtor_021d59b4(ov006_Emblem *self) {
     ov006_Emblem_Dtor(self);
     return self;
 }

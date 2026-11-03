@@ -37,8 +37,8 @@ void func_ov008_021cfa38(Ov008Mgr *m);
 void func_ov008_021cee4c(Ov008Mgr *m);
 void func_ov008_021cce38(Ov008Caption *p);
 BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel);
-void func_0203cb78(s32 a, int b, int c);
-void func_0203cc58(int a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
+void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
@@ -98,7 +98,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
         }
         m->state = 4;
     case 4:
-        func_0203cb78(0x8000, 0, -1);
+        GfxSys_StartFadeIn(0x8000, 0, -1);
         func_ov008_021cdebc(m);
     case 6:
         func_ov008_021cfa38(m);
@@ -203,7 +203,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                 g->unk_02 = 0;
             }
         }
-        func_0203cc58(0x1e000, 2, -1);
+        GfxSys_StartFadeOut(0x1e000, 2, -1);
         m->state = 9;
     case 9:
         if (!Ov008_FadeDone(0)) {
@@ -251,7 +251,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                 g->unk_08 = 0x1e;
                 g->unk_02 = 0;
             }
-            func_0203cc58(0x1e000, 2, -1);
+            GfxSys_StartFadeOut(0x1e000, 2, -1);
             m->state = 9;
             break;
         }

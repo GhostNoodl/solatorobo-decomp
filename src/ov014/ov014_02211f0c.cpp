@@ -50,13 +50,13 @@ void Ov014Act_0220f9d0_StateHurt(Ov014Act_0220f9d0 *self) {
 }
 
 extern char data_ov014_02217d88[];
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(void *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 // *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
 // switch, as in the target; a plain data_02097e4c reloads it from the pool each time.
@@ -70,7 +70,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         FieldState *g;
         ActorSub44 *n;
         EffectObj *e;
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(5);
         g = data_ov000_021ccd54;
         g->stageFlags = 1;
@@ -96,7 +96,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
             e->SetScaleAll(0x6000);
         }
         SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-        func_ov000_0218996c(0xc, 0x5a);
+        Field_ShakeCamera(0xc, 0x5a);
         self->fsm->timer = 0x258;
         self->fsm->st++;
         break;
@@ -197,7 +197,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         Effect_SpawnId(0x38f, &v3)->SetScaleXYZ(0x2ccd, 0x2ccd, 0x2ccd);
         SndMgr_PlayAtPitch(*(&data_02097e4c), 0x35, &v3, -(Rand_UpTo(5) + 2));
         SndMgr_PlayAt(*(&data_02097e4c), 0x56, &v3, 0);
-        func_ov000_0218996c(10, 0x1e);
+        Field_ShakeCamera(10, 0x1e);
         break;
     }
     }

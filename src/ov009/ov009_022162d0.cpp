@@ -86,7 +86,7 @@ extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern void Body_SetOwner(void *p, s32 a);
 extern void func_ov000_02197dec(ActorEx *self, u8 a, s16 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 struct Ov009SpawnDesc2 {
     u16 kind;
     u16 flags;
@@ -164,7 +164,7 @@ void Ov009ActVt_022180c4_StateDie(ActorEx *self) {
             s = self->radius + (self->radius >> 3);
             e2->SetScaleXYZ(s, s, s);
         }
-        func_ov000_0218996c(0xc, 0x14);
+        Field_ShakeCamera(0xc, 0x14);
         if (self->unk_44 != NULL) {
             ActorSub44 *s44 = self->unk_44;
             s44->unk_22_0 = 0;
@@ -189,7 +189,7 @@ void Ov009ActVt_022180c4_StateDie(ActorEx *self) {
         st->timer++;
         if (st->timer > 5) {
             func_ov000_02197dec(self, 0xf, 0x63);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }
@@ -446,7 +446,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Hit_ApplyInArea(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -464,7 +464,7 @@ void Ov009ActExVt_022181f4_StateDie(Ov009ActExVt_022181f4 *self) {
     if (self->fsm->st == 0) {
         Actor *a;
         Ov003Actor *t;
-        func_ov000_0218996c(10, 10);
+        Field_ShakeCamera(10, 10);
         self->targetObj->unk_02 = 0;
         Effect_SpawnId(5, &self->pos)->SetScaleAll(0x299a);
         SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
@@ -493,7 +493,7 @@ extern void ActorEx_Start(Actor *self);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_TurnToActor(Actor *self, Ov003Actor *other, s32 a);
-extern void ActorEx_InitActor(Actor *self);
+extern void ActorEx_Init(Actor *self);
 extern Actor *Target_Get(ActorSub4c *p);
 
 void Ov009ActVt_0221815c_Start(ActorEx *self) {
@@ -511,7 +511,7 @@ void Ov009ActVt_0221815c_State06(ActorEx *self) {
 }
 
 void Ov009ActExVt_0221802c_Init(Ov009ActExVt_0221802c *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     self->rot_x = 0xd548;
     self->unk_d0 = 0;
 }
@@ -548,7 +548,7 @@ extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 extern void Actor_PitchToPos(Actor *self, const VecFx32 *v, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 static inline s32 Ov009_FxMulL(s32 a, s64 b) {
@@ -661,7 +661,7 @@ void Ov009ActExVt_0221802c_StateThrown(Ov009ActExVt_0221802c *self) {
                 self->velY = 0x19a;
             } else {
                 ActorSub44 *s;
-                func_ov000_0218996c(10, 10);
+                Field_ShakeCamera(10, 10);
                 Effect_SpawnId(5, &self->pos)->SetScaleAll(0x3000);
                 Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 2, NULL, 0, 0x4000, 0, 0x64, 0x1000);
                 self->speed = 0;

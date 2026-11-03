@@ -50,7 +50,7 @@ typedef struct TexObjTexRes {
 extern BOOL Vram_IsTransferDone(u32 id);
 extern u16 NNS_G2dMakeCellToOams(TexObjOam *dst, u16 max, void *cell, const void *mtx, const TexObjPair *trans, u16 affineIdx, BOOL doubleAffine);
 
-extern void *func_0203bbfc(GfxSys *sys, int which);
+extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 
 BOOL TexObj_CheckTransfer(TexObj *obj, int idx, TexObjEntry *e);
 
@@ -98,9 +98,9 @@ void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry
     int i;
     TexObj_CheckTransfer(obj, idx, e);
     if (idx == 1) {
-        mgr = (NNSG2dOamManagerInstance *)func_0203bbfc(data_02097d48, 0);
+        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(data_02097d48, 0);
     } else {
-        mgr = (NNSG2dOamManagerInstance *)func_0203bbfc(data_02097d48, 1);
+        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(data_02097d48, 1);
     }
     trans.a = obj->pairs[idx].a + 0x80000;
     trans.b = obj->pairs[idx].b + 0x60000;

@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
-extern void func_ov000_02187a20(void *p, s32 a);
+extern void SceneCmd_Push25(void *p, s32 a);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
@@ -14,7 +14,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     if (self->kind != 0x5038 && self->kind != 0x5044) {
         return;
     }
-    func_ov000_02187a20(data_ov000_021ccd54, 0xd);
+    SceneCmd_Push25(data_ov000_021ccd54, 0xd);
     self->unk_18 = 1;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {

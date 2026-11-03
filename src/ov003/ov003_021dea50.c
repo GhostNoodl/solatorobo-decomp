@@ -81,7 +81,7 @@ void Ov003ActVt_021f83e8_Start(Ov003Prop *self) {
     self->unk_d0 = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
 }
 
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void *Spawn_ScatterEffect(Ov003PropVec *pos, Ov003PropVec *v, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003ActVt_021f83e8_StateIdle(Ov003Prop *self) {
@@ -102,13 +102,13 @@ void Ov003ActVt_021f83e8_StateIdle(Ov003Prop *self) {
     b = 100;
     switch (self->work->timer & 0x3f) {
     case 0:
-        func_ov000_0218996c(8, 0xf);
+        Field_ShakeCamera(8, 0xf);
         a = 1;
         break;
     case 0x10:
         break;
     case 0x20:
-        func_ov000_0218996c(6, 8);
+        Field_ShakeCamera(6, 8);
         a = 3;
         break;
     case 0x30:

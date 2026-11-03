@@ -1669,7 +1669,7 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern VecFx32 Ov003Actor_GetSub44Offset(Ov003Actor *self);
 extern void *Ov003_SpawnScatterFx(VecFx32 *pos, s32 a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 #define OV013_CLAMP(x, lo, hi) ((x) > (hi) ? (hi) : ((x) < (lo) ? (lo) : (x)))
 
@@ -1741,7 +1741,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
                 o->SetScaleAll(0x5000);
             }
             SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-            func_ov000_0218996c(0xc, 0x28);
+            Field_ShakeCamera(0xc, 0x28);
             self->fsm->st = 0x14;
         }
     case 0x14: {
@@ -1755,11 +1755,11 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
                 VecFx32 b;
                 VEC_Add(&self->pos, &a, &b);
                 Ov003_SpawnScatterFx(&b, self->radius, 0x38b);
-                func_ov000_0218996c(8, 8);
+                Field_ShakeCamera(8, 8);
                 SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
             }
             if (t >= 0x12b) {
-                func_ov000_0218996c(0x14, 0x78);
+                Field_ShakeCamera(0x14, 0x78);
                 self->fsm->timer = 0;
                 self->fsm->st = 0x1e;
             }

@@ -7,8 +7,8 @@
 // row at a time: left/right move to the previous or next row (func_ov000_021c67e4), sliding the
 // old row out and the new one in over 15 frames, and A decides.
 //
-// Methods: slot 0x08 Ov000Vt_021ccadc_Setup (start), slot 0x54 func_ov000_021c6714 (update), slot 0x5c
-// func_ov000_021c6b28 (places the rows and the cursor), slot 0x60 func_ov000_021c6d28 (draws the
+// Methods: slot 0x08 Ov000Vt_021ccadc_Setup (start), slot 0x54 Ov000Vt_021ccadc_PreUpdate (update), slot 0x5c
+// Ov000Vt_021ccadc_DrawBody (places the rows and the cursor), slot 0x60 Ov000Vt_021ccadc_DrawTitle (draws the
 // window); List021c6474_Append appends a row, func_ov000_021c65e0 selects the row with an index,
 // Obj021c64b4_SetText sets the cursor text and func_ov000_021c6d64 draws the arrows beside the row.
 // ov002 builds two (Task021ef69c_Start and the 021ef150 task).

@@ -10,7 +10,7 @@ extern char data_ov000_021cc5e9[];
 extern char data_ov000_021cc6c0[];
 extern char data_ov000_021cc636[];
 extern void *data_02097e4c;
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
@@ -55,7 +55,7 @@ void func_ov000_021ac080(Robo021ca458 *self) {
         data_0214a424->target = self->unk_75c;
         data_0214a424->targetRotY = self->unk_76e;
         SetRgb021ac080(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
-        func_02062764(3, 2);
+        Shared_ChangeFlags(3, 2);
         data_ov000_021ccd54->stageFlags = 1;
         self->pos.y += 0x119a;
         Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e9, 0x155, 0);
@@ -118,7 +118,7 @@ extern char data_ov000_021cc6c6[];
 extern char data_ov000_021cc6cc[];
 void Model0218fe1c_StopAnim(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
-void func_ov000_0218996c(s32 a, s32 b);
+void Field_ShakeCamera(s32 a, s32 b);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 Actor *Target_GetActor(void *p);
@@ -175,7 +175,7 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
             }
         }
         self->hpObj->unk_0a = 0x5a;
-        func_ov000_0218996c(6, 10);
+        Field_ShakeCamera(6, 10);
         o = GetObj021ac3ec(self->unk_b1c);
         if (o != NULL) {
             Msg021ac3ec m;

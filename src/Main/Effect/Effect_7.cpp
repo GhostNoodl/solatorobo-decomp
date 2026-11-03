@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern void func_02068600(EffectSetup *setup);
-extern EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def);
+extern void EffectSetup_FindChunks(EffectSetup *setup);
+extern EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def);
 extern char data_0208c7fe[];
 extern char data_0208c806[];
 extern char data_0208c80e[];
@@ -32,13 +32,13 @@ EffectObj *func_02068544(EffectSetup *setup) {
     u8 *p;
     s32 i;
     EffectObj *o;
-    func_02068600(setup);
+    EffectSetup_FindChunks(setup);
     MI_CpuCopy8(setup->objChunk + 8, &count, 4);
     MI_CpuCopy8(setup->objChunk + 0xc, &size, 4);
     size /= count;
     p = setup->objChunk + 0x10;
     for (i = 0; i < count; i++) {
-        o = func_020687f8(setup, (EffectDef *)p);
+        o = EffectSetup_NewObj(setup, (EffectDef *)p);
         o->SetPos(&setup->pos);
         if (prev != NULL) {
             prev->parent = o;

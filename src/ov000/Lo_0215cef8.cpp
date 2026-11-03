@@ -13,7 +13,7 @@ u16 func_02061d54(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 
-void func_ov000_0215cef8(Lo021cad50 *self) {
+void Lo021cad50_Init(Lo021cad50 *self) {
     s32 i;
     self->font = 4;
     self->unk_84 = 0x854;
@@ -26,7 +26,7 @@ void func_ov000_0215cef8(Lo021cad50 *self) {
     }
 }
 
-void func_ov000_0215cf38(Lo021cad50 *self) {
+void Lo021cad50_Release(Lo021cad50 *self) {
     s32 i;
     for (i = 0; i < 12; i++) {
         u32 saved;

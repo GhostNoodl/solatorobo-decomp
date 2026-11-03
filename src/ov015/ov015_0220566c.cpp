@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov000_021ccd34;
 u8 *func_0206ef88(u16 id);
-void func_0203cc58(int a, int b, int c);
+void GfxSys_StartFadeOut(int a, int b, int c);
 BOOL MsgBox_Update(void *p);
 void *func_0206ec8c(u16 id);
 void Obj0215bb14_SetText(void *a, void *b);
@@ -39,7 +39,7 @@ void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a) {
             r = data_0214a424->unk_020 - price;
         }
         data_0214a424->unk_020 = r;
-        func_0203cc58(self->unk_3c->openLen, 2, -1);
+        GfxSys_StartFadeOut(self->unk_3c->openLen, 2, -1);
     }
     self->unk_48->flags |= 2;
     self->unk_48->flags |= 4;
@@ -133,7 +133,7 @@ void Ov015Scene2b88_Draw(Ov015Scene2b88 *self) {
     MsgBox_Render(self->unk_4c);
 }
 
-BOOL func_ov015_02205ad4(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2b08_List3cOnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
     if (ev != NULL) {
         func_0206ecd4(0x100, o->textBuf, ev->id);
@@ -151,7 +151,7 @@ BOOL func_ov015_02205ad4(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02205b48(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2b08_List3cOnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
         Lo021cb0b8 *t;
@@ -164,7 +164,7 @@ BOOL func_ov015_02205b48(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02205bc8(UiList *self, UiListItem *item) {
+BOOL Ov015Scene2b08_List4cOnDecide(UiList *self, UiListItem *item) {
     Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
     if (item != NULL) {
         switch (item->id) {
@@ -307,8 +307,8 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
     self->unk_3c->owner = self;
-    self->unk_3c->onDecide = func_ov015_02205b48;
-    self->unk_3c->onCursor = func_ov015_02205ad4;
+    self->unk_3c->onDecide = Ov015Scene2b08_List3cOnDecide;
+    self->unk_3c->onCursor = Ov015Scene2b08_List3cOnCursor;
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x98);
     if (p != NULL) {
@@ -384,7 +384,7 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
     }
     self->unk_4c = (Lo021cb0b8 *)p;
     self->unk_4c->vfunc_10(MsgRes_GetString(res, 0xd6));
-    self->unk_4c->onDecide = func_ov015_02205bc8;
+    self->unk_4c->onDecide = Ov015Scene2b08_List4cOnDecide;
     self->unk_4c->posZ = -0x666;
     self->unk_4c->vfunc_08();
     self->unk_4c->owner = self;

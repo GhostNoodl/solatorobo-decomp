@@ -34,7 +34,7 @@ extern void HitSphere_Unlink_0203f364(void *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 
 void Ov013ActVt_0220bdd8_StateDie(Ov013ActVt_0220bdd8 *self) {
@@ -96,7 +96,7 @@ void Ov013ActVt_0220bdd8_StateDie(Ov013ActVt_0220bdd8 *self) {
             r.y = self->height >> 2;
             r.z = self->radius;
             Spawn_ScatterEffect(&v, &r, 0xccd, 0x1666, 0x38b, 0x32);
-            func_ov000_0218996c(10, 0xf);
+            Field_ShakeCamera(10, 0xf);
             SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
         }
         break;
@@ -105,7 +105,7 @@ void Ov013ActVt_0220bdd8_StateDie(Ov013ActVt_0220bdd8 *self) {
             return;
         }
         SndMgr_PlayAtPitch(data_02097e4c, 0x42, &self->pos, -2);
-        func_ov000_0218996c(10, 0x3c);
+        Field_ShakeCamera(10, 0x3c);
         self->fsm->st = 10;
         self->fsm->timer = 0;
         break;

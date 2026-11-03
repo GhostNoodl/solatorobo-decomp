@@ -12,7 +12,7 @@ extern EffectPtclHandler data_0208c930;
 extern EffectPtclHandler data_0208c938;
 extern EffectPtclHandler data_0208c940;
 
-void func_02068da8(EffectPtcl *p) {
+void EffectPtcl_Init(EffectPtcl *p) {
     p->unk_58 = -1;
     MIi_CpuCopyFast(data_02082ba4, p->dl, sizeof(p->dl));
     p->tex = NULL;
@@ -48,7 +48,7 @@ void func_02068da8(EffectPtcl *p) {
     p->prev = NULL;
 }
 
-void func_02068e68(EffectPtcl *p, s32 type, MtxFx33 *mtx, s32 alphaScale) {
+void EffectPtcl_Draw(EffectPtcl *p, s32 type, MtxFx33 *mtx, s32 alphaScale) {
     MtxFx33 rz;
     MtxFx33 rot;
     VecFx32 trans;

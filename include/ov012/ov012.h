@@ -298,7 +298,7 @@ extern void *Model0218fe1c_Init(void *p);
 extern void *Model0218fe1c_FreeAnims(void *p);
 extern void *ResSet_ReleaseAll(void *p);
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
-extern void func_ov000_02187a20(void *a, s32 b);
+extern void SceneCmd_Push25(void *a, s32 b);
 extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL ResSet_UpdateLoad(void *p);
 extern BOOL Model021903b4_Draw(void *p);
@@ -407,7 +407,7 @@ extern "C" {
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern void *Obj021984c8_GetActor(void *p);
 extern void Ov003Pickup_Update(void *self, s32 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 }
 
 
@@ -425,13 +425,13 @@ static inline void Ov012_ClearOwnerFlag(Ov003Actor *self) {
 extern "C" {
 extern void func_01ffc9fc(VecFx32 *a, const VecFx32 *b, u16 ang);
 extern void func_ov000_0219bebc(void *o, s16 a);
-extern BOOL func_ov000_021b4738(void *o);
+extern BOOL Actor_IsDead(void *o);
 extern void Actor_TurnToPos(void *self, const void *v, s32 a);
 }
 
 
 extern "C" {
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 }
 
@@ -663,7 +663,7 @@ ActorEx *ActorEx_Ctor(ActorEx *self);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 VecFx32 *Actor_GetTargetSub44(Actor *self);
 ActorEx *ActorEx_DtorBase(ActorEx *self);
-void ActorEx_InitActor(ActorEx *self);
+void ActorEx_Init(ActorEx *self);
 BOOL ActorEx_IsReady(ActorEx *self);
 void ActorEx_Start(ActorEx *self);
 BOOL ActorEx_Draw(ActorEx *self);

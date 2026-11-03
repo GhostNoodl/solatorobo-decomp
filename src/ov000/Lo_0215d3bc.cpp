@@ -35,7 +35,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
+void Lo021cad50_DrawBody(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
     s32 i;
     if (a == NULL) {
         return;

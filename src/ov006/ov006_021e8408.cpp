@@ -10,7 +10,7 @@
 extern "C" {
 
 
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 BOOL History_SetState(ActorSub40 *a, s32 b, s32 c);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 s32 Rand_PlusMinus(s32 range);
@@ -36,7 +36,7 @@ void Ov006Racer_StateCrash(Ov006Racer *self) {
         }
         SndMgr_PlayAt(data_02097e4c, 0x79, &self->pos, 0);
         if (self->idx == data_ov006_021ec884->unk5) {
-            func_ov000_0218996c(8, (u8)(self->unk_1f5 - 10));
+            Field_ShakeCamera(8, (u8)(self->unk_1f5 - 10));
         }
         self->fsm->st++;
         break;

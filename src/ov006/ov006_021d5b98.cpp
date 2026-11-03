@@ -116,7 +116,7 @@ extern ov006_Unk02097e48 *data_02097e48;
 void LangData_LocalizePath(char *dst, const char *src);
 void *ResSet_Init(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
-void func_0203cc58(s32 a, int b, int c);
+void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
 
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
@@ -151,8 +151,8 @@ BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
         ov006_Info021d6140 *info = (ov006_Info021d6140 *)data_ov006_021ec884->info;
         ov006_Game_SetColor(0x12, info->lo, info->hi);
     }
-    func_0203cc58(0x1000, 0, 0);
-    func_0203cc58(0x1000, 0, 1);
+    GfxSys_StartFadeOut(0x1000, 0, 0);
+    GfxSys_StartFadeOut(0x1000, 0, 1);
     GfxSys_UpdateFade();
     {
         ov006_Unk02097e48 *p = data_02097e48;
@@ -209,7 +209,7 @@ extern void *data_ov000_021ccd68;
 extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 
-void func_ov000_0218be9c(Group *self);
+void Group_RefreshAll(Group *self);
 void func_ov000_0218be54(Group *self);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
@@ -242,7 +242,7 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
     case 0:
         EffectMgr_FreeAll(data_0214a420);
         data_ov000_021ccd64->unk_0c.bits.flag_0 = 1;
-        func_ov000_0218be9c(data_ov000_021ccd64);
+        Group_RefreshAll(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         self->subState++;
@@ -473,7 +473,7 @@ static inline void VecFx32_Set3(VecFx32021d6724 *p, int x, int y, int z) {
 }
 
 static inline void ov006_Gauge_Set(u8 n, ov006_Gauge021d6724 *g) { g->cur = OV006_MIN((u8)(n ? 1 : 0), n); g->max = n; }
-BOOL Ov006Vt_021ebfc0_Setup(ov006_Task021d6724 *self) {
+BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
     int zero = 0;
     BOOL result = zero;
     switch (self->subState) {

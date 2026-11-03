@@ -12,8 +12,8 @@ extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GX_LoadOBJPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadOBJPltt(const void *src, u32 offset, u32 size);
-extern u16 func_0203bdb0(GfxSys *obj, int a, int b);
-extern void *func_0203bc20(GfxSys *obj, u32 size, int a);
+extern u16 GfxSys_AllocSlots(GfxSys *obj, int a, int b);
+extern void *GfxSys_AllocVram(GfxSys *obj, u32 size, int a);
 extern void Heap_FreeLo(void *ptr);
 extern void func_020435e8(GfxPltt *src, void *dst, u32 size);
 
@@ -70,18 +70,18 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_000 = -1;
     MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
     DC_FlushRange(data_02097ce4, 0x60);
-    mgr->plttSlots[0] = func_0203bdb0(data_02097d48, 3, 4);
+    mgr->plttSlots[0] = GfxSys_AllocSlots(data_02097d48, 3, 4);
     GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
-    mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
+    mgr->plttSlots[1] = GfxSys_AllocSlots(data_02097d48, 3, 5);
     GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
-    mgr->plttSlots[2] = func_0203bdb0(data_02097d48, 3, 0);
+    mgr->plttSlots[2] = GfxSys_AllocSlots(data_02097d48, 3, 0);
     GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
-    mgr->plttSlots[3] = func_0203bdb0(data_02097d48, 3, 2);
+    mgr->plttSlots[3] = GfxSys_AllocSlots(data_02097d48, 3, 2);
     GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_658 = 0;
     mgr->unk_65c = 0;
-    mgr->unk_650 = func_0203bc20(data_02097d48, 0x4000, 0);
-    mgr->unk_654 = func_0203bc20(data_02097d48, 0x4000, 1);
+    mgr->unk_650 = GfxSys_AllocVram(data_02097d48, 0x4000, 0);
+    mgr->unk_654 = GfxSys_AllocVram(data_02097d48, 0x4000, 1);
 
     block = (VramBlock *)Heap_AllocLo(0x80 * sizeof(VramBlock), 4);
     MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
@@ -138,18 +138,18 @@ void GfxMgr_FreeAll(GfxMgr *mgr, int mode) {
     }
     mgr->unk_680 = 0;
     DC_FlushRange(data_02097ce4, 0x60);
-    mgr->plttSlots[0] = func_0203bdb0(data_02097d48, 3, 4);
+    mgr->plttSlots[0] = GfxSys_AllocSlots(data_02097d48, 3, 4);
     GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
-    mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
+    mgr->plttSlots[1] = GfxSys_AllocSlots(data_02097d48, 3, 5);
     GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
-    mgr->plttSlots[2] = func_0203bdb0(data_02097d48, 3, 0);
+    mgr->plttSlots[2] = GfxSys_AllocSlots(data_02097d48, 3, 0);
     GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
-    mgr->plttSlots[3] = func_0203bdb0(data_02097d48, 3, 2);
+    mgr->plttSlots[3] = GfxSys_AllocSlots(data_02097d48, 3, 2);
     GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_65c = 0;
     if (mode != 2) {
-        mgr->unk_650 = func_0203bc20(data_02097d48, 0x4000, 0);
-        mgr->unk_654 = func_0203bc20(data_02097d48, 0x4000, 1);
+        mgr->unk_650 = GfxSys_AllocVram(data_02097d48, 0x4000, 0);
+        mgr->unk_654 = GfxSys_AllocVram(data_02097d48, 0x4000, 1);
     }
     mgr->unk_650 = NULL;
     mgr->unk_654 = NULL;
@@ -261,7 +261,7 @@ typedef struct GfxOamCache {
 
 extern void NNS_G2dCharCanvasInitForOBJ1D(GfxCell *canvas, void *charBase, int w, int h, int colorMode);
 extern int NNS_G2dArrangeOBJ1D(GfxOam *oam, int w, int h, int x, int y, int color, int charName, int vramMode);
-extern void *func_0203bbfc(GfxSys *sys, int which);
+extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const GfxOam *oam, u16 num);
 
 static inline void GfxOam_SetX(GfxOam *oam, u16 x) { ((GfxOamBits *)oam)->x = x; }
@@ -336,7 +336,7 @@ void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, in
             oams[i].attr01 = (oams[i].attr01 & 0xc1ffe0ff) | a0;
             oams[i].attr2 = (oams[i].attr2 & ~0xfc00) | a2;
         }
-        NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), oams, n);
+        NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), oams, n);
     } else {
         GfxOam *oam = cache->oams;
         s32 dx;
@@ -358,7 +358,7 @@ void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, in
             ((GfxOamBits *)oam)->pltt = pltt & 0xf;
         }
         {
-            void *om = func_0203bbfc(data_02097d48, cache->which);
+            void *om = GfxSys_GetOamMgr(data_02097d48, cache->which);
             NNS_G2dEntryOamManagerOam(om, cache->oams, cache->count);
         }
     }

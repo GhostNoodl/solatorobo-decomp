@@ -27,7 +27,7 @@ static inline void ov002_Menu_Close(Obj021eff74 *self) {
     data_ov002_021f0f90.unk_00 = self->unk_14;
     self->unk_18 = 2;
     if (self->unk_08 == 2 || self->unk_08 == 3) {
-        func_0203cc58(0xa000, 2, -1);
+        GfxSys_StartFadeOut(0xa000, 2, -1);
     }
 }
 

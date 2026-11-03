@@ -19,7 +19,7 @@ extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc5e9[];
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 
 static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     Anm021b12c0 *anm;
@@ -42,7 +42,7 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     self->mdl0.unk_cc = -1;
     data_0214a424->bits18.flag8 = 0;
     data_0214a424->bits18.flag9 = 0;
-    func_02062764(3, 1);
+    Shared_ChangeFlags(3, 1);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
@@ -78,7 +78,7 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
         self->fsm->flags |= 0x80000000;
         History_SetState(self->fsm, 0x1f, 0);
     }
-    func_02062764(0xc00, 0x800);
+    Shared_ChangeFlags(0xc00, 0x800);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
@@ -117,7 +117,7 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
     self->unk_b22_4 = 0;
     self->unk_b22_5 = 0;
     SetSt(self, st);
-    func_02062764(0xc00, 0x400);
+    Shared_ChangeFlags(0xc00, 0x400);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
@@ -154,7 +154,7 @@ void func_ov000_021b1b88(Robo021ca458 *self, s32 mode) {
             self->mdl0.unk_cc = -1;
             data_0214a424->bits18.flag8 = 0;
             data_0214a424->bits18.flag9 = 0;
-            func_02062764(3, 1);
+            Shared_ChangeFlags(3, 1);
         }
         st = 5;
         break;

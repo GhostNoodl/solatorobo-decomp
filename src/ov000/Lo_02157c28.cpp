@@ -8,7 +8,7 @@ extern "C" {
 
 void UiList_Setup(UiList *self);
 
-void func_ov000_02157c28(UiList021cb4a8 *self) {
+void UiList021cb4a8_Setup(UiList021cb4a8 *self) {
     s32 v;
     self->posX = (self->flags & 0x4000000) ? 0 : 0xc;
     self->width = 0x100 - self->posX * 2;

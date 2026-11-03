@@ -219,7 +219,7 @@ void Ov014ActEx_0220d70c_Start(Ov014ActEx_0220d70c *self) {
     }
 }
 
-extern BOOL func_ov000_021b4738(Ov003Actor *p);
+extern BOOL Actor_IsDead(Ov003Actor *p);
 extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern void *Target_Get(void *p);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -242,7 +242,7 @@ static inline void Ov014_d890Fire(Ov014ActEx_0220d70c *self) {
 void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
     BOOL noPl = FALSE;
     Ov003Actor *pl = ActorMgr_FindPlayer();
-    if (pl == NULL || func_ov000_021b4738(pl)) {
+    if (pl == NULL || Actor_IsDead(pl)) {
         noPl = TRUE;
     }
     switch (self->fsm->st) {

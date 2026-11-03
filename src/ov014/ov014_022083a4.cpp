@@ -14,7 +14,7 @@ void Ov014ActEx_0220774c_StateDie(Ov014ActEx_0220774c *self) {
     g->cam.base.shakeTime = 0;
     g->cam.base.shakeLen = 0;
     g->cam.base.shakeCur = 0;
-    func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(data_ov000_021ccd64, 0, self);
     self->vfunc_08();
 }
 

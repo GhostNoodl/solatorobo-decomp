@@ -8,7 +8,7 @@ void Ov014ActEx_02208618_StateFly(Ov014ActEx_02208618 *self) {
 }
 extern void Body_SetOwner(void *p, s32 a);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
     switch (self->fsm->st) {
@@ -37,7 +37,7 @@ void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
         a = Effect_SpawnId(5, &self->pos);
         a->SetScaleAll(0x40);
         Ov003FxList_Add(((Ov003FxList *)self->unk_d8), 0xfe, a);
-        func_ov000_0218996c(0xf, 0xf);
+        Field_ShakeCamera(0xf, 0xf);
         SndMgr_PlayAt(data_02097e4c, 0x7f, &self->pos, 0);
         SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
         self->fsm->st++;
@@ -59,7 +59,7 @@ void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
         break;
     }
     case 2:
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }

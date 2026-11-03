@@ -54,8 +54,8 @@ BOOL func_ov002_021d0a80(void *self, void *arg) {
             }
         }
         FIELD(obj, 0x60, s32) = info[9];
-        func_0203c9e8(0x3f, -1);
-        func_0203cc58(0xa000, 2, -1);
+        GfxSys_SetFadePlanes(0x3f, -1);
+        GfxSys_StartFadeOut(0xa000, 2, -1);
     }
     return TRUE;
 }

@@ -52,7 +52,7 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
 }
 
 
-void func_ov000_021532d0(UiObj *self, s32 a1, s32 *pos, s32 a3) {
+void UiObj_DrawFrame(UiObj *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
     GfxSys *g;
     s32 sx;

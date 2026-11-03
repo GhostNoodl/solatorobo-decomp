@@ -121,14 +121,14 @@ extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(void *p);
 extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 extern void *Model0218fe1c_SetAnimFrame(void *p, s32 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003LfTgt *ActorMgr_FindPlayer(void);
 extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
-extern BOOL func_ov000_021b4738(void);
+extern BOOL Actor_IsDead(void);
 extern void func_020627b4(void);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627ec(u16 a);
 extern void func_ov000_02182590(void *p);
@@ -191,13 +191,13 @@ static inline s32 Ov003Lf_RideKind(Ov003LfTgt *p) {
 }
 
 static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
-    if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
+    if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
         u16 id = 0;
         if (t != NULL) {
             id = t->unk_0e;
         }
         func_020627b4();
-        func_020627a0(self->unk_0e, self->unk_0c);
+        Shared_SetEventActor(self->unk_0e, self->unk_0c);
         func_020627dc(self->kind);
         func_020627ec(id);
         {
@@ -211,7 +211,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
 static inline void Ov003Lf_Sound(Ov003Lift *self) {
     if (VEC_Distance(&self->pos, &ActorMgr_FindPlayer()->pos) <= 0x3800) {
         SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
-        func_ov000_0218996c(5, 10);
+        Field_ShakeCamera(5, 10);
     }
 }
 
@@ -350,9 +350,9 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
             char *name;
             s32 frame;
             if (self->state == 1 && res == 2) {
-                if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
+                if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
                     func_020627b4();
-                    func_020627a0(self->unk_0e, self->unk_0c);
+                    Shared_SetEventActor(self->unk_0e, self->unk_0c);
                     func_020627dc(0);
                     func_020627ec(0);
                     {

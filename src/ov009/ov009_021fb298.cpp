@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 
 void Ov009ActVt_022164a0_StateDown(Ov009ActVt_022164a0 *self) {
@@ -21,7 +21,7 @@ void Ov009ActVt_022168a8_StateAttack(Ov003Actor *self) {
     if (self->fsm->current != 0x13) {
         return;
     }
-    func_ov000_0218996c(0xc, 0x19);
+    Field_ShakeCamera(0xc, 0x19);
     range = 0xa000;
     if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
         range = 0x5000;

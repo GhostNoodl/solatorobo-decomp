@@ -115,8 +115,8 @@ typedef struct ShakeTable {
 extern const ShakeTable data_020829d0;
 extern s32 data_02097d78[5];
 
-extern void func_0203c9e8(int a, int b);
-extern void func_0203cc58(int a, int b, int c);
+extern void GfxSys_SetFadePlanes(int a, int b);
+extern void GfxSys_StartFadeOut(int a, int b, int c);
 extern s32 Rand_UpTo(s32 max);
 extern void Gfx3D_SendDL(void *obj, int a);
 extern s32 func_02043d84(void *obj);

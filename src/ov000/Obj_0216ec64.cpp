@@ -33,7 +33,7 @@ extern u8 data_ov000_021cb6d0[];
 extern Data02097d78 data_02097d78;
 
 void Heap_Free(void *ptr);
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_ov000_02164420(void *self);
 void Buffer0216f144_Free(Buffer0216f144 *self);
 
@@ -230,7 +230,7 @@ static inline BOOL func_0216f0dc_Check(void) {
 
 void func_ov000_0216f0dc(void) {
     if (func_0216f0dc_Check()) {
-        func_0203cb78(0xa000, 0, 1);
+        GfxSys_StartFadeIn(0xa000, 0, 1);
     }
 }
 

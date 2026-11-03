@@ -26,14 +26,14 @@ typedef struct {
 
 extern "C" {
 
-void func_0203caf8(s32 a);
-void func_0203c9e8(s32 a, s32 b);
+void GfxSys_StopFade(s32 a);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
 void Heap_Free(void *p);
 
 extern char data_ov000_021cc87b[];
 Obj0206e7d0 *Lang_GetGroup(u8 a);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 
 void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
     self->unk_00 = 0;
@@ -42,15 +42,15 @@ void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
     self->unk_24 = 0;
     self->unk_28 = 1;
     self->unk_30 = 0;
-    func_0203cc58(0, 1, 2);
+    GfxSys_StartFadeOut(0, 1, 2);
 }
 
 void func_ov000_021b88d8(Obj021b88d8 *self) {
     void *saved;
     Model *p;
 
-    func_0203caf8(0);
-    func_0203caf8(2);
+    GfxSys_StopFade(0);
+    GfxSys_StopFade(2);
 
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -75,7 +75,7 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     }
     data_02097dd0->cur = saved;
 
-    func_0203c9e8(0x3f, 0);
+    GfxSys_SetFadePlanes(0x3f, 0);
 }
 
 }

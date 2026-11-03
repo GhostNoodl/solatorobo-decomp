@@ -577,7 +577,7 @@ void Model0218fe1c_ClearReverse(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_02191870(Model0218fe1c *self, ResSet *res) {
+void Model0218fe1c_BindAnim3Res(Model0218fe1c *self, ResSet *res) {
     FreeOnHeap(&self->unk_18);
     self->unk_20 = NULL;
     if (res != NULL && res->anims != NULL && res->anims->list[3] != NULL) {
@@ -586,7 +586,7 @@ void func_ov000_02191870(Model0218fe1c *self, ResSet *res) {
     }
 }
 
-void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
+void Model0218fe1c_SetAnim3(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
     ResSet *res;
 
     if (self->unk_18 == NULL) {

@@ -37,7 +37,7 @@ void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 s32 Rand_UpTo(s32 max);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u16 func_ov000_02198da8(void *body, u16 angle);
-void func_ov000_0218996c(s32 a, s32 b);
+void Field_ShakeCamera(s32 a, s32 b);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 
@@ -239,7 +239,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 ok = FALSE;
             }
             if (!ok) {
-                func_ov000_0218996c(5, 10);
+                Field_ShakeCamera(5, 10);
             }
             a = FindActor_021a3220(self->unk_b1c);
             if (a != NULL) {

@@ -31,7 +31,7 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-void func_ov000_0215c0c4(Lo021cadcc *self, void *a, s32 *pos, s32 d) {
+void Lo021cadcc_DrawBody(Lo021cadcc *self, void *a, s32 *pos, s32 d) {
     if (a == NULL) {
         return;
     }

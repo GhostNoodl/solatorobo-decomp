@@ -26,15 +26,15 @@ struct EffectObj {
     virtual void Dtor();
     virtual void Delete();
     virtual void SetParam(s32 param);
-    virtual void SetScaleAll(s32 scale); // func_020669f8: SetScaleXYZ(scale, scale, scale)
+    virtual void SetScaleAll(s32 scale); // EffectObj_SetScaleAll: SetScaleXYZ(scale, scale, scale)
     virtual void SetScale(const VecFx32 *scale);
     virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
     virtual void SetPos(const VecFx32 *pos);
     virtual void SetPosXYZ(s32 x, s32 y, s32 z);
     virtual void AddPos(const VecFx32 *delta);
     virtual void AddPosXYZ(s32 x, s32 y, s32 z);
-    virtual void SetOffset(const VecFx32 *offset);  // func_020669cc
-    virtual void SetOffsetXYZ(s32 x, s32 y, s32 z); // func_020669e8
+    virtual void SetOffset(const VecFx32 *offset);  // EffectObj_SetOffset
+    virtual void SetOffsetXYZ(s32 x, s32 y, s32 z); // EffectObj_SetOffsetXYZ
     virtual void SetRot(const EffectRot *rot);
     virtual void SetRotXYZ(u16 x, u16 y, u16 z);
     virtual BOOL Load();
@@ -154,23 +154,23 @@ BOOL EffectMgr_Contains(EffectMgr *m, EffectObj *obj);
 void EffectMgr_Kill(EffectMgr *m, u32 id);
 void EffectMgr_StopLoop(EffectMgr *m, u32 id);
 void EffectMgr_FreeAll(EffectMgr *m);
-EffectObj *func_020658cc(EffectMgr *m, s32 v);
+EffectObj *EffectMgr_FindByKey(EffectMgr *m, s32 v);
 void EffectMgr_Update(EffectMgr *m);
 struct Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
 struct Effect3D *Effect3D_NewAt(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
 struct EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
 // Fixed screen effects (Effect_5.cpp: EffectHud_Create with a built-in archive/model name).
-struct Effect3D *func_02066c58(void);
-struct Effect3D *func_02066df0(void);
-struct Effect3D *func_02066ec8(void);
-struct Effect3D *func_02066f90(void);
-struct Effect3D *func_02067058(void);
-struct Effect3D *func_02067120(void);
+struct Effect3D *EffectHud_New2710(void);
+struct Effect3D *EffectHud_New2711(void);
+struct Effect3D *EffectHud_New2712(void);
+struct Effect3D *EffectHud_New2713(void);
+struct Effect3D *EffectHud_New2715(void);
+struct Effect3D *EffectHud_New2716(void);
 void EffectMgr_SaveList(EffectMgr *m);
 void EffectMgr_RestoreList(EffectMgr *m);
 void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 
-void func_02063cac(struct EffectObj *obj);
+void EffectObj_UpdateSndCues(struct EffectObj *obj);
 BOOL func_020637d0(struct EffectObj *obj);
 void func_02063954(struct EffectObj *obj);
 void EffectObj_StopLoop(struct EffectObj *obj);

@@ -340,15 +340,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -363,37 +363,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -869,15 +869,15 @@ void func_0204cb28(TextWin *win, u32 arg) {
     func_0205bef8(&cmd);
 }
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -892,37 +892,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -1275,13 +1275,13 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p) {
+char *TextWin_ParseTag11(TextWin *win, char *p) {
     win->code = 0x11;
     win->value = *p == 'c' ? -1 : *p - '0';
     return p + 2;
 }
 
-char *func_0204cf18(TextWin *win, char *p) {
+char *TextWin_ParseTag12(TextWin *win, char *p) {
     int len;
     if (*p == 'e') {
         return win->ParseEscape(p + 1);
@@ -1291,14 +1291,14 @@ char *func_0204cf18(TextWin *win, char *p) {
     return p + len + 1;
 }
 
-char *func_0204cf6c(TextWin *win, char *p) {
+char *TextWin_ParseTag13(TextWin *win, char *p) {
     int len;
     win->code = 0x13;
     win->value = func_02040778(p, &len);
     return p + len + 1;
 }
 
-char *func_0204cfa0(TextWin *win, char *p) {
+char *TextWin_ParseTag14(TextWin *win, char *p) {
     int len;
     int i;
     p++;
@@ -1314,7 +1314,7 @@ char *func_0204cfa0(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d014(TextWin *win, char *p) {
+char *TextWin_ParseTag15(TextWin *win, char *p) {
     win->code = 0x15;
     win->value = 0;
     if (*p == 'n') {
@@ -1337,7 +1337,7 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p) {
+char *TextWin_ParseTag10(TextWin *win, char *p) {
     s32 color;
     char c = *p;
     if (c >= '0' && c <= '9') {
@@ -1370,7 +1370,7 @@ char *func_0204d040(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d238(TextWin *win, char *p) {
+char *TextWin_ParseTag02to04(TextWin *win, char *p) {
     s32 a;
     if (*p == 's') {
         win->code = 3;
@@ -1435,7 +1435,7 @@ char *func_0204d238(TextWin *win, char *p) {
     return p + 2;
 }
 
-char *func_0204d380(TextWin *win, char *p) {
+char *TextWin_ParseTag05to0c(TextWin *win, char *p) {
     int len;
     s32 v;
     if (*p == 'd') {
@@ -1488,7 +1488,7 @@ char *func_0204d380(TextWin *win, char *p) {
     return p + len + 1;
 }
 
-char *func_0204d4b0(TextWin *win, char *p) {
+char *TextWin_ParseTag0d(TextWin *win, char *p) {
     int len;
     win->code = 0xd;
     if (*p == 'd') {
@@ -1514,7 +1514,7 @@ char *func_0204d4b0(TextWin *win, char *p) {
     return p + 2;
 }
 
-char *func_0204d54c(TextWin *win, char *p) {
+char *TextWin_ParseTag0e(TextWin *win, char *p) {
     win->code = 0xe;
     if (*p == 'H') {
         win->value = 0;
@@ -1524,7 +1524,7 @@ char *func_0204d54c(TextWin *win, char *p) {
     return p + 2;
 }
 
-char *func_0204d57c(TextWin *win, char *p) {
+char *TextWin_ParseTag0f(TextWin *win, char *p) {
     win->code = 0xf;
     if (*p == 'r') {
         win->value = 1;
@@ -1561,7 +1561,7 @@ static inline int TextWin_CopyParen(const char *s, char *dst) {
     return j + 1;
 }
 
-char *func_0204d5bc(TextWin *win, char *p) {
+char *TextWin_ParseTag00(TextWin *win, char *p) {
     char buf[0x10];
     char *q;
     long i;
@@ -1605,25 +1605,25 @@ char *func_0204d5bc(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -1904,15 +1904,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -1927,19 +1927,19 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p) {
+char *TextWin_ParseTag01(TextWin *win, char *p) {
     int i = 0;
     win->code = 1;
     win->value = 0;
@@ -1950,7 +1950,7 @@ char *func_0204d7e0(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d82c(TextWin *win, char *p) {
+char *TextWin_ParseTag16_17(TextWin *win, char *p) {
     int len;
     if (*p == 'p') {
         win->code = 0x16;
@@ -1963,7 +1963,7 @@ char *func_0204d82c(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d870(TextWin *win, char *p) {
+char *TextWin_ParseTag18_19(TextWin *win, char *p) {
     int len;
     s32 v;
     if (*p == 'p') {
@@ -1978,7 +1978,7 @@ char *func_0204d870(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d8c0(TextWin *win, char *p) {
+char *TextWin_ParseTag1a(TextWin *win, char *p) {
     int len;
     win->code = 0x1a;
     win->value = func_02040778(p + 1, &len);
@@ -1987,7 +1987,7 @@ char *func_0204d8c0(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d8f8(TextWin *win, char *p) {
+char *TextWin_ParseTag1c(TextWin *win, char *p) {
     int len;
     win->code = 0x1c;
     win->value = func_02040778(p + 1, &len);
@@ -1996,7 +1996,7 @@ char *func_0204d8f8(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d930(TextWin *win, char *p) {
+char *TextWin_ParseTag1eto21(TextWin *win, char *p) {
     int len = 0;
     if (*p == 'e') {
         win->code = 0x1f;
@@ -2024,26 +2024,26 @@ char *func_0204d930(TextWin *win, char *p) {
     return p + 1;
 }
 
-char *func_0204d9f0(TextWin *win, char *p) {
+char *TextWin_ParseTag22(TextWin *win, char *p) {
     int len = 0;
     win->code = 0x22;
     win->value = func_02040778(p, &len);
     return p + len + 1;
 }
 
-char *func_0204da2c(TextWin *win, char *p) {
+char *TextWin_ParseTag23(TextWin *win, char *p) {
     int len = 0;
     win->code = 0x23;
     win->value = func_02040778(p, &len);
     return p + len + 1;
 }
 
-char *func_0204da68(TextWin *win, char *p) {
+char *TextWin_ParseTag24(TextWin *win, char *p) {
     win->code = 0x24;
     return p + 1;
 }
 
-char *func_0204da78(TextWin *win, char *p) {
+char *TextWin_ParseTag25(TextWin *win, char *p) {
     int len = 0;
     win->code = 0x25;
     if (*p == 'a') {
@@ -2471,15 +2471,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -2494,37 +2494,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -3314,15 +3314,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -3337,37 +3337,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -3696,15 +3696,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -3719,37 +3719,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -4287,15 +4287,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -4310,37 +4310,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -4576,9 +4576,9 @@ typedef struct TextWinFieldDisp {
 } TextWinFieldDisp;
 
 extern TextWinFieldDisp *data_ov000_021ccd54;
-extern void func_0203c9e8(int value, int ch);
-extern void func_0203cb78(int duration, int mode, int ch);
-extern void func_0203cc58(int duration, int mode, int ch);
+extern void GfxSys_SetFadePlanes(int value, int ch);
+extern void GfxSys_StartFadeIn(int duration, int mode, int ch);
+extern void GfxSys_StartFadeOut(int duration, int mode, int ch);
 extern s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 extern void SndMgr_LoadBgm(SndMgr *mgr, s32 seq);
 extern void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames);
@@ -4600,7 +4600,7 @@ BOOL func_0204fd60(TextWinTitle *t) {
     if (!t->started) {
         t->started = 1;
         t->timer = 0x78;
-        func_0203cb78(0, 0, 0);
+        GfxSys_StartFadeIn(0, 0, 0);
         data_ov000_021ccd54->mode = 2;
     }
     if (t->fading && TextWin_IsState4(0)) {
@@ -4633,8 +4633,8 @@ BOOL func_0204fd60(TextWinTitle *t) {
                 t->failed = 1;
             } else {
                 t->fading = 1;
-                func_0203c9e8(0x3f, -1);
-                func_0203cc58(0x78000, 2, 0);
+                GfxSys_SetFadePlanes(0x3f, -1);
+                GfxSys_StartFadeOut(0x78000, 2, 0);
                 if (t->seq != -1) {
                     s32 vol = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, t->seq);
                     SndMgr_LoadBgm(data_02097e4c, t->seq);
@@ -4793,8 +4793,8 @@ void func_0204ffdc(TextBox *box) {
                 func_020508f4(box, box->unk_020);
             } else {
                 box->flag7 = 1;
-                func_0203c9e8(0x3f, -1);
-                func_0203cc58(0x78000, 2, 0);
+                GfxSys_SetFadePlanes(0x3f, -1);
+                GfxSys_StartFadeOut(0x78000, 2, 0);
                 if (box->unk_018 != -1) {
                     s32 vol = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, box->unk_018);
                     SndMgr_LoadBgm(data_02097e4c, box->unk_018);
@@ -4954,15 +4954,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -4977,37 +4977,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -5318,15 +5318,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -5341,37 +5341,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -5824,15 +5824,15 @@ typedef struct TextCmd {
 
 void func_0204cb28(TextWin *win, u32 arg);
 
-char *func_0204cef4(TextWin *win, char *p);
+char *TextWin_ParseTag11(TextWin *win, char *p);
 
-char *func_0204cf18(TextWin *win, char *p);
+char *TextWin_ParseTag12(TextWin *win, char *p);
 
-char *func_0204cf6c(TextWin *win, char *p);
+char *TextWin_ParseTag13(TextWin *win, char *p);
 
-char *func_0204cfa0(TextWin *win, char *p);
+char *TextWin_ParseTag14(TextWin *win, char *p);
 
-char *func_0204d014(TextWin *win, char *p);
+char *TextWin_ParseTag15(TextWin *win, char *p);
 
 
 // Compares a tag name up to its closing '>'. Returns 0 on a match.
@@ -5847,37 +5847,37 @@ static inline int TextWin_TagCmp(char c, const char *s, const char *tag) {
     return 0;
 }
 
-char *func_0204d040(TextWin *win, char *p);
+char *TextWin_ParseTag10(TextWin *win, char *p);
 
-char *func_0204d238(TextWin *win, char *p);
+char *TextWin_ParseTag02to04(TextWin *win, char *p);
 
-char *func_0204d380(TextWin *win, char *p);
+char *TextWin_ParseTag05to0c(TextWin *win, char *p);
 
-char *func_0204d4b0(TextWin *win, char *p);
+char *TextWin_ParseTag0d(TextWin *win, char *p);
 
-char *func_0204d54c(TextWin *win, char *p);
+char *TextWin_ParseTag0e(TextWin *win, char *p);
 
-char *func_0204d57c(TextWin *win, char *p);
+char *TextWin_ParseTag0f(TextWin *win, char *p);
 
-char *func_0204d7e0(TextWin *win, char *p);
+char *TextWin_ParseTag01(TextWin *win, char *p);
 
-char *func_0204d82c(TextWin *win, char *p);
+char *TextWin_ParseTag16_17(TextWin *win, char *p);
 
-char *func_0204d870(TextWin *win, char *p);
+char *TextWin_ParseTag18_19(TextWin *win, char *p);
 
-char *func_0204d8c0(TextWin *win, char *p);
+char *TextWin_ParseTag1a(TextWin *win, char *p);
 
-char *func_0204d8f8(TextWin *win, char *p);
+char *TextWin_ParseTag1c(TextWin *win, char *p);
 
-char *func_0204d930(TextWin *win, char *p);
+char *TextWin_ParseTag1eto21(TextWin *win, char *p);
 
-char *func_0204d9f0(TextWin *win, char *p);
+char *TextWin_ParseTag22(TextWin *win, char *p);
 
-char *func_0204da2c(TextWin *win, char *p);
+char *TextWin_ParseTag23(TextWin *win, char *p);
 
-char *func_0204da68(TextWin *win, char *p);
+char *TextWin_ParseTag24(TextWin *win, char *p);
 
-char *func_0204da78(TextWin *win, char *p);
+char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
@@ -6428,7 +6428,7 @@ namespace m_SlideWin {
 
 extern "C" {
 
-extern StageResSlot *func_0205b31c(void);
+extern StageResSlot *StageRes_PeekSlot(void);
 extern void func_0205b348(void);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -6568,7 +6568,7 @@ void func_020518bc(SlideWin *win) {
             win->flag14 = 1;
             return;
         }
-        StageResSlot *cmd = func_0205b31c();
+        StageResSlot *cmd = StageRes_PeekSlot();
         if (cmd != NULL && cmd->id == 0x371) {
             win->flag14 = 1;
             cmd->bits.flag8 = 1;

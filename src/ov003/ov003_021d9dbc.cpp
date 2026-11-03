@@ -15,7 +15,7 @@ extern const VecFx32 data_ov003_021f4988;
 extern void *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(void *obj, u16 id);
 extern BOOL ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(void);
+extern BOOL Actor_IsDead(void);
 extern u32 Rand_UpTo(u32 v);
 
 void Ov003Vec_ApproachWithin(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
@@ -98,7 +98,7 @@ BOOL Ov003Actor_CanAct(Ov003Actor *self) {
     if (Ov003Kind_Get(self->fsm) == 0x20 || Ov003Kind_Get(self->fsm) == 0) {
         return FALSE;
     }
-    if (!ActorMgr_FindPlayer() || func_ov000_021b4738()) {
+    if (!ActorMgr_FindPlayer() || Actor_IsDead()) {
         return FALSE;
     }
     return TRUE;

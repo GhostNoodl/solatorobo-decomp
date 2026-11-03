@@ -24,7 +24,7 @@ void func_ov000_02161798(void *self, s32 a, s32 b, s32 c);
 void func_ov000_02161994(void *self, s32 a, s32 b, s32 c);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
     if (data_02097d78[3] == 4) {
@@ -33,7 +33,7 @@ static inline BOOL LoIsMode4(void) {
     return data_02097d78[1] == 4 ? TRUE : FALSE;
 }
 
-void func_ov000_021614b0(Lo021cacd8 *self, s32 a, s32 b, s32 c) {
+void Lo021cacd8_DrawBody(Lo021cacd8 *self, s32 a, s32 b, s32 c) {
     if (a == 0) {
         return;
     }

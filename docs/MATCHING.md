@@ -8794,3 +8794,39 @@ Readability only; every function stays byte-identical. A baseline was built firs
   - ov003's `tex` and ov011's `unk_364` are `Twl0214b570` but stay `void *`, because they are outside this round's scope.
   - ov015 `FLD(` (the fish names stay out).
 - **Renames:** none (types and fields only).
+
+## Task slot names harmonised, and UI/command/effect slots named: no new match (round nmH)
+
+This round only renames functions: 661 pairs, every object byte-identical to the pre-rename build. The pairs are in `renames_final.txt` as `old new`, applied in order. `ActorEx_Init` → `ActorEx_CtorBody` must run before `ActorEx_InitActor` → `ActorEx_Init`. Every name comes from the function's class, its vtable slot (checked in `relocs.txt`), the fields it touches and the APIs it calls.
+
+- **Task slots.** The mnA names now apply in every overlay. Base vtable `021cc060` slots:
+  - `0x10` Load, `0x14` IsLoaded, `0x18` Start, `0x1c` IsReady
+  - `0x48` ReleaseCurrent, `0x4c` TryReleaseCurrent, `0x50` SetCurrent, `0x54` IsCurrent
+  - `0x58` Init, `0x5c` Release, `0x64` UpdateActive, `0x68` Update, `0x6c` PreUpdate, `0x70` PostUpdate, `0x74` Draw
+
+  nmF's `LoadRes`, `IsResLoaded`, `Setup`, `ClearFields` and `FreeRes` (ov003 and ov006) are gone. Overlay copies of base methods are named `OvNNNTask_<Slot>`. Dtors are `<Class>_Dtor`/`_DtorDelete`, with `_<addr>` added for out-of-line slot-0 wrappers.
+- **Actors.** Slot 8 is `Actor_Remove`, which sets state 3, the state `Actor_Tick` frees. The final teardown is `Actor_Destroy`.
+- **UiObj/UiList slots** (from `UiObj_GetHeight`, `GetLineHeight`, `Update` and `Draw`):
+  - `0x30` GetPadLeft, `0x34` GetPadTop, `0x38` GetPadBottom, `0x3c` GetLineSpacing
+  - `0x50` OnChildDone, `0x54` PreUpdate, `0x58` PostUpdate
+  - `0x5c` DrawBody, `0x60` DrawTitle, `0x64` DrawFrame, `0x68` DrawRectFrame, `0x6c` DrawFrameEdge
+  - `0x74` AddItem (list vtables only)
+
+  Callbacks are named `<Owner>_List<field>On{Decide,Cursor,State}`.
+- **Dispatch tables**, named by index:
+  - `SceneCmd_RunNN` from table `021cc1a0`, with its pushers `SceneCmd_PushNN`
+  - `StageCmd_OpNN` from table `0208bf9c`
+  - `TextWin_ParseTagNN`, from the `win->code` value each parser emits, not from the tag text
+- **Also named:**
+  - EffectObj/Effect3D/EffectGroup/EffectEmitter/EffectMgr slots, from `Effect.h`
+  - SaveBase/GameSave slots
+  - ResHandle/DataRes
+  - `MessageQueue_*`
+  - the GfxSys frame, VRAM and fade functions: state `02097d78` is 1 for fading in, 3 for fading out, 4 for faded out
+- **Counts:** Main 327, ov000 202, ov006 49, ov002 28, ov015 24, ov003 20, ov008 10, plus one source-only inline.
+- **Left unnamed:**
+  - SDK/MI fill, copy and compare variants (`02016ebc`, `02017100`, `020170d0`): the exact SDK identity isn't certain.
+  - The UiObj `0x24` slot, the ListBuffer slots and the bar-display family: they have no single clear role.
+  - Actor slots `0x18`/`0x1c`.
+  - The string-keyed Stage functions: their names would come from data.
+- **Gate:** 0 FAILED, 19/19 ROM checks, check symbols OK, 8138 matched, `check_drafts --score` exit 0.

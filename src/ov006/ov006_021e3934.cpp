@@ -38,7 +38,7 @@ int func_ov006_021e399c(ov006_ListWin *self, int a, int b, int c) {
     return self->vfunc_60(a, b, c);
 }
 
-BOOL func_ov006_021e39b0(ov006_ListWin *self) {
+BOOL ov006_Window_OnChildDone(ov006_ListWin *self) {
     BOOL result;
     if (self->unk_90 == NULL) {
         return TRUE;
@@ -95,19 +95,19 @@ int func_ov006_021e3b38(ov006_ListWin *self) {
     return self->unk_c1 * 8;
 }
 
-int func_ov006_021e3b44(void) {
+int ov006_Window_GetLineSpacing(void) {
     return 4;
 }
 
-int func_ov006_021e3b4c(void) {
+int ov006_Window_GetPadBottom(void) {
     return 4;
 }
 
-int func_ov006_021e3b54(ov006_ListWin *self) {
+int ov006_Window_GetPadTop(ov006_ListWin *self) {
     return (self->title2 != NULL ? 0x10 : 0) + 10;
 }
 
-int func_ov006_021e3b6c(void) {
+int ov006_Window_GetPadLeft(void) {
     return 0;
 }
 

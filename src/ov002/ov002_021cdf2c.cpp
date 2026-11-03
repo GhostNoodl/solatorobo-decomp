@@ -2,7 +2,7 @@
 
 extern "C" {
 
-bool func_ov002_021cdf2c(void *p) {
+bool Ov002Task_IsCurrent(void *p) {
     BOOL r = func_ov002_isCurrent021ccd40(p);
     return r;
 }

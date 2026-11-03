@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0215dacc(Lo021cae48 *self) {
+void Lo021cae48_PreUpdate(Lo021cae48 *self) {
     if (self->state == 0) {
         self->shown = self->value;
     }

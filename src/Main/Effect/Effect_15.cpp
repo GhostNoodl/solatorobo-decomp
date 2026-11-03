@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern BOOL func_0206b1cc(EffectEmitter *em);
+extern BOOL EffectEmitter_MovePtcls(EffectEmitter *em);
 extern EffectPtcl *func_0206b81c(EffectEmitter *em);
 
 void EffectEmitter_ResetParams(EffectEmitter *em) {
@@ -35,7 +35,7 @@ BOOL MainVt_0208c8bc_Step(EffectEmitter *em) {
     BOOL alive;
     EffectEmitter_AddPtcl(em, func_0206b81c(em));
     ret = em->loopCount == -2 ? TRUE : (em->time < em->params.duration ? TRUE : FALSE);
-    alive = func_0206b1cc(em);
+    alive = EffectEmitter_MovePtcls(em);
     return (ret | alive) != 0;
 }
 

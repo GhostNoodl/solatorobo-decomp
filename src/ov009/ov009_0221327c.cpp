@@ -3,7 +3,7 @@
 
 extern "C" {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
     VecFx32 p;
@@ -17,7 +17,7 @@ void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
-        func_ov000_0218996c(10, 0x28);
+        Field_ShakeCamera(10, 0x28);
         SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
         e = Effect_SpawnId(5, &self->pos);
         e->SetScaleXYZ(0x7800, 0x7800, 0x7800);
@@ -53,7 +53,7 @@ void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 static inline Ov003Actor *Ov009_FindActor4(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -84,7 +84,7 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
             if (a != NULL) {
                 Actor_SendMsgU8(a, self->unk_f0, 0x15);
             }
-            func_ov000_0218996c(0xf, 0x50);
+            Field_ShakeCamera(0xf, 0x50);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x8000, 0x8000, 0x8000);
             self->fsm->timer = 0x29;
@@ -99,7 +99,7 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
             v.y = 0x2000;
             v.z = 0x7800;
             Spawn_ScatterEffect(&p, &v, 0x666, 0x1000, 3, 0x46);
-            func_ov000_0218996c(8, 8);
+            Field_ShakeCamera(8, 8);
             SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
@@ -109,10 +109,10 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
             st->timer--;
         }
         if (st->timer == 0) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }

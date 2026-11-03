@@ -22,7 +22,7 @@ static inline BOOL LoSubReady(TextWin *p) {
     return TRUE;
 }
 
-void func_ov000_02158da8(Lo021cb3a8 *self) {
+void Lo021cb3a8_Release(Lo021cb3a8 *self) {
     if ((void *)self->str != NULL) {
         Heap_FreeHi(self->str);
         self->str = NULL;

@@ -69,7 +69,7 @@ u16 FX_Atan2(s32 x, s32 z);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void *SndMgr_PlayAt(void *snd, s32 id, void *pos, s32 a);
-void func_ov000_0218996c(s32 a, s32 b);
+void Field_ShakeCamera(s32 a, s32 b);
 BOOL Hit_ApplyInArea(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g, s32 h, s32 i, s32 j, s32 k);
 void Actor_Move(Actor *self, s32 a);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
@@ -171,7 +171,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
             arg.b = 1;
             Actor_SendMsg(self, self->id, 9, 0, 6, &arg);
             SndMgr_PlayAt(data_02097e4c, 0x309, &self->pos, 0);
-            func_ov000_0218996c(0xa, 0xf);
+            Field_ShakeCamera(0xa, 0xf);
             v.y = self->centerY;
             v.x = 0;
             v.z = 0;

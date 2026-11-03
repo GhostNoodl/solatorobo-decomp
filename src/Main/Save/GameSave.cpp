@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0206d3f4(GameSave *s) {
+void GameSave_ResetFlags(GameSave *s) {
     s->bits.flag2 = 0;
     s->bits.flag8 = 0;
     s->bits.flag9 = 0;
@@ -16,15 +16,15 @@ void func_0206d3f4(GameSave *s) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_0206d43c is 12 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): GameSave_Configure is 12 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: register-only: the card pointer and the first sum swap registers; every wrong node is a
 // backend temp. History: docs/MATCHING.md rounds qpB, raC, raE, rgB, nmA, cvA (search for the address); the full
 // list is docs/UNMATCHED.md.
-// func_0206d43c: 12 raw / 0 register-masked (round qpB). Register-only: the ROM keeps the card
+// GameSave_Configure: 12 raw / 0 register-masked (round qpB). Register-only: the ROM keeps the card
 // pointer in r4 and the first sum in lr (ours: r3/r4), and puts the dataSize*slotCount+headerSize
 // mla in r1. ramerge.py (single and multi-target, with --pairs) finds no merge or renumbering that
 // gives it, every Align spelling (12 forms, round qpB alsweep.py) is 12 or worse, and honest_search
-// (40 iterations) finds nothing. It shares the CODASAVE string pool with func_0206d99c.
+// (40 iterations) finds nothing. It shares the CODASAVE string pool with MainVt_0208c994_Configure.
 // Rounds x up to the card's page size (SysCard::totalSize).
 // Round raC: AlignUp written in place for the header or d, and the n sum as an inline: 11 / 2 to 21 / 4.
 // Round raE: AlignUp taking the card (a SysCard *card local, 29-32) or the page size (a local, 30) as a
@@ -37,7 +37,7 @@ static inline u32 GameSave_AlignUp(u32 x) {
     return x & ~m;
 }
 
-void func_0206d43c(GameSave *s) {
+void GameSave_Configure(GameSave *s) {
     u32 d;
     s->name = data_0208cb18;
     s->slotCount = 1;

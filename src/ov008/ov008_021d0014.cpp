@@ -71,7 +71,7 @@ s32 Ov008Menu_OnDecide(Ov008Menu *self, s32 arg) {
     return self->onDecide(self, arg);
 }
 
-s32 func_ov008_021d0068(Ov008Menu *self) {
+s32 Ov008Menu_GetHeight(Ov008Menu *self) {
     if (self->flags & 0x20000) {
         s32 r;
         self->rows += 2;
@@ -82,7 +82,7 @@ s32 func_ov008_021d0068(Ov008Menu *self) {
     return Ov008_Height(self);
 }
 
-s32 func_ov008_021d011c(void) {
+s32 Ov008Menu_GetLineSpacing(void) {
     return 4;
 }
 
@@ -90,7 +90,7 @@ s32 func_ov008_021d0124(Ov008Menu *self) {
     return self->v30() + self->unk_c0 + 0x12;
 }
 
-s32 func_ov008_021d0148(void) {
+s32 Ov008Menu_GetPadLeft(void) {
     return 0xc;
 }
 
@@ -106,7 +106,7 @@ s32 func_ov008_021d016c(Ov008Menu *self) {
     return self->unk_c1 * 8;
 }
 
-BOOL func_ov008_021d0178(Ov008Menu *self) {
+BOOL Ov008Menu_IsLoaded(Ov008Menu *self) {
     BOOL r = func_ov008_021d01b0(self);
     if (self->unk_b4 != NULL && !Model_IsReady(self->unk_b4, 0xffff)) {
         r = FALSE;

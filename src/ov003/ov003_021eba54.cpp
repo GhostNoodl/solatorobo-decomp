@@ -102,7 +102,7 @@ extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern s32 DataRes_GetTable(Ov003Snd *s, s32 a);
 extern u16 DataRes_ReadBitsAt_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
-extern void func_ov000_02191920(Model0218fe1c *m, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetAnim3(Model0218fe1c *m, s32 a, s32 b, s32 c);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 extern void Model0218fe1c_SetLoop(void *model);
 extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
@@ -163,10 +163,10 @@ static inline BOOL Ov003_GameIdle2(void) {
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern void Ov003Pickup_Update(ActorEx *self, s32 a);
 extern const Ov003Ids data_ov003_021f6bcc;
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
+extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern Ov003PartSrc *func_020704b4(u16 id);
 extern void func_020627b4(void);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 static inline void Ov003Sub44_Clear(ActorSub44 *s) {
@@ -272,7 +272,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         self->hit->unk_9a |= 0x12;
         self->hit->radius = self->radius;
         func_020627b4();
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(0x8001);
         sfxOn = 1;
         if ((u32)self & 3) {
@@ -305,7 +305,7 @@ void Ov003ActExSway_StateHeld(Ov003ActExSway *self) {
             func_ov000_02197dec(self, 0xf, 5);
             SndMgr_PlayStrm(data_02097e4c, 0x7e);
             Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0x800);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         } else {
             self->unk_30c--;

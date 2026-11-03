@@ -22,7 +22,7 @@ extern "C" {
 extern ActorMgr *data_ov000_021ccd68;
 GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Heap_Free(void *p);
-void func_ov000_0218b4b4(GroupNode *node, s32 a, GroupActor *actor);
+void GroupNode_UpdateEntry(GroupNode *node, s32 a, GroupActor *actor);
 GroupActor *Ov003Prop_New(const GroupActorDesc *desc);
 GroupActor *Factory_New4000(const GroupActorDesc *desc);
 GroupActor *Ov003_NewActor(const GroupActorDesc *desc);
@@ -177,11 +177,11 @@ void func_ov000_0218be54(Group *g) {
     g->viewCount = 0;
 }
 
-void func_ov000_0218be9c(Group *g) {
+void Group_RefreshAll(Group *g) {
     GroupNode *n = g->head;
     while (n != NULL) {
         GroupNode *next = n->next;
-        func_ov000_0218ab00(n);
+        GroupNode_Refresh(n);
         n = next;
     }
     if (g->count == 0) {
@@ -189,13 +189,13 @@ void func_ov000_0218be9c(Group *g) {
     }
 }
 
-void func_ov000_0218bed8(Group *g, s32 a, GroupActor *actor) {
+void Group_UpdateActor(Group *g, s32 a, GroupActor *actor) {
     u16 id = actor->unk_20;
     GroupNode *n;
     if (id != 0xffff) {
         for (n = g->head; n != NULL; n = n->next) {
             if (id == n->id) {
-                func_ov000_0218b4b4(n, a, actor);
+                GroupNode_UpdateEntry(n, a, actor);
                 return;
             }
         }

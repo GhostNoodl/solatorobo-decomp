@@ -53,8 +53,8 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-//@ func_ov000_0214cff4
-void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
+//@ Menu021ca94c_DrawFrame
+void Menu021ca94c_DrawFrame(Menu021ca94c *self, s32 a1, s32 *pos) {
     s16 z;
     s32 sy;
     u8 *g;

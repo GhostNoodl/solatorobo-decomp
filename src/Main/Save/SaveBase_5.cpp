@@ -2,11 +2,11 @@
 
 extern "C" {
 
-void func_0204880c(SaveBase *s) {
+void SaveBase_State13(SaveBase *s) {
     SaveBase_LoadData(s);
 }
 
-void func_02048868(SaveBase *s) {
+void SaveBase_State15(SaveBase *s) {
     u32 off = s->curSlot * s->slotSize + 0x14;
     SaveHeader *hdr = s->header;
     switch (s->step) {
@@ -40,7 +40,7 @@ void func_02048868(SaveBase *s) {
     }
 }
 
-BOOL func_02048a48(SaveBase *s, SaveHeader *hdr) {
+BOOL SaveBase_WriteBackup(SaveBase *s, SaveHeader *hdr) {
     switch (s->step) {
         case 100:
             if (s->backupCount == 0) {

@@ -9,7 +9,7 @@ extern "C" {
 extern char data_ov003_021f8537[];
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s32 a, s32 b);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void *func_0207011c(s32 id);
 extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
@@ -31,7 +31,7 @@ void Ov003ActVt_021f82b8_State21(ActorEx *self) {
         if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         self->fsm->st = 0x7fff;
@@ -106,7 +106,7 @@ ActorEx *Ov003ActVt_021f82b8_DtorDelete(ActorEx *self) {
 }
 
 void Ov003ActVt_021f8a60_Init(Ov003ActExRes *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     ResSet_SetFile(&self->res, func_0207011c(0x4801), 1, 0, 0, 0);
     self->res.unk_00 = 0;
     self->targetObj->unk_1e = 3;

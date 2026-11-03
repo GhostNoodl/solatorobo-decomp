@@ -7,7 +7,7 @@ extern int NNSi_G2dFontGetStringWidth(const void *pFont, int hSpace, const void 
 extern int NNSi_G2dFontGetTextHeight(const void *pFont, int vSpace, const void *txt);
 extern void NNS_G2dCharCanvasInitForBG(void *canvas, void *charBase, int w, int h, int colorMode);
 extern void NNS_G2dMapScrToCharText(void *scrBase, int w, int h, int left, int top, int pitch, int charNo, int pltt);
-extern void *func_0203bb68(GfxSys *sys, BOOL main);
+extern void *GfxSys_GetTextBgPtr(GfxSys *sys, BOOL main);
 extern void func_0203b12c(GfxMgr *mgr, const char *str);
 extern void func_0203b4ac(GfxMgr *mgr, int color);
 extern void DC_FlushAll(void);
@@ -43,9 +43,9 @@ void func_0203aab0(GfxMgr *mgr, const char *str) {
     top = mgr->unk_00e >> 3;
     charNo = (s16)top * mgr->unk_678 + 1;
     rows = ((mgr->unk_00e + height + 7) >> 3) - top;
-    charBase = (u8 *)func_0203bb68(data_02097d48, FALSE);
+    charBase = (u8 *)GfxSys_GetTextBgPtr(data_02097d48, FALSE);
     NNS_G2dCharCanvasInitForBG(mgr->unk_684, charBase + charNo * 0x20, mgr->unk_678, rows, 4);
-    NNS_G2dMapScrToCharText(func_0203bb68(data_02097d48, TRUE), mgr->unk_678, rows, 0, top, 0x20, charNo, pal + mgr->plttSlots[1]);
+    NNS_G2dMapScrToCharText(GfxSys_GetTextBgPtr(data_02097d48, TRUE), mgr->unk_678, rows, 0, top, 0x20, charNo, pal + mgr->plttSlots[1]);
     func_0203b12c(mgr, str);
     func_0203b4ac(mgr, color);
     DC_FlushAll();
@@ -96,7 +96,7 @@ typedef struct GfxOamTmp {
 
 extern u16 NNS_G2dFontFindGlyphIndex(const GfxNnsFont *font, u16 c);
 extern const GfxCharWidths *NNS_G2dFontGetCharWidthsFromIndex(const GfxNnsFont *font, u16 idx);
-extern void *func_0203bbfc(GfxSys *sys, int which);
+extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 extern VramBlock *GfxMgr_AllocCharBlock(GfxMgr *mgr, int width, int height, BOOL temporary);
 
@@ -216,7 +216,7 @@ void func_0203acb8(GfxMgr *mgr, const char *str) {
         n++;
     }
     mgr->unk_00c = x;
-    NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), buf, n);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), buf, n);
 }
 
 }

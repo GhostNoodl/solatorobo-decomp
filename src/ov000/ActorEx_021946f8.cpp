@@ -30,7 +30,7 @@ static inline void ResSet_Delete(ResSet *res) {
     }
 }
 
-static inline void ActorEx_Init(ActorEx *self) {
+static inline void ActorEx_CtorBody(ActorEx *self) {
     s32 i;
 
     Actor_Ctor(self);

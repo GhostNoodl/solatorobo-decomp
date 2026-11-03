@@ -19,7 +19,7 @@ extern BOOL Model0218fe1c_IsAnimDelayed(Model0218fe1c *model);
 extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *model, u16 a, BOOL b);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Actor_Move(Actor *self, s32 a);
 extern void Actor_MoveToPos(Actor *self, const VecFx32 *v, s32 a);
 extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
@@ -120,7 +120,7 @@ void Ov003Actor_StateAttack(Ov003Actor *self) {
         }
         if (c) {
             ActorHp *t;
-            func_ov000_0218996c(0xc, 0x1e);
+            Field_ShakeCamera(0xc, 0x1e);
             SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             self->unk_ea_0 = self->unk_b0->unk_0a_7;
             self->unk_ec_0 = 1;

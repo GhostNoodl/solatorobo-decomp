@@ -132,7 +132,7 @@ void Ov003ActVt_021f98cc_StateIdle(ActorEx *self) {
 }
 
 void Ov003ActVt_021f9834_Init(Ov003ActExHome *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     ResSet_SetFile(&self->res, data_ov003_021f995c, 1, 1, 1, 0);
     self->res.unk_00 = 0;
     self->homePos.x = self->pos.x;

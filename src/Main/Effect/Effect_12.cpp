@@ -35,7 +35,7 @@ static inline s32 Effect_Vary(const s32 *v, s32 s) {
     return x - Effect_FxMul(x, Effect_FxMul(r, s));
 }
 
-BOOL func_02069f3c(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Color(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     u16 color;
     switch (cmd->mode) {
     case 0:
@@ -86,7 +86,7 @@ BOOL EffectPartSet_AddSlot(EffectPartSet *s, const u8 *data) {
     return ret;
 }
 
-void func_0206a138(EffectPartSet *s) {
+void EffectPartSet_Reset(EffectPartSet *s) {
     MI_CpuFill8(s->slots, 0, sizeof(s->slots));
     s->localTime = 0;
     s->period = 0;

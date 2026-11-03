@@ -92,7 +92,7 @@ void Ov011Act7e50_StateIdle(Ov011Act7e50 *self) {
         i = self->unk_1a;
         st->timer++;
         if (st->timer > data_ov011_022076a0[i].dur2) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;

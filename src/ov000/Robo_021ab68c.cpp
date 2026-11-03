@@ -27,7 +27,7 @@ extern char data_ov000_021cc5e3[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Model0218fe1c_IsAnimDelayed(void *a);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
-void func_ov000_0218999c(s32 a, s32 b);
+void Field_ShakeCameraY(s32 a, s32 b);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 a, s32 b);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -119,7 +119,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             }
             hit = FALSE;
         }
-        func_ov000_0218999c(0x14, 0x28);
+        Field_ShakeCameraY(0x14, 0x28);
         SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
         if (!hit) {
             VecFx32 p;

@@ -167,7 +167,7 @@ extern char data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 u16 Pad_LookupDir(void *rng, s32 range);
 void Actor_Move(Actor *self, s32 turn);
-void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
+void Group_UpdateActor(void *a, s32 b, Actor *actor);
 extern void *data_ov000_021ccd64;
 BOOL Hit_DiffInSphere(VecFx32 *pos, VecFx32 *target, fx32 dist);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);

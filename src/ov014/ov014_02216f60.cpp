@@ -207,7 +207,7 @@ extern char data_ov014_022170fe[];
 extern char data_ov014_02217104[];
 extern void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 
@@ -280,7 +280,7 @@ void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
             Model0218fe1c_SetAnim(self->model, data_ov014_02216430, 0x400, 0);
             Model0218fe1c_SetAnimSpeed(self->model, 0x1ec);
             Model0218fe1c_SetLoop(self->model);
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = (u8 *)data_ov000_021ccd54;
             g[0xac] = 1;

@@ -20,9 +20,9 @@ BOOL Model0218fe1c_SetRes(Model0218fe1c *self, void *res, u8 mode, s32 e);
 Model0218fe1c *Model0218fe1c_Init(Model0218fe1c *self);
 BOOL Model0218fe1c_SetAnim(Model0218fe1c *self, const char *name, s32 blend, s32 force);
 void Model0218fe1c_SetLoop(Model0218fe1c *self);
-void func_ov000_02191870(Model0218fe1c *self, void *p);
+void Model0218fe1c_BindAnim3Res(Model0218fe1c *self, void *p);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
-void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force);
+void Model0218fe1c_SetAnim3(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 void Model0218fe1c_UpdateAnim(Model0218fe1c *self, s32 a);
 s32 func_ov000_021909a8(Model0218fe1c *self, void *p, const char *name);
 
@@ -54,13 +54,13 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
         if (self->unk_ba0[0x18] != 0) {
             q = &self->res2;
         }
-        func_ov000_02191870(&self->mdl1, q);
+        Model0218fe1c_BindAnim3Res(&self->mdl1, q);
         ctrl = Model0218fe1c_GetAnimCtrl(&self->mdl1, 3);
         if (ctrl != NULL) {
             u32 v;
             float f;
             s32 frame;
-            func_ov000_02191920(&self->mdl1, 0, 0x1000, 0);
+            Model0218fe1c_SetAnim3(&self->mdl1, 0, 0x1000, 0);
             v = self->unk_ba0[0x18];
             if (v > 0) {
                 f = (float)(s32)(v << 12) + 0.5f;

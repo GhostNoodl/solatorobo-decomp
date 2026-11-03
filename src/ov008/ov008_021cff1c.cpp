@@ -57,7 +57,7 @@ void Ov008Menu_DrawItem(Ov008Menu *self, s32 arg, s32 b) {
     }
 }
 
-s32 func_ov008_021cff40(Ov008Menu *self) {
+s32 Ov008Menu_GetLineHeight(Ov008Menu *self) {
     s32 a;
     data_02097ce0->unk_004 = self->font;
     a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
@@ -68,11 +68,11 @@ s32 func_ov008_021cff84(Ov008Menu *self, s32 a, s32 b, s32 c) {
     return self->v60(a, b, c);
 }
 
-bool func_ov008_021cff98(Ov008Menu *self) {
+bool Ov008Menu_IsShown(Ov008Menu *self) {
     return Ov008_IsState2(self);
 }
 
-s32 func_ov008_021cffb8(Ov008Menu *self) {
+s32 Ov008Menu_OnChildDone(Ov008Menu *self) {
     Ov008Cb cb = self->unk_90;
     s32 r;
     if (cb == NULL) {

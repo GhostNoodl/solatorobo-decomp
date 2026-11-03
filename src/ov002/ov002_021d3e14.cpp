@@ -12,8 +12,8 @@ void func_ov000_0215d980(void *a, s32 b, s32 c);
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
 void *func_0206ee58(u16 id);
-BOOL func_ov002_021d3b10(UiList *self, UiListItem *ev);
-BOOL func_ov002_021d3c30(UiList *self, UiListItem *ev);
+BOOL Task021ef81c_List3cOnDecide(UiList *self, UiListItem *ev);
+BOOL Task021ef81c_List3cOnCursor(UiList *self, UiListItem *ev);
 
 static inline bool Ov002_Avail(u8 *blk, void *tbl, u16 i) {
     bool a = DataRes_ReadBitsAt_02059544(data_02fe152c, blk, tbl, 1, i) & 1;
@@ -147,8 +147,8 @@ void Task021ef81c_Start(Task021ef81c *self) {
     self->unk_3c->unk_c0 = 0x78;
     UiList021cb4a8_SetLabel(self->unk_3c, MsgRes_GetString(g, 0xa2));
     UiList021cb4a8_SetCenteredLabel(self->unk_3c, MsgRes_GetString(g, 0x40));
-    self->unk_3c->onDecide = func_ov002_021d3b10;
-    self->unk_3c->onCursor = func_ov002_021d3c30;
+    self->unk_3c->onDecide = Task021ef81c_List3cOnDecide;
+    self->unk_3c->onCursor = Task021ef81c_List3cOnCursor;
     self->unk_3c->owner = self;
     func_ov000_02176590(((u32)self->param));
 

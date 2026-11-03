@@ -122,7 +122,7 @@ void Ov015Scene2c08_Draw(Ov015Scene2c08 *self) {
 static inline BOOL Ov015_IsState5b(UiObj *o) {
     return o->state == 5 ? TRUE : FALSE;
 }
-BOOL func_ov015_02204c20(UiList *self, UiListItem *item) {
+BOOL Ov015Scene2b88_List3cOnDecide(UiList *self, UiListItem *item) {
     if (item != NULL) {
         if ((s32)item->unk_10 < 0) {
             SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
@@ -145,7 +145,7 @@ BOOL func_ov015_02204c20(UiList *self, UiListItem *item) {
     return TRUE;
 }
 
-BOOL func_ov015_02204d00(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2b88_List3cOnCursor(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         Ov015Scene2b88 *o = (Ov015Scene2b88 *)self->owner;
         void *m = func_0206ec8c(ev->id);
@@ -157,7 +157,7 @@ BOOL func_ov015_02204d00(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02204d48(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2b88_List48OnDecide(UiList *self, UiListItem *ev) {
     func_ov015_0220566c((Ov015Scene2b88 *)self->owner, ev != NULL ? ev->id : -1);
     return TRUE;
 }
@@ -290,8 +290,8 @@ void Ov015Scene2b88_Start(Ov015Scene2b88 *self) {
         UiList *o = self->unk_3c;
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
-    self->unk_3c->onDecide = func_ov015_02204c20;
-    self->unk_3c->onCursor = func_ov015_02204d00;
+    self->unk_3c->onDecide = Ov015Scene2b88_List3cOnDecide;
+    self->unk_3c->onCursor = Ov015Scene2b88_List3cOnCursor;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);
@@ -348,7 +348,7 @@ void Ov015Scene2b88_Start(Ov015Scene2b88 *self) {
     self->unk_48->msgId = 0x8d;
     self->unk_48->text = (char *)MsgRes_GetString(res, 0x24);
     self->unk_48->key = 1;
-    self->unk_48->onDecide = func_ov015_02204d48;
+    self->unk_48->onDecide = Ov015Scene2b88_List48OnDecide;
     self->unk_48->owner = self;
     self->unk_48->vfunc_08();
     self->unk_48->posZ = -0x333;

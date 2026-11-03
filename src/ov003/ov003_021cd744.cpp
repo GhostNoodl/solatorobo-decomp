@@ -80,7 +80,7 @@ static inline void Ov003_Model_PlayPartChk(void *model, u16 idx) {
     TexObj_DrawCell(model, anim, part, 1);
 }
 
-void func_ov003_021cd744(Ov003Menu2 *self) {
+void Ov003TaskVt_021f78f4_Draw(Ov003Menu2 *self) {
     u16 i;
     u16 count;
     u16 mask;

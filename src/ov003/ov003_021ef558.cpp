@@ -6,7 +6,7 @@
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
+extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern void Heap_Free(void *p);
 
 void Ov003ActVt_021f9d78_Start(ActorEx *self) {
@@ -27,7 +27,7 @@ void Ov003ActVt_021f9d78_Start(ActorEx *self) {
         }
     }
     if (!keep) {
-        func_ov000_0218bed8(data_ov000_021ccd64, 2, self);
+        Group_UpdateActor(data_ov000_021ccd64, 2, self);
         self->vfunc_08();
         return;
     }

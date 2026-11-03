@@ -107,7 +107,7 @@ void Ov013Boss_StateShoot(Ov013Boss *self) {
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 
 void Ov013Boss_StateDie(Ov013Boss *self) {
@@ -147,7 +147,7 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
             o->SetScaleAll(0x5000);
         }
         SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-        func_ov000_0218996c(0xc, 0x28);
+        Field_ShakeCamera(0xc, 0x28);
         self->fsm->st = 0x14;
         self->fsm->timer = 0;
         break;
@@ -163,11 +163,11 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
                 v.y = self->height >> 1;
                 v.z = self->radius;
                 Spawn_ScatterEffect(&self->pos, &v, 0x99a, 0x1333, 0x38b, 0x32);
-                func_ov000_0218996c(8, 8);
+                Field_ShakeCamera(8, 8);
                 SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
             }
             if (t >= 0x12b) {
-                func_ov000_0218996c(0x14, 0x78);
+                Field_ShakeCamera(0x14, 0x78);
                 self->fsm->st = 0x63;
                 self->fsm->timer = 0;
             }

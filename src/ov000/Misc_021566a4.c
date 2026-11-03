@@ -5,7 +5,7 @@ typedef struct {
     void *unk_b8;
 } Obj021566ac;
 
-s32 func_ov000_021566a4(void) {
+s32 UiList_GetPadTop(void) {
     return 6;
 }
 

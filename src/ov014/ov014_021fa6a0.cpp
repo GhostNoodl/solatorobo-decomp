@@ -18,7 +18,7 @@ extern void *Model0218fe1c_Init(void *p);
 extern void *Model0218fe1c_FreeAnims(void *p);
 extern void *ResSet_ReleaseAll(void *p);
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
-extern void func_ov000_02187a20(void *a, s32 b);
+extern void SceneCmd_Push25(void *a, s32 b);
 
 #pragma force_active on
 Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {

@@ -214,7 +214,7 @@ struct Ov015Bits0c {
     u32 rest : 30;
 };
 
-void func_ov015_022086d0(Ov015UiText *self) {
+void Ov015Vt_02212d3c_PreUpdate(Ov015UiText *self) {
     if (self->state != 2) {
         return;
     }
@@ -234,7 +234,7 @@ void func_ov015_022086d0(Ov015UiText *self) {
     }
 }
 
-void func_ov015_02208750(Ov015UiText *self, s32 a, s32 b, s32 c) {
+void Ov015Vt_02212d3c_DrawBody(Ov015UiText *self, s32 a, s32 b, s32 c) {
     self->vfunc_60(a, b, c);
     self->vfunc_70(a, b, c);
 }
@@ -352,7 +352,7 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
     ((TextWin *)&p)->unk_vf08();
 }
 
-s32 func_ov015_02208cb0(void) {
+s32 Ov015Vt_02212d3c_OnChildDone(void) {
     return 1;
 }
 
@@ -408,19 +408,19 @@ s32 Ov015Vt_02212d3c_GetLineHeight(Ov015UiText *self) {
     return a + self->vfunc_3c();
 }
 
-s32 func_ov015_02208e40(void) {
+s32 Ov015Vt_02212d3c_GetLineSpacing(void) {
     return 0;
 }
 
-s32 func_ov015_02208e48(void) {
+s32 Ov015Vt_02212d3c_GetPadTop(void) {
     return 0;
 }
 
-s32 func_ov015_02208e50(void) {
+s32 Ov015Vt_02212d3c_GetPadBottom(void) {
     return 0;
 }
 
-s32 func_ov015_02208e58(void) {
+s32 Ov015Vt_02212d3c_GetPadLeft(void) {
     return 0;
 }
 
@@ -428,7 +428,7 @@ s32 func_ov015_02208e60(Ov015UiText *self, s32 a, s32 b, s32 c) {
     return self->vfunc_60(a, b, c);
 }
 
-void *func_ov015_02208e74(Ov015UiText *self) {
+void *Ov015Vt_02212d3c_DtorDelete(Ov015UiText *self) {
     void *saved;
     SET_VT(self, data_ov015_02212d3c);
     HEAP_PUSH(saved);
@@ -440,7 +440,7 @@ void *func_ov015_02208e74(Ov015UiText *self) {
     return self;
 }
 
-void *func_ov015_02208efc(Ov015UiText *self) {
+void *Ov015Vt_02212d3c_Dtor(Ov015UiText *self) {
     void *saved;
     SET_VT(self, data_ov015_02212d3c);
     HEAP_PUSH(saved);

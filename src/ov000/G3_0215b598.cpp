@@ -52,7 +52,7 @@ static inline void Box_SetMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
     }
 }
 
-void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3) {
+void LoBase021cafc0_021cb0b8_DrawRectFrame(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
     GfxSys *g;
     s32 sx;

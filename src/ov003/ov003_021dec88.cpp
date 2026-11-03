@@ -15,10 +15,10 @@ extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern BOOL Model0218fe1c_SetRes(Model0218fe1c *model, void *res, s32 a, s32 b);
 extern void ActorMgr_BroadcastKind(ActorMgr *mgr, u16 a, s32 b);
 extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern BOOL History_SetState(ActorSub40 *w, s32 a, s32 b);
 extern void *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(void);
+extern BOOL Actor_IsDead(void);
 
 static inline void Ov003LpModel_SetMode(Model0218fe1c *m, s32 mode) {
     if (m->unk_c0 != mode) {
@@ -40,7 +40,7 @@ void Ov003ActVt_021f83e8_State06(Ov003ActExSeq *self) {
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5013, 0x15);
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
             SndMgr_StopSeqArc(data_02097e4c, self->seq);
-            func_ov000_0218996c(0x19, 0x3c);
+            Field_ShakeCamera(0x19, 0x3c);
             SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
             SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
             fx = Effect_SpawnId(5, &self->pos);
@@ -87,7 +87,7 @@ void Ov003ActVt_021f83e8_State06(Ov003ActExSeq *self) {
         if (ActorMgr_FindPlayer() == NULL) {
             return;
         }
-        if (func_ov000_021b4738()) {
+        if (Actor_IsDead()) {
             return;
         }
         self->unk_18 = 3;

@@ -186,27 +186,27 @@ typedef struct LangArc {
 } LangArc;
 
 extern LangArc data_0214b0b8;
-void func_02038638(LangArc *arc, const char *name);
-void func_02038520(LangArc *arc);
-void *func_02038dbc(LangArc *arc);
+void ResHandle_LoadSync(LangArc *arc, const char *name);
+void ResHandle_Unload(LangArc *arc);
+void *ResHandle_GetData(LangArc *arc);
 LangTable **ResList_FindType0(void *res, const char *name);
 
 void func_0206e678(void) {
     char buf[0x20];
     data_0214b0b8.unk_44 = 7;
     LangData_LocalizePath(buf, data_02082bf8[2]);
-    func_02038638(&data_0214b0b8, buf);
+    ResHandle_LoadSync(&data_0214b0b8, buf);
     func_0206e6e4();
 }
 
 void func_0206e6c0(void) {
-    func_02038520(&data_0214b0b8);
+    ResHandle_Unload(&data_0214b0b8);
     data_0214b0a8 = NULL;
 }
 
 void func_0206e6e4(void) {
     char buf[0x18];
-    void *res = func_02038dbc(&data_0214b0b8);
+    void *res = ResHandle_GetData(&data_0214b0b8);
     LangTable *table;
     LangGroup *group;
     char *str;

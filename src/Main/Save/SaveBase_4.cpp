@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02047f60(SaveBase *s) {
+void SaveBase_State9(SaveBase *s) {
     SaveHeader *hdr = s->header;
     switch (s->step) {
         case 0:
@@ -31,7 +31,7 @@ void func_02047f60(SaveBase *s) {
     }
 }
 
-void func_02048164(SaveBase *s) {
+void SaveBase_State10(SaveBase *s) {
     SaveBase_LoadData(s);
 }
 
@@ -86,7 +86,7 @@ static inline BOOL VerifyLoadedData(SaveBase *s) {
     return TRUE;
 }
 
-void func_020481c0(SaveBase *s) {
+void SaveBase_State12(SaveBase *s) {
     u32 off = s->curSlot * s->slotSize + 0x14;
     SaveHeader *hdr = s->header;
     SaveData *data = s->data;

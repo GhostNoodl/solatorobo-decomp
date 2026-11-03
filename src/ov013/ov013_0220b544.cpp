@@ -613,7 +613,7 @@ void func_ov013_02205760(Ov013ActEx_02204454 *self) {
 
 void func_ov013_022058d4(Ov013ActEx_02204454 *self) {
     func_ov000_02197dec(self, 0xf, 0x63);
-    func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(data_ov000_021ccd64, 0, self);
     self->vfunc_08();
 }
 
@@ -676,7 +676,7 @@ void func_ov013_02205928(Ov013ActEx_02204454 *self) {
     case 2:
         self->model->visible = 0;
         func_ov000_02197dec(self, 0xf, 0x63);
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }

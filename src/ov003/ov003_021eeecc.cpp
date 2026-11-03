@@ -47,13 +47,13 @@ extern BOOL Ov003Switch_IsTarget(Actor *t, void *def);
 extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(void *p);
 extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Actor_SendMsg(Actor *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Actor *ActorMgr_FindPlayer(void);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
-extern BOOL func_ov000_021b4738(void);
+extern BOOL Actor_IsDead(void);
 extern void func_020627b4(void);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627ec(u16 a);
 extern void func_ov000_02182590(void *p);
@@ -171,7 +171,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
         }
         SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
-        func_ov000_0218996c(5, 10);
+        Field_ShakeCamera(5, 10);
         b = 0;
         Actor_SendMsg(found, self->id, 0xd, 1, 1, &b);
         pl = ActorMgr_FindPlayer();
@@ -236,7 +236,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             self->unk_93_1 = 1;
             if (self->hitMesh != NULL) {
                 SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
-                func_ov000_0218996c(5, 10);
+                Field_ShakeCamera(5, 10);
             }
             self->fsm->st = 10;
             return;
@@ -259,14 +259,14 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
         break;
     }
     case 10:
-        if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
+        if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
             u16 id = 0;
             Actor *t = Actor_GetTarget(self);
             if (t != NULL) {
                 id = t->kind;
             }
             func_020627b4();
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(1);
             func_020627ec(id);
             {

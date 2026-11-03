@@ -17,7 +17,7 @@ typedef struct {
 extern void *data_ov000_021ccd64;
 extern s32 Ov003CntSelf_CountLiving(void *p);
 extern void func_020627b4(void);
-extern s32 func_0205b1fc(void);
+extern s32 StageRes_HasQueued(void);
 extern Ov003Plr *ActorMgr_FindPlayer(void);
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8046[];
@@ -31,7 +31,7 @@ extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
 
 void Ov003ActVt_021f7f14_Init(Ov003Switch *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
@@ -119,7 +119,7 @@ void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
         self->unk_93_1 = (u16)v;
         func_020627b4();
         func_ov000_02197dec(self, v, v);
-        if (func_0205b1fc() != 1) {
+        if (StageRes_HasQueued() != 1) {
             return;
         }
         p = ActorMgr_FindPlayer();
@@ -163,7 +163,7 @@ void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
 }
 
 extern BOOL AnimCtrl_SetAnim(void *ctrl, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *m);
 extern void *Target_Get(ActorSub4c *def);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
@@ -191,7 +191,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
             HitMesh_Link(self->hitMesh);
         }
         SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
-        func_ov000_0218996c(2, 0x3c);
+        Field_ShakeCamera(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;
         break;
@@ -223,7 +223,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
             }
         }
         SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
-        func_ov000_0218996c(2, 0x3c);
+        Field_ShakeCamera(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;
         break;

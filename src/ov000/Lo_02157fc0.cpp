@@ -32,7 +32,7 @@ static inline BOOL LabelReady(UiLabel *q) {
     return r;
 }
 
-BOOL func_ov000_02157fc0(UiList021cb4a8 *self) {
+BOOL UiList021cb4a8_IsLoaded(UiList021cb4a8 *self) {
     BOOL ok = UiList_IsLoaded(self);
     if (self->unk_d4 && !LabelReady(self->unk_d4)) {
         ok = FALSE;

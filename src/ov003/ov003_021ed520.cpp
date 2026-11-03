@@ -75,7 +75,7 @@ Ov003HomingShot *Ov003ActVt_021f9a80_DtorDelete(Ov003HomingShot *self) {
 
 void Ov003ActVt_021f9f40_Init(ActorEx *self) {
     Ov003Unit *unit;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     self->unk_ce = 0;
     unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (unit != NULL) {

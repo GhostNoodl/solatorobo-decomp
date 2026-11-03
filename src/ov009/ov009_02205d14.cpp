@@ -8,7 +8,7 @@ extern void *data_ov009_0221707c;
 extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
-extern void func_ov000_02187a20(void *p, s32 a);
+extern void SceneCmd_Push25(void *p, s32 a);
 extern void *Ov003FxList_Dtor(void *p);
 extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
@@ -30,7 +30,7 @@ void Ov009ActVt_02216bc8_StateDie(Ov009ActVt_02216bc8 *self) {
 void Ov009ActVt_02216fd0_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    func_ov000_02187a20(data_ov000_021ccd54, 0xe);
+    SceneCmd_Push25(data_ov000_021ccd54, 0xe);
 }
 
 void Ov009ActVt_02216fd0_Update(Ov003Actor *self) {
@@ -75,7 +75,7 @@ void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
     case 0x502c:
     case 0x5034:
     case 0x5043:
-        func_ov000_02187a20(data_ov000_021ccd54, 0xd);
+        SceneCmd_Push25(data_ov000_021ccd54, 0xd);
         break;
     case 0x5019:
     case 0x501a:
@@ -85,7 +85,7 @@ void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
     case 0x5052:
     case 0x505a:
     case 0x505b:
-        func_ov000_02187a20(data_ov000_021ccd54, 0xe);
+        SceneCmd_Push25(data_ov000_021ccd54, 0xe);
         break;
     }
     self->unk_ea_10 = 1;
@@ -102,7 +102,7 @@ void Ov009ActVt_02216f24_StateDie(Ov003Actor *self) {
 void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
     Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    func_ov000_02187a20(data_ov000_021ccd54, 0xd);
+    SceneCmd_Push25(data_ov000_021ccd54, 0xd);
     self->unk_b8 = self->pos;
     self->unk_ea_10 = 1;
     self->unk_f0 = 0;

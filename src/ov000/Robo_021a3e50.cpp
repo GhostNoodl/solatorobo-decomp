@@ -19,7 +19,7 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
 void Actor_TurnToActor(Actor *self, void *other, s32 step);
 BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
 void Model0218fe1c_SetLoop(void *p);
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021700c4(void *p);
 void *Task_FindById(s32 kind);
@@ -108,7 +108,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         break;
     case 10:
         if (t != NULL) {
-            func_020627a0(t->kind, t->id);
+            Shared_SetEventActor(t->kind, t->id);
             data_ov000_021ccd54->stageFlags = 1;
         }
         self->fsm->st++;

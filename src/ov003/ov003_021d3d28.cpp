@@ -23,7 +23,7 @@ extern const char data_ov003_021f7a85[];
 extern const char data_ov003_021f7a8b[];
 void HitSphere_Link(ActorSub48 *ctl);
 void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 void Actor_SendMsg(Ov003Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 blend, u8 force);
 BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
@@ -121,10 +121,10 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 }
                 if (self->targetObj->unk_19 != 0) {
                     s32 n = self->targetObj->unk_1a + 1;
-                    func_ov000_0218996c(n + 8, n * 2 + 0x14);
+                    Field_ShakeCamera(n + 8, n * 2 + 0x14);
                     SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
                 } else {
-                    func_ov000_0218996c(6, 10);
+                    Field_ShakeCamera(6, 10);
                     SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
                 }
                 if (self->targetObj->unk_03 == 1) {
@@ -200,7 +200,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                     } else if (self->radius >= 0x1000 && self->velY < -0x400) {
                         EffectObj *fx;
                         se = 0x17;
-                        func_ov000_0218996c(10, 0x14);
+                        Field_ShakeCamera(10, 0x14);
                         fx = Effect_SpawnId(0x12e, &self->pos);
                         fx->SetScaleAll(0x1400);
                     }

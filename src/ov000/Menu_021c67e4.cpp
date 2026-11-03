@@ -191,7 +191,7 @@ static inline void Place021c6b28(TextList *self, ListRow *n, VecFx32 *p, s32 ofs
     }
 }
 
-void func_ov000_021c6b28(TextList *self, s32 a, VecFx32 *pos, s32 b) {
+void Ov000Vt_021ccadc_DrawBody(TextList *self, s32 a, VecFx32 *pos, s32 b) {
     VecFx32 p;
     s32 cur;
     s32 prev;

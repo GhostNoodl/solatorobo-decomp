@@ -28,16 +28,16 @@ extern Save0219763c *data_0214a424;
 extern Ent0219763c data_ov000_021c9ecc[];
 extern void *data_02097e4c;
 void HitSphere_Unlink_0203f364(void *a);
-void func_ov000_0218bed8(void *a, s32 b, void *c);
-void func_020627a0(u16 kind, u16 id);
+void Group_UpdateActor(void *a, s32 b, void *c);
+void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
 u16 LangData_GetIndex(u32 a, u32 b);
 Robo021ca458 *ActorMgr_FindPlayer(void);
-BOOL func_ov000_021b4738(void);
+BOOL Actor_IsDead(void);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 u8 *func_020704b4(u16 id);
 void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check);
 void Body_SetOwner(void *p, u16 id);
@@ -81,8 +81,8 @@ static inline void Die0219763c(VObj *obj) {
             }
         }
     }
-    if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
-        func_020627a0(self->unk_0e, self->unk_0c);
+    if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
+        Shared_SetEventActor(self->unk_0e, self->unk_0c);
         func_020627dc(0x63);
         {
             FieldState *pl = data_ov000_021ccd54;
@@ -91,7 +91,7 @@ static inline void Die0219763c(VObj *obj) {
         }
     }
     func_020627c8();
-    func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(data_ov000_021ccd64, 0, self);
     obj->vfunc_08();
 }
 
@@ -142,7 +142,7 @@ void ActorEx_StateDie(VObj *obj) {
                 SndMgr_PlayAt(data_02097e4c, e->snd, &self->pos, 0);
             }
             if (e->a != 0 && e->b != 0) {
-                func_ov000_0218996c(e->a, e->b);
+                Field_ShakeCamera(e->a, e->b);
             }
         }
         {

@@ -63,7 +63,7 @@ Ov003InObj4c *Target_Init(void *p);
 s32 NNS_G3dGetResDictIdxByName(const void *dict, const void *name);
 BOOL Model0218fe1c_SetRes(Model0218fe1c *m, void *res, s32 idx, s32 b);
 Ov003InAnm *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 n);
-void func_ov000_02191920(Model0218fe1c *m, s32 idx, s16 a, u8 b);
+void Model0218fe1c_SetAnim3(Model0218fe1c *m, s32 idx, s16 a, u8 b);
 }
 
 static inline Model0218fe1c *Ov003In_NewModel(void) {
@@ -222,7 +222,7 @@ extern "C" void Ov003Actor_Start(Ov003Actor *self) {
                     if (anm != NULL) {
                         s32 f;
                         Ov003InFrm *frm;
-                        func_ov000_02191920(m, n, 0x1000, 0);
+                        Model0218fe1c_SetAnim3(m, n, 0x1000, 0);
                         {
                             s32 x = info->b5 << 12;
                             f = (s32)(info->b5 != 0 ? x + 0.5f : x - 0.5f);

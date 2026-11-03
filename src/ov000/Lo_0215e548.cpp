@@ -12,7 +12,7 @@ extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
 
-BOOL func_ov000_0215e548(UiList *self, void *msg) {
+BOOL Lo021cb0b8_OnDecide(UiList *self, void *msg) {
     LoMsgFn fn = ((LoMsgFn)self->onDecide);
     if (fn) {
         return fn(self, msg);

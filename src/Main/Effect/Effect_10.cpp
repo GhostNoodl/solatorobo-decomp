@@ -12,7 +12,7 @@ extern EffectPtclHandler data_0208c930;
 extern EffectPtclHandler data_0208c938;
 extern EffectPtclHandler data_0208c940;
 
-void func_02069184(EffectEmitterSub *sub) {
+void EffectEmitterSub_InitFuncs(EffectEmitterSub *sub) {
     sub->funcs[0] = data_0208c908;
     sub->funcs[1] = data_0208c910;
     sub->funcs[2] = data_0208c918;
@@ -26,7 +26,7 @@ void func_02069184(EffectEmitterSub *sub) {
 void func_02069248(EffectEmitterSub *sub) {
 }
 
-BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p) {
+BOOL EffectEmitterSub_RunCmds(EffectEmitterSub *sub, EffectPtcl *p) {
     BOOL done = FALSE;
     EffectPtclCmd *cmds = p->cmds;
     s32 i;
@@ -52,7 +52,7 @@ BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p) {
 
 extern int Rand_PlusMinus(int range);
 
-BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Pos(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     switch (cmd->mode) {
     case 0:
         p->pos = cmd->a;
@@ -97,7 +97,7 @@ BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
 
 extern u32 Rand_Fx(void);
 
-BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Rot(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     s32 x;
     s32 y;
     s32 z;
@@ -214,7 +214,7 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     return TRUE;
 }
 
-BOOL func_02069824(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Scale(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     switch (cmd->mode) {
     case 0:
         p->scale = cmd->a;
@@ -266,7 +266,7 @@ BOOL func_02069824(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     return TRUE;
 }
 
-BOOL func_02069a2c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Alpha(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
     s32 v;
     switch (cmd->mode) {
     case 0:
@@ -326,7 +326,7 @@ BOOL func_02069a2c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
 }
 
 #ifdef NONMATCHING
-// func_02069b3c (0x2c8 bytes, the texture-index particle command): 44 / 4 (raw / register-masked). This file's
+// EffectPtclCmd_TexImage (0x2c8 bytes, the texture-index particle command): 44 / 4 (raw / register-masked). This file's
 // .text ends at 0x02069b3c, so it goes here once it matches. Blocker: the param + key sum of the inlined
 // Effect_GetTexImageParam (a codegen temp) is coloured and scheduled differently. The inlines are the matched
 // Effect_16.cpp ones. History: docs/MATCHING.md rounds mainfresh1-4, fresh6, mainJ, rgB, cvA; docs/UNMATCHED.md.
@@ -386,7 +386,7 @@ static inline void EffectPtcl_SetTexImage(EffectPtcl *p, s32 idx) {
     }
 }
 
-BOOL func_02069b3c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_TexImage(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
     s32 idx;
     if (cmd->mode == 2) {
         s32 to = cmd->b.x;

@@ -56,7 +56,7 @@ static inline void ov006_Gauge_SetPos(ov006_Gauge *g, int x, int y) {
     g->y = y;
 }
 
-void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     int y;
     int i;
     void *res;
@@ -185,8 +185,8 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     self->fadeLen += self->unk54->openLen;
     self->unk_04 &= ~2;
     TaskList_Insert(self);
-    func_0203cb78(0x14000, 0, 0);
-    func_0203cb78(0x14000, 0, 1);
+    GfxSys_StartFadeIn(0x14000, 0, 0);
+    GfxSys_StartFadeIn(0x14000, 0, 1);
 }
 
 }

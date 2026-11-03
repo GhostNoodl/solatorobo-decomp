@@ -36,7 +36,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0215bf60(Lo021cadcc *self) {
+void Lo021cadcc_PreUpdate(Lo021cadcc *self) {
     switch (self->state) {
     case 5:
         if (self->hidden == 1) {

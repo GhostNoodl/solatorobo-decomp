@@ -8,7 +8,7 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
     return cur + (s32)(((s64)(target - cur) * rate + 0x800) >> 12);
 }
 
-void func_ov000_0215ae80(LoBase021cafc0_021cb0b8 *self) {
+void LoBase021cafc0_021cb0b8_PostUpdate(LoBase021cafc0_021cb0b8 *self) {
     UiPanel *o;
     s32 n;
     if (self->state != 2) {

@@ -51,7 +51,7 @@ EffectPtcl *MainVt_0208c840_DtorDelete(EffectPtcl *p) {
     return p;
 }
 
-BOOL func_0206aec0(EffectEmitter *em) {
+BOOL EffectEmitter_Load(EffectEmitter *em) {
     BOOL ret = FALSE;
     switch (em->unk_2c) {
     case 0:
@@ -93,14 +93,14 @@ BOOL MainVt_0208c868_Setup(EffectEmitter *em) {
     return TRUE;
 }
 
-extern BOOL func_0206b1cc(EffectEmitter *em);
+extern BOOL EffectEmitter_MovePtcls(EffectEmitter *em);
 
-BOOL func_0206afc8(EffectEmitter *em) {
-    return func_0206b1cc(em);
+BOOL EffectEmitter_Step(EffectEmitter *em) {
+    return EffectEmitter_MovePtcls(em);
 }
 
 
-extern void func_02068da8(EffectPtcl *p);
+extern void EffectPtcl_Init(EffectPtcl *p);
 
 static inline void *Effect_ResDataByIdx(EffectResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->numEntry) {
@@ -189,11 +189,11 @@ static inline void EffectEmitter_AddPtcl(EffectEmitter *em, EffectPtcl *p) {
     }
 }
 
-BOOL func_0206afd4(EffectEmitter *em) {
+BOOL EffectEmitter_Loop(EffectEmitter *em) {
     EffectPtcl *p = (EffectPtcl *)Heap_Alloc(0xc4);
     if (p != NULL) {
         *(u32 **)p = data_0208c840;
-        func_02068da8(p);
+        EffectPtcl_Init(p);
     }
     EffectPtcl_SetTex(p, em->tex);
     p->unk_50 = 0;
@@ -201,12 +201,12 @@ BOOL func_0206afd4(EffectEmitter *em) {
     p->origin = em->pos;
     p->unk_b8 = EffectPtcl_LastEnd2(em);
     EffectEmitter_AddPtcl(em, p);
-    func_0206b1cc(em);
+    EffectEmitter_MovePtcls(em);
     return TRUE;
 }
 
 
-extern BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p);
+extern BOOL EffectEmitterSub_RunCmds(EffectEmitterSub *sub, EffectPtcl *p);
 
 static inline BOOL EffectPtcl_Move(EffectPtcl *p) {
     if (p->time > p->unk_b8 && p->unk_b8 >= 0) {
@@ -236,14 +236,14 @@ static inline void EffectEmitter_Unlink(EffectEmitter *em, EffectPtcl *p) {
     }
 }
 
-BOOL func_0206b1cc(EffectEmitter *em) {
+BOOL EffectEmitter_MovePtcls(EffectEmitter *em) {
     BOOL ret = FALSE;
     EffectPtcl *p = em->ptcls;
     EffectPtcl *next;
     while (p != NULL) {
         p->unk_b4 = em->speed;
         if (EffectPtcl_Move(p)) {
-            func_0206924c(&em->sub, p);
+            EffectEmitterSub_RunCmds(&em->sub, p);
             ret = TRUE;
             p->time += p->unk_b4;
             p = p->next;
@@ -309,8 +309,8 @@ typedef struct EffectMtx43V {
     VecFx32 r[4];
 } EffectMtx43V;
 
-extern u8 func_0206379c(void);
-extern void func_02068e68(EffectPtcl *p, s32 type, void *mtx, s32 arg);
+extern u8 Effect_NextPolyId_0206379c(void);
+extern void EffectPtcl_Draw(EffectPtcl *p, s32 type, void *mtx, s32 arg);
 
 static inline s32 Effect_Cross(s32 a, s32 b, s32 c, s32 d) {
     return (s32)(((s64)a * b - (s64)c * d + 0x800) >> 12);
@@ -334,7 +334,7 @@ static inline void Effect_Billboard(EffectMtx43V *m, const VecFx32 *dir) {
     m->r[2].z = cz;
 }
 
-void func_0206b484(EffectEmitter *em) {
+void EffectEmitter_Draw(EffectEmitter *em) {
     MtxFx33 rot;
     VecFx32 scale;
     MtxFx43 bb;
@@ -365,14 +365,14 @@ void func_0206b484(EffectEmitter *em) {
     bb.m[3][1] = 0;
     bb.m[3][2] = 0;
     for (p = func_0206b340(em); p != NULL; p = p->next) {
-        p->unk_a0 = func_0206379c();
+        p->unk_a0 = Effect_NextPolyId_0206379c();
         if (em->unk_28 == 1) {
-            func_02068e68(p, em->unk_28, &bb, em->alpha);
+            EffectPtcl_Draw(p, em->unk_28, &bb, em->alpha);
         } else if (em->unk_28 == 4) {
             Effect_Billboard(&m, &p->dir);
-            func_02068e68(p, em->unk_28, &m, em->alpha);
+            EffectPtcl_Draw(p, em->unk_28, &m, em->alpha);
         } else {
-            func_02068e68(p, em->unk_28, NULL, em->alpha);
+            EffectPtcl_Draw(p, em->unk_28, NULL, em->alpha);
         }
     }
 }

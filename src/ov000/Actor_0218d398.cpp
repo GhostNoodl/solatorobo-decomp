@@ -222,7 +222,7 @@ BOOL Actor_DespawnIfFar(Actor *self) {
         dz = self->pos.z - dz;
         if (ABS(dx) > 0x39000 || ABS(dy) > 0x39000 || ABS(dz) > 0x39000) {
             ret = TRUE;
-            func_ov000_0218bed8(data_ov000_021ccd64, 1, self);
+            Group_UpdateActor(data_ov000_021ccd64, 1, self);
             self->vfunc_08();
         }
     }

@@ -9,7 +9,7 @@ extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
-extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);
+extern s32 DataRes_Unpack(DataRes *res, u8 *buf, s32 a);
 extern s32 func_02062370(u8 *buf);
 extern s32 SceneStage_Deserialize(u8 *dst, u8 *buf);
 
@@ -72,14 +72,14 @@ void StageFlags_Reset(StageFlags *f) {
 }
 
 
-extern s32 func_020590e8(DataRes *res, u8 *buf, s32 size);
+extern s32 DataRes_Pack(DataRes *res, u8 *buf, s32 size);
 extern s32 func_020622ec(u8 *buf, s32 size);
 extern s32 SceneStage_Serialize(u8 *src, u8 *buf, s32 size);
 extern u16 *StageRes_FindSlot(u32 id);
 extern u16 func_020600cc(u16 *obj, StageVec *pos, u16 *rot, u16 *id);
-extern BOOL func_02062698(void);
-extern void func_02062724(StageVec *pos);
-extern u16 func_02062754(void);
+extern BOOL Shared_HasMark_02062698(void);
+extern void Shared_GetMarkPos(StageVec *pos);
+extern u16 Shared_GetMarkRot(void);
 
 void func_0206c824(StageFlags *f);
 
@@ -98,7 +98,7 @@ void func_0206c620(StageFlags *f) {
 static inline void StageFlags_SaveBuf(StageFlags *f) {
     s32 n = 0;
     u16 v;
-    n += func_020590e8(data_02fe152c, f->buf, sizeof(f->buf));
+    n += DataRes_Pack(data_02fe152c, f->buf, sizeof(f->buf));
     n += func_020622ec(f->buf + n, sizeof(f->buf) - n);
     SceneStage_Serialize(&data_ov000_021ccd54->stageFlags, f->buf + n, sizeof(f->buf) - n);
     f->unk_518_16 = data_02fe1534.unk_04;
@@ -140,9 +140,9 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         }
         f->unk_138 = id & 0xff;
     }
-    if (func_02062698()) {
-        func_02062724(&f->pos);
-        f->rotY = func_02062754();
+    if (Shared_HasMark_02062698()) {
+        Shared_GetMarkPos(&f->pos);
+        f->rotY = Shared_GetMarkRot();
     }
     MI_CpuCopy8(f, &data_0214aa68, sizeof(StageFlags));
 }

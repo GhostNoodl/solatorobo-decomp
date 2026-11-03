@@ -26,7 +26,7 @@ void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 che
 BOOL History_SetState(void *s, s32 a, s32 b);
 u16 LangData_GetIndex(u32 a, u32 b);
 void func_020627c8(void);
-void func_ov000_0218bed8(void *a, s32 b, void *c);
+void Group_UpdateActor(void *a, s32 b, void *c);
 u16 Target_LerpToDest(void *a, void *pos, s32 b, s32 c);
 
 static inline Actor *FindActor021971c4(u16 id) {
@@ -115,7 +115,7 @@ void ActorEx_State06(VObj *obj) {
                 }
             }
             func_020627c8();
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             obj->vfunc_08();
         }
         break;

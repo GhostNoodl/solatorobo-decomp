@@ -9,16 +9,16 @@ extern "C" {
 
 extern Ov008Mgr *data_ov008_021d0500;
 void func_02062524(void);
-void func_ov000_02187b50(void *p);
+void SceneCmd_Push26(void *p);
 Ov008Def *Lang_GetGroup(u8 id);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 Ov008Item *UiList_GetItemById(void *a, u32 id);
 
-s32 func_ov008_021cf780(void) {
+s32 Ov008Menu_GetPadTop(void) {
     return 6;
 }
 
-s32 func_ov008_021cf788(void) {
+s32 Ov008Menu_GetPadBottom(void) {
     return 3;
 }
 
@@ -37,7 +37,7 @@ BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
         if (m->talk != NULL) {
             m->talk->flags |= 2;
         }
-        func_ov000_021865f8(data_ov000_021ccd54);
+        SceneCmd_Push1e(data_ov000_021ccd54);
         return FALSE;
     }
     data_ov008_021d0500->sel = sel;
@@ -78,7 +78,7 @@ BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
         }
         if (b) {
             func_02062524();
-            func_ov000_02187b50(data_ov000_021ccd54);
+            SceneCmd_Push26(data_ov000_021ccd54);
             data_ov008_021d0500->flags.b1 = 1;
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         } else {

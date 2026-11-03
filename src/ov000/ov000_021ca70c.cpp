@@ -39,52 +39,52 @@ class SceneCmd;
 class SceneScript;
 
 extern "C" {
-void func_02038504(ResHandle *handle);
-void func_02038520(ResHandle *handle);
-void func_02038638(ResHandle *handle, const char *name);
-void func_02038a10(ResHandle *handle, const char *arcName, const char *name);
-void func_02038b0c(ResHandle *handle, const char *name);
-void func_02038b48(ResHandle *handle, const char *name);
-void func_02038b88(ResHandle *handle, const char *arcName, const char *name);
-void func_02038c14(ResHandle *handle, const char *arcName, const char *name);
-BOOL func_02038ca0(ResHandle *handle);
-void *func_02038dbc(ResHandle *handle);
-BOOL func_020396d4(ResHandle *handle);
-BOOL func_020396e8(ResHandle *handle);
+void ResHandle_Clear(ResHandle *handle);
+void ResHandle_Unload(ResHandle *handle);
+void ResHandle_LoadSync(ResHandle *handle, const char *name);
+void ResHandle_OpenInArc(ResHandle *handle, const char *arcName, const char *name);
+void ResHandle_Request(ResHandle *handle, const char *name);
+void ResHandle_RequestFlag(ResHandle *handle, const char *name);
+void ResHandle_LoadFromArc(ResHandle *handle, const char *arcName, const char *name);
+void ResHandle_LoadFromArcFlag(ResHandle *handle, const char *arcName, const char *name);
+BOOL ResHandle_IsLoaded(ResHandle *handle);
+void *ResHandle_GetData(ResHandle *handle);
+BOOL ResHandle_IsReady(ResHandle *handle);
+BOOL ResHandle_OnLoad(ResHandle *handle);
 u16 func_0205b588(StageRes *res, u16 *cmd);
 u16 func_0205b68c(StageRes *res, u16 *cmd, BOOL set, u16 value);
 u16 func_0205b8dc(StageRes *res, u16 *cmd);
 VObj *Ov000Vt_021cc158_DtorDelete(VObj *self);
 s32 func_ov000_02181efc(SceneScript *self, s32 a);
-s32 func_ov000_02182cb8(SceneCmd *self);
-s32 func_ov000_021833d8(SceneCmd *self);
-s32 func_ov000_021834c4(SceneCmd *self);
-s32 func_ov000_021835f4(SceneCmd *self);
-s32 func_ov000_02183880(SceneCmd *self);
-s32 func_ov000_02183a10(SceneCmd *self);
-s32 func_ov000_02183db8(SceneCmd *self);
-s32 func_ov000_021845cc(SceneCmd *self);
-s32 func_ov000_02184810(SceneCmd *self);
-s32 func_ov000_02184924(SceneCmd *self);
-s32 func_ov000_02184be8(SceneCmd *self);
-s32 func_ov000_02184dc8(SceneCmd *self);
-s32 func_ov000_02184f20(SceneCmd *self);
-s32 func_ov000_021855a4(SceneCmd *self);
-s32 func_ov000_021859c4(SceneCmd *self);
-s32 func_ov000_021862b0(SceneCmd *self);
-s32 func_ov000_021866d0(SceneCmd *self);
-s32 func_ov000_02186a24(SceneCmd *self);
-s32 func_ov000_02186c88(SceneCmd *self);
-s32 func_ov000_02186df4(SceneCmd *self);
-s32 func_ov000_0218722c(SceneCmd *self);
-s32 func_ov000_02187420(SceneCmd *self);
-s32 func_ov000_02187660(SceneCmd *self);
-s32 func_ov000_021878c8(SceneCmd *self);
-s32 func_ov000_02187a58(SceneCmd *self);
-s32 func_ov000_02187b88(SceneCmd *self);
-s32 func_ov000_0218819c(SceneCmd *self);
-s32 func_ov000_02188438(SceneCmd *self);
-s32 func_ov000_0218867c(SceneCmd *self);
+s32 SceneCmd_Run02(SceneCmd *self);
+s32 SceneCmd_Run03(SceneCmd *self);
+s32 SceneCmd_Run04(SceneCmd *self);
+s32 SceneCmd_Run05(SceneCmd *self);
+s32 SceneCmd_Run06to08(SceneCmd *self);
+s32 SceneCmd_Run09(SceneCmd *self);
+s32 SceneCmd_Run0a(SceneCmd *self);
+s32 SceneCmd_Run0b(SceneCmd *self);
+s32 SceneCmd_Run0c(SceneCmd *self);
+s32 SceneCmd_Run0d(SceneCmd *self);
+s32 SceneCmd_Run0e(SceneCmd *self);
+s32 SceneCmd_Run0f(SceneCmd *self);
+s32 SceneCmd_Run10(SceneCmd *self);
+s32 SceneCmd_Run11to13(SceneCmd *self);
+s32 SceneCmd_Run14to1a(SceneCmd *self);
+s32 SceneCmd_Run1bto1c(SceneCmd *self);
+s32 SceneCmd_Run1d(SceneCmd *self);
+s32 SceneCmd_Run1e(SceneCmd *self);
+s32 SceneCmd_Run1f(SceneCmd *self);
+s32 SceneCmd_Run20(SceneCmd *self);
+s32 SceneCmd_Run21(SceneCmd *self);
+s32 SceneCmd_Run22(SceneCmd *self);
+s32 SceneCmd_Run23(SceneCmd *self);
+s32 SceneCmd_Run24(SceneCmd *self);
+s32 SceneCmd_Run25(SceneCmd *self);
+s32 SceneCmd_Run26(SceneCmd *self);
+s32 SceneCmd_Run27(SceneCmd *self);
+s32 SceneCmd_Run28(SceneCmd *self);
+s32 SceneCmd_Run29(SceneCmd *self);
 VObj *Ov000Vt_021cc158_Dtor(VObj *self);
 extern Ov000ScpNames data_ov000_021cc0d8;
 extern const char *const data_ov000_021c9d44;
@@ -106,49 +106,49 @@ char data_ov000_021cc130[] = "misinfo";
 char data_ov000_021cc138[] = "scpqst%d.ccscp";
 char data_ov000_021cc147[] = "qstinfo";
 u32 data_ov000_021cc150[2] = {0, 0};
-Ov000Fn data_ov000_021cc158[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)func_02038504, (Ov000Fn)func_02038520, (Ov000Fn)func_02038dbc, (Ov000Fn)func_02038638, (Ov000Fn)func_02038a10, (Ov000Fn)func_02038b0c, (Ov000Fn)func_02038b48, (Ov000Fn)func_02038b88, (Ov000Fn)func_02038c14, (Ov000Fn)func_02038ca0, (Ov000Fn)func_020396e8, (Ov000Fn)func_020396d4, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)func_0205b588, (Ov000Fn)func_0205b68c, (Ov000Fn)func_0205b8dc };
+Ov000Fn data_ov000_021cc158[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)ResHandle_Clear, (Ov000Fn)ResHandle_Unload, (Ov000Fn)ResHandle_GetData, (Ov000Fn)ResHandle_LoadSync, (Ov000Fn)ResHandle_OpenInArc, (Ov000Fn)ResHandle_Request, (Ov000Fn)ResHandle_RequestFlag, (Ov000Fn)ResHandle_LoadFromArc, (Ov000Fn)ResHandle_LoadFromArcFlag, (Ov000Fn)ResHandle_IsLoaded, (Ov000Fn)ResHandle_OnLoad, (Ov000Fn)ResHandle_IsReady, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)func_0205b588, (Ov000Fn)func_0205b68c, (Ov000Fn)func_0205b8dc };
 __declspec(weak) Ov000ScpEnt data_ov000_021cc1a0[42] = {
     { 0, { .pm = 0 } },
     { 0, { .pm = 0 } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02182cb8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021833d8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021834c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021835f4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02183a10, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02183db8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021845cc, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02184810, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02184924, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02184be8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02184dc8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02184f20, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021862b0, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021862b0, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021866d0, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02186a24, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02186c88, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02186df4, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_0218722c, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02187420, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02187660, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_021878c8, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02187a58, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02187b88, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_0218819c, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_02188438, 0 } } },
-    { 0, { .raw = { (Ov000Fn)func_ov000_0218867c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run02, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run03, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run04, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run05, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run06to08, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run06to08, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run06to08, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run09, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0b, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0d, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0e, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run0f, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run10, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run11to13, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run11to13, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run11to13, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run14to1a, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run1bto1c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run1bto1c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run1d, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run1e, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run1f, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run20, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run21, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run22, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run23, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run24, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run25, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run26, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run27, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run28, 0 } } },
+    { 0, { .raw = { (Ov000Fn)SceneCmd_Run29, 0 } } },
 };
 }

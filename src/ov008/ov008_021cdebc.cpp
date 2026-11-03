@@ -45,8 +45,8 @@ void func_ov008_021cfa38(Ov008Mgr *m);
 void func_ov008_021cee4c(Ov008Mgr *m);
 void func_ov008_021cce38(Ov008Caption *p);
 BOOL func_ov008_021cf878(void);
-void func_0203cb78(s32 a, int b, int c);
-void func_0203cc58(int a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
+void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
@@ -81,7 +81,7 @@ BOOL StageRes_Bind(void *p);
 s32 func_ov000_0214bc94(void);
 void TextWin_Init(TextWin *win);
 void func_0204aab0(void *p);
-void func_020626c0(void);
+void Shared_ClearMark(void);
 void *func_ov008_021cd26c(void);
 void *func_ov008_021cd3dc(void);
 
@@ -270,7 +270,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     }
     data_02097d48->unk_8b0[0] = (u8)(data_02097d48->unk_8b0[0] & ~0x10) | 0x20;
     *(vu16 *)0x4000060 &= 0xcfdf;
-    func_020626c0();
+    Shared_ClearMark();
 }
 
 }

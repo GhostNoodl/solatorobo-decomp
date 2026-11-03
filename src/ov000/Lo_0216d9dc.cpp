@@ -6,7 +6,7 @@ extern "C" {
 
 void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
-void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
+void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg) {
     u16 type = msg[0];
@@ -53,7 +53,7 @@ void func_ov000_0216da78(LoTimer *self) {
         d = data_ov000_021ccd54;
         d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
-        func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
+        SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
     }
 }
 
@@ -63,12 +63,12 @@ void func_ov000_0216da78(LoTimer *self) {
 extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern int data_02097d78[];
-bool func_ov000_021735e8(void);
+bool TaskList_HasTasks_021735e8(void);
 BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
-void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
+void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 
 static inline BOOL GBusy0216dae4(FieldState *g) {
@@ -113,13 +113,13 @@ static inline void Done0216dae4(LoTimer *self) {
         d = data_ov000_021ccd54;
         d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
-        func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
+        SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
     }
 }
 
 BOOL LoTimer_Update(LoTimer *self) {
     if (self->b2 == 1) {
-        if (!self->b0 && !func_ov000_021735e8()) {
+        if (!self->b0 && !TaskList_HasTasks_021735e8()) {
             self->b4 = 1;
         } else if (self->state == 7 || self->state == 9) {
             self->b4 = 0;

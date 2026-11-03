@@ -246,7 +246,7 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD37 *func_ov006_021d3914(ov006_TaskD37 *self) {
+ov006_TaskD37 *ov006_TaskD37_Dtor_021d3914(ov006_TaskD37 *self) {
     ov006_TaskD37_Dtor(self);
     return self;
 }
@@ -292,7 +292,7 @@ static inline void ActorRes_SetName2(ActorRes *m, const char *a, const char *b) 
     m->unk_03_2 = 1;
 }
 
-void ov006_TaskD37_LoadRes(ov006_TaskD37 *self) {
+void ov006_TaskD37_Load(ov006_TaskD37 *self) {
     ActorRes *m;
     u16 id;
     const char *a;
@@ -350,7 +350,7 @@ const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
 int ResSet_UpdateLoad(ActorRes *self);
 
-BOOL ov006_TaskD37_IsResLoaded(ov006_TaskD37 *self) {
+BOOL ov006_TaskD37_IsLoaded(ov006_TaskD37 *self) {
     BOOL r = TRUE;
     if (self->unk60->unk_00 >= 0) {
         r = (r & ResSet_UpdateLoad(self->unk60)) ? TRUE : FALSE;
@@ -477,7 +477,7 @@ static inline void ov006_SetCam(ov006_TaskD37 *self, const VecFx32 *at, const Ve
 typedef enum { OV006_MSG_D4118_BODY = 0x12b } Ov006MsgD4118;
 typedef enum { OV006_CURSOR_NONE = 0xffff } Ov006Cursor;
 
-void ov006_TaskD37_Setup(ov006_TaskD37 *self) {
+void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     Ov006MsgD4118 body;
     Ov006Cursor none;
     void *res;
@@ -792,8 +792,8 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         }
         if (self->anm->frame >= (self->anm->res->numFrame << 12) - 0x1000) {
             self->unk_04 |= 6;
-            func_0203cc58(0x14000, 0, 0);
-            func_0203cc58(0x14000, 0, 1);
+            GfxSys_StartFadeOut(0x14000, 0, 0);
+            GfxSys_StartFadeOut(0x14000, 0, 1);
             self->step = 0x6e;
         }
         break;
@@ -816,8 +816,8 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         if (data_ov006_021ec888->state == 9) {
             return;
         }
-        func_0203cc58(0x1e000, 0, 0);
-        func_0203cc58(0x1e000, 0, 1);
+        GfxSys_StartFadeOut(0x1e000, 0, 0);
+        GfxSys_StartFadeOut(0x1e000, 0, 1);
         self->step++;
         break;
     case 102:
@@ -950,7 +950,7 @@ void ov006_TaskD37_PostUpdate(ov006_TaskD37 *self) {
     ov006_Menu_ClearEntries(data_ov006_021ec888);
 }
 
-void func_ov006_021d51cc(ov006_TaskD37 *self) {
+void ov006_TaskD37_Draw(ov006_TaskD37 *self) {
     if (!self->vfunc_28()) {
         return;
     }

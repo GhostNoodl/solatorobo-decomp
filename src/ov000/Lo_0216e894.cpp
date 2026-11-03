@@ -7,7 +7,7 @@
 extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
-BOOL func_ov000_021b4738(void);
+BOOL Actor_IsDead(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
@@ -30,7 +30,7 @@ void LoTimer_Finish(LoTimer *self) {
         return;
     }
     ActorMgr_FindPlayer();
-    if (!func_ov000_021b4738()) {
+    if (!Actor_IsDead()) {
         s32 v = self->time;
         FieldState *g;
         if (v > 0xffff) {

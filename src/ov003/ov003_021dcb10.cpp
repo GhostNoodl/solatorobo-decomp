@@ -59,7 +59,7 @@ ActorEx *Ov003ActVt_021f7d4c_Dtor(ActorEx *self) {
 
 void Ov003ActVt_021f7fac_Init(ActorEx *self) {
     Ov003Unit *unit;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;

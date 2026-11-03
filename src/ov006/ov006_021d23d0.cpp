@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void ov006_TaskD1F_LoadRes(void) {
+void ov006_TaskD1F_Load(void) {
 }
 
-BOOL ov006_TaskD1F_IsResLoaded(void) {
+BOOL ov006_TaskD1F_IsLoaded(void) {
     return TRUE;
 }
 

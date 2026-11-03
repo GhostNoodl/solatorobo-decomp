@@ -20,13 +20,13 @@ typedef struct {
 } Ov003Prop;
 
 extern void *data_ov000_021ccd64;
-extern void ActorEx_InitActor(void *p);
+extern void ActorEx_Init(void *p);
 extern void ActorEx_Start(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 void Ov003ActVt_021f7e7c_Init(Ov003Prop *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;

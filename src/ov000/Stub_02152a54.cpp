@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_02152a54(void) {
+void UiObj_PreUpdate(void) {
 }
 
 }

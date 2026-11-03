@@ -13,7 +13,7 @@ BOOL MainVt_0208c8bc_Loop(EffectEmitter *em) {
 
 extern u32 data_0208c840[];
 extern s32 Rand_PlusMinus(s32 range);
-extern void func_02068da8(EffectPtcl *p);
+extern void EffectPtcl_Init(EffectPtcl *p);
 extern void func_0206bab8(EffectEmitter *em, EffectPtcl *p);
 
 #define EFFECT_PARAM(em, off) (*(s32 *)((u8 *)&(em)->params + (off)))
@@ -92,7 +92,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
         p = (EffectPtcl *)Heap_Alloc(0xc4);
         if (p != NULL) {
             *(u32 **)p = data_0208c840;
-            func_02068da8(p);
+            EffectPtcl_Init(p);
         }
         func_0206bab8(em, p);
         if (head != NULL) {

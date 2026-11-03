@@ -19,8 +19,8 @@ s16 *Model0218fe1c_SeekMainAnim(Model0218fe1c *self, s32 frame);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s32 h, s32 i);
 BOOL func_ov000_0219aca8(void *a, void *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, s32 r, s32 hgt, s32 h, s32 i);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
-void func_ov000_0218996c(s32 a, s32 b);
-void func_020627a0(u16 a, u16 b);
+void Field_ShakeCamera(s32 a, s32 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 static inline Actor *FindActor_02191f18(u16 id) {
@@ -358,7 +358,7 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
         p += 10;
         break;
     case 21:
-        func_ov000_0218996c((u16)p[0] & 0xff, (u16)p[1] & 0xff);
+        Field_ShakeCamera((u16)p[0] & 0xff, (u16)p[1] & 0xff);
         p += 2;
         break;
     case 22:
@@ -369,7 +369,7 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
         break;
     case 24:
         if (actor != NULL) {
-            func_020627a0(actor->kind, actor->id);
+            Shared_SetEventActor(actor->kind, actor->id);
             func_020627dc(5);
             data_ov000_021ccd54->stageFlags = 1;
         }

@@ -12,7 +12,7 @@
 extern "C" {
 ActorEx *ActorEx_Ctor(ActorEx *self);
 ActorEx *ActorEx_DtorBase(ActorEx *self);
-void ActorEx_InitActor(ActorEx *self);
+void ActorEx_Init(ActorEx *self);
 BOOL ActorEx_IsReady(ActorEx *self);
 void ActorEx_Start(ActorEx *self);
 BOOL ActorEx_Draw(ActorEx *self);

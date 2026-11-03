@@ -18,7 +18,7 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215bf0c(Lo021cadcc *self) {
+void Lo021cadcc_Release(Lo021cadcc *self) {
     LO_FREE_V(self, 0x84);
 }
 

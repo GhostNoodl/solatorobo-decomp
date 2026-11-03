@@ -320,7 +320,7 @@ void Ov014ActExGrow_StateDie(Ov014ActExGrow *self) {
         self->fsm->st++;
         break;
     case 1:
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }
@@ -759,7 +759,7 @@ void Ov014ActExVt_02217838_StateDie(Ov014ActExVt_02217838 *self) {
         self->fsm->st++;
         break;
     case 1:
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }
@@ -1076,7 +1076,7 @@ void Ov014ActEx_02206c68_StateDie(Ov014ActEx_02206c68 *self) {
         Ov003FxList_Kill(self->unk_dc, 0xff);
         c = 10;
         ActorMgr_SendToKindOthers(0x5c0e, self->kind, 6, 1, 1, &c);
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         self->fsm->st++;
         break;
@@ -1152,7 +1152,7 @@ extern VecFx32 data_ov014_022169e0;
 extern VecFx32 data_ov014_02216a10;
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov014_0220840c(Ov014ActEx_0220774c *self);
 extern u8 *ActorMgr_FindPlayer(void);
@@ -1292,7 +1292,7 @@ void Ov014ActEx_0220774c_StateThrown(Ov014ActEx_0220774c *self) {
                 Ov003FxList_Add(self->unk_d8, 0xfb - i, e);
             }
             Effect_SpawnId(0x322, &self->pos)->SetScaleAll(0x8000);
-            func_ov000_0218996c(0x14, 0x32);
+            Field_ShakeCamera(0x14, 0x32);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -1305,7 +1305,7 @@ void Ov014ActEx_0220774c_StateThrown(Ov014ActEx_0220774c *self) {
             if (v < 0xa000) {
                 v += 0x1800;
                 if (v >= 0xa000) {
-                    func_ov000_0218996c(0xf, 0x32);
+                    Field_ShakeCamera(0xf, 0x32);
                     SndMgr_PlayAt(data_02097e4c, 0x1b, &self->pos, 0);
                     SndMgr_PlayAt(data_02097e4c, 0x7a, &self->pos, 0);
                     SndMgr_PlayAt(data_02097e4c, 0x5a, &self->pos, 0);

@@ -103,7 +103,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
 }
 #pragma force_active reset
 
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 void func_ov011_02205460(Ov011Act7da4 *self, u16 t, s32 c);
@@ -115,7 +115,7 @@ void Ov011Act7da4_State21(Ov011Act7da4 *self) {
     case 0:
         if (st->timer > 0x12c) {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
@@ -168,7 +168,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
             if (a != NULL) {
                 a->unk_18 = 2;
             }
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
@@ -219,7 +219,7 @@ void Ov011Act7da4_State24(Ov011Act7da4 *self) {
         st->timer++;
         if (st->timer > 0x3c) {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
@@ -278,7 +278,7 @@ void Ov011Act7da4_State22(Ov011Act7da4 *self) {
         st->timer++;
         if (st->timer > 0x3c) {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;

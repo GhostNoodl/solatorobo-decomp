@@ -399,7 +399,7 @@ extern void Model0218fe1c_PauseAnim(void *p);
 extern void Model0218fe1c_ResumeAnim(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_0219aca8(Ov003Actor *a, Ov003Actor *b, u16 c, u8 d, s32 e, Ov009RotC *f, s32 g, s32 h, s32 i, s32 j);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
     VecFx32 a;
@@ -483,7 +483,7 @@ void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
             func_ov000_0219aca8(self, self, self->unk_f2, self->targetObj->unk_0a, 0, &r, 0x99a, 0x2000, 100, 0x1000);
         }
         if (self->hit->unk_50 & 0x20000000) {
-            func_ov000_0218996c(0xf, 0xf);
+            Field_ShakeCamera(0xf, 0xf);
             SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
             w = self->pos;
             w.y = 0;

@@ -32,7 +32,7 @@ BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_021b468c(Robo021ca458 *self);
 u16 Pad_LookupDir(void *rng, void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 
@@ -221,7 +221,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 self->mdl0.unk_cc = -1;
                 data_0214a424->bits18.flag8 = 0;
                 data_0214a424->bits18.flag9 = 0;
-                func_02062764(3, 1);
+                Shared_ChangeFlags(3, 1);
                 data_ov000_021ccd54->stageFlags = 1;
             }
             if (self->unk_9ac < 0xb4) {

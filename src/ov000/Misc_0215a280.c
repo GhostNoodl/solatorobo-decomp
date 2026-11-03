@@ -17,10 +17,10 @@ static inline void Obj0215a284_SetFlag0(Obj0215a284 *self) {
     self->unk_0c_0 = 1;
 }
 
-void func_ov000_0215a280(void) {
+void Lo021cb5a8_PreUpdate(void) {
 }
 
-void func_ov000_0215a284(Obj0215a284 *self) {
+void Lo021cb5a8_PostUpdate(Obj0215a284 *self) {
     if (self->unk_04 != 2) {
         return;
     }

@@ -6,7 +6,7 @@ extern "C" {
 extern char data_ov009_02216ab6[];
 extern char data_ov009_02216ace[];
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
-extern void func_ov000_02187a20(void *p, s32 a);
+extern void SceneCmd_Push25(void *p, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 extern void ActorSub48_UpdatePos(ActorSub48 *a, VecFx32 *b, u16 *c);
@@ -44,7 +44,7 @@ void Ov009ActVt_022165f8_StateDie(Ov009ActVt_022165f8 *self) {
 void Ov009ActVt_0221654c_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    func_ov000_02187a20(data_ov000_021ccd54, 0xe);
+    SceneCmd_Push25(data_ov000_021ccd54, 0xe);
     self->unk_ea_10 = 1;
 }
 

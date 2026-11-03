@@ -794,7 +794,7 @@ void func_ov002_021ee1a8(void) {
         switch (s->clock.sub) {
         case 0:
             data_ov000_021ccd54->mode = 2;
-            func_0203cb78(1, 2, -1);
+            GfxSys_StartFadeIn(1, 2, -1);
             s->spawned = 0;
             s->clock.sub++;
         case 1:
@@ -824,7 +824,7 @@ void func_ov002_021ee1a8(void) {
             s->clock.sub++;
             return;
         case 5:
-            func_0203cc58(1, 2, -1);
+            GfxSys_StartFadeOut(1, 2, -1);
             ov002_Staff_SetNext(s, 2);
             return;
         default:

@@ -22,7 +22,7 @@ s32 UiObj_GetLineHeight(Obj0214e354 *self) {
     return base + self->vfunc_3c();
 }
 
-s32 func_ov000_0214e3ac(void) {
+s32 UiObj_GetLineSpacing(void) {
     return 0;
 }
 

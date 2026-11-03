@@ -6,7 +6,7 @@ extern const s16 FX_SinCosTable_[];
 void func_ov000_021c67e4(TextList *self);
 void func_ov000_021c69e4(TextList *self);
 
-void func_ov000_021c6714(TextList *self) {
+void Ov000Vt_021ccadc_PreUpdate(TextList *self) {
     if (self->state == 2) {
         s32 t;
         if (self->hidden) {

@@ -51,7 +51,7 @@ extern Glb021903b4 NNS_G3dGlb;
 void *NNS_G3dGlbGetInvV(void);
 void NNS_G3dGlbSetBaseScale(const VecFx32 *s);
 void NNS_G3dGlbSetBaseTrans(const VecFx32 *t);
-u16 func_0203d144(u16 a, u16 b, s16 ratio);
+u16 GfxSys_BlendColor(u16 a, u16 b, s16 ratio);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 mask);
 void NNS_G3dGlbMaterialColorDiffAmb(u16 diffuse, u16 ambient, BOOL setVtxColor);
@@ -107,7 +107,7 @@ BOOL Model021903b4_Draw(Model021903b4 *self) {
         color = self->color;
         if (self->blend != 0) {
             if (color != self->color2) {
-                color = func_0203d144(self->color2, color, (self->blend << 12) / self->blendMax);
+                color = GfxSys_BlendColor(self->color2, color, (self->blend << 12) / self->blendMax);
             }
             restore = TRUE;
         }

@@ -6,7 +6,7 @@
 // actor from `spawn` (Group_SpawnActor) once one of the views the field camera registered this
 // frame (func_ov000_0218c25c) is inside its spawn volume (func_ov000_0218adf0), and removes the
 // actor again once every view has left its despawn volume (func_ov000_0218af9c). The spawned
-// actors are recorded in `entries` (func_ov000_0218b4b4).
+// actors are recorded in `entries` (GroupNode_UpdateEntry).
 
 #include "types.h"
 #include "nitro/fx.h"
@@ -22,7 +22,7 @@ typedef struct GroupActorDesc {
 } GroupActorDesc;
 
 // A spawned actor's record: its kind and id (only the id's group key, id & 0xf000, once it is
-// gone), its args, and where and in which field it was when it went (func_ov000_0218b4b4).
+// gone), its args, and where and in which field it was when it went (GroupNode_UpdateEntry).
 typedef struct GroupEntry {
     u16 kind;
     u16 actor;
@@ -47,7 +47,7 @@ typedef struct GroupNodeFlags {
     u8 useHeight : 1; // without it the spawn volume has no height limit (func_ov000_0218b420)
     u8 useAngle : 1; // the despawn range shrinks with the view's angle to the actor
     u8 toGround : 1; // the spawn position is moved down onto the ground (Geom_SnapToGround)
-    u8 unk_5 : 1; // func_ov000_0218b4b4 keeps the entry's position and field
+    u8 unk_5 : 1; // GroupNode_UpdateEntry keeps the entry's position and field
     u8 unk_6 : 1;
     u8 unk_7 : 1;
 } GroupNodeFlags;
@@ -61,7 +61,7 @@ typedef struct GroupNode {
     GroupEntry entries[1];
     GroupActorDesc spawn;
     FieldId fieldId; // the field the node spawns in (compared with FieldState::unk_ca)
-    FieldId fieldFilter; // 0xff: any; func_ov000_0218ab00 drops the node once the field differs
+    FieldId fieldFilter; // 0xff: any; GroupNode_Refresh drops the node once the field differs
     VecFx32 spawnMin; // the spawn volume around pos (func_01ffc89c)
     VecFx32 spawnMax;
     VecFx32 despawnMin; // the volume the actor must leave to be removed (func_ov000_0218af9c)
@@ -114,7 +114,7 @@ void func_ov000_0218b420(GroupNode *self);
 void func_ov000_0218b60c(GroupNode *self, const FieldId *fieldId, const VecFx32 *pos, const Rot16 *rot);
 void GroupNode_SetSpawnRange(GroupNode *self, s32 scaleXZ, s32 scaleY);
 void func_ov000_0218b7c0(GroupNode *self, s32 kind, s32 mode);
-void func_ov000_0218ab00(GroupNode *self);
+void GroupNode_Refresh(GroupNode *self);
 void func_ov000_0218ac98(GroupNode *self);
 void func_ov000_0218adf0(GroupNode *self);
 void Group_Add(Group *g, GroupNode *node);

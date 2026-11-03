@@ -52,7 +52,7 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-void func_ov000_0216150c(Lo021cacd8 *self, s32 a1, s32 a2, s32 sy2) {
+void Lo021cacd8_DrawFrame(Lo021cacd8 *self, s32 a1, s32 a2, s32 sy2) {
     GfxSys *g;
     s32 sx;
     s32 sy;

@@ -87,7 +87,7 @@ void Task021efc24_UpdateActive(Task021efc24 *self) {
         self->unk_4c->flags |= 2;
         self->unk_50->flags |= 2;
         self->unk_54->flags |= 2;
-        func_0203cc58(self->unk_50->openLen, 2, z);
+        GfxSys_StartFadeOut(self->unk_50->openLen, 2, z);
         self->unk_04_0 = 1;
         return;
     }

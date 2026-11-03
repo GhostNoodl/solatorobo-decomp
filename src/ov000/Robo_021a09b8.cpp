@@ -7,10 +7,10 @@ extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 s32 History_PickFlagged(void *s, s32 *list, s32 count, BOOL push);
 BOOL History_SetState(void *s, s32 a, s32 b);
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);
-BOOL func_0205b1fc(void);
+BOOL StageRes_HasQueued(void);
 void func_0205c234(s32 a, s32 b);
 
 static inline Actor *FindActor021a09b8(u16 id) {
@@ -58,10 +58,10 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (sub->unk_18_1 && sub->unk_03 != 0xa && sub->unk_03 != 0xb) {
-            func_020627a0(a->kind, a->id);
+            Shared_SetEventActor(a->kind, a->id);
             func_020627dc(a->unk_18);
             Ping021a09b8();
-            if (func_0205b1fc()) {
+            if (StageRes_HasQueued()) {
                 done = TRUE;
             }
         }
@@ -94,10 +94,10 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (sub->unk_18_1) {
-            func_020627a0(a->kind, a->id);
+            Shared_SetEventActor(a->kind, a->id);
             func_020627dc(a->unk_18);
             Ping021a09b8();
-            if (func_0205b1fc()) {
+            if (StageRes_HasQueued()) {
                 done = TRUE;
             }
         }
@@ -115,10 +115,10 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (sub->unk_18_1 && sub->unk_03 != 0xa && sub->unk_03 != 0xb) {
-            func_020627a0(a->kind, a->id);
+            Shared_SetEventActor(a->kind, a->id);
             func_020627dc(a->unk_18);
             Ping021a09b8();
-            if (func_0205b1fc()) {
+            if (StageRes_HasQueued()) {
                 done = TRUE;
             }
         }
@@ -133,16 +133,16 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         if (a == NULL) {
             break;
         }
-        func_020627a0(a->kind, a->id);
+        Shared_SetEventActor(a->kind, a->id);
         Ping021a09b8();
-        if (func_0205b1fc()) {
+        if (StageRes_HasQueued()) {
             r = 0;
         }
         break;
     case 0x1d:
-        func_020627a0(a->kind, a->id);
+        Shared_SetEventActor(a->kind, a->id);
         Ping021a09b8();
-        if (func_0205b1fc()) {
+        if (StageRes_HasQueued()) {
             r = 0;
         } else {
             switch (sub->type) {

@@ -11,7 +11,7 @@ Ov008Def *Lang_GetGroup(u8 id);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
 void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 
-Ov008Item *func_ov008_021ccda0(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
+Ov008Item *Ov008Menu_AddItem(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
     Ov008Item *n = (Ov008Item *)Heap_Alloc(0x34);
     Ov008Item *p;
     if (n != NULL) {

@@ -12,7 +12,7 @@ extern "C" {
 extern u8 data_ov010_0220f024[];
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
@@ -60,7 +60,7 @@ void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
         break;
     }
     case 100:
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         self->fsm->st = 0x65;

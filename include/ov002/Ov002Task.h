@@ -3,7 +3,7 @@
 
 // The ov002 task classes. Each derives from the ov000 task base (ov000/Task.h); the class name is its
 // vtable, the size the allocation in its New. All share the base slots of data_ov000_021cc060 and the
-// ov002 slots 0x1c (func_ov002_021cf4bc), 0x20..0x44 (Ov002Task_SetFlag4 .. Ov002Task_TestFlags) and
+// ov002 slots 0x1c (Ov002Task_IsReady), 0x20..0x44 (Ov002Task_SetFlag4 .. Ov002Task_TestFlags) and
 // 0x48..0x54, which only touch the base. Slot 0x18 (Start) builds the task's windows; the window members
 // are typed by the vtable their constructor stores (ov000/UiObj.h, ov000/ObjLayouts.h). Fields are named
 // by offset unless the code shows what they hold.
@@ -122,7 +122,7 @@ public:
     Lo021cadcc *unk_40;
     Lo021cae48 *unk_44;
     Lo021cb5a8 *unk_48;
-    u8 unk_4c; // set while unk_40 shows the row's message (func_ov002_021d3c30)
+    u8 unk_4c; // set while unk_40 shows the row's message (Task021ef81c_List3cOnCursor)
     u8 unk_4d[0x3];
 };
 SIZE_ASSERT(Task021ef81c, 0x50);

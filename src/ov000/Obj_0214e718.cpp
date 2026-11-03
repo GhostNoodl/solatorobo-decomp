@@ -22,7 +22,7 @@ s32 func_ov000_0214e718(Obj0214e718 *self) {
     return self->unk_c0 + value + 0x12;
 }
 
-s32 func_ov000_0214e73c(void) {
+s32 UiList_GetPadLeft(void) {
     return 0xc;
 }
 

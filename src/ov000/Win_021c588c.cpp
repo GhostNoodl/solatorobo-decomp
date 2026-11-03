@@ -17,7 +17,7 @@ public:
 extern "C" {
 
 
-void func_ov000_021c588c(Win021c588c *self, s32 a, VecFx32 *pos, s32 c) {
+void Ov000Vt_021ccb54_DrawBody(Win021c588c *self, s32 a, VecFx32 *pos, s32 c) {
     s32 z;
     s32 x;
     s32 y;

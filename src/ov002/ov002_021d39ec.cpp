@@ -39,7 +39,7 @@ BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
     return FALSE;
 }
 
-BOOL func_ov002_021d3b10(UiList *self, UiListItem *ev) {
+BOOL Task021ef81c_List3cOnDecide(UiList *self, UiListItem *ev) {
     Task021ef81c *o = (Task021ef81c *)self->owner;
     UiList021cb4a8 *a = o->unk_3c;
     Lo021cae48 *c = o->unk_44;

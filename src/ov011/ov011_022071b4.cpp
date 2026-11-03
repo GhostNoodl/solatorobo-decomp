@@ -8,7 +8,7 @@ s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern void *data_02097e4c;
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 void *Spawn_ScatterEffect(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
 
 struct Ov011RotB {
@@ -274,7 +274,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
         u16 t = self->fsm->timer;
         if (t > 0x78) {
             EffectObj *e;
-            func_ov000_0218996c(0xf, 0x3c);
+            Field_ShakeCamera(0xf, 0x3c);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             e = Effect_SpawnId(0x322, &self->pos);
             e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
@@ -291,7 +291,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
             case 0:
                 kind = 0x38a;
                 SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
-                func_ov000_0218996c(10, 0x14);
+                Field_ShakeCamera(10, 0x14);
                 break;
             case 0x10:
                 kind = 0x38a;
@@ -299,7 +299,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
                 break;
             case 0x20:
                 SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
-                func_ov000_0218996c(10, 0x14);
+                Field_ShakeCamera(10, 0x14);
                 break;
             case 0x30:
                 kind = 0x38a;

@@ -17,7 +17,7 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc5e3[];
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 
 static inline void Enter(Robo021ca458 *self, BOOL flag) {
     Anm021b1540 *anm;
@@ -40,7 +40,7 @@ static inline void Enter(Robo021ca458 *self, BOOL flag) {
     self->mdl0.unk_cc = -1;
     data_0214a424->bits18.flag8 = 0;
     data_0214a424->bits18.flag9 = 0;
-    func_02062764(3, 1);
+    Shared_ChangeFlags(3, 1);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
@@ -66,7 +66,7 @@ void func_ov000_021b1540(Robo021ca458 *self, BOOL flag, s32 mode) {
         self->fsm->flags |= 0x80000000;
         History_SetState(self->fsm, 0x1f, 0);
     }
-    func_02062764(0x30, 0x20);
+    Shared_ChangeFlags(0x30, 0x20);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }

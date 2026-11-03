@@ -14,7 +14,7 @@ s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 
 
-void func_ov000_0215da2c(Lo021cae48 *self) {
+void Lo021cae48_Release(Lo021cae48 *self) {
     LO_FREE_M(self, 0x90);
     LO_FREE_V(self, 0x94);
 }

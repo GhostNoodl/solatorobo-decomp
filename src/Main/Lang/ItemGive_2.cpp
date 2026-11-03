@@ -8,8 +8,8 @@ extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
 extern s32 func_0206d2a4(StageFlags *f, u16 id, u8 n);
 extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
-extern u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id);
-extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
+extern u16 DataRes_ReadRef(DataRes *res, SaveRef *ref, u32 id);
+extern void DataRes_WriteRef(DataRes *res, SaveRef *ref, u32 id, u16 val);
 extern u32 DataRes_GetCount(DataRes *res, u32 idx);
 extern SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
 extern u16 DataRes_ReadBitsAt_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub);
@@ -30,8 +30,8 @@ static inline void Item_Notify(u16 id, u16 val) {
     if (ref.idx == -1) {
         return;
     }
-    func_0205973c(data_02fe152c, &ref, id);
-    func_02059428(data_02fe152c, &ref, id, val);
+    DataRes_ReadRef(data_02fe152c, &ref, id);
+    DataRes_WriteRef(data_02fe152c, &ref, id, val);
 }
 
 static inline BOOL Item_Set(u16 id, u16 val) {
@@ -42,8 +42,8 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     if (ref.idx == -1) {
         return FALSE;
     }
-    old = func_0205973c(data_02fe152c, &ref, id);
-    func_02059428(data_02fe152c, &ref, id, val);
+    old = DataRes_ReadRef(data_02fe152c, &ref, id);
+    DataRes_WriteRef(data_02fe152c, &ref, id, val);
     ok = TRUE;
     if (old != 0) {
         ok = FALSE;

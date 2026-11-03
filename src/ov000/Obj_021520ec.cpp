@@ -36,11 +36,11 @@ VObj *Lo021caac8_Dtor(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_02152168(void) {
+BOOL UiObj_OnChildDone(void) {
     return TRUE;
 }
 
-BOOL func_ov000_02152170(void) {
+BOOL UiObj_GetPadLeft(void) {
     return FALSE;
 }
 

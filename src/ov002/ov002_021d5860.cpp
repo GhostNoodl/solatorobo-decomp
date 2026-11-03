@@ -30,8 +30,8 @@ void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
 void func_ov000_021c95fc(void *p);
-BOOL func_ov002_021d5444(UiList *self, UiListItem *ev);
-BOOL func_ov002_021d5350(UiList *self, UiListItem *ev);
+BOOL Task021efc24_List50OnDecide(UiList *self, UiListItem *ev);
+BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev);
 void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
 static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
@@ -171,8 +171,8 @@ void Task021efc24_Start(Task021efc24 *self) {
             }
         }
     }
-    self->unk_50->onDecide = func_ov002_021d5444;
-    self->unk_50->onCursor = func_ov002_021d5350;
+    self->unk_50->onDecide = Task021efc24_List50OnDecide;
+    self->unk_50->onCursor = Task021efc24_List50OnCursor;
     self->unk_50->owner = self;
     {
         VObj *mm = self->unk_50;
@@ -244,7 +244,7 @@ void Task021efc24_Start(Task021efc24 *self) {
         }
     }
     if (func_ov002_isMode4()) {
-        func_0203cb78(0x14000, 0, -1);
+        GfxSys_StartFadeIn(0x14000, 0, -1);
     }
     TaskList_Insert(self);
 }

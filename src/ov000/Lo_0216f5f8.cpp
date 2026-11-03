@@ -18,7 +18,7 @@ struct Obj0216f5f8 {
     u32 unk_10c;
 };
 
-BOOL func_ov000_0216f5f8(Obj0216f5f8 *self, Ent0216f5f8 *out, BOOL pop) {
+BOOL MessageQueue_Read(Obj0216f5f8 *self, Ent0216f5f8 *out, BOOL pop) {
     Ent0216f5f8 *e;
     if (((Ent0216f5f8 *)((u8 *)self + 0xc))[self->unk_10c].b == -1) {
         out->b = -1;

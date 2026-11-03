@@ -30,7 +30,7 @@ static inline void ResSet_Delete(ResSet *res) {
     }
 }
 
-static inline void ActorEx_Init(ActorEx *self) {
+static inline void ActorEx_CtorBody(ActorEx *self) {
     s32 i;
 
     Actor_Ctor(self);
@@ -72,12 +72,12 @@ static inline void ActorEx_Destroy(ActorEx *self) {
 }
 
 ActorEx *ActorEx_Ctor(ActorEx *self) {
-    ActorEx_Init(self);
+    ActorEx_CtorBody(self);
     return self;
 }
 
 ActorEx *func_ov000_021940e4(ActorEx *self) {
-    ActorEx_Init(self);
+    ActorEx_CtorBody(self);
     return self;
 }
 
@@ -279,7 +279,7 @@ static inline void SetMtx0219433c(Actor0219433c *self, Sub0219433c *sub) {
     MI_Copy48B(&m, &self->unk_4c->mtx);
 }
 
-void ActorEx_InitActor(Actor0219433c *self) {
+void ActorEx_Init(Actor0219433c *self) {
     Info0219433c *info = Tbl_FindEntry_0206fef8(self->id);
     Data0219433c *d = func_020704b4(self->id);
     s32 i;

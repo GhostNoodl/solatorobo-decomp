@@ -35,7 +35,7 @@ BOOL Model0218fe1c_SetRes(Model0218fe1c *self, Res0219badc *res, u8 mode, s32 e)
 void Model0218fe1c_SetAnimByIndex(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 void Model0218fe1c_SetLoop(Model0218fe1c *self);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
-void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force);
+void Model0218fe1c_SetAnim3(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 
 void Model0218fe1c_Setup(Model0218fe1c *self, Res0219badc *res, const Cfg0219badc *cfg) {
     void *tex;
@@ -82,7 +82,7 @@ void Model0218fe1c_Setup(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
         float f;
         s32 frame;
         self->unk_c2_6 = 1;
-        func_ov000_02191920(self, 0, 0x1000, 0);
+        Model0218fe1c_SetAnim3(self, 0, 0x1000, 0);
         v = cfg->frame;
         if (v > 0) {
             f = (float)(s32)(v << 12) + 0.5f;

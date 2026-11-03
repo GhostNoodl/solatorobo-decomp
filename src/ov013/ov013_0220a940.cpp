@@ -60,7 +60,7 @@ void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
     self->unk_bc = fx->id;
 }
 extern void HitSphere_Unlink_0203f364(void *p);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
@@ -100,7 +100,7 @@ void Ov013ActEx_0220a9a8_StateIdle(Ov013ActEx_0220a9a8 *self) {
         break;
     case 1: {
         Ov003Actor *pl = ActorMgr_FindPlayer();
-        if (pl == NULL || func_ov000_021b4738(pl)) {
+        if (pl == NULL || Actor_IsDead(pl)) {
             self->unk_ce = 1;
         }
         self->unk_ce--;

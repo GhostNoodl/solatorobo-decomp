@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0214c7ac(u8 *self) {
+void Menu021ca94c_Release(u8 *self) {
     LO_FREE_V(self, 0x8c);
     VOBJ_AT(self, 0x90)->vfunc_08();
     VOBJ_AT(self, 0x148)->vfunc_08();

@@ -22,9 +22,9 @@ extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003BmInfo *func_020704b4(u16 id);
 extern void Drop_SpawnWeighted(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
+extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 static inline u16 Camera_GetAngle(Camera *cam) {
     return cam->mode != 0 ? cam->yaw : Camera_GetYaw(cam);
@@ -67,7 +67,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             Ov003BmInfo *inf = func_020704b4(self->kind);
             Drop_SpawnWeighted(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
             func_ov000_02197dec(self, 0xf, 4);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }
@@ -93,7 +93,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             sc.y = 0x3000;
             sc.z = 0x3800;
             Spawn_ScatterEffect(&self->pos, &sc, 0x1000, 0x2800, a, b);
-            func_ov000_0218996c(0xf, 0x1e);
+            Field_ShakeCamera(0xf, 0x1e);
         }
         self->fsm->timer++;
         break;

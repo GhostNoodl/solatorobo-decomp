@@ -463,7 +463,7 @@ extern char data_ov003_021f7a7f[];
 extern u8 Ov003_GetMaxCombo(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern Ov003KbPlayer *ActorMgr_FindPlayer(void);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 static inline BOOL Ov003Kb_GameBusy(FieldState *g) {
@@ -581,7 +581,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         {
             Ov003KbPlayer *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_b24_1) {
-                func_020627a0(self->kind, self->id);
+                Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(3);
                 data_ov000_021ccd54->stageFlags = 1;
             }

@@ -21,9 +21,9 @@ extern void func_0203e3e8(void);
 extern void func_0204ae14(void);
 extern void Sys_WaitVBlank(UnkSys *sys);
 extern void func_0203e6bc(void);
-extern void func_0203b96c(GfxSys *sys);
-extern void func_0203ced8(int mode);
-extern void func_0203baa4(GfxSys *sys);
+extern void GfxSys_EndFrame(GfxSys *sys);
+extern void GfxSys_ApplyFade(int mode);
+extern void GfxSys_FlipTextBg(GfxSys *sys);
 extern void func_02039f84(GfxMgr *mgr);
 extern void func_0203d8b0(void);
 extern void func_0203d8e8(void);
@@ -33,7 +33,7 @@ extern void func_0204aee8(void);
 extern void func_020364c0(ResMgr *mgr);
 extern void func_0204ab8c(void *queue);
 extern void func_0203dacc(UnkSys *sys);
-extern void func_0203ba7c(GfxSys *sys);
+extern void GfxSys_SwapBuffers(GfxSys *sys);
 
 int main(void) {
     func_0203d6b4();
@@ -50,20 +50,20 @@ int main(void) {
     while (TRUE) {
         Sys_WaitVBlank(data_02097dd0);
         func_0203e6bc();
-        func_0203b96c(data_02097d48);
-        func_0203ced8(-1);
-        func_0203baa4(data_02097d48);
+        GfxSys_EndFrame(data_02097d48);
+        GfxSys_ApplyFade(-1);
+        GfxSys_FlipTextBg(data_02097d48);
         func_02039f84(data_02097ce0);
         func_0203d8b0();
         func_0203d8e8();
         func_0203d298(data_02097dc8);
         func_02043f70(data_02097e3c);
         func_0204aee8();
-        func_0203ced8(2);
+        GfxSys_ApplyFade(2);
         func_020364c0(data_02097cdc);
         func_0204ab8c(data_02097e48);
         func_0203dacc(data_02097dd0);
-        func_0203ba7c(data_02097d48);
+        GfxSys_SwapBuffers(data_02097d48);
     }
 }
 

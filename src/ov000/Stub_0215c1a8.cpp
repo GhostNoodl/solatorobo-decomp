@@ -252,11 +252,11 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
     }
 }
 
-s32 func_ov000_0215c718(void) {
+s32 Lo021cad50_GetPadLeft(void) {
     return 0x14;
 }
 
-s32 func_ov000_0215c720(Obj0215c720 *self) {
+s32 Lo021cad50_GetPadTop(Obj0215c720 *self) {
     return Obj0215c720_TestBit3(self) ? 9 : 0xc;
 }
 
@@ -267,7 +267,7 @@ char *Str_FindCharMb(char *str, int c);
 void Tbl_Format_02070874(char *dst, const char *fmt, const char *arg);
 void func_020707e8(char *dst, const char *fmt, const char *arg, int c);
 BOOL Item_Give(u16 id, int n);
-void func_ov000_02184ea4(void *self, s32 a);
+void SceneCmd_Push10(void *self, s32 a);
 char *func_ov000_0215cfd0(void *self);
 
 static inline u16 ItemKind_0215c744(u16 v) { return v >> 12; }
@@ -503,7 +503,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     }
     v = self->unk_88;
     if (ItemKind_0215c744(v) - 1 == 1 && !ok) {
-        func_ov000_02184ea4(data_ov000_021ccd54, v);
+        SceneCmd_Push10(data_ov000_021ccd54, v);
     }
 }
 

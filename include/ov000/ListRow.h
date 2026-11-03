@@ -33,7 +33,7 @@ struct ListRow : public VObj {
         u8 unk_20;
         struct {
             u8 shown : 1; // cleared while the row is scrolled out of the list
-            u8 focus : 1; // the row under the cursor (func_ov000_021c4230, func_ov000_021c69e4)
+            u8 focus : 1; // the row under the cursor (LoBase021ccb54_021ccbe0_PreUpdate, func_ov000_021c69e4)
             u8 unk_20_2 : 6;
         };
     };

@@ -148,7 +148,7 @@ void *func_ov015_02207200(Ov015SceneSeq *self) {
     return self;
 }
 
-void func_ov015_02207234(Task *self) {
+void Ov015Task_SetCurrent(Task *self) {
     if (data_ov000_021ccd40 != NULL) {
         data_ov000_021ccd38 = data_ov000_021ccd40->id;
     } else {
@@ -157,7 +157,7 @@ void func_ov015_02207234(Task *self) {
     data_ov000_021ccd40 = self;
 }
 
-void func_ov015_02207268(Task *self) {
+void Ov015Task_ReleaseCurrent(Task *self) {
     if (self->vfunc_54() == 0) {
         return;
     }
@@ -220,7 +220,7 @@ void Ov015Task_SetFlag4(Task *self) {
     self->unk_04_4 = 1;
 }
 
-s32 func_ov015_02207380(void) {
+s32 Ov015Task_IsReady(void) {
     return 1;
 }
 

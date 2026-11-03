@@ -45,7 +45,7 @@ void Body_SetOwner(void *o, u16 id);
 void HitSphere_Unlink_0203f364(void *o);
 void *Obj021984c8_Init(void *p);
 void *History_Init(void *p);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 
 static inline void *NewObj44_0219d1a8(void) {
     void *p = Heap_Alloc(0x24);
@@ -182,7 +182,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
         if (!self->unk_b24_1) {
             v = 2;
         }
-        func_02062764(3, v);
+        Shared_ChangeFlags(3, v);
     }
 }
 

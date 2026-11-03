@@ -2,33 +2,33 @@
 
 extern "C" {
 
-void func_0206dac8(GameSave0208c994 *s) {
+void MainVt_0208c994_Setup(GameSave0208c994 *s) {
     s->vf78();
     SaveBase_AllocBuffers(s);
 }
 
-void func_0206dae8(GameSave0208c994 *s) {
+void MainVt_0208c994_Init(GameSave0208c994 *s) {
     s->onReset = NULL;
     s->onSave = NULL;
     s->onLoad = NULL;
 }
 
-void func_0206dafc(GameSave0208c994 *s) {
+void MainVt_0208c994_Finalize(GameSave0208c994 *s) {
 }
 
-void func_0206db00(GameSave0208c994 *s, void *dst, u32 size) {
+void MainVt_0208c994_FillSlot(GameSave0208c994 *s, void *dst, u32 size) {
     if (s->onReset != NULL) {
         s->onReset(NULL, dst, size);
     }
 }
 
-void func_0206db1c(GameSave0208c994 *s, void *dst, u32 size) {
+void MainVt_0208c994_FillData(GameSave0208c994 *s, void *dst, u32 size) {
     if (s->onSave != NULL) {
         s->onSave((u8 *)SaveBase_GetSlot(s, s->curSlot) + 4, dst, size);
     }
 }
 
-void func_0206db50(GameSave0208c994 *s, void *dst, u32 size) {
+void MainVt_0208c994_OnLoadData(GameSave0208c994 *s, void *dst, u32 size) {
     if (s->onLoad != NULL) {
         s->onLoad((u8 *)SaveBase_GetSlot(s, s->curSlot) + 4, dst, size);
     }

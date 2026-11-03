@@ -168,7 +168,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             }
         }
         {
-            EffectObj *e = func_020658cc(data_0214a420, 0x390);
+            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x390);
             if (e != NULL) {
                 EffectObj_StopLoop(e);
             }
@@ -189,19 +189,19 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             e->speed = 0x99a;
             e->loopCount = -2;
         } else if (t > 0xb4) {
-            EffectObj *e = func_020658cc(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xd2 - self->fsm->timer) << 12, 0x1e000);
                 e->SetScaleAll(Interp_QuadLerp(r, 0x1000, 0x3000));
             }
         } else if (t > 0x6e) {
-            EffectObj *e = func_020658cc(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xb4 - self->fsm->timer) << 12, 0x46000);
                 e->SetScaleAll(Interp_QuadLerp(r, 0x3000, 0x1e000));
             }
         } else if (t > 0x5a) {
-            EffectObj *e = func_020658cc(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0x6e - self->fsm->timer) << 12, 0x14000);
                 u8 a = (Ov014b_Mul64(r, -0x1f000) + 0x1f000) >> 12;
@@ -210,7 +210,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             }
         } else {
             if (t == 0x5a) {
-                EffectObj *e = func_020658cc(data_0214a420, 0x391);
+                EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
                 if (e != NULL) {
                     void *saved = data_02097dd0->cur;
                     data_02097dd0->cur = data_02097dd0->heapHi;

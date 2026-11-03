@@ -1855,9 +1855,9 @@ void Ov010MovePath_StateDown(Obj021fa860 *self) {
 
 extern BOOL Ov003StateMachine_IsState(void *p, s32 a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
-extern void func_0203cb78(s32 a, s32 b, s32 c);
+extern void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *s, s32 a, s32 b, s32 c, u8 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void SndMgr_StopSeqArc(void *a, s32 b);
 extern char data_ov010_0220fc25[];
 
@@ -1931,7 +1931,7 @@ void Ov010MovePath_StateDie(Obj021fa860 *self) {
             self->fsm->timer = ActorSub40_Timer(self->fsm) + 1;
             break;
         }
-        func_0203cb78(0x1e000, 1, 0);
+        GfxSys_StartFadeIn(0x1e000, 1, 0);
         self->fsm->timer = 0;
         self->fsm->st = 0x14;
         break;
@@ -1943,7 +1943,7 @@ void Ov010MovePath_StateDie(Obj021fa860 *self) {
             sc.y = self->height;
             sc.z = self->radius;
             Spawn_ScatterEffect(&pos, &sc, 0x733, 0xccd, 3, 0x32);
-            func_ov000_0218996c(0x14, 8);
+            Field_ShakeCamera(0x14, 8);
             SndMgr_PlayAt(data_02097e4c, 0x35, &pos, 0);
         }
         if (self->unk_f4 == 0) {

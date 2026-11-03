@@ -15,7 +15,7 @@ extern void *data_02097e4c;
 BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
 s32 func_ov000_021b7b50(FieldProp *n);
 Robo021ca458 *ActorMgr_FindPlayer(void);
-BOOL func_ov000_021b4738(Robo021ca458 *pl);
+BOOL Actor_IsDead(Robo021ca458 *pl);
 BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_02188ca0(FieldId *c, s32 a);
@@ -60,7 +60,7 @@ void FieldMgr_Update(FieldMgr *self) {
     if (pl == NULL || pl->mode == 3) {
         return;
     }
-    if (func_ov000_021b4738(pl)) {
+    if (Actor_IsDead(pl)) {
         return;
     }
     if (self->blockB == NULL) {

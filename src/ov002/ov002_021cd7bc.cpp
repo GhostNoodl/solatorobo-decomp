@@ -93,7 +93,7 @@ void func_ov002_021cd92c(Task021ef530 *self, int kind) {
 }
 
 extern "C" {
-void func_ov000_02187b50(void *p);
+void SceneCmd_Push26(void *p);
 void func_02062524(void);
 BOOL func_020624d8(void);
 void MessageQueue_FreeBuffer(FieldPlayer *a, TimedBuffer021cb920 *b);
@@ -138,8 +138,8 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
         case 0:
             if (!self->unk_48_0) {
                 data_ov002_021f0f80->unk_08 = 0;
-                func_0203cc58(self->fadeLen, 2, 0);
-                func_ov000_02186bb0(data_ov000_021ccd54);
+                GfxSys_StartFadeOut(self->fadeLen, 2, 0);
+                SceneCmd_Push1f(data_ov000_021ccd54);
                 self->vfunc_0c(0);
                 SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
@@ -155,7 +155,7 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
                 FIELD(o, 0x3c, s32) = self->id;
                 self->vfunc_50();
                 self->unk_04 |= 6;
-                func_0203cc58(self->fadeLen, 2, -1);
+                GfxSys_StartFadeOut(self->fadeLen, 2, -1);
                 SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
                 SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
@@ -179,19 +179,19 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
             data_ov000_021ccd44->flag0 = 0;
             self->vfunc_50();
             self->unk_04 |= 6;
-            func_0203cc58(self->fadeLen, 2, -1);
+            GfxSys_StartFadeOut(self->fadeLen, 2, -1);
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             break;
         case 5:
             if (!self->unk_48_1) {
                 FieldPlayer *t;
-                func_0203cc58(self->fadeLen, 2, -1);
+                GfxSys_StartFadeOut(self->fadeLen, 2, -1);
                 if (func_020624d8()) {
                     u8 buf[3];
                     buf[0] = data_02fe1534.unk_52;
                     buf[1] = data_02fe1534.unk_54;
                     buf[2] = data_02fe1534.unk_56;
-                    func_ov000_02187b50(data_ov000_021ccd54);
+                    SceneCmd_Push26(data_ov000_021ccd54);
                     func_ov000_02188ca0(buf, 1);
                     func_02062524();
                 }

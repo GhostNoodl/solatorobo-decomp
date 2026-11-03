@@ -2118,7 +2118,7 @@ void GXx_SetMasterBrightness_(vu16 *reg, int v);
 static inline void GX_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu16 *)0x400006c, b); }
 static inline void GXS_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu16 *)0x400106c, b); }
 
-int func_0203ca84(int a);
+int GfxSys_GetFadeLevel(int a);
 void Gfx3DState_SetDefaults(void *p);
 BOOL func_ov002_021e828c(Ov002Stage *self);
 BOOL func_ov002_021e86a0(Ov002Stage *self);
@@ -2153,7 +2153,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         b = 0;
         switch (self->unk_130) {
         case 0:
-            b = func_0203ca84(0);
+            b = GfxSys_GetFadeLevel(0);
             break;
         case 1:
             b = 0x10;
@@ -2163,7 +2163,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
             break;
         }
         ov002_SetBright(b);
-        func_0203caf8(-1);
+        GfxSys_StopFade(-1);
         self->unk_13c = b << 12;
         self->unk_140 = 0;
         self->unk_144 = 0;
@@ -2234,9 +2234,9 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         done = FALSE;
         if (self->unk_144 >= 0x14000) {
             mode = self->unk_140 > 0 ? 1 : 2;
-            func_0203cc58(0x1000, mode, 0);
+            GfxSys_StartFadeOut(0x1000, mode, 0);
             done = TRUE;
-            func_0203cc58(0x1000, mode, 1);
+            GfxSys_StartFadeOut(0x1000, mode, 1);
         } else {
             {
                 s32 t_1 = self->unk_144;

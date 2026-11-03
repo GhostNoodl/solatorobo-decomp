@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_0215dae0(Lo021cae48 *self) {
+void Lo021cae48_PostUpdate(Lo021cae48 *self) {
     s32 st = self->state;
     s32 d;
     s32 a;

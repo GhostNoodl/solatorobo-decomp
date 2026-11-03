@@ -338,7 +338,7 @@ s32 Ov015Scene2a88_IsLoaded(void) {
     return 1;
 }
 
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_ov015_02206bf0(s32 idx, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
     SndQueue *p = data_02097e48.queue;
@@ -386,8 +386,8 @@ void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
     self->parent = NULL;
     self->unk_40 = 1;
     TaskList_Insert(self);
-    func_0203cb78(0x14000, 0, 1);
-    func_0203cb78(0x14000, 0, 0);
+    GfxSys_StartFadeIn(0x14000, 0, 1);
+    GfxSys_StartFadeIn(0x14000, 0, 0);
 }
 
 }

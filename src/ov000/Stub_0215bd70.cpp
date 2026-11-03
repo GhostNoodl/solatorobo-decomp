@@ -2,15 +2,15 @@
 
 extern "C" {
 
-s32 func_ov000_0215bd70(void) {
+s32 Lo021cadcc_GetLineSpacing(void) {
     return 0x3;
 }
 
-u32 func_ov000_0215bd78(Lo021cadcc *self) {
+u32 Lo021cadcc_GetPadLeft(Lo021cadcc *self) {
     return self->unk_88;
 }
 
-s32 func_ov000_0215bd80(void) {
+s32 Lo021cadcc_GetPadTop(void) {
     return 0x6;
 }
 

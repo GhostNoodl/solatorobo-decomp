@@ -293,7 +293,7 @@ extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 extern void Ov003Pickup_Update(Actor *self, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
@@ -377,7 +377,7 @@ void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
                     m->unk_9a_1 = 0;
                     m->unk_9a_4 = 0;
                     self->model->visible = 0;
-                    func_ov000_0218996c(0x1e, 0x32);
+                    Field_ShakeCamera(0x1e, 0x32);
                     self->unk_f8 |= 0x100000;
                     self->fsm->st++;
                 }

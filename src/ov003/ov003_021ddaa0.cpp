@@ -16,7 +16,7 @@ extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern void HitMesh_Unlink_0203f920(void *p);
 extern Actor *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(Actor *p, u16 id, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
+extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 
 static inline void Ov003SwSub44_Clear(ActorSub44 *p) {
     p->unk_22_0 = 0;
@@ -70,7 +70,7 @@ void Ov003ActVt_021f7fac_State06(Ov003Switch *self) {
         }
         if (self->targetObj->unk_02 == 5) {
             func_ov000_02197dec(self, 0xf, -1);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         self->fsm->st++;

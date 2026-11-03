@@ -5,9 +5,9 @@ typedef struct {
     u32 unk_0c;
 } Obj02152f7c;
 
-void func_ov000_02152f78(void) {
+void UiObj_PostUpdate(void) {
 }
 
-void func_ov000_02152f7c(Obj02152f7c *self) {
+void UiObj_DrawBody(Obj02152f7c *self) {
     self->unk_0c |= 0x200;
 }

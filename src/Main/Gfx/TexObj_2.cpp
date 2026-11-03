@@ -237,7 +237,7 @@ typedef struct TexObjRes3 {
     /* 0x1c */ TexObjImageInfo *image0;
 } TexObjRes3;
 
-extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub);
+extern u32 GfxSys_AllocVram(GfxSys *sys, u32 size, BOOL sub);
 extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
@@ -260,13 +260,13 @@ void func_02041e74(TexObj *obj, int idx) {
             type = 2;
             slot = NNS_G2dGetImageLocation(obj, 1);
             if (slot == -1) {
-                slot = func_0203bc20(data_02097d48, img->size, 0);
+                slot = GfxSys_AllocVram(data_02097d48, img->size, 0);
             }
         } else {
             type = 5;
             slot = NNS_G2dGetImageLocation(obj, 2);
             if (slot == -1) {
-                slot = func_0203bc20(data_02097d48, img->size, 1);
+                slot = GfxSys_AllocVram(data_02097d48, img->size, 1);
             }
         }
         if ((obj->unk_06c << 30) >> 31) {
@@ -416,10 +416,10 @@ void func_0204205c(TexObj *obj, int idx, int value) {
         if ((&e->key)[idx] == -1) {
             if (idx == 1) {
                 type = 2;
-                slot = func_0203bc20(data_02097d48, total, 0);
+                slot = GfxSys_AllocVram(data_02097d48, total, 0);
             } else {
                 type = 5;
-                slot = func_0203bc20(data_02097d48, total, 1);
+                slot = GfxSys_AllocVram(data_02097d48, total, 1);
             }
             (&e->key)[idx] = slot;
         }

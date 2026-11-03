@@ -57,7 +57,7 @@ void func_ov000_0214ccf8(Obj0214ccf8 *self) {
         t = FX_Div(self->unk_214, 0x1e000);
         if (t >= 0x1000) {
             t = 0x1000;
-            if (!func_020658cc(data_0214a420, 0x2714)) {
+            if (!EffectMgr_FindByKey(data_0214a420, 0x2714)) {
                 VObj *o;
                 self->unk_0c &= ~0x20000;
                 o = (VObj *)Heap_Alloc(0xe8);

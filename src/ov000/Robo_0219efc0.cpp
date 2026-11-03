@@ -16,7 +16,7 @@ u16 Pad_LookupDir(void *pad, void *p);
 void func_ov000_021b3738(Robo021ca458 *self, void *t);
 void func_ov000_021b2d48(Robo021ca458 *self);
 void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 BOOL func_ov000_0219b3b4(void *p);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_021b1814(Robo021ca458 *self, s32 a, s32 b);
@@ -275,7 +275,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
         u8 *i;
         t9 = FindActor_0219efc0(self->target);
         if (t9 != NULL) {
-            func_02062764(0x3c0, 0x40);
+            Shared_ChangeFlags(0x3c0, 0x40);
         }
         a = NULL;
         if (self->unk_b24_5 && self->unk_b24_1) {

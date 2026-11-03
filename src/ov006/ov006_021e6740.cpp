@@ -9,7 +9,7 @@ void *Tbl_FindEntry_0206fef8(u16 id);
 Model0218fe1c *Model0218fe1c_Init(void *p);
 BOOL Model0218fe1c_SetRes(Model0218fe1c *p, void *a, int b, int c);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *p, int idx);
-void func_ov000_02191920(Model0218fe1c *p, int a, s32 b, int c);
+void Model0218fe1c_SetAnim3(Model0218fe1c *p, int a, s32 b, int c);
 ActorSub48 *ActorSub48_Init(void *p);
 void Body_SetOwner(ActorSub48 *p, u16 id);
 void HitSphere_Link(void *p);
@@ -40,7 +40,7 @@ void Ov006ActVt_021ec4f4_Start(Ov006Racer *self) {
         a = Model0218fe1c_GetAnimCtrl(self->model, 3);
         if (a != NULL) {
             self->model->unk_c2 |= 0x40;
-            func_ov000_02191920(self->model, 0, 0x1000, 0);
+            Model0218fe1c_SetAnim3(self->model, 0, 0x1000, 0);
             if (a->cur != NULL) {
                 a->cur->frame = 0;
             }

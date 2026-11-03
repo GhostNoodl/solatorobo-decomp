@@ -216,7 +216,7 @@ void Ov003ActVt_021f80f0_StateIdle(Ov003Lamp *self) {
     Actor_SendMsg(p, self->id, 8, 1, sizeof(m2), &m2);
 }
 
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
@@ -235,7 +235,7 @@ void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
     b = 100;
     switch (self->fsm->timer & 0x3f) {
     case 0:
-        func_ov000_0218996c(6, 10);
+        Field_ShakeCamera(6, 10);
         a = 0x131;
         break;
     case 0x10:
@@ -243,7 +243,7 @@ void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
         b = 0x4b;
         break;
     case 0x20:
-        func_ov000_0218996c(8, 0xf);
+        Field_ShakeCamera(8, 0xf);
         a = 0x131;
         break;
     case 0x30:

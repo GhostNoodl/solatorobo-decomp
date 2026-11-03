@@ -29,7 +29,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 
-void func_ov000_02152f8c(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
+void UiObj_DrawTitle(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
     s32 x;
     s32 h;
     GfxSys *g;

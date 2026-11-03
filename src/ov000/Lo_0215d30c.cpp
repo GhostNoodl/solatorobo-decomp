@@ -12,7 +12,7 @@ u32 Rand_GetGlobal(void);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-void func_ov000_0215d30c(Lo021cad50 *self) {
+void Lo021cad50_PostUpdate(Lo021cad50 *self) {
     VObj *o;
     if (self->state != 2) {
         return;

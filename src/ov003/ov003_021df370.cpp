@@ -18,18 +18,18 @@ extern const VecFx32 data_ov003_021f4c58;
 extern const u8 data_ov003_021f4c50[];
 extern Actor *Actor_SpawnKind(s32 id, const void *pos, const void *rot, u16 a, u16 b);
 extern Actor *ActorMgr_FindKind(ActorMgr *mgr, s32 a, s32 b);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern u16 Camera_GetYaw(Camera *cam);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Model0218fe1c_StopAnim(void *p);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
+extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f8350[];
 extern void Heap_Free(void *p);
 extern void ActorMgr_BroadcastKind(ActorMgr *mgr, u16 a, s32 b);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void GroupNode_SetSpawnRange(Ov003Unit *u, s32 a, s32 b);
@@ -42,7 +42,7 @@ void Ov003Prop_State22(ActorEx *self) {
         if (w->timer > 0x3c) {
             EffectObj *e;
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4035, 0x15);
-            func_ov000_0218996c(0x3c, 0x78);
+            Field_ShakeCamera(0x3c, 0x78);
             e = Effect_SpawnId(5, &self->pos);
             if (e != NULL) {
                 e->SetScaleXYZ(0x9800, 0x9800, 0x9800);
@@ -62,7 +62,7 @@ void Ov003Prop_State22(ActorEx *self) {
             func_ov000_02197dec(self, 0xf, 4);
         }
         if (self->fsm->timer > 0x96) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }
@@ -74,7 +74,7 @@ void Ov003Prop_State22(ActorEx *self) {
             switch (self->fsm->timer & 0x3f) {
             case 0:
                 SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
-                func_ov000_0218996c(0xf, 0x1e);
+                Field_ShakeCamera(0xf, 0x1e);
                 a = 3;
                 break;
             case 0x10:
@@ -85,7 +85,7 @@ void Ov003Prop_State22(ActorEx *self) {
                 break;
             case 0x20:
                 SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
-                func_ov000_0218996c(0xf, 0x1e);
+                Field_ShakeCamera(0xf, 0x1e);
                 break;
             }
             p.x = self->pos.x;
@@ -216,7 +216,7 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
             }
             Effect_SpawnId(3, &p);
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         self->fsm->st++;
@@ -279,7 +279,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
         }
         if (self->fsm->timer > 0x1c2) {
             func_ov000_02197dec(self, 0xf, 4);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }

@@ -20,7 +20,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_02097e4c;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 Robo021ca458 *ActorMgr_FindPlayer(void);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 
 
 void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
@@ -41,7 +41,7 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
         self->fsm->flags |= 0x80000000;
         History_SetState(self->fsm, 0x1f, 0);
     }
-    func_02062764(0x30, 0x10);
+    Shared_ChangeFlags(0x30, 0x10);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }

@@ -17,7 +17,7 @@ void Obj0215e8b0_LoadModel(UiPanel *self);
 void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);
 void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
 
-void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
+void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
     ListRow *p;
     Model *m;
     UiPanel *o;

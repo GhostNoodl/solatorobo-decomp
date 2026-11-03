@@ -34,7 +34,7 @@ void Ov009ActVt_02217844_StateAttack(Ov009ActVt_02217844 *self) {
         if (Model0218fe1c_IsAnimDone(self->model)) {
             self->model->visible = 0;
             self->modelObj.visible = 0;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;
@@ -54,7 +54,7 @@ void Ov009ActVt_02217844_StateAttack2(Ov009ActVt_02217844 *self) {
         if (Model0218fe1c_IsAnimDone(self->model)) {
             self->model->visible = 0;
             self->modelObj.visible = 0;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;

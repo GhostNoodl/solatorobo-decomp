@@ -36,14 +36,14 @@ extern void *ResList_FindType4(ResList *list, const char *name);
 extern void *ResList_FindType5(ResList *list, const char *name);
 extern void *ResList_FindType6(ResList *list, const char *name);
 
-void func_02038504(ResHandle *handle) {
+void ResHandle_Clear(ResHandle *handle) {
     handle->arcName[0] = '\0';
     handle->name[0] = '\0';
     handle->type = -1;
     handle->unk_48 = 0;
 }
 
-void func_02038520(ResHandle *handle) {
+void ResHandle_Unload(ResHandle *handle) {
     int type = handle->type;
     if (type == -1) {
         return;
@@ -99,7 +99,7 @@ void func_02038520(ResHandle *handle) {
         }                                                                   \
     }
 
-void func_02038638(ResHandle *handle, const char *name) {
+void ResHandle_LoadSync(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
     switch (handle->type) {
     case 0:
@@ -158,7 +158,7 @@ static inline ResNode *ResHandle_LoadArchive(ResHandle *handle, const char *name
     return node;
 }
 
-void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
+void ResHandle_OpenInArc(ResHandle *handle, const char *arcName, const char *name) {
     ResMgr *mgr;
     ResNode *node;
     int id;
@@ -188,29 +188,29 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
     }
 }
 
-void func_02038b0c(ResHandle *handle, const char *name) {
+void ResHandle_Request(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
     ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, FALSE);
 }
 
-void func_02038b48(ResHandle *handle, const char *name) {
+void ResHandle_RequestFlag(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
     ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, TRUE);
 }
 
-void func_02038b88(ResHandle *handle, const char *arcName, const char *name) {
+void ResHandle_LoadFromArc(ResHandle *handle, const char *arcName, const char *name) {
     STD_CopyString(handle->arcName, arcName);
     STD_CopyString(handle->name, name);
     ResHandle_LoadArchive(handle, handle->arcName, handle->name, handle->type, FALSE);
 }
 
-void func_02038c14(ResHandle *handle, const char *arcName, const char *name) {
+void ResHandle_LoadFromArcFlag(ResHandle *handle, const char *arcName, const char *name) {
     STD_CopyString(handle->arcName, arcName);
     STD_CopyString(handle->name, name);
     ResHandle_LoadArchive(handle, handle->arcName, handle->name, handle->type, TRUE);
 }
 
-BOOL func_02038ca0(ResHandle *handle) {
+BOOL ResHandle_IsLoaded(ResHandle *handle) {
     ResMgr *mgr;
     int type;
     u16 hash;
@@ -293,7 +293,7 @@ BOOL func_02038ca0(ResHandle *handle) {
         return result;                                                      \
     }
 
-void *func_02038dbc(ResHandle *handle) {
+void *ResHandle_GetData(ResHandle *handle) {
     if (!handle->IsLoaded()) {
         return NULL;
     }
@@ -474,11 +474,11 @@ ResHandle *_ZN9ResHandleD0Ev(ResHandle *handle) {
     return handle;
 }
 
-BOOL func_020396d4(ResHandle *handle) {
+BOOL ResHandle_IsReady(ResHandle *handle) {
     return handle->unk_48 ? TRUE : FALSE;
 }
 
-BOOL func_020396e8(ResHandle *handle) {
+BOOL ResHandle_OnLoad(ResHandle *handle) {
     handle->unk_48 = TRUE;
     return TRUE;
 }

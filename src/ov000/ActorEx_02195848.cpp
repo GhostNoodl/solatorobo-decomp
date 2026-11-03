@@ -13,7 +13,7 @@ void Model0218fe1c_SetLoop(void *a);
 void *Ov003_FindPlayerInRange(void *a, s32 r, s32 h);
 void Target_Set(void *body, void *p);
 BOOL History_SetState(void *p, s32 a, s32 b);
-void func_ov000_0218bed8(void *a, s32 b, void *c);
+void Group_UpdateActor(void *a, s32 b, void *c);
 void HitSphere_Link(void *p);
 void HitSphere_Unlink_0203f364(void *p);
 void Body_Update(void *p, s32 a, s32 b, s32 c);
@@ -97,7 +97,7 @@ void ActorEx_StateIdle(VObj *obj) {
                 st->timer++;
                 if ((s32)st->timer > 0x1fe) {
                     if ((s32)st->timer > 0x258) {
-                        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                        Group_UpdateActor(data_ov000_021ccd64, 0, self);
                         obj->vfunc_08();
                         break;
                     }

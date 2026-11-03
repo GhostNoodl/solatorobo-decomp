@@ -13,11 +13,11 @@ BOOL func_ov002_021d166c(Task021ef71c *self) {
     switch (self->unk_64) {
     case 0:
         if (self->unk_5c < 8 && ((s32 *)((u8 *)self + 0x3c))[self->unk_5c] >= 0) {
-            func_0203caf8(-1);
+            GfxSys_StopFade(-1);
             Movie_Load(data_02097e3c, ((s32 *)((u8 *)self + 0x3c))[self->unk_5c], -1, 0);
             self->unk_64 = 1;
         } else {
-            func_0203cc58(0xa000, 2, 0);
+            GfxSys_StartFadeOut(0xa000, 2, 0);
             self->unk_64 = 2;
         }
         break;

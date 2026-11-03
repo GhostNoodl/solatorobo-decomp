@@ -11,7 +11,7 @@ void func_ov000_021c4c10(void *self);
 extern void *data_02097e4c;
 void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 
-void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
+void LoBase021ccb54_021ccbe0_PreUpdate(LoBase021ccb54_021ccbe0 *self) {
     s32 i;
     ListRow *n;
 

@@ -31,8 +31,8 @@ void Ov003ActVt_021f8188_Start(Ov003Prop *self) {
     GroupNode_SetSpawnRange(u, 0x5000, 0);
 }
 
-extern void func_ov000_0218996c(u8 a, u8 b);
-extern void func_020627a0(u16 a, u16 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 void Ov003Prop_State21(Ov003Prop *self) {
@@ -41,7 +41,7 @@ void Ov003Prop_State21(Ov003Prop *self) {
     case 0:
         w->timer++;
         if (w->timer > 0x2d) {
-            func_ov000_0218996c(0x28, 0x5a);
+            Field_ShakeCamera(0x28, 0x5a);
             self->work->timer = 0;
             self->work->st++;
         }
@@ -49,7 +49,7 @@ void Ov003Prop_State21(Ov003Prop *self) {
     case 1:
         w->timer++;
         if (w->timer > 100) {
-            func_020627a0(self->unk_0e, self->unk_0c);
+            Shared_SetEventActor(self->unk_0e, self->unk_0c);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             self->work->timer = 0;

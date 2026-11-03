@@ -149,7 +149,7 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
 void *ResMgr_GetArchiveList(void *a, void *b, u16 c);
 void TaskList_Insert(void *self);
 extern u8 data_ov000_021ccd34;
-void func_0203cb78(s32 a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
 void func_ov002_021ce7b8(Task021ef4b0 *self);
 
 static inline void func_ov002_setCurrent021ccd40(void *p) {
@@ -252,7 +252,7 @@ void Obj021c64b4_SetText(TextList *self, void *text);
 void func_ov000_021c7000(TextList *self);
 void func_ov002_021d1f70(Task021ef69c *self);
 
-void func_0203caf8(int a);
+void GfxSys_StopFade(int a);
 void Movie_Load(void *a, s32 b, int c, int d);
 void Movie_RequestStop(void *a);
 void func_ov000_021c701c(TextList *self);
@@ -617,7 +617,7 @@ typedef struct Ov002ResNames {
 } Ov002ResNames;
 extern u8 data_ov002_021ef650[];
 
-void func_ov000_021c3d20(void *self);
+void LoBase021ccb54_021ccbe0_Setup(void *self);
 void func_ov000_021c4ab8(void *self);
 extern u8 data_ov002_021ef038[];
 

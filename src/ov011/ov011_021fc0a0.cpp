@@ -216,7 +216,7 @@ void Ov011Chr_StartMode5(void *self, s16 v);
 VecFx32 Ov011Chr_GetPos(const void *self);
 Ov011LNode *Ov011LNode_Remove(Ov011LNode *head, Ov011LNode *item);
 void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
-BOOL func_ov000_021b4738(void *pl);
+BOOL Actor_IsDead(void *pl);
 }
 
 static inline Ov011Slot *Ov011Ctl_Find(Ov011Ctl *self, u16 id) {
@@ -276,7 +276,7 @@ static inline void Ov011Slot_Kill(Ov011Slot *s) {
 
 static inline BOOL Ov011_PlBusy(void) {
     void *pl = ActorMgr_FindPlayer();
-    if (pl != NULL && !func_ov000_021b4738(pl)) {
+    if (pl != NULL && !Actor_IsDead(pl)) {
         return FALSE;
     }
     return TRUE;
@@ -493,7 +493,7 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
             self->flags |= 2;
         } else {
             void *pl = ActorMgr_FindPlayer();
-            if (pl == NULL || func_ov000_021b4738(pl)) {
+            if (pl == NULL || Actor_IsDead(pl)) {
                 self->flags |= 2;
             }
         }

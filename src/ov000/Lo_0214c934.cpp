@@ -31,7 +31,7 @@ void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_021bc3ec(void *p, s32 a, s32 b);
 void func_ov000_021bc458(void *p);
 
-void func_ov000_0214c934(Lo0214c934 *self) {
+void Menu021ca94c_PreUpdate(Lo0214c934 *self) {
     switch (self->state) {
     case 0:
         if (self->vfunc_4c() == 0) {

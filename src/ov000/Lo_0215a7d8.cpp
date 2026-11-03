@@ -9,7 +9,7 @@ extern "C" {
 
 void func_ov000_0215a8c8(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
-void func_ov000_0215a7d8(Lo021cb5a8 *self, s32 unused, s32 *pos) {
+void Lo021cb5a8_DrawFrame(Lo021cb5a8 *self, s32 unused, s32 *pos) {
     s16 z = self->posZ - 0x100;
     self->model->unk_158 = (void *)func_ov000_0215a8c8;
     self->model->flags |= 0x80000;

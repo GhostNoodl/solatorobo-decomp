@@ -122,7 +122,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     }
     ov002_CamInit(self->board, (const VecFx32 *)(data_ov002_021eef74 + 0x70));
     if (func_ov002_isMode4()) {
-        func_0203cb78(0xa000, 0, -1);
+        GfxSys_StartFadeIn(0xa000, 0, -1);
     }
     {
         Obj021efe6c *c = self->board;

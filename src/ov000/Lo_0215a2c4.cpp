@@ -19,7 +19,7 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215a2c4(Lo021cb5a8 *self, s32 a, s32 b, s32 c) {
+void Lo021cb5a8_DrawBody(Lo021cb5a8 *self, s32 a, s32 b, s32 c) {
     if (a == 0) {
         return;
     }

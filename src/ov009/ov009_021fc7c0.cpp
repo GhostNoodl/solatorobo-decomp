@@ -37,9 +37,9 @@ void Ov009ActVt_022167fc_State20(Ov003Actor *self) {
 
 extern char data_ov009_02216ac8[];
 extern char data_ov009_02216ab0[];
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void func_ov000_0218999c(u8 a, u8 b);
+extern void Field_ShakeCameraY(u8 a, u8 b);
 void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m;
@@ -55,7 +55,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
         if (st->timer != 0) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         m = self->model;
@@ -69,7 +69,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
         if (self->hit->unk_50 & 0x20000000) {
             Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x800, 0);
             SndMgr_PlayVolume(data_02097e4c, 8, -1, -1, -1);
-            func_ov000_0218999c(8, 0xa);
+            Field_ShakeCameraY(8, 0xa);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;
@@ -91,7 +91,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
 
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
 extern void Ov003_AddExp(u16 id);
 void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
@@ -124,7 +124,7 @@ void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
         m->cull = 2;
         NNSi_G3dModifyPolygonAttrMask(m->mdl, 0, 0xc0);
         self->unk_ea_3 = 0;
-        func_ov000_0218996c(8, 0xa);
+        Field_ShakeCamera(8, 0xa);
         p = self->pos;
         p.y += (self->height >> 1) - (self->height >> 3);
         o = Effect_SpawnId(3, &p);

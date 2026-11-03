@@ -16,17 +16,17 @@ extern int (*const data_0208bf9c[])(StageResSlot *slot);
 extern const u32 data_02082a28[];
 extern BOOL Item_Give(u16 id, int a);
 extern BOOL Item_Set_0206f5e4(u16 id, int a);
-extern void func_ov000_02184ea4(FieldState *state, s32 id);
-extern void func_ov000_02184bb0(FieldState *state, s32 a);
-extern void func_ov000_02184d90(FieldState *state, s32 a);
+extern void SceneCmd_Push10(FieldState *state, s32 id);
+extern void SceneCmd_Push0e(FieldState *state, s32 a);
+extern void SceneCmd_Push0f(FieldState *state, s32 a);
 extern void func_ov000_021762e4(u16 a, s32 b);
 extern void func_ov000_0214e7ac(s32 a);
 extern void func_ov000_02188d28(u8 *buf);
 extern void func_ov000_02188ca0(u8 *buf, int a);
-extern void func_ov000_021865f8(FieldState *state);
-extern void func_ov000_02186bb0(FieldState *state);
+extern void SceneCmd_Push1e(FieldState *state);
+extern void SceneCmd_Push1f(FieldState *state);
 extern void func_ov000_0218547c(FieldState *state, u16 a, void *res, u16 id);
-extern void func_ov000_021854d4(FieldState *state, void *res, s32 id);
+extern void SceneCmd_Push12(FieldState *state, void *res, s32 id);
 extern void func_ov000_02172264(FieldPlayer *player, u32 v, s32 id, void *res);
 
 static inline BOOL Field_IsEventPending(FieldState *state) {
@@ -156,8 +156,8 @@ extern bool func_ov000_021705ec(FieldActor *actor);
 extern void func_ov000_0216da78(FieldActorState *st);
 extern void *MsgRes_GetString(void *msg, u16 id);
 extern void func_ov000_02172390(FieldPlayer *player, s32 a, void *str);
-extern void func_ov000_02186158(FieldState *state, s32 a);
-extern void func_ov000_02186204(FieldState *state, s32 a);
+extern void SceneCmd_Push1b(FieldState *state, s32 a);
+extern void SceneCmd_Push1c(FieldState *state, s32 a);
 struct ActorMgr; // ov000/Actor.h
 extern struct ActorMgr *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;

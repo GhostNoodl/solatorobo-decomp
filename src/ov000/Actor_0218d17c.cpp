@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218cfc8(Actor *self) {
+void Actor_Destroy(Actor *self) {
     BOOL busy;
     ActorGroup *group;
     u16 key;
@@ -55,7 +55,7 @@ void func_ov000_0218cfc8(Actor *self) {
     if (busy) {
         return;
     }
-    func_ov000_0218bed8(data_ov000_021ccd64, 2, self);
+    Group_UpdateActor(data_ov000_021ccd64, 2, self);
     group = ActorMgr_FindGroup(self->id & 0xf000);
     prev = self->prev;
     next = self->next;

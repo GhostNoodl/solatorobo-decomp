@@ -42,7 +42,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     if (self->unk_2c) {
         return FALSE;
     }
-    if (func_020658cc(data_0214a420, 0x2712) || func_020658cc(data_0214a420, 0x2713) || func_020658cc(data_0214a420, 0x191)) {
+    if (EffectMgr_FindByKey(data_0214a420, 0x2712) || EffectMgr_FindByKey(data_0214a420, 0x2713) || EffectMgr_FindByKey(data_0214a420, 0x191)) {
         return FALSE;
     }
     v = MsgRes_GetLines(res, (u16)id, &n, 1);

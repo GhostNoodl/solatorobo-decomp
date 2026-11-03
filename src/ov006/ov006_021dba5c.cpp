@@ -9,7 +9,7 @@ typedef struct ov006_Unk021dba5c {
 
 extern "C" {
 
-void func_ov006_021dba5c(ov006_Unk021dba5c *self) {
+void ov006_Window_PreUpdate(ov006_Unk021dba5c *self) {
     switch (self->state) {
     case 0:
         self->unk34 = 0x4000;

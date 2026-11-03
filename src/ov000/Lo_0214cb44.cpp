@@ -31,7 +31,7 @@ struct Obj0214cb44 : public VObj {
     VObj *unk_200;
 };
 
-void func_ov000_0214cb44(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
+void Menu021ca94c_DrawBody(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
     if (self->unk_38 != NULL) {
         s16 z;
         s32 x;

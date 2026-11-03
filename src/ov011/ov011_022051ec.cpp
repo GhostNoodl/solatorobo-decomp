@@ -54,8 +54,8 @@ extern "C" {
 extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cad50[];
 extern void Obj0215c1bc_SetText(void *a, s32 b, const char *c);
-extern void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
-void func_020627a0(u16 a, u16 b);
+extern void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 
@@ -96,7 +96,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
             Obj0215c1bc_SetText(self->unk_398, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
             self->unk_398->unk_68 = -0x299a;
             self->unk_398->v70();
-            func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
+            SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
         } else {
             self->unk_398->v1c();
             self->unk_398->v20();
@@ -114,7 +114,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
         }
         {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021cf3b4(Task *self) {
+void Ov002Task_ReleaseCurrent(Task *self) {
     if (self->vfunc_54() != 0) {
         func_ov002_setCurrent021ccd40(NULL);
     }
@@ -43,7 +43,7 @@ void Ov002Task_SetFlag4(Task *self) {
     self->unk_04_4 = 1;
 }
 
-BOOL func_ov002_021cf4bc(void) {
+BOOL Ov002Task_IsReady(void) {
     return TRUE;
 }
 
@@ -91,7 +91,7 @@ Task021ef4b0 *Ov002TaskVt_021ef4b0_Dtor(Task021ef4b0 *self) {
     return self;
 }
 
-void func_ov002_021cf690(void) {
+void Ov002Task_UpdateActive(void) {
 }
 
 Task021ef430 *Ov002TaskVt_021ef430_DtorDelete(Task021ef430 *self) {
@@ -168,7 +168,7 @@ void func_ov002_021cf930(void *self) {
 
 void func_ov002_021cf948(void) {
     if (func_ov002_isMode4b()) {
-        func_0203cb78(0xa000, 0, 1);
+        GfxSys_StartFadeIn(0xa000, 0, 1);
     }
 }
 

@@ -124,7 +124,7 @@ extern void *Task_FindById(s32 id);
 extern Ov003PdPlr *ActorMgr_FindPlayer(void);
 extern void ActorMarker_Update(Ov003PdIcon *p);
 extern BOOL ActorMarker_SetKind(Ov003PdIcon *p, s32 id);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *actor);
+extern void Group_UpdateActor(void *mgr, s32 a, void *actor);
 
 static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, VecFx32 *v) {
     ic->pos.x = v->x;
@@ -168,7 +168,7 @@ void Ov003ActVt_021fa1b8_RunState(Ov003Pd *self) {
         if (show && id != -1) {
             Ov003PdPlr *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_16_2 && self->unk_0e != 0x2105) {
-                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                Group_UpdateActor(data_ov000_021ccd64, 0, self);
                 ((Ov003PdV *)self)->Destroy();
                 return;
             }

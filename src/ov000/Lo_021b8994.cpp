@@ -14,12 +14,12 @@ extern u8 data_0208b318[];
 extern char data_ov000_021cc885[];
 void LangData_LocalizePath(char *dst, const char *src);
 BOOL func_ov000_02184498(void *g);
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
-void func_0203ca24(s32 a, s32 b, s32 c);
-void func_0203cb78(s32 a, s32 b, s32 c);
-s32 func_0203ca74(s32 ch);
-s32 func_0203ca84(s32 ch);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
+void GfxSys_SetFadeRange(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
+s32 GfxSys_GetFadeTimer(s32 ch);
+s32 GfxSys_GetFadeLevel(s32 ch);
 void func_02042eac(s32 ch, s32 planes);
 void func_02042ebc(s32 ch, s32 duration, s32 start, s32 end);
 BOOL func_02042ef8(s32 ch);
@@ -83,9 +83,9 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         if (!func_ov000_02184498(data_ov000_021ccd54)) {
             break;
         }
-        func_0203c9e8(0x21, 0);
-        func_0203cc58(0x1e000, 1, 2);
-        func_0203ca24(0, 8, 2);
+        GfxSys_SetFadePlanes(0x21, 0);
+        GfxSys_StartFadeOut(0x1e000, 1, 2);
+        GfxSys_SetFadeRange(0, 8, 2);
         self->unk_28 = 4;
         break;
     case 4: {
@@ -104,22 +104,22 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         self->unk_30 = p;
         TexObj_SetRes(self->unk_30, (void *)self->unk_24->vfunc_10());
         TexObj_SelectImage(self->unk_30, 1, 0xffff);
-        func_0203cb78(0, 1, 0);
-        func_0203cc58(0, 1, 2);
+        GfxSys_StartFadeIn(0, 1, 0);
+        GfxSys_StartFadeOut(0, 1, 2);
         self->unk_28 = 6;
         break;
     }
     case 6:
-        func_0203cb78(0x3c000, 1, 2);
-        func_0203ca24(0x10, 8, 2);
+        GfxSys_StartFadeIn(0x3c000, 1, 2);
+        GfxSys_SetFadeRange(0x10, 8, 2);
         self->unk_28 = 7;
         break;
     case 7:
-        if (func_0203ca74(2) <= 0x1e000) {
+        if (GfxSys_GetFadeTimer(2) <= 0x1e000) {
             break;
         }
-        func_0203c9e8(0x10, 0);
-        func_0203cb78(0x1e000, 1, 0);
+        GfxSys_SetFadePlanes(0x10, 0);
+        GfxSys_StartFadeIn(0x1e000, 1, 0);
         self->unk_28 = 9;
         break;
     case 9:
@@ -138,9 +138,9 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         self->unk_28 = 0xd;
         break;
     case 13: {
-        s32 v = func_0203ca84(2);
-        func_0203cb78(0x3c000, 1, 2);
-        func_0203ca24(v, 0, 2);
+        s32 v = GfxSys_GetFadeLevel(2);
+        GfxSys_StartFadeIn(0x3c000, 1, 2);
+        GfxSys_SetFadeRange(v, 0, 2);
         func_02042eac(1, 1);
         func_02042ebc(1, 0x1e, 0x10, 0);
         self->unk_30->flags |= 0x80000;

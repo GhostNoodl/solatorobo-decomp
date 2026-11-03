@@ -697,12 +697,12 @@ extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern u16 Ov003Vec_Yaw(const VecFx32 *v);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void Body_SetOwner(void *p, s32 a);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_ov000_0218bed8(void *a, s32 b, void *c);
+extern void Group_UpdateActor(void *a, s32 b, void *c);
 
 static inline Actor *Ov010_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -727,7 +727,7 @@ void Ov010Obj022020c8_StateDie(Obj022020c8 *self) {
         st->st++;
         if (self->unk_ce_1) {
             Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, Ov010_TeamBit(self->target), NULL, NULL, 0x2000, 0, 100, 0x1000);
-            func_ov000_0218996c(0xf, 5);
+            Field_ShakeCamera(0xf, 5);
         }
         e = Effect_SpawnId(0x131, &self->pos);
         e->SetRotXYZ(0, Ov003Vec_Yaw(&data_ov010_0220fe38), 0);
@@ -765,7 +765,7 @@ void Ov010Obj022020c8_StateDie(Obj022020c8 *self) {
         st->timer++;
         if (st->timer > 5) {
             func_ov000_02197dec(self, 0xf, 0x63);
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             ((VObj *)self)->vfunc_08();
         } else if (self->model != NULL) {
             self->model->alpha = 31 - self->fsm->timer * 4;
@@ -828,7 +828,7 @@ extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
 extern void VEC_Normalize(const VecFx32 *a, VecFx32 *o);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern BOOL History_SetState(void *a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Ov003Vec_MultAdd(VecFx32 *a, VecFx32 *b, VecFx32 *c, s32 d, s32 e);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
@@ -889,7 +889,7 @@ void Ov010Obj022020c8_StateFly(Obj022020c8 *self) {
             (self->hit)->unk_58 != 0) {
             Ov003Pickup_Update(self, 0);
             History_SetState(self->fsm, 0x15, 0);
-            func_ov000_0218996c(0xf, 10);
+            Field_ShakeCamera(0xf, 10);
             return;
         }
         self->fsm->timer++;
@@ -905,7 +905,7 @@ void Ov010Obj022020c8_StateFly(Obj022020c8 *self) {
             (self->hit)->unk_58 != 0) {
             Ov003Pickup_Update(self, 0);
             History_SetState(self->fsm, 0x15, 0);
-            func_ov000_0218996c(0xf, 10);
+            Field_ShakeCamera(0xf, 10);
             return;
         }
         self->fsm->timer++;

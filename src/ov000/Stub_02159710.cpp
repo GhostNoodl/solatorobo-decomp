@@ -2,11 +2,11 @@
 
 extern "C" {
 
-s32 func_ov000_02159710(void) {
+s32 Lo021cb3a8_GetPadLeft(void) {
     return 0x14;
 }
 
-s32 func_ov000_02159718(void) {
+s32 Lo021cb3a8_GetPadTop(void) {
     return 0x8;
 }
 

@@ -63,7 +63,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             busy = FALSE;
         } else {
             if (self->unk_0c == 0x28000) {
-                func_02066df0()->unk_d4 = 1;
+                EffectHud_New2711()->unk_d4 = 1;
             }
             func_ov015_02207c30(a);
             busy = TRUE;

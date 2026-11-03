@@ -39,7 +39,7 @@ void Ov012ActVt_0220b35c_Update(Ov003Actor *self) {
     if (pl == NULL) {
         return;
     }
-    if (func_ov000_021b4738(pl)) {
+    if (Actor_IsDead(pl)) {
         return;
     }
     self->target = pl->id;

@@ -32,7 +32,7 @@ extern "C" {
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern u16 func_ov000_02199e94(void *p);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, void *e, s32 f, s32 g, s16 h, s32 i);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 static inline u16 Ov009_Tick(ActorSub40 *s) {
     s->timer++;
@@ -72,7 +72,7 @@ void Ov009ActVt_02217390_StateDie(Ov009ActVt_02217390 *self) {
         v.z = 0;
         e->v20(&v);
         Ov009_Blast(self, Ov009_Ang(self), &v, y + 0x1333);
-        func_ov000_0218996c(10, 0x19);
+        Field_ShakeCamera(10, 0x19);
         self->targetObj->target = 0xffff;
         self->fsm->st++;
         break;

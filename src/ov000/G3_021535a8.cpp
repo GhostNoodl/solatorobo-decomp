@@ -1,4 +1,4 @@
-// Shadow quad drawn straight into the G3 geometry buffer (the func_ov000_0215b2e4 pattern).
+// Shadow quad drawn straight into the G3 geometry buffer (the LoBase021cafc0_021cb0b8_DrawFrame pattern).
 // The asm translation-matrix inline makes MWCC load the constants around it from the
 // literal pool, without CSE between the calls.
 #pragma short_enums on
@@ -49,7 +49,7 @@ static inline void G3_SetTransMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
 }
 
 
-void func_ov000_021535a8(UiObj *self, s32 a1, s32 *pos, s32 sy2) {
+void UiObj_DrawRectFrame(UiObj *self, s32 a1, s32 *pos, s32 sy2) {
     MtxFx43 m;
     MtxFx43 t;
     s16 z;

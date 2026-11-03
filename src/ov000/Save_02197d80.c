@@ -33,8 +33,8 @@ extern SaveData *data_0214a424;
 
 u16 LangData_GetIndex(u32 a, u32 b);
 void *ActorMgr_FindPlayer(void);
-BOOL func_ov000_021b4738(void);
-void func_020627a0(u16 kind, u16 id);
+BOOL Actor_IsDead(void);
+void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
@@ -75,8 +75,8 @@ void Obj02197d80_LoadValue(Obj02197d80 *self) {
 
 void func_ov000_02197dec(Obj02197d80 *self, u8 value, s16 sfx) {
     Obj_StoreValue(self, value);
-    if (sfx > 0 && ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
-        func_020627a0(self->kind, self->id);
+    if (sfx > 0 && ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(sfx);
         {
             Player021ccd54 *pl = data_ov000_021ccd54;

@@ -29,7 +29,7 @@ bool UiObj_IsShown(UiObj *self) {
     return IsState2(self);
 }
 
-BOOL func_ov000_02151f28(UiList *self) {
+BOOL UiList_OnChildDone(UiList *self) {
     BOOL ret;
     if (self->unk_90 == NULL) {
         return TRUE;
@@ -64,7 +64,7 @@ s32 func_ov000_02151fd8(UiList *self) {
     return self->unk_c1 * 8;
 }
 
-s32 func_ov000_02151fe4(UiObj *self) {
+s32 UiList021cb4a8_GetHeight(UiObj *self) {
     s32 a = self->vfunc_40() * self->rows;
     s32 b = self->vfunc_34();
     return a + b + self->vfunc_38();
@@ -76,23 +76,23 @@ s32 UiObj_GetHeight(UiObj *self) {
     return a + b + self->vfunc_38();
 }
 
-s32 func_ov000_0215207c(void) {
+s32 UiObj_GetPadTop(void) {
     return 0;
 }
 
-s32 func_ov000_02152084(void) {
+s32 UiObj_GetPadBottom(void) {
     return 0;
 }
 
-s32 func_ov000_0215208c(void) {
+s32 UiList021cb4a8_GetLineSpacing(void) {
     return 4;
 }
 
-s32 func_ov000_02152094(void) {
+s32 UiList021cb4a8_GetPadBottom(void) {
     return 3;
 }
 
-s32 func_ov000_0215209c(void) {
+s32 UiList021cb4a8_GetPadTop(void) {
     return 8;
 }
 
@@ -104,7 +104,7 @@ s32 func_ov000_021520b0(UiObj *self) {
     return (s32)(((s64)(self->width << 12) * 0xe7a + 0x800) >> 12) >> 12;
 }
 
-s32 func_ov000_021520e4(void) {
+s32 UiList021cb4a8_GetPadLeft(void) {
     return 0xe;
 }
 

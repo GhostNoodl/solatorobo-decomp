@@ -55,8 +55,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     switch (self->subState) {
     case 0:
         if (!ov006_FadeIdle()) {
-            func_0203cb78(0x14000, 0, 0);
-            func_0203cb78(0x14000, 0, 1);
+            GfxSys_StartFadeIn(0x14000, 0, 0);
+            GfxSys_StartFadeIn(0x14000, 0, 1);
         }
         self->subState++;
         break;
@@ -185,8 +185,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         }
         break;
     case 0x1e:
-        func_0203cc58(0x14000, 0, 0);
-        func_0203cc58(0x14000, 0, 1);
+        GfxSys_StartFadeOut(0x14000, 0, 0);
+        GfxSys_StartFadeOut(0x14000, 0, 1);
         self->subState++;
     case 0x1f:
         if (data_ov006_021ec888->state == 9) {
@@ -199,15 +199,15 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     case 0x32:
         self->unk24->flags |= 2;
         self->unk28->flags |= 2;
-        func_0203cb78(0x1000, 0, 0);
-        func_0203cb78(0x1000, 0, 1);
+        GfxSys_StartFadeIn(0x1000, 0, 0);
+        GfxSys_StartFadeIn(0x1000, 0, 1);
         ov006_Menu_ShowObj(data_ov006_021ec888);
         self->subState++;
     case 0x33:
         if (data_ov006_021ec888->state != 9) {
             ov006_HideAll(self);
-            func_0203cc58(0x1e000, 0, 0);
-            func_0203cc58(0x1e000, 0, 1);
+            GfxSys_StartFadeOut(0x1e000, 0, 0);
+            GfxSys_StartFadeOut(0x1e000, 0, 1);
             self->subState++;
         }
         break;

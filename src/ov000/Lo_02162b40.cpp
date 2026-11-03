@@ -31,9 +31,9 @@ BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 void Model0218fe1c_SetLoop(void *a);
-void func_ov000_02191870(void *a, void *b);
+void Model0218fe1c_BindAnim3Res(void *a, void *b);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
-void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
+void Model0218fe1c_SetAnim3(void *a, s32 b, s32 c, s32 d);
 BOOL Interp_MoveTo(void *out, s32 speed, const void *from, const void *to, s32 minDist);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
@@ -82,13 +82,13 @@ void func_ov000_02162bd4(ModelViewer *self) {
         self->model.visible = 0;
         if (LFLD(void *, &self->res.b[self->res.cur], 0x48) != NULL &&
             LFLD(s32, LFLD(void *, &self->res.b[self->res.cur], 0x48), 0xc) != 0) {
-            func_ov000_02191870(&self->model, &self->res.b[self->res.cur]);
+            Model0218fe1c_BindAnim3Res(&self->model, &self->res.b[self->res.cur]);
             ctrl = Model0218fe1c_GetAnimCtrl(&self->model, 3);
             if (ctrl != NULL) {
                 s32 v;
                 float f;
                 s32 frame;
-                func_ov000_02191920(&self->model, 0, 0x1000, 0);
+                Model0218fe1c_SetAnim3(&self->model, 0, 0x1000, 0);
                 v = self->frame;
                 if (v > 0) {
                     f = (float)(v << 12) + 0.5f;
@@ -106,7 +106,7 @@ void func_ov000_02162bd4(ModelViewer *self) {
                 ctrl->paused = 1;
             }
         } else {
-            func_ov000_02191870(&self->model, &self->res.a[self->res.cur]);
+            Model0218fe1c_BindAnim3Res(&self->model, &self->res.a[self->res.cur]);
         }
         self->state = 0x14;
         self->request = 0;

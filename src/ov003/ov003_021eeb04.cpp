@@ -60,7 +60,7 @@ Ov003Bridge *Ov003ActVt_021f9e10_DtorDelete(Ov003Bridge *self) {
 
 void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;

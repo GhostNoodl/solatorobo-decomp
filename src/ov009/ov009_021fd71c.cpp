@@ -48,7 +48,7 @@ void Ov009ActVt_02216750_StateShoot(Ov009ActVt_02216750 *self) {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
@@ -104,7 +104,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
         self->fsm->st++;
     case 1:
         if (self->fsm->timer > 0x78) {
-            func_ov000_0218996c(10, 0x28);
+            Field_ShakeCamera(10, 0x28);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             e = Effect_SpawnId(5, &self->pos);
             spd = 0x6000;
@@ -139,7 +139,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
             v.y = 0x2800;
             v.z = 0x1800;
             Spawn_ScatterEffect(&self->pos, &v, 0xc00, 0x1400, a, b);
-            func_ov000_0218996c(6, 10);
+            Field_ShakeCamera(6, 10);
         }
         self->fsm->timer++;
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);

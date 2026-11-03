@@ -24,7 +24,7 @@ extern "C" {
 
 extern char data_ov003_021fa1a4[];
 extern void ActorEx_StateFly(ActorEx *self);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 extern void Ov003Pickup_Update(ActorEx *self, s32 a);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
@@ -150,7 +150,7 @@ void Ov003ActVt_021fa07c_State20(ActorEx *self) {
                 v.z = self->pos.z;
                 v.y -= 0x4000;
                 if (Hit_DiffInCylinder(&pl->pos, &v, pl->radius + 0x8000, 0x8000)) {
-                    func_ov000_0218996c(6, 0x16);
+                    Field_ShakeCamera(6, 0x16);
                     SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
                     if (self->unk_1a < 0) {
                         self->pos = pl->pos;
@@ -172,7 +172,7 @@ void Ov003ActVt_021fa07c_State20(ActorEx *self) {
         ActorSub48 *ctl;
         self->fsm->timer++;
         if (self->fsm->timer == 0x16) {
-            func_ov000_0218996c(10, 0x19);
+            Field_ShakeCamera(10, 0x19);
             SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             return;
         }
@@ -262,7 +262,7 @@ void Ov003ActVt_021fa07c_StateFly(ActorEx *self) {
                     self->speed = 0x266 - self->unk_92 * 0x29;
                 }
                 self->velY = (3 - self->unk_92) * 0x133 + 0x266;
-                func_ov000_0218996c(8, 0xc);
+                Field_ShakeCamera(8, 0xc);
                 Effect_SpawnId(0x12e, &self->pos)->SetScaleAll(self->radius);
                 SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             }

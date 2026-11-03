@@ -2,19 +2,19 @@
 
 extern "C" {
 
-void func_0206d4dc(GameSave *s) {
+void GameSave_Setup(GameSave *s) {
     s->vf78();
     SaveBase_AllocBuffers(s);
 }
 
-void func_0206d4fc(GameSave *s) {
+void GameSave_Init(GameSave *s) {
     s->flags = 0;
 }
 
-void func_0206d508(GameSave *s) {
+void GameSave_Finalize(GameSave *s) {
 }
 
-void func_0206d50c(GameSave *s, GameSaveSlot *slot) {
+void GameSave_FillSlot(GameSave *s, GameSaveSlot *slot) {
     slot->saveCount++;
     slot->frameCount = data_0214a424->frameCount;
     slot->unk_08 = data_0214a424->unk_020;
@@ -24,28 +24,28 @@ void func_0206d50c(GameSave *s, GameSaveSlot *slot) {
     slot->unk_0c_28 = (u8)data_0214a424->unk_518_28;
 }
 
-void func_0206d5ac(GameSave *s, void *dst) {
+void GameSave_FillData(GameSave *s, void *dst) {
     MI_CpuCopy8(data_0214a428, dst, sizeof(data_0214a428));
 }
 
-void func_0206d5c4(GameSave *s, const void *src) {
+void GameSave_OnLoadData(GameSave *s, const void *src) {
     MI_CpuCopy8(src, data_0214a428, sizeof(data_0214a428));
 }
 
-void func_0206d5e0(GameSave *s) {
+void GameSave_OnError(GameSave *s) {
     s->bits.flag8 = 0;
     s->bits.flag9 = 0;
     s->bits.flag10 = 0;
     s->bits.flag2 = 1;
 }
 
-void func_0206d5fc(GameSave *s) {
+void GameSave_State1(GameSave *s) {
     if (s->bits.active) {
         SaveBase_SetState_020473ac(s, 2);
     }
 }
 
-void func_0206d61c(GameSave *s) {
+void GameSave_State3(GameSave *s) {
     SaveSlot *slot = (SaveSlot *)(s->header->slots + s->curSlot * s->slotSize);
     if (slot->flags & 2) {
         s->bits.flag11 = 1;
@@ -53,7 +53,7 @@ void func_0206d61c(GameSave *s) {
     SaveBase_SetState_020473ac(s, 4);
 }
 
-void func_0206d650(GameSave *s) {
+void GameSave_State4(GameSave *s) {
     s->bits.flag1 = 0;
     if (s->bits.flag3) {
         SaveBase_SetState_020473ac(s, 5);
@@ -79,13 +79,13 @@ void func_0206d650(GameSave *s) {
     }
 }
 
-void func_0206d724(GameSave *s) {
+void GameSave_State6(GameSave *s) {
     s->bits.flag3 = 0;
     s->bits.flag1 = 1;
     SaveBase_SetState_020473ac(s, 0);
 }
 
-void func_0206d744(GameSave *s) {
+void GameSave_State7(GameSave *s) {
     SaveSlot *slot = SaveBase_GetSlot(s, s->curSlot);
     if (s->step == 0) {
         if (s->bits.flag8) {
@@ -99,18 +99,18 @@ void func_0206d744(GameSave *s) {
             slot->flags &= ~8;
         }
     }
-    func_02047c2c(s);
+    SaveBase_State7(s);
 }
 
-void func_0206d7b0(GameSave *s) {
+void GameSave_State8(GameSave *s) {
     s->bits.flag8 = 0;
     s->bits.flag9 = 0;
     s->bits.flag1 = 1;
     SaveBase_SetState_020473ac(s, 0);
 }
 
-void func_0206d7d4(GameSave *s) {
-    func_02048164(s);
+void GameSave_State10(GameSave *s) {
+    SaveBase_State10(s);
     if (s->step == 1) {
         s->bits.flag10 = 0;
         s->bits.flag1 = 1;
@@ -118,20 +118,20 @@ void func_0206d7d4(GameSave *s) {
     }
 }
 
-void func_0206d80c(GameSave *s) {
+void GameSave_State11(GameSave *s) {
     s->bits.flag11 = 1;
     if (s->bits.flag12) {
         SaveBase_SetState_020473ac(s, 12);
     }
 }
 
-void func_0206d834(GameSave *s) {
+void GameSave_State14(GameSave *s) {
     s->bits.flag13 = 1;
     SaveBase_SetState_020473ac(s, 0);
 }
 
-void func_0206d850(GameSave *s) {
-    func_0204880c(s);
+void GameSave_State13(GameSave *s) {
+    SaveBase_State13(s);
     if (s->step == 1) {
         s->bits.flag12 = 0;
         s->bits.flag1 = 1;
@@ -139,19 +139,19 @@ void func_0206d850(GameSave *s) {
     }
 }
 
-void func_0206d888(GameSave *s) {
+void GameSave_State16(GameSave *s) {
     s->bits.flag14 = 0;
     s->bits.flag1 = 1;
     SaveBase_SetState_020473ac(s, 0);
 }
 
-void func_0206d8a8(GameSave *s) {
+void MainVt_0208ca18_State1(GameSave *s) {
     if (s->bits.active) {
         SaveBase_SetState_020473ac(s, 4);
     }
 }
 
-void func_0206d8c8(GameSave *s) {
+void MainVt_0208ca18_State7(GameSave *s) {
     switch (s->step) {
     case 0:
         s->step = 100;
@@ -174,7 +174,7 @@ void func_0206d8c8(GameSave *s) {
     }
 }
 
-void func_0206d938(GameSave *s) {
+void MainVt_0208ca18_State9(GameSave *s) {
     switch (s->step) {
     case 0:
         if (func_02047694(s)) {
@@ -193,18 +193,18 @@ void func_0206d938(GameSave *s) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_0206d99c is 19 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): MainVt_0208c994_Configure is 19 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: register-only: the first product and the card pointer swap registers; every wrong node
 // is a backend temp. History: docs/MATCHING.md rounds qpB, raC, rgB, cvA (search for the address); the full list is
 // docs/UNMATCHED.md.
-// func_0206d99c: 19 raw / 0 register-masked (round qpB; was 36 / 0 with a split `sm_t24` sum).
-// The first half is func_0206d43c's layout; the second places a 0xc-byte-slot save after it and
+// MainVt_0208c994_Configure: 19 raw / 0 register-masked (round qpB; was 36 / 0 with a split `sm_t24` sum).
+// The first half is GameSave_Configure's layout; the second places a 0xc-byte-slot save after it and
 // gives it the rest of the card, rounded down to a page. The align-down written out as
 // `payload &= ~(totalSize - 1)` followed by `payload -= slotSize + 4` keeps both the sub and the add.
 // Register-only: the ROM gives the first product r1 and the card pointer r2 (ours r2/r1). Passing
 // the page size as an argument (`RoundUp(x, data_02097e44->totalSize)`) fixes that pair (18 / 0) but
 // moves the `m` of the first align off the loaded register; honest_search finds nothing.
-// Round rgB: as in func_0206d43c, tools/vnum.sh shows every object uncoloured (d, n, end, payload and the inline
+// Round rgB: as in GameSave_Configure, tools/vnum.sh shows every object uncoloured (d, n, end, payload and the inline
 // temps are all propagated); the swapped values are backend temps, so no band lever applies.
 // Rounds x up to the card's page size (SysCard::totalSize).
 static inline u32 GameSave_AlignUp(u32 x) {
@@ -213,7 +213,7 @@ static inline u32 GameSave_AlignUp(u32 x) {
     return x & ~m;
 }
 
-void func_0206d99c(GameSave *s) {
+void MainVt_0208c994_Configure(GameSave *s) {
     u32 d;
     u32 end;
     u32 payload;

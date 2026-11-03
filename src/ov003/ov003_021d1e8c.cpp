@@ -41,7 +41,7 @@ extern void *data_ov000_021ccd68;
 extern const Ov003AgFlag data_ov003_021f4466[];
 extern const s16 FX_SinCosTable_[];
 extern Ov003AgPl *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003AgPl *pl);
+extern BOOL Actor_IsDead(Ov003AgPl *pl);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
 extern BOOL History_HasState(ActorSub40 *w, u8 a, s32 b, s32 c);
@@ -152,7 +152,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
         if (Ov003AgPl_Bit2(pl)) {
             return;
         }
-        if (func_ov000_021b4738(pl)) {
+        if (Actor_IsDead(pl)) {
             return;
         }
     }

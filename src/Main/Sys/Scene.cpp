@@ -18,7 +18,7 @@ extern void func_0206e858(void);
 extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
 extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
 extern void func_0201bbfc(u32 a);
-extern void func_0203caf8(int a);
+extern void GfxSys_StopFade(int a);
 extern void StageFlags_Reset(StageFlags *obj);
 extern void func_0204a904(void);
 extern void func_02039e0c(GfxMgr *mgr);
@@ -97,7 +97,7 @@ void func_0204af00(SceneMgr *mgr) {
                 if (!mgr->noReset && mgr->changing != TRUE && (data_02097dc8->cur & 0x30c) == 0x30c) {
                     func_0201bbfc(1);
                     data_02097dd0->frameWait = 1;
-                    func_0203caf8(-1);
+                    GfxSys_StopFade(-1);
                     for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
                         if (entry->valid == 1) {
                             Scene_SetNext(&entry->desc);

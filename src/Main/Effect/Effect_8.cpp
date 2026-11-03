@@ -10,9 +10,9 @@ extern char data_0208c81e[];
 extern char data_0208c826[];
 extern char data_0208c82e[];
 
-EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def);
+EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def);
 
-void func_02068600(EffectSetup *setup) {
+void EffectSetup_FindChunks(EffectSetup *setup) {
     u32 entrySize;
     u32 entrySize2;
     u8 *p = setup->data + 0xc;
@@ -64,16 +64,16 @@ extern u32 data_0208c8bc[];
 extern void EffectObj_Register(EffectObj *obj);
 extern void Effect3D_Init(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
-extern void func_02069184(EffectEmitterSub *sub);
+extern void EffectEmitterSub_InitFuncs(EffectEmitterSub *sub);
 extern void EffectEmitter_Reset(EffectEmitter *em);
 extern void EffectEmitter_ResetParams(EffectEmitter *em);
 extern void EffectPartSet_Init(EffectPartSet *parts);
-extern void func_0206a138(EffectPartSet *parts);
+extern void EffectPartSet_Reset(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
 extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, const u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
 
-void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id);
+void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id);
 void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name);
 void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id);
 void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids);
@@ -86,7 +86,7 @@ static inline void Effect_SetStr(char *dst, const char *src) {
     }
 }
 
-EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
+EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
     EffectObj *ret = NULL;
     switch (def->type) {
     case 0: {
@@ -103,7 +103,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         e->time = -def->delay;
         e->unk_28 = def->unk_38;
         e->loopCount = def->loopCount;
-        func_02068c40(setup, e, def->cueId);
+        EffectSetup_LoadSndCues(setup, e, def->cueId);
         break;
     }
     case 1: {
@@ -114,14 +114,14 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
             EffectObj_Register(em);
             *(u32 **)em = data_0208c868;
             *(u32 **)&em->sub = data_0208c354;
-            func_02069184(&em->sub);
+            EffectEmitterSub_InitFuncs(&em->sub);
             EffectEmitter_Reset(em);
             *(u32 **)em = data_0208c8bc;
             EffectEmitter_ResetParams(em);
         }
         ret = em;
         em->time = -def->delay;
-        func_02068c40(setup, em, def->cueId);
+        EffectSetup_LoadSndCues(setup, em, def->cueId);
         em->nameDef = def->arcName[0] != 0 ? def : NULL;
         em->def = def;
         em->unk_28 = def->unk_38;
@@ -133,7 +133,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
             *(u32 **)parts = data_0208c364;
             EffectPartSet_Init(parts);
             *(u32 **)parts = data_0208c850;
-            func_0206a138(parts);
+            EffectPartSet_Reset(parts);
         }
         func_02068b6c(setup, parts, def->partIds);
         em->parts = parts;
@@ -222,7 +222,7 @@ void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids) {
     }
 }
 
-void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id) {
+void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id) {
     s32 v;
     s32 size;
     s32 n;

@@ -71,7 +71,7 @@ void Ov014ActEx_0220dcf4_Start(Ov014ActEx_0220dcf4 *self) {
 
 extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Math_DirToAngles(u16 *ang, VecFx32 *v);
 extern void *Target_Get(void *p);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -144,7 +144,7 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
             e->SetScaleXYZ(s, s, s);
         }
         if (self->fsm->timer == 0xf) {
-            func_ov000_0218996c(10, 10);
+            Field_ShakeCamera(10, 10);
         }
         st = self->fsm;
         if (st->timer != 0) {
@@ -219,7 +219,7 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
             return;
         }
         self->pos.y = self->height >> 3;
-        func_ov000_0218996c(0x14, 0x14);
+        Field_ShakeCamera(0x14, 0x14);
         Effect_SpawnId(5, &self->pos)->SetScaleAll(0x4000);
         SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
         EffectMgr_StopLoop(data_0214a420, self->unk_d0);

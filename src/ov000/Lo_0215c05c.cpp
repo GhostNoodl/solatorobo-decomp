@@ -19,7 +19,7 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215c05c(Lo021cadcc *self) {
+void Lo021cadcc_PostUpdate(Lo021cadcc *self) {
     if (self->state != 2) {
         return;
     }

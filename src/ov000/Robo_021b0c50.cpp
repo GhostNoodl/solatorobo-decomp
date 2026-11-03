@@ -28,7 +28,7 @@ extern "C" {
 extern char data_ov000_021cc6c6[];
 void func_ov000_021b0db0(Actor *self, s32 id);
 BOOL Model0218fe1c_IsAnimDone(void *p);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 void func_ov000_021ad130(Actor *self);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
@@ -37,7 +37,7 @@ void func_ov000_021b0c50(Actor *self) {
     switch (self->fsm->st) {
     case 0:
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc6c6, 0x800, 0);
-        func_ov000_0218996c(8, 0xc);
+        Field_ShakeCamera(8, 0xc);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;

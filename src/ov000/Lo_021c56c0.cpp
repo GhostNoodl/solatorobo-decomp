@@ -7,7 +7,7 @@ void func_ov000_021c4b00(void *self);
 void func_ov000_0215f330(UiLabel *p);
 void func_ov000_021c4c10(void *self);
 
-void func_ov000_021c56c0(Lo021ccb54 *self) {
+void Ov000Vt_021ccb54_PreUpdate(Lo021ccb54 *self) {
     s32 i;
     ListRow *n;
 

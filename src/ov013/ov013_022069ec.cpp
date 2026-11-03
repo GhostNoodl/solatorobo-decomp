@@ -4,8 +4,8 @@
 extern "C" {
 
 extern char data_ov013_0220be7c[];
-extern void func_ov000_0218996c(u8 a, u8 b);
-void func_020627a0(u16 a, u16 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 
@@ -35,7 +35,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         if (w->timer <= 10) {
             return;
         }
-        func_ov000_0218996c(0xf, 0x50);
+        Field_ShakeCamera(0xf, 0x50);
         self->fsm->st = 3;
         self->fsm->timer = 0;
         break;
@@ -46,7 +46,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         }
         SndMgr_PlayVolume(data_02097e4c, 0x6a, -1, -1, -1);
         SndMgr_PlayVolume(data_02097e4c, 0x53, -1, -1, -1);
-        func_ov000_0218996c(0x14, 0xf);
+        Field_ShakeCamera(0x14, 0xf);
         self->fsm->st = 4;
         self->fsm->timer = 0;
         break;
@@ -74,7 +74,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         if (w->timer <= 30) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);

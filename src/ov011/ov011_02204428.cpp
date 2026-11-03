@@ -128,7 +128,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;

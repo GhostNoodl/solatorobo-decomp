@@ -44,7 +44,7 @@ BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
     if (!func_ov000_02184498(p)) {
         return FALSE;
     }
-    if (func_020658cc(data_0214a420, 0x2712) || func_020658cc(data_0214a420, 0x2713) || func_020658cc(data_0214a420, 0x191)) {
+    if (EffectMgr_FindByKey(data_0214a420, 0x2712) || EffectMgr_FindByKey(data_0214a420, 0x2713) || EffectMgr_FindByKey(data_0214a420, 0x191)) {
         return FALSE;
     }
     if (IsFlag()) {

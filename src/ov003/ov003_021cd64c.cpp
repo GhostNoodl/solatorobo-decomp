@@ -77,7 +77,7 @@ extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g,
 extern void func_ov000_021c2208(void *p);
 extern BOOL ResMgr_IsArchiveLoaded(const char *a, const char *b, u16 c);
 
-bool Ov003TaskVt_021f78f4_GetFlag4(Ov003FlagSet *self) {
+bool Ov003Task_GetFlag4(Ov003FlagSet *self) {
     BOOL r = self->b4 ? TRUE : FALSE;
     return r;
 }

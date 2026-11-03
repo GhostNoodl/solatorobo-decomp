@@ -126,7 +126,7 @@ Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *s
 }
 
 void Ov013ActExVt_0220b7d0_Init(Ov013ActExVt_0220b7d0 *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     ResMgr_Load(data_ov013_0220b860, 7, 0);
 }
 
@@ -164,7 +164,7 @@ extern const VecFx32 data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
 extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *off, s32 rot);
-extern BOOL func_ov000_021b4738(Ov003Actor *p);
+extern BOOL Actor_IsDead(Ov003Actor *p);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *p, s32 a);
 extern BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, void *box, s32 a, s32 b);
@@ -229,7 +229,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
         Ov003Actor *p;
         self->unk_d8 += 0x31;
         p = ActorMgr_FindPlayer();
-        if (p == NULL || func_ov000_021b4738(p)) {
+        if (p == NULL || Actor_IsDead(p)) {
             self->unk_ce = 1;
         }
         self->unk_ce--;

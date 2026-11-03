@@ -10,7 +10,7 @@ extern BOOL Actor_GetTargetSub44(Actor *self);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern Actor *Obj021984c8_GetActor(void *p);
 extern BOOL Hit_Apply(void *a, Actor *b, Actor *c, u16 d, u8 e, VecFx32 *f, s32 g, s32 h, s32 i);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Ov003Pickup_Update(Ov003Shot *self, u16 mask);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
@@ -103,7 +103,7 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
             self->unk_bc = NULL;
         }
         if (hit == 2 && self->def->hitShakeA != 0 && self->def->hitShakeB != 0) {
-            func_ov000_0218996c(self->def->hitShakeA, self->def->hitShakeB);
+            Field_ShakeCamera(self->def->hitShakeA, self->def->hitShakeB);
         }
         if (hit > 0) {
             s32 v;

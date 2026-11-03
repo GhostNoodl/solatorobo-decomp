@@ -17,7 +17,7 @@ extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 s32 Ov013Boss_ChooseAttack(Ov013Boss *self);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 void Ov013Boss_Start(Ov013Boss *self) {
@@ -122,7 +122,7 @@ void Ov013Boss_State20(Ov013Boss *self) {
     case 0x63:
         s->timer++;
         if (s->timer > 0x14) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);

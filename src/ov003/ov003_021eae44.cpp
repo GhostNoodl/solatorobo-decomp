@@ -58,7 +58,7 @@ extern Ov003Snd *data_02fe152c;
 extern s32 DataRes_GetTable(Ov003Snd *s, s32 a);
 extern u16 DataRes_ReadBitsAt_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
-extern void func_ov000_02191920(Model0218fe1c *m, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetAnim3(Model0218fe1c *m, s32 a, s32 b, s32 c);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 extern void Model0218fe1c_SetLoop(void *model);
 extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
@@ -147,7 +147,7 @@ BOOL Ov003ActVt_021f9834_Draw(Ov003ActExHome *self) {
 }
 
 void Ov003ActVt_021f9704_Init(Ov003ActExSway *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     self->hasModel = 0;
     if (self->unk_1a != 0) {
         char *name;
@@ -221,7 +221,7 @@ void Ov003ActVt_021f9704_Start(Ov003ActExSway *self) {
         AnimCtrl *a = Model0218fe1c_GetAnimCtrl(self->model, 3);
         if (a != NULL) {
             self->model->unk_c2_6 = 1;
-            func_ov000_02191920(self->model, 0, 0x1000, 0);
+            Model0218fe1c_SetAnim3(self->model, 0, 0x1000, 0);
             if (a->cur != NULL) {
                 a->cur->frame = 0x1000;
             }

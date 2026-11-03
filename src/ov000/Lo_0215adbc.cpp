@@ -20,12 +20,12 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215adbc(LoBase021cafc0_021cb0b8 *self) {
+void Ov000Vt_021cb1b0_Release(LoBase021cafc0_021cb0b8 *self) {
     HEAP_DELETE(TextWin *, self->title2, p->unk_vf04());
 }
 
 
-void func_ov000_0215ae10(UiList *self) {
+void LoBase021cafc0_021cb0b8_PreUpdate(UiList *self) {
     switch (self->state) {
     case 0:
         self->openLen = 0x8000;

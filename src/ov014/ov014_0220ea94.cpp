@@ -14,7 +14,7 @@ extern s32 Model0218fe1c_SetAnimFrame(void *a, s32 b);
 extern s32 AnimEvent_Exec(void *a, void *b);
 extern s32 func_ov014_0220ec18(s16 *a, Model0218fe1c *b);
 extern u8 Gfx3DState_NextPolyId(void *p);
-extern void func_ov000_02191920(Model0218fe1c *a, s32 b, s16 c, u8 d);
+extern void Model0218fe1c_SetAnim3(Model0218fe1c *a, s32 b, s16 c, u8 d);
 extern void Model0218fe1c_ClearLoop(Model0218fe1c *p);
 extern void Model0218fe1c_ResumeAnim(Model0218fe1c *p);
 

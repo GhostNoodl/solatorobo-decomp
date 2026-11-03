@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
-void func_ov000_02161280(Lo021cacd8 *self) {
+void Lo021cacd8_PostUpdate(Lo021cacd8 *self) {
     u32 rep;
     u32 trg;
     if (self->flag2) {

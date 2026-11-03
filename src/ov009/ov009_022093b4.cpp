@@ -23,7 +23,7 @@ extern void HitSphere_Link(ActorSub48 *p);
 extern void Model0218fe1c_SetReverse(Model0218fe1c *m);
 extern void Model0218fe1c_ClearReverse(Model0218fe1c *m);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
     switch (self->fsm->st) {
@@ -84,7 +84,7 @@ void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
         if (Model0218fe1c_IsAnimDone(self->model)) {
             History_SetState(self->fsm, 1, 0);
             if (self->unk_312 != 0) {
-                func_020627a0(self->kind, self->id);
+                Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->stageFlags = 1;
                 self->unk_312 = 0;
@@ -200,7 +200,7 @@ void Ov009ActVt_02217594_StateAttack2(Ov009ActVt_02217594 *self) {
         if (self->unk_312 == 0) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         self->unk_312 = 0;

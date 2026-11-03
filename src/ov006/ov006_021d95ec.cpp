@@ -7,7 +7,7 @@ void TaskHost_Create(int a, int b);
 void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self);
 void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self);
 
-BOOL Ov006Vt_021ec040_Setup(ov006_Task021ec040 *self) {
+BOOL Ov006Vt_021ec040_Start(ov006_Task021ec040 *self) {
     switch (self->subState) {
     case 0:
         TaskHost_Create(0x23, 0);

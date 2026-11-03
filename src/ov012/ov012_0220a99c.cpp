@@ -425,7 +425,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
         break;
     }
     case 8: {
-        func_ov000_0218996c(10, 0x14);
+        Field_ShakeCamera(10, 0x14);
         Effect_SpawnId(5, &self->pos)->SetScaleAll(0x4000);
         Effect_SpawnId(0x6d, &self->pos)->SetScaleAll(0x2000);
         Ov012_FxMid(self);
@@ -445,7 +445,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
             }
         }
         self->targetObj->target = 0xffff;
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }

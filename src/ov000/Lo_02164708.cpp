@@ -10,7 +10,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
     if (data_02097d78[3] == 4) {
@@ -21,7 +21,7 @@ static inline BOOL LoIsMode4(void) {
 
 void func_ov000_02164708(void) {
     if (LoIsMode4()) {
-        func_0203cb78(0x10000, 0, 1);
+        GfxSys_StartFadeIn(0x10000, 0, 1);
     }
 }
 

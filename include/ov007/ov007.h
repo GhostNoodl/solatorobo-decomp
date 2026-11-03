@@ -397,7 +397,7 @@ void func_ov007_021ccf9c(Ov007Scene *s);
 void func_ov007_021cd628(Ov007Scene *s);
 void func_ov007_021cef80(Ov007Scene *s);
 void func_ov007_021ce038(Ov007Scene *s);
-void func_0203cb78(s32 a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
 void Obj0215c1bc_SetText(void *self, u32 flags, char *str);
 }

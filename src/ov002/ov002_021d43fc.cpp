@@ -80,11 +80,11 @@ Task021ef81c *Ov002TaskVt_021ef81c_Dtor(Task021ef81c *self) {
     return self;
 }
 
-BOOL func_ov002_021d467c(void) {
+BOOL Ov002Task_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov002_021d4684(void) {
+void Ov002Task_Load(void) {
 }
 
 Task021ef91c *Ov002TaskVt_021ef91c_DtorDelete(Task021ef91c *self) {
@@ -150,7 +150,7 @@ Task021ef69c *Ov002TaskVt_021ef69c_Dtor(Task021ef69c *self) {
     return self;
 }
 
-void func_ov002_021d4970(void) {
+void Ov002Task_PostUpdate(void) {
 }
 
 Task021ef89c *Ov002TaskVt_021ef89c_DtorDelete(Task021ef89c *self) {
@@ -434,7 +434,7 @@ BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev) {
     return FALSE;
 }
 
-BOOL func_ov002_021d5350(UiList *self, UiListItem *ev) {
+BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev) {
     Task021efc24 *owner = (Task021efc24 *)self->owner;
     u16 id;
     Task021efba4 *t;
@@ -463,7 +463,7 @@ BOOL func_ov002_021d5350(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov002_021d5444(UiList *self, UiListItem *ev) {
+BOOL Task021efc24_List50OnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->id != ((Task021efc24 *)self->owner)->unk_74) {
             Task021efba4 *t;

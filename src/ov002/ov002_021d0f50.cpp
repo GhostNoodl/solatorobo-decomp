@@ -10,8 +10,8 @@ void Task021ef89c_PreUpdate(Task021ef89c *self) {
     switch (self->state) {
     case 8:
         if (func_ov002_isMode4() || func_ov002_isMode4b()) {
-            func_0203c9e8(0x3f, -1);
-            func_0203cb78(0xa000, 0, -1);
+            GfxSys_SetFadePlanes(0x3f, -1);
+            GfxSys_StartFadeIn(0xa000, 0, -1);
         }
         if (self->unk_3c != NULL) {
             self->unk_3c->flags &= ~2;

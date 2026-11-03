@@ -34,7 +34,7 @@ struct Ov003ShotDef {
     u16 trailInterval;
     s16 life; // frames before the shot ends by itself (< 0: ends without exploding)
     s16 sound; // started with the shot (< 0: none)
-    u8 hitShakeA; // func_ov000_0218996c arguments on a hit (both non-zero)
+    u8 hitShakeA; // Field_ShakeCamera arguments on a hit (both non-zero)
     u8 hitShakeB;
     s16 hitRadius; // hit volume once the shot explodes (<< 4; < 0: keep / double)
     s16 hitHeight;

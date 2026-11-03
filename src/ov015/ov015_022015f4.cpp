@@ -111,7 +111,7 @@ extern char data_ov015_02212899[];
 extern char data_ov015_0221289f[];
 extern char data_ov015_022128a5[];
 extern s32 data_ov015_02213328;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d);
 void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d);
@@ -203,7 +203,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         if (sys->state == 1) {
             Ov015SysMode v = OV015_SYS_MODE_2;
             sys->nextState = v;
-            func_0203cb78(0x1000, 0, v - 3);
+            GfxSys_StartFadeIn(0x1000, 0, v - 3);
         }
         Ov015Fade_ToOpaque(Ov015_GetFade(), 0x1000, 0);
         self->step = 0x14;

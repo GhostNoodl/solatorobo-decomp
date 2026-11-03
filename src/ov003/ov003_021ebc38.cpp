@@ -40,7 +40,7 @@ extern BOOL Model021903b4_Draw(void *anim);
 extern void ActorMarker_Draw(void *p);
 
 void Ov003ActVt_021f979c_Init(Ov003Lift *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     if (self->unk_1a != 0) {
         ResSet_SetFile(&self->res, data_ov003_021f998f, 1, 1, 0, 0);
         self->res.unk_00 = 0;

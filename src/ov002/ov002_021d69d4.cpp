@@ -18,21 +18,21 @@ Task021efb24 *Ov002TaskVt_021efb24_Dtor(Task021efb24 *self) {
     return self;
 }
 
-void func_ov002_021d6a54(UiObj *self, void *arg, void *arg2) {
+void Ov002UiObj_DrawItem(UiObj *self, void *arg, void *arg2) {
     UiDrawItemFn cb = self->onDrawItem;
     if (cb != NULL) {
         cb(arg, self, arg2);
     }
 }
 
-int func_ov002_021d6a78(UiObj *self) {
+int Ov002UiObj_GetLineHeight(UiObj *self) {
     s8 base;
     data_02097ce0->unk_004 = self->font;
     base = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return base + self->vfunc_3c();
 }
 
-BOOL func_ov002_021d6abc(void) {
+BOOL Ov002RowList_GetLineSpacing(void) {
     return FALSE;
 }
 
@@ -40,7 +40,7 @@ int func_ov002_021d6ac4(VObj *self, int a, int b, int c) {
     return self->vfunc_60(a, b, c);
 }
 
-BOOL func_ov002_021d6ad8(UiList *self) {
+BOOL Ov002Vt_021efca4_OnChildDone(UiList *self) {
     UiItemFn cb = self->unk_90;
     BOOL r;
     if (cb == NULL) {
@@ -94,23 +94,23 @@ int Ov002Vt_021efca4_GetHeight(UiObj *self) {
     return func_ov002_021d6b88_calc(self);
 }
 
-int func_ov002_021d6c3c(void) {
+int Ov002RowList_GetPadTop(void) {
     return 0;
 }
 
-int func_ov002_021d6c44(void) {
+int Ov002RowList_GetPadBottom(void) {
     return 0;
 }
 
-int func_ov002_021d6c4c(void) {
+int Ov002Vt_021efca4_GetLineSpacing(void) {
     return 4;
 }
 
-int func_ov002_021d6c54(void) {
+int Ov002Vt_021efca4_GetPadBottom(void) {
     return 3;
 }
 
-int func_ov002_021d6c5c(void) {
+int Ov002Vt_021efca4_GetPadTop(void) {
     return 6;
 }
 
@@ -118,7 +118,7 @@ int func_ov002_021d6c64(UiList *self) {
     return self->vfunc_30() + self->unk_c0 + 0x12;
 }
 
-int func_ov002_021d6c88(void) {
+int Ov002Vt_021efca4_GetPadLeft(void) {
     return 0xc;
 }
 

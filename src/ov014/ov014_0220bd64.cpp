@@ -6,8 +6,8 @@ extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a48[];
 extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
-extern void func_ov000_0218996c(u8 a, u8 b);
-void func_020627a0(u16 a, u16 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 
@@ -17,7 +17,7 @@ void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
     case 0: {
         u8 *g;
         ActorSub48 *q;
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(5);
         g = (u8 *)data_ov000_021ccd54;
         g[0xac] = 1;
@@ -45,7 +45,7 @@ void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
         Model0218fe1c_SetAnimFrame(self->model, 0);
         SndMgr_PlayAtPitch(data_02097e4c, 0x32, &self->pos, 4);
         SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
-        func_ov000_0218996c(0xf, 0x3c);
+        Field_ShakeCamera(0xf, 0x3c);
         e = Effect_SpawnId(0x66, &self->pos);
         e->SetScaleXYZ(0x2800, 0x4800, 0x2800);
         self->fsm->st++;

@@ -2,7 +2,7 @@
 // (0x021ccd50..0x021ccd64). The former files are kept as they were, each in its own namespace,
 // so that their local typedefs, inlines and extern declarations do not clash. The TU goes on to
 // 0x021899d8 in the ROM (its functions still read these objects through the 0x021ccd50 pool),
-// but func_ov000_0218867c is not matched, so the files after it stay separate.
+// but SceneCmd_Run29 is not matched, so the files after it stay separate.
 #include "ov000/VObj.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
@@ -70,8 +70,8 @@ void MsgRes_Create(void);
 void LangRes2_Create(void);
 void LangData_CreateRes(void);
 void func_0205b1b4(void);
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void func_0203fc54(void);
 void func_020598a8(void);
 void func_02058fe4(void);
@@ -103,7 +103,7 @@ void ActorMgr_Update(ActorMgr *p);
 void EffectMgr_Update(void *p);
 void GfxSys_UpdateFade(void);
 void ActorMgr_Draw(ActorMgr *p);
-void func_02065b84(void *p);
+void EffectMgr_Draw(void *p);
 void func_ov000_021bc6c0(FieldFade *p);
 void func_0205a69c(void *p);
 }
@@ -154,8 +154,8 @@ void func_ov000_021814dc(void) {
     LangRes2_Create();
     LangData_CreateRes();
     func_0205b1b4();
-    func_0203c9e8(0x3f, -1);
-    func_0203cc58(0, 1, -1);
+    GfxSys_SetFadePlanes(0x3f, -1);
+    GfxSys_StartFadeOut(0, 1, -1);
 }
 
 void func_ov000_02181624(void) {
@@ -282,7 +282,7 @@ void func_ov000_0218190c(void) {
     if (data_ov000_021ccd68 != NULL) {
         ActorMgr_Draw(data_ov000_021ccd68);
     }
-    func_02065b84(data_0214a420);
+    EffectMgr_Draw(data_0214a420);
     func_ov000_021bc6c0(data_ov000_021ccd70);
     func_0205a69c(data_02149f0c);
     if (data_ov000_021ccd60 != NULL) {
@@ -1143,7 +1143,7 @@ namespace m_Stub_02182ad4 {
 
 extern "C" {
 
-void func_ov000_02182ad4(SceneCmd *self) {
+void SceneCmd_Push03(SceneCmd *self) {
     CmdObj_Push(self, 0x3, 0);
 }
 
@@ -1297,7 +1297,7 @@ void func_0206ca44(Obj0214a424 *p);
 void StageFlags_Restore(Obj0214a424 *p);
 void func_ov000_02181f54(SceneStage *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_020626d4(VecFx32 *v, u16 a);
+void Shared_SetMark(VecFx32 *v, u16 a);
 BOOL StageRes_IsAllLoaded(VObj *p);
 BOOL StageRes_Bind(VObj *p);
 BOOL func_ov000_021820bc(SceneStage *self, s32 a);
@@ -1318,7 +1318,7 @@ static inline void Warp(const FieldId *id, s32 arg) {
     }
 }
 
-s32 func_ov000_02182cb8(SceneCmd *self) {
+s32 SceneCmd_Run02(SceneCmd *self) {
     u16 mode = self->unk_a4;
     switch (self->step) {
     case 0:
@@ -1444,7 +1444,7 @@ s32 func_ov000_02182cb8(SceneCmd *self) {
                     v.x = p->unk_13c.x;
                     v.y = p->unk_13c.y;
                     v.z = p->unk_13c.z;
-                    func_020626d4(&v, p->unk_154);
+                    Shared_SetMark(&v, p->unk_154);
                 }
                 {
                     FieldId id = data_0214a424->unk_131;
@@ -1506,7 +1506,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -1546,7 +1546,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_021833d8(SceneCmd *self) {
+s32 SceneCmd_Run03(SceneCmd *self) {
     switch (self->step) {
     case 0:
         self->step++;
@@ -1568,7 +1568,7 @@ namespace m_Stub_0218348c {
 
 extern "C" {
 
-void func_ov000_0218348c(SceneCmd *self, s32 arg) {
+void SceneCmd_Push04(SceneCmd *self, s32 arg) {
     CmdObj_Push(self, 0x4, arg);
 }
 
@@ -1602,7 +1602,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -1642,11 +1642,11 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_021834c4(SceneCmd *self) {
+s32 SceneCmd_Run04(SceneCmd *self) {
     switch (self->step) {
     case 0: {
         if (!(data_02097d78[3] == 0 && data_02097d78[0] == 0 ? 1 : 0)) {
-            func_0203cb78(0x8000, 0, -1);
+            GfxSys_StartFadeIn(0x8000, 0, -1);
         }
         data_0214a424->unk_009 = (u8)self->unk_a4;
         func_0206c620(data_0214a424);
@@ -1664,7 +1664,7 @@ s32 func_ov000_021834c4(SceneCmd *self) {
     return 1;
 }
 
-s32 func_ov000_021835f4(SceneCmd *self) {
+s32 SceneCmd_Run05(SceneCmd *self) {
     switch (self->step) {
     case 0:
         TaskHost_Create(8, self->unk_a4);
@@ -1691,7 +1691,7 @@ extern "C" {
 
 void func_ov000_02181f54(SceneStage *self, s32 a, s32 b, s32 c, u16 d, u16 e);
 
-void func_ov000_021836d0(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
+void SceneCmd_Push06(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
     CmdObj_Push(self, 6, 0);
     func_ov000_02181f54(&self->stage, a, b, c, d, e);
 }
@@ -1740,11 +1740,11 @@ extern "C" {
 void SceneStage_AddScript(SceneStage *self, s32 id, s32 order, s32 c, u16 d, u16 e, u16 f);
 void func_ov000_02182374(SceneStage *self, s32 id, s32 force);
 
-void func_ov000_021837c0(SceneCmd *self) {
+void SceneCmd_Push08(SceneCmd *self) {
     CmdObj_Push(self, 0x8, 0);
 }
 
-void func_ov000_021837f8(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f) {
+void SceneCmd_Push07(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f) {
     CmdObj_Push(self, 0x7, 0);
     SceneStage_AddScript(&self->stage, a, b, c, d, e, f);
 }
@@ -1787,7 +1787,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -1838,7 +1838,7 @@ static inline BOOL WaitMain(SceneCmd *self) {
     return TRUE;
 }
 
-s32 func_ov000_02183880(SceneCmd *self) {
+s32 SceneCmd_Run06to08(SceneCmd *self) {
     switch (self->unk_98) {
     case 6:
         switch (self->step) {
@@ -1933,8 +1933,8 @@ void func_02062478(FieldId *id);
 void func_ov000_02182590(SceneStage *self);
 void func_020624b8(void);
 void func_0206c72c(void *p, FieldId *id);
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void func_02062424(FieldId *id);
 BOOL func_ov000_02181d70(SceneStage *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -1961,7 +1961,7 @@ static inline BOOL IdEq(const FieldId *a, const FieldId *b) {
     return r;
 }
 
-s32 func_ov000_02183a10(SceneCmd *self) {
+s32 SceneCmd_Run09(SceneCmd *self) {
     BOOL hasArg;
     s32 fade;
     if (self->step == 0) {
@@ -2014,8 +2014,8 @@ s32 func_ov000_02183a10(SceneCmd *self) {
         fade = 0x1000;
     }
     if (IsMode0()) {
-        func_0203c9e8(0x3f, 0);
-        func_0203cc58(fade, 2, 0);
+        GfxSys_SetFadePlanes(0x3f, 0);
+        GfxSys_StartFadeOut(fade, 2, 0);
     }
     if (data_02fe1534.unk_46 == self->unk_cd.c[0]) {
         if (IdEq(&SceneCmd_Get()->unk_ca, &self->unk_cd) && self->unk_c9 == 0) {
@@ -2126,12 +2126,12 @@ void func_ov004_021ccf10(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-bool Ov003TaskVt_021f78f4_GetFlag6(u32 addr, s32 arg);
+bool Ov003Task_GetFlag6(u32 addr, s32 arg);
 void SndQueue_ResetNodes_0204aa10(void *p);
 void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
 void EffectMgr_FreeAll(void *p);
-void func_ov000_0218be9c(void *p);
+void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
 void Ov003_LoadKindOverlay(void);
@@ -2175,7 +2175,7 @@ static inline BOOL TaskHasVal(Task118 *t) {
     return (TaskVal(t) != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
-s32 func_ov000_02183db8(SceneCmd *self) {
+s32 SceneCmd_Run0a(SceneCmd *self) {
     Robo021ca458 *pl = ActorMgr_FindPlayer();
     u16 sub = self->unk_a8;
     switch (self->step) {
@@ -2209,8 +2209,8 @@ s32 func_ov000_02183db8(SceneCmd *self) {
                     if (r) {
                         obj->unk_22 = 3;
                     } else {
-                        if (ProtHash((const u32 *)Ov003TaskVt_021f78f4_GetFlag6) == 0x786385f) {
-                            r = Ov003TaskVt_021f78f4_GetFlag6(0x2002000, 0);
+                        if (ProtHash((const u32 *)Ov003Task_GetFlag6) == 0x786385f) {
+                            r = Ov003Task_GetFlag6(0x2002000, 0);
                         } else {
                             r = data_ov004_021cf86c[data_ov004_021cf868 ^ 1](0x2002000, 0);
                         }
@@ -2258,7 +2258,7 @@ s32 func_ov000_02183db8(SceneCmd *self) {
                 self->cam.base.shakeCur = 0;
                 EffectMgr_FreeAll(data_0214a420);
                 func_ov000_021b53f4(data_ov000_021ccd6c);
-                func_ov000_0218be9c(data_ov000_021ccd64);
+                Group_RefreshAll(data_ov000_021ccd64);
                 ActorMgr_DestroyAll(data_ov000_021ccd68);
             } else {
                 self->unk_d0 = self->unk_ca;
@@ -2347,7 +2347,7 @@ namespace m_Stub_02184498 {
 extern "C" {
 
 extern s32 data_02097d78[5];
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 
 static inline BOOL IsMode(s32 mode) {
     return data_02097d78[3] == mode ? TRUE : (data_02097d78[0] == mode ? TRUE : FALSE);
@@ -2359,7 +2359,7 @@ static inline BOOL IsIdle(void) {
 
 BOOL func_ov000_02184498(SceneCmd *self) {
     if (IsMode(4)) {
-        func_0203cb78(0xa000, 0, 0);
+        GfxSys_StartFadeIn(0xa000, 0, 0);
     }
     if (!IsIdle()) {
         return FALSE;
@@ -2417,7 +2417,7 @@ namespace m_Stub_02184594 {
 
 extern "C" {
 
-void func_ov000_02184594(SceneCmd *self) {
+void SceneCmd_Push0b(SceneCmd *self) {
     CmdObj_Push(self, 0xb, 0);
 }
 
@@ -2460,7 +2460,7 @@ static inline void Wake0219bf90(void) {
     p->unk_b28_2 = 1;
 }
 
-s32 func_ov000_021845cc(SceneCmd *self) {
+s32 SceneCmd_Run0b(SceneCmd *self) {
     Robo021ca458 *cur = ActorMgr_FindPlayer();
     switch (self->step) {
     case 0:
@@ -2506,7 +2506,7 @@ namespace m_Stub_021847d8 {
 
 extern "C" {
 
-void func_ov000_021847d8(SceneCmd *self) {
+void SceneCmd_Push0c(SceneCmd *self) {
     CmdObj_Push(self, 0xc, 0);
 }
 
@@ -2540,7 +2540,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -2580,7 +2580,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184810(SceneCmd *self) {
+s32 SceneCmd_Run0c(SceneCmd *self) {
     ActorMgr_FindPlayer();
     switch (self->step) {
     case 0:
@@ -2609,7 +2609,7 @@ extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
 
-void func_ov000_021848d0(SceneCmd *self) {
+void SceneCmd_Push0d(SceneCmd *self) {
     if (ActorMgr_FindPlayer() == NULL || self->unk_ca.c[0] == 0xfe) {
         return;
     }
@@ -2646,7 +2646,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -2686,7 +2686,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184924(SceneCmd *self) {
+s32 SceneCmd_Run0d(SceneCmd *self) {
     switch (self->step) {
     case 0:
         TaskHost_Create(1, 0);
@@ -2745,7 +2745,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -2842,7 +2842,7 @@ namespace m_Stub_02184bb0 {
 
 extern "C" {
 
-void func_ov000_02184bb0(SceneCmd *self, s32 arg) {
+void SceneCmd_Push0e(SceneCmd *self, s32 arg) {
     CmdObj_Push(self, 0xe, arg);
 }
 
@@ -2876,7 +2876,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -2918,7 +2918,7 @@ static inline BOOL MsgDone(void) {
 
 static inline BOOL MgrBusy(void);
 
-s32 func_ov000_02184be8(SceneCmd *self) {
+s32 SceneCmd_Run0e(SceneCmd *self) {
     switch (self->unk_a4 / 100) {
     case 0:
         func_ov000_02184a1c(self, self->unk_a4);
@@ -2980,7 +2980,7 @@ namespace m_Stub_02184d90 {
 
 extern "C" {
 
-void func_ov000_02184d90(SceneCmd *self, s32 arg) {
+void SceneCmd_Push0f(SceneCmd *self, s32 arg) {
     CmdObj_Push(self, 0xf, arg);
 }
 
@@ -3014,7 +3014,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -3054,7 +3054,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184dc8(SceneCmd *self) {
+s32 SceneCmd_Run0f(SceneCmd *self) {
     u16 a = self->unk_a4;
     switch (self->step) {
     case 0:
@@ -3080,11 +3080,11 @@ namespace m_Stub_02184ea4 {
 
 extern "C" {
 
-void func_ov000_02184ea4(SceneCmd *self, s32 a) {
+void SceneCmd_Push10(SceneCmd *self, s32 a) {
     CmdObj_Push(self, 0x10, a << 16);
 }
 
-void func_ov000_02184ee0(SceneCmd *self, s32 a) {
+void SceneCmd_Push10Flag(SceneCmd *self, s32 a) {
     CmdObj_Push(self, 0x10, (a << 16) | 1);
 }
 
@@ -3169,7 +3169,7 @@ static inline BOOL Busy(void) {
     return r;
 }
 
-s32 func_ov000_02184f20(SceneCmd *self) {
+s32 SceneCmd_Run10(SceneCmd *self) {
     u16 mode = self->unk_a4;
     u16 arg = self->unk_a6;
     switch (mode) {
@@ -3311,7 +3311,7 @@ void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
     CmdObj_Push(SceneCmd_Get(), 0x11, 0);
 }
 
-void func_ov000_021854d4(SceneCmd *self, s32 a, s32 b) {
+void SceneCmd_Push12(SceneCmd *self, s32 a, s32 b) {
     Mgr021854d4 *mgr = data_ov000_021ccd30;
     if (mgr->unk_11c == NULL) {
         Task021854d4 *task = (Task021854d4 *)Heap_Alloc(0x80);
@@ -3403,7 +3403,7 @@ static inline s32 State11c(void) {
     return r;
 }
 
-s32 func_ov000_021855a4(SceneCmd *self) {
+s32 SceneCmd_Run11to13(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x11:
         switch (self->step) {
@@ -3515,16 +3515,16 @@ typedef struct {
 } Actor02185804;
 
 Actor02185804 *ActorMgr_FindPlayer(void);
-void func_020626d4(VecFx32 *pos, u16 rot);
+void Shared_SetMark(VecFx32 *pos, u16 rot);
 
-void func_ov000_02185804(SceneCmd *self, s32 arg) {
+void SceneCmd_Push15(SceneCmd *self, s32 arg) {
     Actor02185804 *o = ActorMgr_FindPlayer();
     if (o != NULL) {
         VecFx32 v;
         v.x = o->pos.x;
         v.y = o->pos.y;
         v.z = o->pos.z;
-        func_020626d4(&v, o->rot_y);
+        Shared_SetMark(&v, o->rot_y);
     }
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
@@ -3564,7 +3564,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02185918(SceneCmd *self, s32 arg) {
+void SceneCmd_Push16(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -3623,7 +3623,7 @@ BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
 void LangRes2_Delete(void);
 void LangData_DeleteRes(void);
-void func_0203caf8(s32 a);
+void GfxSys_StopFade(s32 a);
 void Movie_Load(void *p, s32 a, s32 b, s32 c);
 void LangRes2_Create(void);
 void LangData_CreateRes(void);
@@ -3716,7 +3716,7 @@ static inline BOOL Busy1a(void) {
     return r;
 }
 
-s32 func_ov000_021859c4(SceneCmd *self) {
+s32 SceneCmd_Run14to1a(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x14:
         if (self->step == 0) {
@@ -3740,7 +3740,7 @@ s32 func_ov000_021859c4(SceneCmd *self) {
             ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
             LangRes2_Delete();
             LangData_DeleteRes();
-            func_0203caf8(-1);
+            GfxSys_StopFade(-1);
             Movie_Load(data_02097e3c, self->unk_a4, -1, 0);
             self->step++;
             return 0;
@@ -3925,7 +3925,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186158(SceneCmd *self, s32 arg) {
+void SceneCmd_Push1b(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -3955,7 +3955,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186204(SceneCmd *self, s32 arg) {
+void SceneCmd_Push1c(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4036,7 +4036,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_021862b0(SceneCmd *self) {
+s32 SceneCmd_Run1bto1c(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x1b:
         if (self->step == 0) {
@@ -4149,7 +4149,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_021865f8(SceneCmd *self) {
+void SceneCmd_Push1e(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4228,7 +4228,7 @@ static inline BOOL Busy0f(void) {
     return r;
 }
 
-s32 func_ov000_021866d0(SceneCmd *self) {
+s32 SceneCmd_Run1d(SceneCmd *self) {
     BOOL ready;
     switch (self->step) {
     case 0:
@@ -4352,7 +4352,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_02186a24(SceneCmd *self) {
+s32 SceneCmd_Run1e(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_021865bc;
@@ -4425,7 +4425,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186bb0(SceneCmd *self) {
+void SceneCmd_Push1f(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4501,7 +4501,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_02186c88(SceneCmd *self) {
+s32 SceneCmd_Run1f(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02186b74;
@@ -4529,7 +4529,7 @@ namespace m_Stub_02186dbc {
 
 extern "C" {
 
-void func_ov000_02186dbc(SceneCmd *self) {
+void SceneCmd_Push20(SceneCmd *self) {
     CmdObj_Push(self, 0x20, 0);
 }
 
@@ -4563,7 +4563,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -4603,7 +4603,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02186df4(SceneCmd *self) {
+s32 SceneCmd_Run20(SceneCmd *self) {
     switch (self->step) {
     case 0:
         TaskHost_Create(9, 0);
@@ -4647,7 +4647,7 @@ void func_ov002_021ccda0(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-bool Ov003TaskVt_021f78f4_GetFlag6(u32 addr, s32 arg);
+bool Ov003Task_GetFlag6(u32 addr, s32 arg);
 
 // Checksum of the first 0x1c words of a protected function, used to detect tampering.
 static inline u32 ProtHash(const u32 *p) {
@@ -4688,8 +4688,8 @@ void func_ov000_02186ed4(void) {
             if (r) {
                 obj->unk_22 = 3;
             } else {
-                if (ProtHash((const u32 *)Ov003TaskVt_021f78f4_GetFlag6) == 0x786385f) {
-                    r = Ov003TaskVt_021f78f4_GetFlag6(0x2002000, 0);
+                if (ProtHash((const u32 *)Ov003Task_GetFlag6) == 0x786385f) {
+                    r = Ov003Task_GetFlag6(0x2002000, 0);
                 } else {
                     r = data_ov004_021cf86c[data_ov004_021cf868 ^ 1](0x2002000, 0);
                 }
@@ -4748,7 +4748,7 @@ void func_ov000_02187138(void) {
 }
 
 
-void func_ov000_02187150(SceneCmd *self, s32 arg) {
+void SceneCmd_Push21(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4787,7 +4787,7 @@ void func_ov000_02187120(void);
 void func_ov000_02187138(void);
 void func_ov000_02186ed4(void);
 
-s32 func_ov000_0218722c(SceneCmd *self) {
+s32 SceneCmd_Run21(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02187114;
@@ -4856,7 +4856,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02187374(SceneCmd *self, s32 arg) {
+void SceneCmd_Push22(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4891,7 +4891,7 @@ void func_ov000_0218735c(void);
 void func_ov000_02187368(void);
 
 
-s32 func_ov000_02187420(SceneCmd *self) {
+s32 SceneCmd_Run22(SceneCmd *self) {
     switch (self->step) {
     case 0: {
         Scene_SetSubOverlay_0204b270(data_02149ef0, (s32)OVERLAY_2_ID, 0);
@@ -4969,7 +4969,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02187588(SceneCmd *self) {
+void SceneCmd_Push23(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -5018,7 +5018,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -5058,7 +5058,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187660(SceneCmd *self) {
+s32 SceneCmd_Run23(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02187564;
@@ -5118,7 +5118,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_0218781c(SceneCmd *self, s32 arg) {
+void SceneCmd_Push24(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -5156,7 +5156,7 @@ extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 
-s32 func_ov000_021878c8(SceneCmd *self) {
+s32 SceneCmd_Run24(SceneCmd *self) {
     if (data_ov000_021ccd5c != NULL) {
         data_ov000_021ccd5c();
     }
@@ -5192,7 +5192,7 @@ namespace m_Stub_02187a20 {
 
 extern "C" {
 
-void func_ov000_02187a20(SceneCmd *self, s32 arg) {
+void SceneCmd_Push25(SceneCmd *self, s32 arg) {
     CmdObj_Push(self, 0x25, arg);
 }
 
@@ -5226,7 +5226,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
@@ -5266,7 +5266,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187a58(SceneCmd *self) {
+s32 SceneCmd_Run25(SceneCmd *self) {
     switch (self->step) {
     case 0:
         self->step++;
@@ -5295,7 +5295,7 @@ namespace m_Stub_02187b50 {
 
 extern "C" {
 
-void func_ov000_02187b50(SceneCmd *self) {
+void SceneCmd_Push26(SceneCmd *self) {
     CmdObj_Push(self, 0x26, 0);
 }
 
@@ -5364,8 +5364,8 @@ extern void *data_ov000_021ccd64;
 extern void *data_02149f0c;
 extern void *data_02149ef0;
 
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void *Heap_Alloc(u32 size);
 void Buffer0216f144_Init(Task *self);
 void ListBuffer021cb940_Init(Task *self);
@@ -5376,7 +5376,7 @@ void SndQueue_ResetNodes_0204aa10(void *p);
 void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
 void EffectMgr_FreeAll(void *p);
-void func_ov000_0218be9c(void *p);
+void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_FreeBuffer(Mgr021ccd30 *mgr, void *task);
 void func_0206222c(void);
@@ -5407,7 +5407,7 @@ static inline BOOL TaskHasVal(Task118 *t) {
     return (TaskVal(t) != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187b88(SceneCmd *self) {
+s32 SceneCmd_Run26(SceneCmd *self) {
     u16 mode = self->unk_a4;
     switch (mode) {
     case 0:
@@ -5417,8 +5417,8 @@ s32 func_ov000_02187b88(SceneCmd *self) {
             return 0;
         case 1:
             if (IsIdle(0)) {
-                func_0203c9e8(0x3f, -1);
-                func_0203cc58(0, 2, -1);
+                GfxSys_SetFadePlanes(0x3f, -1);
+                GfxSys_StartFadeOut(0, 2, -1);
             }
             self->step++;
             break;
@@ -5463,12 +5463,12 @@ s32 func_ov000_02187b88(SceneCmd *self) {
             return 0;
         case 1:
             if (IsIdle(0)) {
-                func_0203c9e8(0x3f, 0);
-                func_0203cc58(0x1e000, 2, 0);
+                GfxSys_SetFadePlanes(0x3f, 0);
+                GfxSys_StartFadeOut(0x1e000, 2, 0);
             }
             if (IsIdle(1)) {
-                func_0203c9e8(0x3f, 1);
-                func_0203cc58(0x1e000, 2, 1);
+                GfxSys_SetFadePlanes(0x3f, 1);
+                GfxSys_StartFadeOut(0x1e000, 2, 1);
             }
             self->step++;
             return 1;
@@ -5519,7 +5519,7 @@ s32 func_ov000_02187b88(SceneCmd *self) {
             self->cam.base.shakeCur = 0;
             EffectMgr_FreeAll(data_0214a420);
             func_ov000_021b53f4(data_ov000_021ccd6c);
-            func_ov000_0218be9c(data_ov000_021ccd64);
+            Group_RefreshAll(data_ov000_021ccd64);
             ActorMgr_DestroyAll(data_ov000_021ccd68);
             {
                 Mgr021ccd30 *mgr = data_ov000_021ccd30;
@@ -5556,7 +5556,7 @@ namespace m_Stub_02188140 {
 
 extern "C" {
 
-void func_ov000_02188140(SceneCmd *self, s32 a, s32 b, s32 c) {
+void SceneCmd_Push27(SceneCmd *self, s32 a, s32 b, s32 c) {
     u16 v;
     if (a == 0) {
         a = 1;
@@ -5580,7 +5580,7 @@ typedef struct {
 extern "C" {
 extern s32 data_02097d78[5];
 Robo021ca458 *ActorMgr_FindPlayer(void);
-Obj0205b31c *func_0205b31c(void);
+Obj0205b31c *StageRes_PeekSlot(void);
 
 static inline BOOL IsMode0(void) {
     BOOL r;
@@ -5602,7 +5602,7 @@ static inline BOOL IsMode4(void) {
     return r;
 }
 
-s32 func_ov000_0218819c(SceneCmd *self) {
+s32 SceneCmd_Run27(SceneCmd *self) {
     u16 arg = self->unk_a6;
     u16 kind = arg & 0xff;
     u8 mode = (arg >> 8) & 0xf;
@@ -5630,7 +5630,7 @@ s32 func_ov000_0218819c(SceneCmd *self) {
             }
         } else {
             obj = ActorMgr_FindPlayer();
-            Obj0205b31c *p = func_0205b31c();
+            Obj0205b31c *p = StageRes_PeekSlot();
             if ((p != NULL && p->unk_06 == 0x78) || (obj != NULL && obj->unk_b24_0)) {
                 done = TRUE;
             } else if (count != 0xffff) {
@@ -5681,8 +5681,8 @@ extern s32 data_02097d78[5];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Mgr021ccd30 *data_ov000_021ccd30;
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov000_0216f844(void *p, s32 a);
 
@@ -5700,12 +5700,12 @@ static inline BOOL IsMode4(void) {
     return r;
 }
 
-s32 func_ov000_02188438(SceneCmd *self) {
+s32 SceneCmd_Run28(SceneCmd *self) {
     switch (self->step) {
     case 0:
         if (IsMode0()) {
-            func_0203c9e8(0x3f, -1);
-            func_0203cc58(0x1e000, 1, -1);
+            GfxSys_SetFadePlanes(0x3f, -1);
+            GfxSys_StartFadeOut(0x1e000, 1, -1);
             if (data_ov000_021ccd30->unk_118 != NULL) {
                 func_ov000_0216f844(data_ov000_021ccd30->unk_118, 0);
             }
@@ -5746,7 +5746,7 @@ namespace m_Stub_02188634 {
 
 extern "C" {
 
-void func_ov000_02188634(SceneCmd *self, s32 a, s32 b) {
+void SceneCmd_Push29(SceneCmd *self, s32 a, s32 b) {
     CmdObj_Push(self, 0x29, a | (b << 16));
 }
 
@@ -5768,11 +5768,11 @@ void func_ov000_02188670(void) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_0218867c is 45 / 32 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): SceneCmd_Run29 is 45 / 32 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: case 1 hoists data_02fe1534 to the case head (move-constant-loads 17 -> 12,
 // refused in the ROM) and the entry order of arg / 0x64. History: docs/MATCHING.md rounds rtF, qpG, raF, raH, mlA,
 // cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov000_0218867c: 28 raw / 12 register-masked, 22 / 6 with pool offsets masked (round rtF).
+// SceneCmd_Run29: 28 raw / 12 register-masked, 22 / 6 with pool offsets masked (round rtF).
 // Real one-argument signature (called through the CmdObj step table with only self). The
 // break-at-zero check in the case-1 loop and the identical vfunc_38(1) arms are in the target
 // (cmp r7, #0 with r7 starting at 0; beq / b to the same call). The 1 / 1U spelling keeps the two
@@ -5826,7 +5826,7 @@ static inline VObj *Find0218867c(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-s32 func_ov000_0218867c(SceneCmd *self) {
+s32 SceneCmd_Run29(SceneCmd *self) {
     s32 hit;
     s32 miss;
     u16 i;

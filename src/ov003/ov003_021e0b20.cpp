@@ -28,7 +28,7 @@ void Ov003ActVt_021f82b8_Start(ActorEx *self) {
 extern char data_ov003_021f8531[];
 extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
 extern BOOL Model0218fe1c_IsAnimDone(void *model);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 void Ov003ActVt_021f82b8_State20(ActorEx *self) {
@@ -48,7 +48,7 @@ void Ov003ActVt_021f82b8_State20(ActorEx *self) {
         if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         p = self->unk_44;

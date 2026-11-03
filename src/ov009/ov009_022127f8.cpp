@@ -54,7 +54,7 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 extern void Target_SetActor(void *p, Ov003Actor *a);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {
@@ -107,7 +107,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             if (self->unk_1a == 0) {
                 func_ov000_02184548(data_ov000_021ccd54);
             }
-            func_ov000_0218996c(10, 0x28);
+            Field_ShakeCamera(10, 0x28);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x7800, 0x7800, 0x7800);
             self->fsm->timer = 0x29;
@@ -121,7 +121,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             w.y = 0x2000;
             w.z = 0x5800;
             Spawn_ScatterEffect(&v, &w, 0x666, 0x1000, 3, 0x46);
-            func_ov000_0218996c(8, 8);
+            Field_ShakeCamera(8, 8);
             SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);

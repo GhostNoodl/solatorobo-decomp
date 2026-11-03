@@ -9,7 +9,7 @@ extern VecFx32 data_ov000_021ca000;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 BOOL History_SetState(void *s, s32 a, s32 b);
@@ -64,7 +64,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
             LFLD(u8, LFLD(u8 *, o, 0x4c), 0x18) |= 0x40;
         }
         sub->unk_1e--;
-        func_ov000_0218996c(3, 6);
+        Field_ShakeCamera(3, 6);
         SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
         Next021b03c8(self);
         break;

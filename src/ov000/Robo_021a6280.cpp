@@ -43,7 +43,7 @@ void *Model0218fe1c_SetAnimFrame(void *a, s32 frame);
 void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 s32 Rand_UpTo(s32 max);
-void func_ov000_0218996c(s32 a, s32 b);
+void Field_ShakeCamera(s32 a, s32 b);
 void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
@@ -200,7 +200,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         } else if (self->unk_b24_26) {
             Model0218fe1c_SetAnimDelay(self->model, 0x32, 0);
             SndMgr_PlayVolume(data_02097e4c, 0x30c, -1, -1, -1);
-            func_02067120();
+            EffectHud_New2716();
         }
         if (self->unk_b24_12 == 0) {
             if (self->speed > 0x229) {
@@ -250,7 +250,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             self->unk_b5c = 0;
             e->SetScaleAll(0x800);
             e->speed = 0x2800;
-            func_ov000_0218996c(5, 6);
+            Field_ShakeCamera(5, 6);
             SndMgr_PlayVolume(data_02097e4c, 0x7a, -1, -1, -1);
             self->unk_b2c_3_f = 1;
             self->unk_b2c_7++;

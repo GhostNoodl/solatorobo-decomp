@@ -70,7 +70,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern void *data_ov000_021ccd64;
 
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -82,7 +82,7 @@ void func_02062424(FieldId *id);
 void SndQueue_ResetNodes_0204aa10(void *p);
 void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
-void func_ov000_0218be9c(void *p);
+void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 
 static inline BOOL IsMode(s32 m) {
@@ -187,7 +187,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
         busy = 0;
     } else if (!HasCmd(self)) {
         if (IsMode(4)) {
-            func_0203cb78(0xa000, 0, 0);
+            GfxSys_StartFadeIn(0xa000, 0, 0);
         }
         if (Busy()) {
             busy = 0;
@@ -339,7 +339,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
         self->cam.base.shakeCur = 0;
         EffectMgr_FreeAll(data_0214a420);
         func_ov000_021b53f4(data_ov000_021ccd6c);
-        func_ov000_0218be9c(data_ov000_021ccd64);
+        Group_RefreshAll(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         {
             self->stage.pending = 1;

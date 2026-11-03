@@ -50,8 +50,8 @@ void Ov012ActExVt_0220b1e8_StateDie(Ov012ActExVt_0220b1e8 *self) {
         e = Effect_SpawnId(0x57c, &self->pos);
         e->SetScaleAll(0x1b33);
         EffectObj_AddSndCue(e, 0x79, 0);
-        func_ov000_0218996c(10, 10);
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Field_ShakeCamera(10, 10);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         self->unk_1a = 1;
     } else {
@@ -213,7 +213,7 @@ void Ov012ActExVt_0220b150_StateThrown(Ov012ActExVt_0220b150 *self) {
                 q->unk_9a_4 = 0;
             }
             self->model->visible = 0;
-            func_ov000_0218996c(0x14, 0x1e);
+            Field_ShakeCamera(0x14, 0x1e);
             e = Effect_SpawnId(0x65, &self->pos);
             e->SetScaleAll(0x1800);
             EffectObj_AddSndCue(e, 0x56, 0);
@@ -354,7 +354,7 @@ void Ov012ActExVt_0220b150_StateDie(Ov012ActExVt_0220b150 *self) {
         if (Effect_Find_020657b0(data_0214a420, self->unk_e4) != NULL) {
             return;
         }
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
     } else {
         ActorEx_StateDie(self);
@@ -560,7 +560,7 @@ void Ov012ActEx_02207018_StateThrown(Ov012ActEx_02207018 *self) {
         self->pos.y = 0;
         self->model->visible = 0;
         SndMgr_PlayAt(data_02097e4c, 0x1b, &self->pos, 0);
-        func_ov000_0218996c(0x1e, 0x28);
+        Field_ShakeCamera(0x1e, 0x28);
         if (self->unk_18 == 0) {
             e = Effect_SpawnId(0x1f7, &self->pos);
             e->SetScaleAll(0xb33);

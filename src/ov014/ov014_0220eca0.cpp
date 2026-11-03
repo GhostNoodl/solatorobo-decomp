@@ -14,7 +14,7 @@ extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 extern s16 *AnimEvent_Exec(s16 *a, Model0218fe1c *b);
 extern s32 func_ov014_0220ec18(s16 *a, Model0218fe1c *b);
 extern u8 Gfx3DState_NextPolyId(void *p);
-extern void func_ov000_02191920(Model0218fe1c *a, s32 b, s16 c, u8 d);
+extern void Model0218fe1c_SetAnim3(Model0218fe1c *a, s32 b, s16 c, u8 d);
 extern void Model0218fe1c_ClearLoop(Model0218fe1c *p);
 extern void Model0218fe1c_ResumeAnim(Model0218fe1c *p);
 
@@ -65,7 +65,7 @@ void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
     self->unk_d0 = self->unk_1a << 4;
     self->unk_d4 = self->unk_1c << 4;
     self->model->unk_c2_6 = 0;
-    func_ov000_02191920(self->model, 0, 0x1000, 0);
+    Model0218fe1c_SetAnim3(self->model, 0, 0x1000, 0);
     Model0218fe1c_GetAnimCtrl(self->model, 3)->paused = 0;
     Model0218fe1c_GetAnimCtrl(self->model, 3)->loop = 1;
     Model0218fe1c_SetAnim(self->model, data_ov014_02217c6c, 0x1000, 1);
@@ -76,7 +76,7 @@ void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
     History_SetState(self->fsm, 1, 0);
 }
 
-extern BOOL func_ov000_021b4738(Ov003Actor *p);
+extern BOOL Actor_IsDead(Ov003Actor *p);
 
 extern void func_ov014_0220f20c(Actor *self, void *a, void *b, void *c);
 
@@ -126,7 +126,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
         Ov003Actor *pl = ActorMgr_FindPlayer();
         s32 t;
         ActorSub40 *w;
-        if (pl == NULL || func_ov000_021b4738(pl)) {
+        if (pl == NULL || Actor_IsDead(pl)) {
             self->fsm->timer = 0;
             SndMgr_Stop(data_02097e4c, 0x38);
         }
@@ -162,7 +162,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
     case 3: {
         BOOL done = FALSE;
         Ov003Actor *pl = ActorMgr_FindPlayer();
-        if (pl == NULL || func_ov000_021b4738(pl)) {
+        if (pl == NULL || Actor_IsDead(pl)) {
             done = TRUE;
         }
         if (Model0218fe1c_IsAnimDone(self->model) || done) {

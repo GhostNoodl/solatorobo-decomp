@@ -26,10 +26,10 @@ void Actor_Move(Actor *self, s32 turn);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL Model0218fe1c_IsAnimDone(void *a);
-void func_02062764(s32 a, s32 b);
-void func_020627a0(u16 a, u16 b);
+void Shared_ChangeFlags(s32 a, s32 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_ov000_02182590(void *p);
-BOOL func_0205b1fc(void);
+BOOL StageRes_HasQueued(void);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void Target_Set(ActorSub4c *info, Actor *actor);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -134,12 +134,12 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
             done = FALSE;
             if (info->unk_18_1 && info->unk_03 != 10 && info->unk_03 != 11) {
                 FieldState *g;
-                func_02062764(0x3c0, 0x80);
-                func_020627a0(a->kind, a->id);
+                Shared_ChangeFlags(0x3c0, 0x80);
+                Shared_SetEventActor(a->kind, a->id);
                 g = data_ov000_021ccd54;
                 g->stageFlags = 1;
                 func_ov000_02182590((u8 *)g + 0xac);
-                if (func_0205b1fc()) {
+                if (StageRes_HasQueued()) {
                     done = TRUE;
                 }
             }

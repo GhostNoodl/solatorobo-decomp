@@ -19,17 +19,17 @@ void EffectMgr_RestoreList(EffectMgr *m) {
 
 extern u32 data_0208c2e4[];
 extern void EffectObj_Register(EffectObj *obj);
-extern struct EffectGroup *func_0206723c(s32 id, const VecFx32 *pos);
-extern struct Effect3D *func_020674dc(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnGroupById(s32 id, const VecFx32 *pos);
+extern struct Effect3D *Effect_Spawn3DById(s32 id, const VecFx32 *pos);
 extern struct EffectGroup *func_02067984(const VecFx32 *pos);
-extern struct EffectGroup *func_02067b08(s32 id, const VecFx32 *pos);
-extern EffectObj *func_02067e9c(s32 id, const VecFx32 *pos);
-extern struct Effect3D *func_02067fd4(s32 id, const VecFx32 *pos);
-extern struct EffectGroup *func_0206811c(s32 id, const VecFx32 *pos);
-extern struct EffectGroup *func_02068228(s32 id, const VecFx32 *pos);
-extern struct EffectGroup *func_02068354(s32 id, const VecFx32 *pos);
-extern struct Effect3D *func_02066d10(const VecFx32 *pos);
-extern struct EffectGroup *func_020671e8(const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnGroup12c(s32 id, const VecFx32 *pos);
+extern EffectObj *Effect_Spawn191(s32 id, const VecFx32 *pos);
+extern struct Effect3D *Effect_Spawn3D44c(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnGroup578(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnGroup5dc(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnGroup640(s32 id, const VecFx32 *pos);
+extern struct Effect3D *EffectHud_New2714(const VecFx32 *pos);
+extern struct EffectGroup *EffectGroup_New2717(const VecFx32 *pos);
 
 EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     EffectObj *obj;
@@ -53,7 +53,7 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x1f9:
     case 0x328:
     case 0x6a4:
-        obj = (EffectObj *)func_0206723c(id, pos);
+        obj = (EffectObj *)Effect_SpawnGroupById(id, pos);
         break;
     case 0x5:
     case 0x66:
@@ -82,7 +82,7 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x3ea:
     case 0x3eb:
     case 0x4b0:
-        obj = (EffectObj *)func_020674dc(id, pos);
+        obj = (EffectObj *)Effect_Spawn3DById(id, pos);
         break;
     case 0x69:
         obj = (EffectObj *)func_02067984(pos);
@@ -121,16 +121,16 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x38e:
     case 0x38f:
     case 0x390:
-        obj = (EffectObj *)func_02067b08(id, pos);
+        obj = (EffectObj *)Effect_SpawnGroup12c(id, pos);
         break;
     case 0x191:
-        obj = (EffectObj *)func_02067e9c(id, pos);
+        obj = (EffectObj *)Effect_Spawn191(id, pos);
         break;
     case 0x44c:
     case 0x44d:
     case 0x44e:
     case 0x44f:
-        obj = (EffectObj *)func_02067fd4(id, pos);
+        obj = (EffectObj *)Effect_Spawn3D44c(id, pos);
         break;
     case 0x578:
     case 0x579:
@@ -140,7 +140,7 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x57d:
     case 0x57e:
     case 0x57f:
-        obj = (EffectObj *)func_0206811c(id, pos);
+        obj = (EffectObj *)Effect_SpawnGroup578(id, pos);
         break;
     case 0x5dc:
     case 0x5dd:
@@ -151,7 +151,7 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x5e2:
     case 0x5e3:
     case 0x5e4:
-        obj = (EffectObj *)func_02068228(id, pos);
+        obj = (EffectObj *)Effect_SpawnGroup5dc(id, pos);
         break;
     case 0x640:
     case 0x641:
@@ -162,31 +162,31 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     case 0x646:
     case 0x647:
     case 0x648:
-        obj = (EffectObj *)func_02068354(id, pos);
+        obj = (EffectObj *)Effect_SpawnGroup640(id, pos);
         break;
     case 0x2710:
-        obj = (EffectObj *)func_02066c58();
+        obj = (EffectObj *)EffectHud_New2710();
         break;
     case 0x2711:
-        obj = (EffectObj *)func_02066df0();
+        obj = (EffectObj *)EffectHud_New2711();
         break;
     case 0x2712:
-        obj = (EffectObj *)func_02066ec8();
+        obj = (EffectObj *)EffectHud_New2712();
         break;
     case 0x2713:
-        obj = (EffectObj *)func_02066f90();
+        obj = (EffectObj *)EffectHud_New2713();
         break;
     case 0x2714:
-        obj = (EffectObj *)func_02066d10(pos);
+        obj = (EffectObj *)EffectHud_New2714(pos);
         break;
     case 0x2715:
-        obj = (EffectObj *)func_02067058();
+        obj = (EffectObj *)EffectHud_New2715();
         break;
     case 0x2716:
-        obj = (EffectObj *)func_02067120();
+        obj = (EffectObj *)EffectHud_New2716();
         break;
     case 0x2717:
-        obj = (EffectObj *)func_020671e8(pos);
+        obj = (EffectObj *)EffectGroup_New2717(pos);
         break;
     default:
         obj = (EffectObj *)Heap_Alloc(0xf8);

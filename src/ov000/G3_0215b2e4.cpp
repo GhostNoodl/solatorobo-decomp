@@ -52,7 +52,7 @@ static inline void G3_SetTransMtx(s32 x, MtxFx43 *m, s32 y, s32 z) {
     }
 }
 
-void func_ov000_0215b2e4(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 sy2) {
+void LoBase021cafc0_021cb0b8_DrawFrame(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 sy2) {
     MtxFx43 m;
     MtxFx43 t;
     s16 z;

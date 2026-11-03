@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_ov000_0215a4ec(void) {
+s32 Lo021cb5a8_GetPadTop(void) {
     return 0x4;
 }
 

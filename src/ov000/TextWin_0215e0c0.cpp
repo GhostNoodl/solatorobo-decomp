@@ -42,7 +42,7 @@ static inline char *FindSpace(Lo021cb0b8 *self, s32 need) {
     return NULL;
 }
 
-void func_ov000_0215e0c0(Lo021cb0b8 *self, const char *text) {
+void LoBase021cafc0_021cb0b8_SetTitle(Lo021cb0b8 *self, const char *text) {
     char *dst;
     char *p;
     if (self->title != NULL) {
@@ -79,7 +79,7 @@ void func_ov000_0215e0c0(Lo021cb0b8 *self, const char *text) {
     self->title2->flags |= 0x4;
 }
 
-void func_ov000_0215e344(Lo021cb0b8 *self) {
+void Lo021cb0b8_Setup(Lo021cb0b8 *self) {
     char *p;
     char *dst;
     char *q;

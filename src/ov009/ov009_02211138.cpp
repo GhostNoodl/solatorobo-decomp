@@ -3,7 +3,7 @@
 extern "C" {
 
 extern char data_ov009_022179b4[];
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
 void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
@@ -18,7 +18,7 @@ void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
     }
     if (VEC_Distance(&self->pos, &self->unk_f0) <= 0xf6) {
         self->pos = self->unk_f0;
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);

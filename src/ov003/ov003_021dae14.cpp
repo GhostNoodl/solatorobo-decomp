@@ -27,7 +27,7 @@ ActorEx *Ov003ActorEx_Ctor(ActorEx *self) {
 
 void Ov003Shot_Init(ActorEx *self) {
     VecFx32 v;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     v.x = 0;
     v.y = 0;
     v.z = 0x1000;

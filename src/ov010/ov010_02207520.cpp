@@ -393,7 +393,7 @@ void Ov010ActVt_0220ffe4_State20(Ov010Obj0220ffe4 *self) {
 }
 
 extern void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern BOOL History_SetState(ActorSub40 *a, u8 b, BOOL c);
 
@@ -424,7 +424,7 @@ void Ov010ActVt_0220ffe4_State21(Ov010Obj0220ffe4 *self) {
     }
     Ov010Obj02210154_MoveToDest(self);
     if (self->speed == 0) {
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
@@ -528,7 +528,7 @@ void Ov010ActVt_0220ffe4_State22(Ov010Obj0220ffe4 *self) {
         return;
     }
     case 0x64:
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         self->fsm->st = 0x65;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02047a20(SaveBase *s) {
+void SaveBase_State5(SaveBase *s) {
     SaveHeader *hdr = s->header;
     switch (s->step) {
         case 0:
@@ -43,7 +43,7 @@ void func_02047a20(SaveBase *s) {
     }
 }
 
-void func_02047c2c(SaveBase *s) {
+void SaveBase_State7(SaveBase *s) {
     SaveHeader *hdr = s->header;
     switch (s->step) {
         case 0:

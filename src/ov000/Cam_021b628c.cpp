@@ -13,10 +13,10 @@ extern "C" {
 
 FieldExit *func_0206e230(LangBlockB *b);
 FieldStart *LangBlockB_GetData(LangBlockB *b);
-BOOL func_02062698(void);
-void func_02062724(VecFx32 *pos);
-u16 func_02062754(void);
-void func_020626c0(void);
+BOOL Shared_HasMark_02062698(void);
+void Shared_GetMarkPos(VecFx32 *pos);
+u16 Shared_GetMarkRot(void);
+void Shared_ClearMark(void);
 BOOL func_020625f8(void);
 void func_02062540(VecFx32 *v);
 BOOL func_02062620(void);
@@ -69,9 +69,9 @@ void func_ov000_021b628c(FieldMgr *self) {
             VEC_Add(&pos, &it->pos, &pos);
         }
         SetRot021b628c(rot, 0, items[self->curExit].dir, 0);
-    } else if (func_02062698()) {
-        func_02062724(&pos);
-        SetRot021b628c(rot, 0, func_02062754(), 0);
+    } else if (Shared_HasMark_02062698()) {
+        Shared_GetMarkPos(&pos);
+        SetRot021b628c(rot, 0, Shared_GetMarkRot(), 0);
     } else if (self->blockB != NULL && self->blockB->count1 != 0) {
         FieldStart *st = LangBlockB_GetData(self->blockB);
         if (st != NULL) {
@@ -84,7 +84,7 @@ void func_ov000_021b628c(FieldMgr *self) {
         pos.z = 0;
         SetRot021b628c(rot, 0, 0, 0);
     }
-    func_020626c0();
+    Shared_ClearMark();
     cam = &data_ov000_021ccd54->cam;
     if (cam != NULL) {
         cam->unk_da = 0;

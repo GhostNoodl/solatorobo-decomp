@@ -100,7 +100,7 @@ static inline EffectFile *Effect_GetFile(const char *name) {
     return ResList_FindType0(ResMgr_GetArcList(data_0208c7ef), name);
 }
 
-EffectObj *func_02067e9c(s32 id, const VecFx32 *pos) {
+EffectObj *Effect_Spawn191(s32 id, const VecFx32 *pos) {
     EffectGroup *g = NULL;
     if (id == 0x191) {
         Effect3D *e;
@@ -121,7 +121,7 @@ EffectObj *func_02067e9c(s32 id, const VecFx32 *pos) {
     return g;
 }
 
-Effect3D *func_02067fd4(s32 id, const VecFx32 *pos) {
+Effect3D *Effect_Spawn3D44c(s32 id, const VecFx32 *pos) {
     Effect3D *e = Effect3D_New();
     switch (id) {
     case 0x44c:
@@ -149,7 +149,7 @@ Effect3D *func_02067fd4(s32 id, const VecFx32 *pos) {
     return e;
 }
 
-EffectGroup *func_0206811c(s32 id, const VecFx32 *pos) {
+EffectGroup *Effect_SpawnGroup578(s32 id, const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_New();
     const char *name;
     g->SetPos(pos);
@@ -185,7 +185,7 @@ EffectGroup *func_0206811c(s32 id, const VecFx32 *pos) {
     return g;
 }
 
-EffectGroup *func_02068228(s32 id, const VecFx32 *pos) {
+EffectGroup *Effect_SpawnGroup5dc(s32 id, const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_New();
     const char *name;
     g->SetPos(pos);
@@ -225,7 +225,7 @@ EffectGroup *func_02068228(s32 id, const VecFx32 *pos) {
     return g;
 }
 
-EffectGroup *func_02068354(s32 id, const VecFx32 *pos) {
+EffectGroup *Effect_SpawnGroup640(s32 id, const VecFx32 *pos) {
     const char *name = NULL;
     EffectFile *file;
     EffectGroup *g;

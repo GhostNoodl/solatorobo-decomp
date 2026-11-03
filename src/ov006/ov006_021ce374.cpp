@@ -34,14 +34,14 @@ void TaskList_Insert(Task *self);
 void func_02041c20(Model *self, int a, void *b);
 BOOL Model_IsReady(Model *a, int b);
 
-void ov006_Emblem_LoadRes(void) {
+void ov006_Emblem_Load(void) {
 }
 
-BOOL ov006_Emblem_IsResLoaded(void) {
+BOOL ov006_Emblem_IsLoaded(void) {
     return TRUE;
 }
 
-void ov006_Emblem_Setup(ov006_Emblem *self) {
+void ov006_Emblem_Start(ov006_Emblem *self) {
     self->unk_04_1 = 0;
     if (self->vfunc_28()) {
         return;
@@ -114,7 +114,7 @@ BOOL Model_IsReady(Model *a, int b);
 void ov006_Emblem_PreUpdate(void) {
 }
 
-void ov006_Emblem_Animate(ov006_Emblem *self) {
+void ov006_Emblem_PostUpdate(ov006_Emblem *self) {
     int v = 0;
     if (self->unk48 < 0x1000000) {
         v = self->unk48 + 0x8000;
@@ -123,7 +123,7 @@ void ov006_Emblem_Animate(ov006_Emblem *self) {
     self->unk4C = self->unk4C >= 0x1000000 ? 0 : self->unk4C + 0x8000;
 }
 
-void func_ov006_021ce590(ov006_Emblem *self) {
+void ov006_Emblem_Draw(ov006_Emblem *self) {
     if (!self->unk44) {
         return;
     }
@@ -237,7 +237,7 @@ static inline void ov006_TaskCE_Dtor(ov006_TaskCE *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskCE *func_ov006_021ce974(ov006_TaskCE *self) {
+ov006_TaskCE *ov006_TaskCE_Dtor_021ce974(ov006_TaskCE *self) {
     ov006_TaskCE_Dtor(self);
     return self;
 }
@@ -263,10 +263,10 @@ namespace m_021cec5c {
 
 extern "C" {
 
-void ov006_TaskCE_LoadRes(void) {
+void ov006_TaskCE_Load(void) {
 }
 
-BOOL ov006_TaskCE_IsResLoaded(void) {
+BOOL ov006_TaskCE_IsLoaded(void) {
     return TRUE;
 }
 
@@ -320,7 +320,7 @@ static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
 
 // The list items are constructed in place through `item` (round jkH): with a `NewItem` inline
 // the inline's result is a compiler temp, numbered below `res`, and the two swap registers.
-void ov006_TaskCE_Setup(ov006_TaskCE *self) {
+void ov006_TaskCE_Start(ov006_TaskCE *self) {
     u8 n;
     u8 i;
     u8 k;
@@ -434,8 +434,8 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     data_ov006_021ec884->unk149 = 1;
     self->step = 0;
     self->subStep = 0;
-    func_0203cb78(0x14000, 0, 0);
-    func_0203cb78(0x14000, 0, 1);
+    GfxSys_StartFadeIn(0x14000, 0, 0);
+    GfxSys_StartFadeIn(0x14000, 0, 1);
     TaskList_Insert(self);
 }
 
@@ -730,7 +730,7 @@ static inline BOOL ov006_Task_IsState2(UiList *self) {
     return self->state == 2;
 }
 
-BOOL func_ov006_021cfa60(UiList *self) {
+BOOL ov006_Window_IsShown(UiList *self) {
     return ov006_Task_IsState2(self) ? TRUE : FALSE;
 }
 
@@ -796,8 +796,8 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
         if (self->state != 0) {
             return;
         }
-        func_0203cc58(0x14000, 1, 0);
-        func_0203cc58(0x14000, 1, 1);
+        GfxSys_StartFadeOut(0x14000, 1, 0);
+        GfxSys_StartFadeOut(0x14000, 1, 1);
         self->subStep++;
         break;
     case 4:
@@ -811,7 +811,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
     }
 }
 
-BOOL ov006_Task_TryReleaseCurrent(ov006_TaskCE *self) {
+BOOL Ov006Task_TryReleaseCurrent(ov006_TaskCE *self) {
     if (self->vfunc_54()) {
         ov006_SetCurrent021ccd40(NULL);
     }
@@ -822,7 +822,7 @@ static inline BOOL ov006_IsCurrent(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-BOOL ov006_Task_IsCurrent(void *p) {
+BOOL Ov006Task_IsCurrent(void *p) {
     return ov006_IsCurrent(p) ? TRUE : FALSE;
 }
 
@@ -838,7 +838,7 @@ extern void *data_ov006_021ebcc0;
 
 void ov006_CaptionPanel_Draw(ov006_CaptionPanel *a);
 
-void func_ov006_021cfe84(ov006_TaskCE *self) {
+void ov006_TaskCE_Draw(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
         self->unk44->vfunc_20();
     }
@@ -885,7 +885,7 @@ static inline void ov006_TaskD0_Dtor(ov006_TaskD0 *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD0 *func_ov006_021cff80(ov006_TaskD0 *self) {
+ov006_TaskD0 *ov006_TaskD0_Dtor_021cff80(ov006_TaskD0 *self) {
     ov006_TaskD0_Dtor(self);
     return self;
 }
@@ -906,7 +906,7 @@ extern "C" {
 
 BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
 
-void ov006_TaskD0_LoadRes(void) {
+void ov006_TaskD0_Load(void) {
     if (data_ov006_021ec888->state != 1) {
         ov006_Menu_RequestShutdown(data_ov006_021ec888);
     }
@@ -942,7 +942,7 @@ void TaskList_Insert(Task *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void ov006_TaskD0_RefreshList(ov006_TaskD0 *self);
 
-BOOL ov006_TaskD0_IsResLoaded(ov006_TaskD0 *self) {
+BOOL ov006_TaskD0_IsLoaded(ov006_TaskD0 *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
@@ -968,7 +968,7 @@ BOOL ov006_TaskD0_IsResLoaded(ov006_TaskD0 *self) {
     return r;
 }
 
-void ov006_TaskD0_Setup(ov006_TaskD0 *self) {
+void ov006_TaskD0_Start(ov006_TaskD0 *self) {
     UiListItem *item;
     u16 i;
     void *res;
@@ -1121,7 +1121,7 @@ void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
     self->subStep = 3;
 }
 
-void func_ov006_021d0a40(ov006_TaskD0 *self) {
+void ov006_TaskD0_Draw(ov006_TaskD0 *self) {
     if (!self->vfunc_28()) {
         return;
     }
@@ -1221,7 +1221,7 @@ static inline void ov006_TaskD0C_Dtor(ov006_TaskD0C *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD0C *func_ov006_021d0d3c(ov006_TaskD0C *self) {
+ov006_TaskD0C *ov006_TaskD0C_Dtor_021d0d3c(ov006_TaskD0C *self) {
     ov006_TaskD0C_Dtor(self);
     return self;
 }
@@ -1240,10 +1240,10 @@ namespace m_021d0f44 {
 
 extern "C" {
 
-void ov006_TaskD0C_LoadRes(void) {
+void ov006_TaskD0C_Load(void) {
 }
 
-BOOL ov006_TaskD0C_IsResLoaded(void) {
+BOOL ov006_TaskD0C_IsLoaded(void) {
     return TRUE;
 }
 
@@ -1275,7 +1275,7 @@ static inline void *ov006_GetRes(void) {
     return data_02149ef8;
 }
 
-void ov006_TaskD0C_Setup(ov006_TaskD0C *self) {
+void ov006_TaskD0C_Start(ov006_TaskD0C *self) {
     u16 i;
     void *res;
     if (self->vfunc_28()) {
@@ -1537,8 +1537,8 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         if (!self->vfunc_54()) {
             return;
         }
-        func_0203cc58(0x14000, 0, 0);
-        func_0203cc58(0x14000, 0, 1);
+        GfxSys_StartFadeOut(0x14000, 0, 0);
+        GfxSys_StartFadeOut(0x14000, 0, 1);
         self->fadeLen = 0x50000;
         self->unk3C = 60;
         break;
@@ -1598,7 +1598,7 @@ ov006_Unk020706a0 *func_020706a0(u16 id);
 void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self);
 
-void func_ov006_021d1b24(ov006_TaskD0C *self) {
+void ov006_TaskD0C_Draw(ov006_TaskD0C *self) {
     if (!self->vfunc_28()) {
         return;
     }
@@ -1740,7 +1740,7 @@ static inline void ov006_TaskD1F_Dtor(ov006_TaskD1F *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD1F *func_ov006_021d2000(ov006_TaskD1F *self) {
+ov006_TaskD1F *ov006_TaskD1F_Dtor_021d2000(ov006_TaskD1F *self) {
     ov006_TaskD1F_Dtor(self);
     return self;
 }

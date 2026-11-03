@@ -11,13 +11,13 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_02157c28(Obj0214dcc4 *self);
+void UiList021cb4a8_Setup(Obj0214dcc4 *self);
 BOOL Obj02152e5c_LoadModel(Obj0214dcc4 *self);
 void func_02041c34(void *obj, s32 a, void (*cb)(void), void *arg);
 void *func_ov000_0214db04(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void Lo021caac8_Setup(Obj0214dcc4 *self) {
-    func_ov000_02157c28(self);
+    UiList021cb4a8_Setup(self);
     if (Obj02152e5c_LoadModel(self)) {
         TexObj_SelectImage(self->unk_10, 0, 0xc);
         TexObj_SelectImage(self->unk_10, 0, 0xd);
@@ -31,11 +31,11 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_0214dd3c is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): Lo021caac8_AddItem is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: register-only: the first walk's p and the new node lose r6; no declaration order or
 // Insert inline moves it. History: docs/MATCHING.md rounds tmA, raE, rgB, nmA, mtA, cvA (search for the address);
 // the full list is docs/UNMATCHED.md.
-// func_ov000_0214dd3c (round tmA): 28 / 0 (register-only), honest. Now 26 / 0 (round raE, below). The old 28 / 0 draft
+// Lo021caac8_AddItem (round tmA): 28 / 0 (register-only), honest. Now 26 / 0 (round raE, below). The old 28 / 0 draft
 // (ovlo12/d/dd3c/m2.cpp) read the game-state pointer through a one-element array g[1]; reading
 // it through a getter inline (GetG0214dd3c) numbers the two g temps the same way. Without either
 // (plain `u8 *g = data_ov000_021ccd54;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
@@ -131,7 +131,7 @@ struct List0214dd3c {
 };
 
 extern "C" {
-Node0214dd3c *func_ov000_0214dd3c(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d) {
+Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d) {
     Node0214dd3c *p;
     Node0214dd3c *last;
     u16 key;

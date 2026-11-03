@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0215da10(Lo021cae48 *self) {
+void Lo021cae48_Init(Lo021cae48 *self) {
     self->style = 0x0;
     self->shown = 0x0;
     self->value = 0x0;

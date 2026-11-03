@@ -138,17 +138,17 @@ DataRes *MainVt_0208bf14_DtorDelete(DataRes *res) {
     return res;
 }
 
-void func_02058ec0(DataRes *res) {
+void MainVt_0208bf14_Clear(DataRes *res) {
     res->type = 0;
     res->data = NULL;
     res->end = NULL;
 }
 
-void func_02058ed4(DataRes *res) {
+void MainVt_0208bf14_Unload(DataRes *res) {
     res->Clear();
 }
 
-BOOL func_02058ee8(DataRes *res) {
+BOOL MainVt_0208bf14_OnLoad(DataRes *res) {
     u8 *data;
     if (res->loaded) {
         return TRUE;
@@ -263,16 +263,16 @@ DataRes *MainVt_0208be94_DtorDelete(DataRes *res) {
     return res;
 }
 
-void func_0205908c(DataRes *res) {
+void MainVt_0208be94_Clear(DataRes *res) {
     res->type = 0;
     res->data = NULL;
 }
 
-void func_0205909c(DataRes *res) {
+void MainVt_0208be94_Unload(DataRes *res) {
     res->Clear();
 }
 
-BOOL func_020590b0(DataRes *res) {
+BOOL MainVt_0208be94_OnLoad(DataRes *res) {
     if (res->loaded) {
         return TRUE;
     }
@@ -283,7 +283,7 @@ BOOL func_020590b0(DataRes *res) {
 
 
 
-u32 func_020590e8(DataRes *res, u8 *buf, u32 size) {
+u32 DataRes_Pack(DataRes *res, u8 *buf, u32 size) {
     SaveLayout *layout;
     u32 n;
     u32 pos;
@@ -311,7 +311,7 @@ u32 func_020590e8(DataRes *res, u8 *buf, u32 size) {
     return (pos + 1) & ~1;
 }
 
-u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome) {
+u32 DataRes_Unpack(DataRes *res, u8 *buf, BOOL keepSome) {
     SaveLayout *layout;
     u32 pos;
     u32 i;
@@ -361,10 +361,10 @@ namespace m_DataRes_4 {
 
 extern "C" {
 
-u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome);
+u32 DataRes_Unpack(DataRes *res, u8 *buf, BOOL keepSome);
 
-u32 func_02059270(DataRes *res, u8 *buf) {
-    return func_020591a4(res, buf, TRUE);
+u32 DataRes_UnpackKeep(DataRes *res, u8 *buf) {
+    return DataRes_Unpack(res, buf, TRUE);
 }
 
 void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk) {
@@ -435,7 +435,7 @@ extern "C" {
 
 void DataRes_WriteBitsById(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val);
 
-void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val) {
+void DataRes_WriteRef(DataRes *res, SaveRef *ref, u32 id, u16 val) {
     DataRes_WriteBitsById(res, ref->block, ref->table, ref->unk_04, id, val);
 }
 
@@ -536,7 +536,7 @@ extern "C" {
 
 u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 
-u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id) {
+u16 DataRes_ReadRef(DataRes *res, SaveRef *ref, u32 id) {
     return DataRes_ReadBitsById_02059688(res, ref->block, ref->table, ref->unk_04, id);
 }
 
@@ -1050,7 +1050,7 @@ BOOL func_0205a268(ObjPool *pool, ObjPoolEntry *entry) {
     return TRUE;
 }
 
-extern BOOL func_ov000_021b4738(ObjPoolPlayer *pl);
+extern BOOL Actor_IsDead(ObjPoolPlayer *pl);
 
 static inline BOOL ObjPool_InBox(ObjPoolEntry *e, s32 dx, s32 dy, s32 dz) {
     if (dx < 0) {
@@ -1134,7 +1134,7 @@ void func_0205a358(ObjPool *pool) {
             ObjPool_FreeEntry(pool, e);
         } else {
             ObjPoolPlayer *pl = ActorMgr_FindPlayer();
-            if (pl != NULL && !func_ov000_021b4738(pl) && (e->active & 1)) {
+            if (pl != NULL && !Actor_IsDead(pl) && (e->active & 1)) {
                 switch (e->kind) {
                 case 1:
                     if (func_0205a028(pool, e)) {
@@ -1204,7 +1204,7 @@ void StageRes_CancelSlots(StageRes *res) {
             i = 0;
         }
     }
-    func_02038520(res);
+    ResHandle_Unload(res);
     if (res->posEv != NULL) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
@@ -1261,7 +1261,7 @@ void StageRes_Open(StageRes *res, const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    func_02038b88(res, arc, file);
+    ResHandle_LoadFromArc(res, arc, file);
     if (res->sub == NULL) {
         DataRes *sub;
         STD_CopyString(file, name);
@@ -1659,7 +1659,7 @@ static inline BOOL StageRes_IsBusy(void) {
     return data_02149f08 != 0;
 }
 
-BOOL func_0205b1fc(void) {
+BOOL StageRes_HasQueued(void) {
     if (StageRes_IsBusy()) {
         return FALSE;
     }
@@ -1735,7 +1735,7 @@ static inline BOOL StageRes_IsBusy(void) {
     return data_02149f08 != 0;
 }
 
-StageResSlot *func_0205b31c(void) {
+StageResSlot *StageRes_PeekSlot(void) {
     if (data_02149f14 == data_02149f04) {
         return NULL;
     }
@@ -1942,17 +1942,17 @@ extern void func_0205beb0(void);
 extern void func_0205bec8(u16 id);
 extern void func_0205bee4(void);
 extern int func_0205bf70(StageResSlot *slot);
-extern int func_0205c37c(StageResSlot *slot);
-extern int func_0205c490(StageResSlot *slot);
-extern int func_0205c5c4(StageResSlot *slot);
-extern int func_0205c624(StageResSlot *slot);
-extern int func_0205de88(StageResSlot *slot);
-extern int func_0205e19c(StageResSlot *slot);
-extern int func_0205e29c(StageResSlot *slot);
-extern int func_0205eda0(StageResSlot *slot);
-extern int func_0205f354(StageResSlot *slot);
-extern int func_0205f978(StageResSlot *slot);
-extern int func_020616b0(StageResSlot *slot);
+extern int StageCmd_Op09(StageResSlot *slot);
+extern int StageCmd_Op0a(StageResSlot *slot);
+extern int StageCmd_Op0c(StageResSlot *slot);
+extern int StageCmd_Op0e(StageResSlot *slot);
+extern int StageCmd_Op36(StageResSlot *slot);
+extern int StageCmd_Op3a(StageResSlot *slot);
+extern int StageCmd_Op3b(StageResSlot *slot);
+extern int StageCmd_Op43(StageResSlot *slot);
+extern int StageCmd_Op47(StageResSlot *slot);
+extern int StageCmd_Op4c(StageResSlot *slot);
+extern int StageCmd_Op6f(StageResSlot *slot);
 extern int func_02061c8c(StageResSlot *slot);
 extern s32 Rand_UpTo(s32 max);
 extern u16 StageRes_EvalArgs(StageRes *res, u16 id, u32 argc, u16 *cmd);
@@ -1998,19 +1998,19 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
         break;
     case 0x209:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205c37c(NULL);
+        StageCmd_Op09(NULL);
         break;
     case 0x20a:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205c490(NULL);
+        StageCmd_Op0a(NULL);
         break;
     case 0x20c:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205c5c4(func_0205b378(TRUE));
+        StageCmd_Op0c(func_0205b378(TRUE));
         break;
     case 0x20e:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205c624(func_0205b378(TRUE));
+        StageCmd_Op0e(func_0205b378(TRUE));
         break;
     case 0x11:
         len++;
@@ -2018,30 +2018,30 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
         break;
     case 0x23a:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205e19c(func_0205b378(TRUE));
+        StageCmd_Op3a(func_0205b378(TRUE));
         break;
     case 0x43b:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205e29c(func_0205b378(TRUE));
+        StageCmd_Op3b(func_0205b378(TRUE));
         break;
     case 0x243:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205eda0(func_0205b378(TRUE));
+        StageCmd_Op43(func_0205b378(TRUE));
         break;
     case 0x347:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205f354(func_0205b378(TRUE));
+        StageCmd_Op47(func_0205b378(TRUE));
         break;
     case 0x14c:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205f978(func_0205b378(TRUE));
+        StageCmd_Op4c(func_0205b378(TRUE));
         break;
     case 0x32:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         break;
     case 0x136:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_0205de88(func_0205b378(TRUE));
+        StageCmd_Op36(func_0205b378(TRUE));
         break;
     case 0x17d:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
@@ -2049,7 +2049,7 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
         break;
     case 0x16f:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
-        func_020616b0(func_0205b378(TRUE));
+        StageCmd_Op6f(func_0205b378(TRUE));
         break;
     case 0x280:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
@@ -2129,25 +2129,25 @@ int func_0205bf70(StageResSlot *slot) {
     return 0;
 }
 
-int func_0205bfdc(StageResSlot *slot) {
+int StageCmd_Op03(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_021865f8(state);
+    SceneCmd_Push1e(state);
     return 0;
 }
 
-int func_0205c018(StageResSlot *slot) {
+int StageCmd_Op04(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02186bb0(state);
+    SceneCmd_Push1f(state);
     return 0;
 }
 
-int func_0205c054(StageResSlot *slot) {
+int StageCmd_Op05(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2162,7 +2162,7 @@ int func_0205c054(StageResSlot *slot) {
     return 0;
 }
 
-int func_0205c0cc(StageResSlot *slot) {
+int StageCmd_Op06(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2172,12 +2172,12 @@ int func_0205c0cc(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 id = a & ~0x8000;
         u16 g = (a >> 12) & 8;
-        func_ov000_021854d4(state, g ? data_02149ef8 : (void *)res->sub, id);
+        SceneCmd_Push12(state, g ? data_02149ef8 : (void *)res->sub, id);
     }
     return 0;
 }
 
-int func_0205c140(StageResSlot *slot) {
+int StageCmd_Op07(StageResSlot *slot) {
     u32 v;
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
@@ -2229,14 +2229,14 @@ namespace m_StageCmd_2 {
 
 extern "C" {
 
-int func_0205c2fc(StageResSlot *slot) {
+int StageCmd_Op08(StageResSlot *slot) {
     u16 id = slot->args[0];
     switch ((s32)(((u32)id << 4) >> 16) - 1) {
     case 0:
         return 1;
     case 1:
         if (!Item_Give(id, 1)) {
-            func_ov000_02184ea4(data_ov000_021ccd54, id);
+            SceneCmd_Push10(data_ov000_021ccd54, id);
         }
         break;
     case 3:
@@ -2248,7 +2248,7 @@ int func_0205c2fc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205c37c(StageResSlot *slot) {
+int StageCmd_Op09(StageResSlot *slot) {
     if (slot == NULL) {
         if (StageRes_Last()->args[0] == 2) {
             data_02fe1534.unk_70 = data_0214a424->unk_020;
@@ -2289,7 +2289,7 @@ int func_0205c37c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205c490(StageResSlot *slot) {
+int StageCmd_Op0a(StageResSlot *slot) {
     if (slot == NULL) {
         if (StageRes_Last()->args[0] == 2) {
             data_02fe1534.unk_70 = data_0214a424->unk_024;
@@ -2317,35 +2317,35 @@ int func_0205c490(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205c580(StageResSlot *slot) {
+int StageCmd_Op0b(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02184bb0(state, slot->args[0]);
+    SceneCmd_Push0e(state, slot->args[0]);
     return 1;
 }
 
-int func_0205c5c4(StageResSlot *slot) {
+int StageCmd_Op0c(StageResSlot *slot) {
     func_ov000_021762e4(slot->args[0], slot->args[1]);
     return 1;
 }
 
-int func_0205c5e0(StageResSlot *slot) {
+int StageCmd_Op0d(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02184d90(state, slot->args[0]);
+    SceneCmd_Push0f(state, slot->args[0]);
     return 1;
 }
 
-int func_0205c624(StageResSlot *slot) {
+int StageCmd_Op0e(StageResSlot *slot) {
     func_ov000_0214e7ac(slot->args[0]);
     return 1;
 }
 
-int func_0205c638(StageResSlot *slot) {
+int StageCmd_Op0f(StageResSlot *slot) {
     u8 buf[3];
     buf[0] = slot->args[0];
     buf[1] = slot->args[1];
@@ -2354,7 +2354,7 @@ int func_0205c638(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205c664(StageResSlot *slot) {
+int StageCmd_Op10(StageResSlot *slot) {
     u8 buf[3];
     if (Field_HasEvent(0x1b) || Field_HasEvent(0x1c) || Field_HasEvent(0x16) || Field_HasEvent(4)) {
         return -0x63;
@@ -2372,7 +2372,7 @@ typedef struct VecFx32 {
     /* 0x4 */ s16 z;
 } VecFx32;
 
-int func_0205c7cc(StageResSlot *slot) {
+int StageCmd_Op12(StageResSlot *slot) {
     u16 a = slot->args[0];
     StageRes *res = slot->res;
     if (a & 0x8000) {
@@ -2405,7 +2405,7 @@ typedef struct StageCamera {
     /* 0xfc */ u16 w;
 } StageCamera;
 
-int func_0205c83c(StageResSlot *slot) {
+int StageCmd_Op13(StageResSlot *slot) {
     u16 a = slot->args[0];
     StageRes *res = slot->res;
     u16 x;
@@ -2504,7 +2504,7 @@ typedef struct StageCamInfo {
     StageVec pos;
 } StageCamInfo;
 
-int func_0205c968(StageResSlot *slot) {
+int StageCmd_Op14(StageResSlot *slot) {
     StageCamInfo info;
     s32 dist;
     u16 a;
@@ -2587,7 +2587,7 @@ namespace m_StageCmd_3 {
 
 extern "C" {
 
-int func_0205cb9c(StageResSlot *slot) {
+int StageCmd_Op15(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2611,19 +2611,19 @@ extern void func_0205b348(void);
 
 extern void func_ov000_02183858(FieldState *state, u16 a);
 extern void func_ov000_0218386c(FieldState *state, u16 a);
-extern void func_ov000_02186dbc(FieldState *state);
+extern void SceneCmd_Push20(FieldState *state);
 extern void func_ov000_021723b4(FieldPlayer *player, u16 a);
 extern void func_ov000_021723d8(FieldPlayer *player, u16 a);
 extern void func_ov000_021723fc(FieldPlayer *player, u16 a, u16 b, u16 c);
 extern void func_ov000_0217242c(FieldPlayer *player, int mode, u16 a);
-extern void func_ov000_02185804(FieldState *state, u16 a);
-extern void func_ov000_02185918(FieldState *state, u16 a);
+extern void SceneCmd_Push15(FieldState *state, u16 a);
+extern void SceneCmd_Push16(FieldState *state, u16 a);
 
 extern void func_ov000_02182590(u8 *p);
-extern void func_ov000_021836d0(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
+extern void SceneCmd_Push06(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
 extern void func_ov000_0218372c(FieldState *state, u16 a);
-extern void func_ov000_021837c0(FieldState *state);
-extern void func_ov000_021837f8(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
+extern void SceneCmd_Push08(FieldState *state);
+extern void SceneCmd_Push07(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
 
 extern void *Tbl_FindEntry_0206fef8(u32 id);
 extern s32 Group_GetSpawnPositions(void *mgr, s32 max, StageVec *out, s32 kind, u16 id);
@@ -2637,7 +2637,7 @@ typedef struct StageObjInfo {
     /* 0x16 */ s16 height;
 } StageObjInfo;
 
-int func_0205cbf0(StageResSlot *slot) {
+int StageCmd_Op16(StageResSlot *slot) {
     StageVec list[0x20];
     StageVec pos;
     StageAng ang;
@@ -2741,11 +2741,11 @@ int func_0205cbf0(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d000(StageResSlot *slot) {
-    return func_0205cbf0(slot);
+int StageCmd_Op17(StageResSlot *slot) {
+    return StageCmd_Op16(slot);
 }
 
-int func_0205d00c(StageResSlot *slot) {
+int StageCmd_Op18(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2768,7 +2768,7 @@ typedef struct FieldStateBits {
     /* 0x190 */ u8 unk_190_5 : 3;
 } FieldStateBits;
 
-int func_0205d044(StageResSlot *slot) {
+int StageCmd_Op19(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     FieldStateBits *b;
     u16 v;
@@ -2800,7 +2800,7 @@ namespace m_StageCmd_5 {
 
 extern "C" {
 
-extern int func_0205cbf0(StageResSlot *slot);
+extern int StageCmd_Op16(StageResSlot *slot);
 
 extern void func_0205b348(void);
 
@@ -2809,7 +2809,7 @@ extern void func_ov000_02183858(FieldState *state, u16 a);
 
 extern void func_ov000_0218386c(FieldState *state, u16 a);
 
-extern void func_ov000_02186dbc(FieldState *state);
+extern void SceneCmd_Push20(FieldState *state);
 
 extern void func_ov000_021723b4(FieldPlayer *player, u16 a);
 
@@ -2819,25 +2819,25 @@ extern void func_ov000_021723fc(FieldPlayer *player, u16 a, u16 b, u16 c);
 
 extern void func_ov000_0217242c(FieldPlayer *player, int mode, u16 a);
 
-extern void func_ov000_02185804(FieldState *state, u16 a);
+extern void SceneCmd_Push15(FieldState *state, u16 a);
 
-extern void func_ov000_02185918(FieldState *state, u16 a);
+extern void SceneCmd_Push16(FieldState *state, u16 a);
 
 extern void func_ov000_02182590(u8 *p);
 
-extern void func_ov000_021836d0(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
+extern void SceneCmd_Push06(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
 
 extern void func_ov000_0218372c(FieldState *state, u16 a);
 
-extern void func_ov000_021837c0(FieldState *state);
+extern void SceneCmd_Push08(FieldState *state);
 
 extern void func_ov000_02172450(FieldPlayer *player, int a);
 
 extern void func_ov000_02172518(FieldPlayer *player, u32 id, u8 *pos, BOOL flag);
 
-extern void func_ov000_021837f8(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
+extern void SceneCmd_Push07(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
 
-int func_0205d0dc(StageResSlot *slot) {
+int StageCmd_Op1a(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2849,7 +2849,7 @@ int func_0205d0dc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d124(StageResSlot *slot) {
+int StageCmd_Op1b(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2865,12 +2865,12 @@ int func_0205d124(StageResSlot *slot) {
     return -0x62;
 }
 
-int func_0205d1c0(StageResSlot *slot) {
-    func_ov000_021836d0(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4]);
+int StageCmd_Op1c(StageResSlot *slot) {
+    SceneCmd_Push06(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4]);
     return 1;
 }
 
-int func_0205d200(StageResSlot *slot) {
+int StageCmd_Op1d(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2879,21 +2879,21 @@ int func_0205d200(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d244(StageResSlot *slot) {
+int StageCmd_Op20(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_021837c0(state);
+    SceneCmd_Push08(state);
     return 1;
 }
 
-int func_0205d280(StageResSlot *slot) {
-    func_ov000_021837f8(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4], slot->args[5]);
+int StageCmd_Op21(StageResSlot *slot) {
+    SceneCmd_Push07(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4], slot->args[5]);
     return 1;
 }
 
-int func_0205d2c8(StageResSlot *slot) {
+int StageCmd_Op22(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2902,7 +2902,7 @@ int func_0205d2c8(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d30c(StageResSlot *slot) {
+int StageCmd_Op23(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -2911,16 +2911,16 @@ int func_0205d30c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d350(StageResSlot *slot) {
+int StageCmd_Op27(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02186dbc(state);
+    SceneCmd_Push20(state);
     return 1;
 }
 
-int func_0205d38c(StageResSlot *slot) {
+int StageCmd_Op28(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2929,7 +2929,7 @@ int func_0205d38c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d414(StageResSlot *slot) {
+int StageCmd_Op29(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2938,7 +2938,7 @@ int func_0205d414(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d49c(StageResSlot *slot) {
+int StageCmd_Op2a(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2947,7 +2947,7 @@ int func_0205d49c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d52c(StageResSlot *slot) {
+int StageCmd_Op1e(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2956,7 +2956,7 @@ int func_0205d52c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d5b8(StageResSlot *slot) {
+int StageCmd_Op1f(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2965,7 +2965,7 @@ int func_0205d5b8(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d644(StageResSlot *slot) {
+int StageCmd_Op24(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2974,7 +2974,7 @@ int func_0205d644(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d6d0(StageResSlot *slot) {
+int StageCmd_Op25(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -2983,25 +2983,25 @@ int func_0205d6d0(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d75c(StageResSlot *slot) {
+int StageCmd_Op26(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02185804(state, slot->args[0]);
+    SceneCmd_Push15(state, slot->args[0]);
     return 0;
 }
 
-int func_0205d7a0(StageResSlot *slot) {
+int StageCmd_Op2b(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02185918(state, slot->args[0]);
+    SceneCmd_Push16(state, slot->args[0]);
     return 0;
 }
 
-int func_0205d7e4(StageResSlot *slot) {
+int StageCmd_Op2f(StageResSlot *slot) {
     data_ov000_021ccd30->flag1 = slot->args[0];
     if (slot->args[0] != 0) {
         StagePlayer *player = ActorMgr_FindPlayer();
@@ -3014,7 +3014,7 @@ int func_0205d7e4(StageResSlot *slot) {
 }
 
 
-int func_0205d83c(StageResSlot *slot) {
+int StageCmd_Op2c(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3023,7 +3023,7 @@ int func_0205d83c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d8c4(StageResSlot *slot) {
+int StageCmd_Op2d(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3065,7 +3065,7 @@ int func_0205d8c4(StageResSlot *slot) {
 }
 
 
-int func_0205d9fc(StageResSlot *slot) {
+int StageCmd_Op2e(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3084,7 +3084,7 @@ int func_0205d9fc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205db70(StageResSlot *slot) {
+int StageCmd_Op30(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3094,7 +3094,7 @@ int func_0205db70(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205dbfc(StageResSlot *slot) {
+int StageCmd_Op31(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3104,7 +3104,7 @@ int func_0205dbfc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205dc74(StageResSlot *slot) {
+int StageCmd_Op32(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3112,7 +3112,7 @@ int func_0205dc74(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205dcd8(StageResSlot *slot) {
+int StageCmd_Op33(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3120,7 +3120,7 @@ int func_0205dcd8(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205dd4c(StageResSlot *slot) {
+int StageCmd_Op34(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3128,7 +3128,7 @@ int func_0205dd4c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205dda4(StageResSlot *slot) {
+int StageCmd_Op35(StageResSlot *slot) {
     FieldActorState *st;
     if (!func_ov000_021705ec(data_ov000_021ccd30->unk_11c)) {
         return -0x63;
@@ -3161,7 +3161,7 @@ int func_0205dda4(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205de88(StageResSlot *slot) {
+int StageCmd_Op36(StageResSlot *slot) {
     FieldActorState *st;
     if (slot->args[0] == 0 || slot->args[0] == 2) {
         Slot_Push(slot->res, 0x135, slot->args[0]);
@@ -3186,7 +3186,7 @@ int func_0205de88(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205e04c(StageResSlot *slot) {
+int StageCmd_Op37(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -3201,25 +3201,25 @@ int func_0205e04c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205e114(StageResSlot *slot) {
+int StageCmd_Op38(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02186158(state, slot->args[0]);
+    SceneCmd_Push1b(state, slot->args[0]);
     return 1;
 }
 
-int func_0205e158(StageResSlot *slot) {
+int StageCmd_Op39(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02186204(state, slot->args[0]);
+    SceneCmd_Push1c(state, slot->args[0]);
     return 1;
 }
 
-int func_0205e19c(StageResSlot *slot) {
+int StageCmd_Op3a(StageResSlot *slot) {
     if (Field_HasEvent(0xa)) {
         return -0x63;
     }
@@ -3258,7 +3258,7 @@ static inline StageArea *Stage_GetArea(StageRes *res, u16 idx) {
     return (StageArea *)(res->posEv->ev + idx * 12);
 }
 
-int func_0205e29c(StageResSlot *slot) {
+int StageCmd_Op3b(StageResSlot *slot) {
     StageShape shape;
     VecFx32 pos;
     StageArea *area;
@@ -3341,10 +3341,10 @@ namespace m_StageCmd_6 {
 
 extern "C" {
 
-extern void func_ov000_021847d8(FieldState *state);
+extern void SceneCmd_Push0c(FieldState *state);
 
-int func_0205e5a8(StageResSlot *slot) {
-    func_ov000_021847d8(data_ov000_021ccd54);
+int StageCmd_Op3c(StageResSlot *slot) {
+    SceneCmd_Push0c(data_ov000_021ccd54);
     return 1;
 }
 
@@ -3392,7 +3392,7 @@ static inline void LightParam_Init(StageLightParam *p, u16 id) {
     p->unk_0c = -1;
 }
 
-int func_0205e5c4(StageResSlot *slot) {
+int StageCmd_Op3d(StageResSlot *slot) {
     u8 color[3];
     StageVec pos;
     StageLightParam param;
@@ -3454,7 +3454,7 @@ namespace m_StageCmd_7 {
 
 extern "C" {
 
-int func_0205e818(StageResSlot *slot) {
+int StageCmd_Op3e(StageResSlot *slot) {
     if (!slot->bits.flag8) {
         if (Field_HasEvent(0x11) || Field_HasEvent(0x27)) {
             return -0x63;
@@ -3474,11 +3474,11 @@ int func_0205e818(StageResSlot *slot) {
     return 1;
 }
 
-void func_0205e958(StageLight *light) {
+void Actor_Remove(StageLight *light) {
     light->state = 3;
 }
 
-int func_0205e964(StageResSlot *slot) {
+int StageCmd_Op3f(StageResSlot *slot) {
     if (!slot->bits.flag8) {
         if (Field_HasEvent(0x11) || Field_HasEvent(0x27)) {
             return -0x63;
@@ -3498,7 +3498,7 @@ int func_0205e964(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205ea9c(StageResSlot *slot) {
+int StageCmd_Op40(StageResSlot *slot) {
     if (!slot->bits.flag8) {
         if (Field_HasEvent(0x11) || Field_HasEvent(0x27)) {
             return -0x63;
@@ -3513,7 +3513,7 @@ int func_0205ea9c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205ebb0(StageResSlot *slot) {
+int StageCmd_Op41(StageResSlot *slot) {
     StageObj3D *o;
     if (Field_HasEvent(0xa)) {
         return -0x63;
@@ -3547,7 +3547,7 @@ int func_0205ebb0(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205ecd8(StageResSlot *slot) {
+int StageCmd_Op42(StageResSlot *slot) {
     if (Field_HasEvent(0xa)) {
         return -0x63;
     }
@@ -3555,7 +3555,7 @@ int func_0205ecd8(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205eda0(StageResSlot *slot) {
+int StageCmd_Op43(StageResSlot *slot) {
     if (Field_HasEvent(0xa)) {
         return -0x63;
     }
@@ -3578,7 +3578,7 @@ int func_0205eda0(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205eeb4(StageResSlot *slot) {
+int StageCmd_Op44(StageResSlot *slot) {
     u8 color[3];
     s16 rot[3];
     StageVec pos;
@@ -3610,7 +3610,7 @@ int func_0205eeb4(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205eff8(StageResSlot *slot) {
+int StageCmd_Op45(StageResSlot *slot) {
     StageVec pos;
     StageObj3D *o;
     StageLightObj *l;
@@ -3659,7 +3659,7 @@ int func_0205eff8(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205f22c(StageResSlot *slot) {
+int StageCmd_Op46(StageResSlot *slot) {
     StageObj3D *o;
     StageLightObj *l;
     if (slot->args[0] == 0xffff) {
@@ -3684,7 +3684,7 @@ int func_0205f22c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205f354(StageResSlot *slot) {
+int StageCmd_Op47(StageResSlot *slot) {
     StageObj3D *o;
     StageLightObj *l;
     s16 v;
@@ -3712,7 +3712,7 @@ int func_0205f354(StageResSlot *slot) {
 }
 
 
-int func_0205f47c(StageResSlot *slot) {
+int StageCmd_Op48(StageResSlot *slot) {
     void *o = NULL;
     StageObj3D *l = NULL;
     u16 id;
@@ -3823,15 +3823,15 @@ namespace m_StageCmd_8 {
 
 extern "C" {
 
-int func_0205f8f8(StageResSlot *slot) {
+int StageCmd_Op49(StageResSlot *slot) {
     return func_0205f5c4(slot->res, slot->args[0], slot->args[1], 0, slot->args[2]);
 }
 
-int func_0205f91c(StageResSlot *slot) {
+int StageCmd_Op4a(StageResSlot *slot) {
     return func_0205f5c4(slot->res, slot->args[0], slot->args[1], slot->args[2], slot->args[3]);
 }
 
-int func_0205f940(StageResSlot *slot) {
+int StageCmd_Op4b(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -3840,7 +3840,7 @@ int func_0205f940(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205f978(StageResSlot *slot) {
+int StageCmd_Op4c(StageResSlot *slot) {
     StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL) {
         return 1;
@@ -3856,7 +3856,7 @@ int func_0205f978(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205f9dc(StageResSlot *slot) {
+int StageCmd_Op4d(StageResSlot *slot) {
     StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL || !Stage_IsWirelessReady()) {
         return -0x63;
@@ -3869,7 +3869,7 @@ int func_0205f9dc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205fa48(StageResSlot *slot) {
+int StageCmd_Op4e(StageResSlot *slot) {
     StageVec pos;
     StagePlayer *player;
     if (Field_HasEvent(0x11) || Field_HasEvent(0x27)) {
@@ -3968,7 +3968,7 @@ static inline void Stage_SetMark(const StageVec *v, u16 rot, u16 active) {
     data_02fe1534.unk_1e = rot;
 }
 
-int func_0205fdb0(StageResSlot *slot) {
+int StageCmd_Op4f(StageResSlot *slot) {
     StagePlayer *player = ActorMgr_FindPlayer();
     if (player != NULL) {
         Stage_SetMark(&player->pos, player->rot[1], 1);
@@ -3978,9 +3978,9 @@ int func_0205fdb0(StageResSlot *slot) {
 
 u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx);
 extern void Robo021ca458_SetPosRot(StagePlayer *player, StageVec *pos, u16 *rot);
-extern void func_ov000_02184594(FieldState *state);
+extern void SceneCmd_Push0b(FieldState *state);
 
-int func_0205fe10(StageResSlot *slot) {
+int StageCmd_Op50(StageResSlot *slot) {
     StagePlayer *player;
     u16 flags;
     u16 idx;
@@ -4028,7 +4028,7 @@ int func_0205fe10(StageResSlot *slot) {
             return -0x63;
         }
         if (player == NULL) {
-            func_ov000_02184594(data_ov000_021ccd54);
+            SceneCmd_Push0b(data_ov000_021ccd54);
             return -0x63;
         }
         func_0205fc88(flags);
@@ -4047,15 +4047,15 @@ namespace m_StageCmd_9 {
 extern "C" {
 
 extern void func_0205fc88(u32 flags);
-extern void func_ov000_02184594(FieldState *state);
+extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_ov000_02187a20(FieldState *state, u16 a);
+extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
-extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
 extern void SndQueue_Pop(SndQueue *queue);
@@ -4081,19 +4081,19 @@ u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
     return slot->args[2];
 }
 
-int func_020601e0(StageResSlot *slot) {
+int StageCmd_Op51(StageResSlot *slot) {
     if (!Stage_IsWirelessReady() || Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
     if (ActorMgr_FindPlayer() == NULL) {
-        func_ov000_02184594(data_ov000_021ccd54);
+        SceneCmd_Push0b(data_ov000_021ccd54);
         return -0x63;
     }
     func_0205fc88(slot->args[0]);
     return 1;
 }
 
-int func_02060278(StageResSlot *slot) {
+int StageCmd_Op52(StageResSlot *slot) {
     StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL || Field_HasEvent(9) || !Stage_IsWirelessReady()) {
         return -0x63;
@@ -4118,21 +4118,21 @@ namespace m_StageCmd_10 {
 extern "C" {
 
 extern void func_0205fc88(u32 flags);
-extern void func_ov000_02184594(FieldState *state);
+extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_ov000_02187a20(FieldState *state, u16 a);
+extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
-extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
 extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-int func_02060364(StageResSlot *slot) {
+int StageCmd_Op53(StageResSlot *slot) {
     StageRes *res;
     u16 idx;
     u16 ang;
@@ -4160,13 +4160,13 @@ int func_02060364(StageResSlot *slot) {
     return 1;
 }
 
-int func_020604f4(StageResSlot *slot) {
+int StageCmd_Op54(StageResSlot *slot) {
     ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 2;
     return 1;
 }
 
-int func_02060534(StageResSlot *slot) {
+int StageCmd_Op55(StageResSlot *slot) {
     u16 a;
     ObjPoolEntry *e;
     ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
@@ -4182,7 +4182,7 @@ int func_02060534(StageResSlot *slot) {
     return 1;
 }
 
-int func_020605a4(StageResSlot *slot) {
+int StageCmd_Op56(StageResSlot *slot) {
     u16 id = slot->args[0];
     ObjPool *pool = data_02149f0c;
     ObjPoolEntry *e = pool->entries;
@@ -4205,7 +4205,7 @@ static inline BOOL ObjPoolParam_HasRot(ObjPoolParam *prm) {
     return TRUE;
 }
 
-int func_020605fc(StageResSlot *slot) {
+int StageCmd_Op57(StageResSlot *slot) {
     ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
     if (slot->args[1] == 0) {
         ObjPool *pool = data_02149f0c;
@@ -4252,21 +4252,21 @@ namespace m_StageCmd_11 {
 extern "C" {
 
 extern void func_0205fc88(u32 flags);
-extern void func_ov000_02184594(FieldState *state);
+extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_ov000_02187a20(FieldState *state, u16 a);
+extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
-extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
 extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-int func_02060714(StageResSlot *slot) {
+int StageCmd_Op58(StageResSlot *slot) {
     u16 id = slot->args[0];
     ObjPool *pool = data_02149f0c;
     ObjPoolEntry *e = pool->entries;
@@ -4282,7 +4282,7 @@ int func_02060714(StageResSlot *slot) {
     return 1;
 }
 
-int func_0206076c(StageResSlot *slot) {
+int StageCmd_Op59(StageResSlot *slot) {
     u16 f = slot->args[1];
     ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], NULL);
     e->kind = 5;
@@ -4290,7 +4290,7 @@ int func_0206076c(StageResSlot *slot) {
     return 1;
 }
 
-int func_020607a8(StageResSlot *slot) {
+int StageCmd_Op5a(StageResSlot *slot) {
     u16 id = slot->args[0];
     ObjPool *pool = data_02149f0c;
     ObjPoolEntry *e = pool->entries;
@@ -4306,13 +4306,13 @@ int func_020607a8(StageResSlot *slot) {
     return 1;
 }
 
-int func_02060800(StageResSlot *slot) {
+int StageCmd_Op5b(StageResSlot *slot) {
     ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 8;
     return 1;
 }
 
-int func_02060840(StageResSlot *slot) {
+int StageCmd_Op5c(StageResSlot *slot) {
     u16 id = slot->args[0];
     ObjPool *pool = data_02149f0c;
     ObjPoolEntry *e = pool->entries;
@@ -4350,7 +4350,7 @@ int func_02060898(u16 id, u16 idx, int val) {
     return 1;
 }
 
-int func_0206096c(StageResSlot *slot) {
+int StageCmd_Op5d(StageResSlot *slot) {
     if (Field_HasEvent(0xa)) {
         return -0x63;
     }
@@ -4358,7 +4358,7 @@ int func_0206096c(StageResSlot *slot) {
     return 1;
 }
 
-int func_020609e8(StageResSlot *slot) {
+int StageCmd_Op5e(StageResSlot *slot) {
     func_02060898(slot->args[0], slot->args[1], -1);
     return 1;
 }
@@ -4407,7 +4407,7 @@ static inline void Flags_ClearSlot(u8 c, u8 b, u8 a) {
     }
 }
 
-int func_02060a08(StageResSlot *slot) {
+int StageCmd_Op5f(StageResSlot *slot) {
     if (slot->args[0] == 2) {
         u8 hi = slot->args[1] >> 8;
         Flags_AddSlot(slot->args[0], 0, slot->args[1], hi);
@@ -4417,7 +4417,7 @@ int func_02060a08(StageResSlot *slot) {
     return 1;
 }
 
-int func_02060b18(StageResSlot *slot) {
+int StageCmd_Op60(StageResSlot *slot) {
     if (slot->args[1] == 0xff && slot->args[2] == 0xff) {
         Flags_ClearSlot(0, slot->args[0], slot->args[0] >> 8);
     } else {
@@ -4436,30 +4436,30 @@ namespace m_StageCmd_12 {
 extern "C" {
 
 extern void func_0205fc88(u32 flags);
-extern void func_ov000_02184594(FieldState *state);
+extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_ov000_02187a20(FieldState *state, u16 a);
+extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
-extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
 extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-int func_02060be4(StageResSlot *slot) {
+int StageCmd_Op61(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02187a20(state, slot->args[0]);
+    SceneCmd_Push25(state, slot->args[0]);
     return 1;
 }
 
-int func_02060c28(StageResSlot *slot) {
+int StageCmd_Op62(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
         return -0x63;
     }
@@ -4501,14 +4501,14 @@ int func_02060c28(StageResSlot *slot) {
     return 1;
 }
 
-int func_02060e0c(StageResSlot *slot) {
+int StageCmd_Op63(StageResSlot *slot) {
     if (Field_HasEvent(0x27) || Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
         return -0x63;
     }
     {
         SndQueue *q = data_02097e48;
         if (q->unk_06 != 0xffff ? TRUE : FALSE) {
-            func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
+            SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
             return -0x63;
         }
         func_0204aab0(q, slot->args[0]);
@@ -4516,7 +4516,7 @@ int func_02060e0c(StageResSlot *slot) {
     return 1;
 }
 
-int func_02060f58(StageResSlot *slot) {
+int StageCmd_Op64(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
         return -0x63;
     }
@@ -4541,7 +4541,7 @@ int func_02060f58(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061088(StageResSlot *slot) {
+int StageCmd_Op65(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
         return -0x63;
     }
@@ -4568,7 +4568,7 @@ int func_02061088(StageResSlot *slot) {
     return 1;
 }
 
-int func_020611c8(StageResSlot *slot) {
+int StageCmd_Op66(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4591,7 +4591,7 @@ int func_020611c8(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061270(StageResSlot *slot) {
+int StageCmd_Op67(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
@@ -4606,7 +4606,7 @@ int func_02061270(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061360(StageResSlot *slot) {
+int StageCmd_Op68(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4632,20 +4632,20 @@ extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetV
 extern void SndMgr_Stop(SndMgr *mgr, u16 id);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, int a);
 extern void func_ov000_021bc3ec(FieldFade *fade, u16 a, s32 b);
-extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
-extern void func_0203c9e8(int a, int b);
-extern void func_0203cc58(int a, int b, int c);
-extern int func_0203ca84(int a);
-extern void func_0203cb78(s32 a, int b, int c);
-extern void func_0203ca24(int h, int a, int b);
-extern void func_ov000_02187374(FieldState *state, u16 a);
-extern void func_ov000_0218348c(FieldState *state, u8 a);
-extern void func_ov000_02182ad4(FieldState *state);
+extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
+extern void GfxSys_SetFadePlanes(int a, int b);
+extern void GfxSys_StartFadeOut(int a, int b, int c);
+extern int GfxSys_GetFadeLevel(int a);
+extern void GfxSys_StartFadeIn(s32 a, int b, int c);
+extern void GfxSys_SetFadeRange(int h, int a, int b);
+extern void SceneCmd_Push22(FieldState *state, u16 a);
+extern void SceneCmd_Push04(FieldState *state, u8 a);
+extern void SceneCmd_Push03(FieldState *state);
 extern void func_ov000_02182b0c(FieldState *state);
 extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
-extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
+extern void SceneCmd_Push29(FieldState *state, u16 a, u16 b);
 extern BOOL func_ov000_0214be8c(void);
-extern BOOL func_ov000_021b4738(StagePlayer *player);
+extern BOOL Actor_IsDead(StagePlayer *player);
 extern DataRes *data_02fe1530;
 extern u16 DataRes_ReadEntry(DataRes *res, u32 idx, int packed, int sub);
 
@@ -4681,7 +4681,7 @@ static inline BOOL Shared_HasMark(void) {
     return data_02fe1534.unk_16 != 0 ? TRUE : FALSE;
 }
 
-int func_020613bc(StageResSlot *slot) {
+int StageCmd_Op69(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
@@ -4689,7 +4689,7 @@ int func_020613bc(StageResSlot *slot) {
     return 1;
 }
 
-int func_0206149c(StageResSlot *slot) {
+int StageCmd_Op6a(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4697,7 +4697,7 @@ int func_0206149c(StageResSlot *slot) {
     return 1;
 }
 
-int func_020614f4(StageResSlot *slot) {
+int StageCmd_Op6b(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
@@ -4705,7 +4705,7 @@ int func_020614f4(StageResSlot *slot) {
     return 1;
 }
 
-int func_020615bc(StageResSlot *slot) {
+int StageCmd_Op6c(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4713,7 +4713,7 @@ int func_020615bc(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061614(StageResSlot *slot) {
+int StageCmd_Op6d(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4721,7 +4721,7 @@ int func_02061614(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061668(StageResSlot *slot) {
+int StageCmd_Op6e(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4729,12 +4729,12 @@ int func_02061668(StageResSlot *slot) {
     return 1;
 }
 
-int func_020616b0(StageResSlot *slot) {
+int StageCmd_Op6f(StageResSlot *slot) {
     data_02097d48->pltt.id = slot->args[0];
     return 1;
 }
 
-int func_020616cc(StageResSlot *slot) {
+int StageCmd_Op70(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4742,7 +4742,7 @@ int func_020616cc(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061710(StageResSlot *slot) {
+int StageCmd_Op71(StageResSlot *slot) {
     if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4762,100 +4762,100 @@ int func_02061710(StageResSlot *slot) {
             mode = -1;
             break;
         }
-        func_0203c9e8(0x3f, 0);
-        func_0203cc58(slot->args[0] << 12, slot->args[1] != 0 ? 1 : 2, mode);
+        GfxSys_SetFadePlanes(0x3f, 0);
+        GfxSys_StartFadeOut(slot->args[0] << 12, slot->args[1] != 0 ? 1 : 2, mode);
     }
     return 1;
 }
 
-int func_020617ec(StageResSlot *slot) {
+int StageCmd_Op72(StageResSlot *slot) {
     if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
     if (Stage_IsWirelessReady()) {
-        int h = func_0203ca84(0);
-        func_0203cb78(slot->args[0] << 12, 2, 0);
-        func_0203ca24(h, 0, 0);
+        int h = GfxSys_GetFadeLevel(0);
+        GfxSys_StartFadeIn(slot->args[0] << 12, 2, 0);
+        GfxSys_SetFadeRange(h, 0, 0);
     }
     return 1;
 }
 
-int func_0206189c(StageResSlot *slot) {
+int StageCmd_Op73(StageResSlot *slot) {
     if (Stage_IsWirelessReady()) {
         return 1;
     }
     return -0x63;
 }
 
-int func_020618d4(StageResSlot *slot) {
+int StageCmd_Op74(StageResSlot *slot) {
     if (!Stage_IsWirelessIdle()) {
         return -0x63;
     }
     return 1;
 }
 
-int func_02061904(StageResSlot *slot) {
+int StageCmd_Op75(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02188140(state, slot->args[0], slot->args[1], 0);
+    SceneCmd_Push27(state, slot->args[0], slot->args[1], 0);
     return 1;
 }
 
-int func_02061950(StageResSlot *slot) {
+int StageCmd_Op76(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02188140(state, slot->args[0], slot->args[1], 1);
+    SceneCmd_Push27(state, slot->args[0], slot->args[1], 1);
     return 1;
 }
 
-int func_020619a0(StageResSlot *slot) {
+int StageCmd_Op77(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02188140(state, 1, 0, 0);
+    SceneCmd_Push27(state, 1, 0, 0);
     return 1;
 }
 
-int func_020619ec(StageResSlot *slot) {
+int StageCmd_Op78(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
     return 1;
 }
 
-int func_02061a1c(StageResSlot *slot) {
+int StageCmd_Op79(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02187374(state, slot->args[0]);
+    SceneCmd_Push22(state, slot->args[0]);
     return 1;
 }
 
-int func_02061a60(StageResSlot *slot) {
+int StageCmd_Op7a(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_0218348c(state, slot->args[0]);
+    SceneCmd_Push04(state, slot->args[0]);
     return 1;
 }
 
-int func_02061aa8(StageResSlot *slot) {
+int StageCmd_Op7b(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02182ad4(state);
+    SceneCmd_Push03(state);
     return 1;
 }
 
-int func_02061ae4(StageResSlot *slot) {
+int StageCmd_Op7c(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
@@ -4864,7 +4864,7 @@ int func_02061ae4(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061b20(StageResSlot *slot) {
+int StageCmd_Op7e(StageResSlot *slot) {
     if (Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
@@ -4891,12 +4891,12 @@ int func_02061b20(StageResSlot *slot) {
     return 1;
 }
 
-int func_02061c44(StageResSlot *slot) {
+int StageCmd_Op7f(StageResSlot *slot) {
     FieldState *state = data_ov000_021ccd54;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    func_ov000_02188634(state, slot->args[0], slot->args[1]);
+    SceneCmd_Push29(state, slot->args[0], slot->args[1]);
     return 1;
 }
 
@@ -4923,7 +4923,7 @@ int func_02061c8c(StageResSlot *slot) {
     case 2: {
         StagePlayer *player = ActorMgr_FindPlayer();
         if (player != NULL) {
-            if (func_ov000_021b4738(player)) {
+            if (Actor_IsDead(player)) {
                 shared->unk_80 = 1;
             } else {
                 shared->unk_80 = 0;
@@ -5299,15 +5299,15 @@ BOOL func_02062670(void) {
     return Shared_TestFlag(8) ? TRUE : FALSE;
 }
 
-BOOL func_02062698(void) {
+BOOL Shared_HasMark_02062698(void) {
     return Shared_HasMark() ? TRUE : FALSE;
 }
 
-void func_020626c0(void) {
+void Shared_ClearMark(void) {
     data_02fe1534.unk_16 = 0;
 }
 
-void func_020626d4(StageVec *pos, u16 rot) {
+void Shared_SetMark(StageVec *pos, u16 rot) {
     data_02fe1534.unk_16 = 1;
     if (pos == NULL) {
         return;
@@ -5318,17 +5318,17 @@ void func_020626d4(StageVec *pos, u16 rot) {
     data_02fe1534.unk_1e = rot;
 }
 
-void func_02062724(StageVec *out) {
+void Shared_GetMarkPos(StageVec *out) {
     out->x = data_02fe1534.unk_18 << 4;
     out->y = data_02fe1534.unk_1a << 4;
     out->z = data_02fe1534.unk_1c << 4;
 }
 
-u16 func_02062754(void) {
+u16 Shared_GetMarkRot(void) {
     return data_02fe1534.unk_1e;
 }
 
-void func_02062764(u16 clear, u16 set) {
+void Shared_ChangeFlags(u16 clear, u16 set) {
     data_02fe1534.unk_14 &= (u16)~clear;
     data_02fe1534.unk_14 |= set;
 }
@@ -5337,7 +5337,7 @@ void func_02062790(u16 a) {
     data_02fe1534.unk_20 = a;
 }
 
-void func_020627a0(u16 a, u16 b) {
+void Shared_SetEventActor(u16 a, u16 b) {
     data_02fe1534.unk_24 = a;
     data_02fe1534.unk_26 = b;
 }

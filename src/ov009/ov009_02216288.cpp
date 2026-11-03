@@ -76,7 +76,7 @@ void Ov009ActPair110_Start(Ov009ActPair110 *self) {
 
 extern void *data_02097e4c;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern void SndMgr_StopSeqArc(void *mgr, s32 h);
 
 void Ov009ActVt_02217f60_Update(Ov009ActVt_02217f60 *self) {
@@ -89,7 +89,7 @@ void Ov009ActVt_02217f60_Update(Ov009ActVt_02217f60 *self) {
     a = ActorMgr_FindPlayer();
     if (a != NULL) {
         self->target = a->id;
-        if (func_ov000_021b4738(a) && self->unk_10c >= 0) {
+        if (Actor_IsDead(a) && self->unk_10c >= 0) {
             SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
             self->unk_10c = -1;
         }
@@ -128,7 +128,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 extern void SndMgr_SetSlotVolume_0204a058(void *mgr, s32 h, s32 a, s32 b);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
 void Ov009ActPair110_State20(Ov009ActPair110 *self) {
@@ -149,7 +149,7 @@ void Ov009ActPair110_State20(Ov009ActPair110 *self) {
         History_SetState(self->fsm, 1, 0);
         self->pos = self->unk_f0;
         self->unk_b6 = 0x1e;
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         SndMgr_SetSlotVolume_0204a058(data_02097e4c, self->unk_10c, 0x28, 0x1c2);
@@ -284,7 +284,7 @@ void Ov009ActVt_02217f60_StateHurt(Ov009ActVt_02217f60 *self) {
 extern void *data_02097e4c;
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 void Ov009ActPair110_StateDie(Ov003Actor *self) {
     VecFx32 p;
@@ -298,7 +298,7 @@ void Ov009ActPair110_StateDie(Ov003Actor *self) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482e, 0x15);
         SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
-        func_ov000_0218996c(0x10, 0x3c);
+        Field_ShakeCamera(0x10, 0x3c);
         self->unk_ea_6 = 1;
         self->fsm->st++;
         break;
@@ -329,7 +329,7 @@ void Ov009ActPair110_StateDie(Ov003Actor *self) {
 }
 
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 void Ov009ActVt_02217f60_State21(Ov009ActVt_02217f60 *self) {
@@ -349,12 +349,12 @@ void Ov009ActVt_02217f60_State21(Ov009ActVt_02217f60 *self) {
     t = st->timer;
     if (t == 300) {
         SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
     }
     if (t > 0x1e0) {
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
     }
     if ((t & 0x3f) == 1) {
@@ -394,7 +394,7 @@ void Ov009ActVt_02217f60_State21(Ov009ActVt_02217f60 *self) {
         p1.y = self->pos.y;
         p1.z = self->pos.z + 0x7000;
         Spawn_ScatterEffect(&p1, &v, 0xc00, 0x1400, a, b);
-        func_ov000_0218996c(6, 10);
+        Field_ShakeCamera(6, 10);
     }
 }
 
@@ -546,7 +546,7 @@ void Ov009ActVt_02217eb4_Update(Ov009ActVt_02217eb4 *self) {
 namespace m_0220e434 {
 extern "C" {
 
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
 void Ov009ActVt_02217eb4_State20(Ov009ActVt_02217eb4 *self) {
@@ -561,7 +561,7 @@ void Ov009ActVt_02217eb4_State20(Ov009ActVt_02217eb4 *self) {
     History_SetState(self->fsm, 1, 0);
     self->pos = self->unk_f0;
     self->unk_b6 = 0x96;
-    func_020627a0(self->kind, self->id);
+    Shared_SetEventActor(self->kind, self->id);
     func_020627dc(4);
     data_ov000_021ccd54->stageFlags = 1;
 }
@@ -865,7 +865,7 @@ void Ov009ActVt_02217eb4_StateHurt(Ov009ActVt_02217eb4 *self) {
 extern void *data_02097e4c;
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 void Ov009ActVt_02217eb4_StateDie(Ov009ActVt_02217eb4 *self) {
     VecFx32 v;
     VecFx32 d;
@@ -901,7 +901,7 @@ void Ov009ActVt_02217eb4_StateDie(Ov009ActVt_02217eb4 *self) {
         t = st->timer;
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         if (t > 0x78) {
-            func_ov000_0218996c(10, 0x28);
+            Field_ShakeCamera(10, 0x28);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x6000, 0x6000, 0x6000);
             self->fsm->timer = 0x29;
@@ -920,7 +920,7 @@ void Ov009ActVt_02217eb4_StateDie(Ov009ActVt_02217eb4 *self) {
             v.y = 0x2800;
             v.z = 0x1800;
             Spawn_ScatterEffect(&self->pos, &v, 0xc00, 0x1400, a, b);
-            func_ov000_0218996c(6, 10);
+            Field_ShakeCamera(6, 10);
         }
         break;
     case 2:
@@ -958,14 +958,14 @@ void Ov009ActVt_02217eb4_State21(Ov009ActVt_02217eb4 *self) {
     st = self->fsm;
     st->timer++;
     if (st->timer > 0x1e0) {
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
     }
 }
 
 extern void *data_02097e4c;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern void SndMgr_StopSeqArc(void *mgr, s32 h);
 
 void Ov009ActPair110_Update(Ov009ActVt_02217b58 *self) {
@@ -979,7 +979,7 @@ void Ov009ActPair110_Update(Ov009ActVt_02217b58 *self) {
     a = ActorMgr_FindPlayer();
     if (a != NULL) {
         self->target = a->id;
-        if (func_ov000_021b4738(a) && self->unk_10c >= 0) {
+        if (Actor_IsDead(a) && self->unk_10c >= 0) {
             SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
             self->unk_10c = -1;
         }
@@ -1111,8 +1111,8 @@ extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Field_ShakeCamera(s32 a, s32 b);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
     VecFx32 v;
@@ -1129,7 +1129,7 @@ void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
     case 1:
         st->timer++;
         if (st->timer > 0xb4) {
-            func_ov000_0218996c(0x14, 0x3c);
+            Field_ShakeCamera(0x14, 0x3c);
             SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
             SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
             Effect_SpawnId(5, &self->pos)->SetScaleAll(0x7000);
@@ -1159,7 +1159,7 @@ void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
             v.y = 0x2800;
             v.z = 0x1800;
             Spawn_ScatterEffect(&self->pos, &v, 0xc00, 0x1400, a, b);
-            func_ov000_0218996c(6, 10);
+            Field_ShakeCamera(6, 10);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;
@@ -1168,10 +1168,10 @@ void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
             st->timer--;
         }
         if (st->timer == 0) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
             return;
         }
@@ -1320,8 +1320,8 @@ extern char data_ov009_022179ae[];
 extern void *Model0218fe1c_SetAnimFrame(void *m, s32 a);
 extern void Model0218fe1c_PauseAnim(void *m);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Field_ShakeCamera(s32 a, s32 b);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void Ov009ActVt_02217e08_State20(Ov009ActVt_02217e08 *self) {
     ActorSub40 *st = self->fsm;
@@ -1369,14 +1369,14 @@ void Ov009ActVt_02217e08_State20(Ov009ActVt_02217e08 *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 1;
         s44->unk_22_1 = 1;
-        func_ov000_0218996c(0x14, 0x3c);
+        Field_ShakeCamera(0x14, 0x3c);
         SndMgr_PlayVolume(data_02097e4c, 0x17, -1, -1, -1);
         self->fsm->st++;
         break;
     case 2:
         st->timer++;
         if (st->timer > 0x1e) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
@@ -1418,7 +1418,7 @@ extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern BOOL Hit_ApplyInArea(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -1502,7 +1502,7 @@ void Ov009ActVt_02217e08_StateAttack2(Ov009ActVt_02217e08 *self) {
             if (t != NULL) {
                 Hit_ApplyInArea(self, self, 0x1e, 0x20, (u16)(1 << (t->id >> 12)), 0, 0, 0x3400, 0x2800, 0x64, 0x1000);
             }
-            func_ov000_0218996c(0xf, 0x1e);
+            Field_ShakeCamera(0xf, 0x1e);
             SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             self->fsm->st++;
             self->fsm->timer = 0;
@@ -1570,7 +1570,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void Model0218fe1c_SetAnimSpeed(void *m, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -1630,7 +1630,7 @@ void Ov009ActVt_02217e08_StateAttack3(Ov009ActVt_02217e08 *self) {
             return;
         }
         Effect_SpawnId(0x66, &self->pos)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
-        func_ov000_0218996c(0x12, 0x3c);
+        Field_ShakeCamera(0x12, 0x3c);
         SndMgr_PlayVolume(data_02097e4c, 0x17, -1, -1, -1);
         p.x = t->pos.x;
         p.y = t->pos.y;
@@ -1752,7 +1752,7 @@ void Ov009ActVt_02217e08_StateDown(Ov009ActVt_02217e08 *self) {
         SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
         a = Ov009_FindActor(self->target_id);
         if (a != NULL) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, a);
+            Group_UpdateActor(data_ov000_021ccd64, 0, a);
             a->vfunc_08();
         }
     }
@@ -1765,7 +1765,7 @@ void Ov009ActVt_02217e08_StateDie(Ov009ActVt_02217e08 *self) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4006, 0x15);
         a = Ov009_FindActor(self->target_id);
         if (a != NULL) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, a);
+            Group_UpdateActor(data_ov000_021ccd64, 0, a);
             a->vfunc_08();
         }
         self->unk_ea |= 0x400;

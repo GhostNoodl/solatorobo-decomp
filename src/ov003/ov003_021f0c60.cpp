@@ -91,8 +91,8 @@ void func_0205c234(s32 a, s32 b);
 BOOL Item_Set_0206f5e4(u16 id, int n);
 BOOL Item_Give(u16 id, int n);
 const char *Param_Get(u16 id);
-void func_ov000_02184ee0(void *g, u16 id);
-void func_ov000_02184ea4(void *g, u16 id);
+void SceneCmd_Push10Flag(void *g, u16 id);
+void SceneCmd_Push10(void *g, u16 id);
 const char *MsgRes_GetString(void *a, s32 id);
 }
 
@@ -262,7 +262,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
             }
         }
         Item_Set_0206f5e4(id, 1);
-        func_ov000_02184ee0(data_ov000_021ccd54, id);
+        SceneCmd_Push10Flag(data_ov000_021ccd54, id);
         break;
     }
     case 8: {
@@ -276,7 +276,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (Item_Give(id, 1)) {
             Ov003Log_Push(1, Param_Get(id));
         } else {
-            func_ov000_02184ea4(data_ov000_021ccd54, id);
+            SceneCmd_Push10(data_ov000_021ccd54, id);
         }
         break;
     }

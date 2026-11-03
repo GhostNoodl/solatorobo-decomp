@@ -36,7 +36,7 @@ void ov006_Task_Ctor(ov006_Task *self) {
     self->subState = 0;
 }
 
-void func_ov006_021ccdc4(void) {
+void ov006_Task_Dtor(void) {
 }
 
 ov006_Task *ov006_Task_DtorDelete(ov006_Task *self) {
@@ -55,7 +55,7 @@ int ov006_Task_IsLoaded(void) {
     return 1;
 }
 
-int ov006_Task_Setup(void) {
+int ov006_Task_Start(void) {
     return 1;
 }
 

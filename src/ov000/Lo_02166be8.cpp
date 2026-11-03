@@ -342,7 +342,7 @@ typedef struct {
 extern "C" {
 typedef struct { s8 x; s8 y; } Ofs715c;
 extern Ofs715c data_ov000_021c9ae4[];
-void *func_0203bbfc(void *a, s32 b);
+void *GfxSys_GetOamMgr(void *a, s32 b);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 u32 func_02041080(void *a, s32 b, s32 c, s32 d);
 
@@ -387,7 +387,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     anim = p->anim + kind;
     Oam715c oam = p->oam;
     g = data_ov000_021ccd54;
-    mgr = func_0203bbfc(data_02097d48, 1);
+    mgr = GfxSys_GetOamMgr(data_02097d48, 1);
     ox = p->ox;
     oy = p->oy;
     oam.w1.pal = p->palMap[oam.w1.pal];

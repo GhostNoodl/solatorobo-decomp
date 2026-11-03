@@ -19,7 +19,7 @@ extern void *data_ov000_021ccd64;
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot,
                          s32 r, s32 rr, s16 h, s32 i);
-void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
+void Group_UpdateActor(void *a, s32 b, Actor *actor);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
@@ -130,7 +130,7 @@ void Ov006ActVt_021ec67c_StateIdle(ActorEx *self) {
         }
         SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
         Hit_ApplyInArea(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;
     }

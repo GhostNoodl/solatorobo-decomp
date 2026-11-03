@@ -47,7 +47,7 @@ static inline BOOL LoIsLoaded24(void) {
 }
 
 
-void func_ov000_02154ec4(UiList *self) {
+void UiList_PreUpdate(UiList *self) {
     if (!self->flag4) {
         return;
     }
@@ -61,7 +61,7 @@ void func_ov000_02154ec4(UiList *self) {
     }
 }
 
-void func_ov000_02154f34(UiList *self) {
+void UiList_PostUpdate(UiList *self) {
     if (self->state == 2) {
         self->openTime = self->openLen;
         self->openRatio = 0x1000;
@@ -85,7 +85,7 @@ static inline BOOL NoB5(UiList *self) {
     return !self->flag5 ? TRUE : FALSE;
 }
 
-void func_ov000_02154fb0(UiList *self, s32 a, VecFx32 *pos, s32 d) {
+void UiList_DrawBody(UiList *self, s32 a, VecFx32 *pos, s32 d) {
     Arg02154fb0 arg;
     s32 v;
     if (self->fadeRatio == 0) {

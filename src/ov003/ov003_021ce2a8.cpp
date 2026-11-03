@@ -62,12 +62,12 @@ void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg) {
     *dst = 0;
 }
 
-bool Ov003TaskVt_021f78f4_IsCurrent(void *p) {
+bool Ov003Task_IsCurrent(void *p) {
     BOOL r = (data_ov000_021ccd40 == p);
     return r;
 }
 
-void Ov003TaskVt_021f78f4_SetCurrent(Ov003Current *p) {
+void Ov003Task_SetCurrent(Ov003Current *p) {
     if (data_ov000_021ccd40 != NULL) {
         data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
     } else {
@@ -76,7 +76,7 @@ void Ov003TaskVt_021f78f4_SetCurrent(Ov003Current *p) {
     data_ov000_021ccd40 = p;
 }
 
-BOOL Ov003TaskVt_021f78f4_TryReleaseCurrent(Ov003Scene *self) {
+BOOL Ov003Task_TryReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
@@ -88,7 +88,7 @@ BOOL Ov003TaskVt_021f78f4_TryReleaseCurrent(Ov003Scene *self) {
     return TRUE;
 }
 
-void Ov003TaskVt_021f78f4_ReleaseCurrent(Ov003Scene *self) {
+void Ov003Task_ReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
@@ -104,41 +104,41 @@ bool Ov003Task_TestFlags(u32 *self, u32 mask) {
     return r;
 }
 
-void Ov003TaskVt_021f78f4_ClearFlag7(Ov003FlagSet *self) {
+void Ov003Task_ClearFlag7(Ov003FlagSet *self) {
     self->b7 = 0;
 }
 
-void Ov003TaskVt_021f78f4_SetFlag7(Ov003FlagSet *self) {
+void Ov003Task_SetFlag7(Ov003FlagSet *self) {
     self->b7 = 1;
 }
 
-bool Ov003TaskVt_021f78f4_GetFlag6(Ov003FlagSet *self) {
+bool Ov003Task_GetFlag6(Ov003FlagSet *self) {
     BOOL r = self->b6 ? TRUE : FALSE;
     return r;
 }
 
-void Ov003TaskVt_021f78f4_SetFlag6(Ov003FlagSet *self) {
+void Ov003Task_SetFlag6(Ov003FlagSet *self) {
     self->b6 = 1;
 }
 
-bool Ov003TaskVt_021f78f4_GetFlag5(Ov003FlagSet *self) {
+bool Ov003Task_GetFlag5(Ov003FlagSet *self) {
     BOOL r = self->b5 ? TRUE : FALSE;
     return r;
 }
 
-void Ov003TaskVt_021f78f4_SetFlag5(Ov003FlagSet *self) {
+void Ov003Task_SetFlag5(Ov003FlagSet *self) {
     self->b5 = 1;
 }
 
-void Ov003TaskVt_021f78f4_ClearFlag4(Ov003FlagSet *self) {
+void Ov003Task_ClearFlag4(Ov003FlagSet *self) {
     self->b4 = 0;
 }
 
-void Ov003TaskVt_021f78f4_SetFlag4(Ov003FlagSet *self) {
+void Ov003Task_SetFlag4(Ov003FlagSet *self) {
     self->b4 = 1;
 }
 
-BOOL func_ov003_021ce50c(void) {
+BOOL Ov003Task_IsReady(void) {
     return TRUE;
 }
 

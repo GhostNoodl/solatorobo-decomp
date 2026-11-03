@@ -21,7 +21,7 @@ void SaveBase_SetState_020473ac(SaveBase *s, s32 state) {
     SaveBase_SetState(s, state);
 }
 
-BOOL func_020473d4(SaveBase *s) {
+BOOL SaveBase_Update(SaveBase *s) {
     switch (data_02097e44->state) {
         case 7:
         case 8:
@@ -57,18 +57,18 @@ BOOL func_020473d4(SaveBase *s) {
     return TRUE;
 }
 
-void func_02047558(SaveBase *s) {}
-void func_0204755c(SaveBase *s) {}
-void func_02047560(SaveBase *s) {}
-void func_02047564(SaveBase *s) {}
-void func_02047568(SaveBase *s) {}
-void func_0204756c(SaveBase *s) {}
-void func_02047570(SaveBase *s) {}
-void func_02047574(SaveBase *s) {}
-void func_02047578(SaveBase *s) {}
+void SaveBase_OnError(SaveBase *s) {}
+void SaveBase_State1(SaveBase *s) {}
+void SaveBase_State3(SaveBase *s) {}
+void SaveBase_State4(SaveBase *s) {}
+void SaveBase_State6(SaveBase *s) {}
+void SaveBase_State8(SaveBase *s) {}
+void SaveBase_State11(SaveBase *s) {}
+void SaveBase_State14(SaveBase *s) {}
+void SaveBase_State16(SaveBase *s) {}
 void func_0204757c(SaveBase *s) {}
 
-void func_02047580(SaveBase *s) {
+void SaveBase_Init(SaveBase *s) {
     s->name = data_0208b5fd;
     s->formatted = 0;
     s->tmpBuf = NULL;
@@ -106,8 +106,8 @@ void SaveBase_FreeBuffers(SaveBase *s) {
     SysCard_Reset(data_02097e44);
 }
 
-void func_0204768c(SaveBase *s, void *dst, u32 size) {}
-void func_02047690(SaveBase *s, void *dst, u32 size) {}
+void SaveBase_FillSlot(SaveBase *s, void *dst, u32 size) {}
+void SaveBase_FillData(SaveBase *s, void *dst, u32 size) {}
 
 BOOL func_02047694(SaveBase *s) {
     SaveSlot *slot;

@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov000_021ccd34;
-void func_0203cc58(int a, int b, int c);
+void GfxSys_StartFadeOut(int a, int b, int c);
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, int id);
 void Obj0215bb14_SetText(void *a, void *b);
@@ -62,7 +62,7 @@ void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
             self->unk_80->flags |= 2;
             self->unk_84->flags |= 2;
             self->unk_88->flags |= 2;
-            func_0203cc58(self->unk_80->openLen, 2, -1);
+            GfxSys_StartFadeOut(self->unk_80->openLen, 2, -1);
             break;
         }
     } else if (keys & 2) {
@@ -223,7 +223,7 @@ void func_ov015_02203ee0(Ov015Scene2a08 *self) {
     }
 }
 
-BOOL func_ov015_02203fec(UiList *self, UiListItem *ev) {
+BOOL Ov015Scene2c08_List3cOnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2c08 *o;
     u16 id;
     id = ev->id;
@@ -237,7 +237,7 @@ BOOL func_ov015_02203fec(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02204030(UiList *self, UiListItem *item) {
+BOOL Ov015Scene2c08_List3cOnDecide(UiList *self, UiListItem *item) {
     BOOL r = TRUE;
     Ov015Scene2c08 *o = (Ov015Scene2c08 *)self->owner;
     if (item != NULL) {
@@ -378,8 +378,8 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
         UiList *o = self->unk_3c;
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
-    self->unk_3c->onDecide = func_ov015_02204030;
-    self->unk_3c->onCursor = func_ov015_02203fec;
+    self->unk_3c->onDecide = Ov015Scene2c08_List3cOnDecide;
+    self->unk_3c->onCursor = Ov015Scene2c08_List3cOnCursor;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);

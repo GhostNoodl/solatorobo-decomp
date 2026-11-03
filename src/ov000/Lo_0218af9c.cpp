@@ -11,7 +11,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
 u16 FX_Atan2(s32 x, s32 z);
-void func_ov000_0218b4b4(GroupNode *self, s32 mode, Actor *src);
+void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Actor *src);
 Actor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32 *pos, const Rot16 *rot, u16 id);
 
 static inline BOOL GBusy0218af9c(FieldState *g) {
@@ -158,7 +158,7 @@ void func_ov000_0218af9c(GroupNode *self) {
     if (any) {
         switch (mode) {
         case 2:
-            func_ov000_0218b4b4(self, 1, best);
+            GroupNode_UpdateEntry(self, 1, best);
             best->vfunc_08();
             break;
         case 3: {

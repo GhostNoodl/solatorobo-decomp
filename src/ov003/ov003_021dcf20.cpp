@@ -34,7 +34,7 @@ extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern Ov003SwAnim *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
 extern void HitMesh_Link(void *p);
 extern void HitMesh_Unlink_0203f920(void *p);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern Actor *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(Actor *p, u16 id, s32 a, s32 b, s32 c, s32 d);
 extern s32 Ov003CntSelf_CountLiving(ActorSub4c *p);
@@ -44,7 +44,7 @@ extern void *Model0218fe1c_SetAnimFrame(void *model, s32 a);
 extern Ov003SwPlayer *ActorMgr_FindPlayer(void);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern void func_020627b4(void);
-extern s32 func_0205b1fc(void);
+extern s32 StageRes_HasQueued(void);
 
 static inline void Ov003SwFsm_Clear(ActorSub40 *w) {
     w->flags = 0;
@@ -99,7 +99,7 @@ static inline void Ov003Sw_Next(Ov003Switch *self) {
 
 static inline void Ov003Sw_Sound(Ov003Switch *self) {
     if (self->param->unk_01 == 3) {
-        func_ov000_0218996c(7, 0x14);
+        Field_ShakeCamera(7, 0x14);
         SndMgr_PlayAt(data_02097e4c, 0x47, &self->pos, 0);
     }
 }
@@ -323,7 +323,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         m = self->unk_18;
         func_020627b4();
         func_ov000_02197dec(self, m, m);
-        if (func_0205b1fc() == 1) {
+        if (StageRes_HasQueued() == 1) {
             pl = ActorMgr_FindPlayer();
             if (pl != NULL && pl->unk_b28_0 == 0) {
                 pl->unk_15 = 3;

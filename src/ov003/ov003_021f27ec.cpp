@@ -132,8 +132,8 @@ extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecF
 extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov003MActor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern void func_0203cc58(s32 a, s32 b, s32 c);
-extern void func_ov000_02188140(void *g, s32 a, s32 b, s32 c);
+extern void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
+extern void SceneCmd_Push27(void *g, s32 a, s32 b, s32 c);
 extern void func_ov000_02188ca0(Ov003MCol *c, s32 a);
 void Ov003Multi_StartCapture(Ov003Multi *self);
 
@@ -282,8 +282,8 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         cb = gm->unk_ca.b;
     }
     ctx->unk_0a = area->unk_47;
-    func_0203cc58(0x3c000, 2, 0);
-    func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
+    GfxSys_StartFadeOut(0x3c000, 2, 0);
+    SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
     col.r = cr;
     col.g = cg;
     col.b = cb;

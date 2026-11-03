@@ -24,7 +24,7 @@ void *ResMgr_Load(void *a, s32 b, s32 c);
 void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
 void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
 VObj *ActorMgr_FindPlayer(void);
-void func_ov000_021848d0(FieldState *q);
+void SceneCmd_Push0d(FieldState *q);
 BOOL func_ov000_02170188(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
@@ -361,7 +361,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (!ok) {
             return;
         }
-        func_ov000_021848d0(data_ov000_021ccd54);
+        SceneCmd_Push0d(data_ov000_021ccd54);
         break;
     }
     case 6:

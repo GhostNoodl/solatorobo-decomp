@@ -74,9 +74,9 @@ extern BOOL ResSet_UpdateLoad(ActorRes *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
 extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_02191870(void *model, ActorRes *res);
+extern void Model0218fe1c_BindAnim3Res(void *model, ActorRes *res);
 extern Ov003AnimLayer *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
-extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetAnim3(void *model, s32 a, s32 b, s32 c);
 extern ActorSub40 *History_Init(void *p);
 extern u8 *func_0206ef10(u16 id);
 extern void Model0218fe1c_StopAnim(Model0218fe1c *model);
@@ -132,13 +132,13 @@ void Ov003ActVt_021fa548_Start(Ov003Prop021fa548 *self) {
     Ov000ActVt_021cc7cc_Start(self);
     Model0218fe1c_SetAnim(self->model, data_ov003_021fa662, 0x1000, 1);
     if (self->altFrame != 0) {
-        func_ov000_02191870(self->model, &self->res);
+        Model0218fe1c_BindAnim3Res(self->model, &self->res);
         layer = Model0218fe1c_GetAnimCtrl(self->model, 3);
         if (layer != NULL) {
             s32 frame;
             s32 n;
             Ov003AnimCtl *ctl;
-            func_ov000_02191920(self->model, 0, 0x1000, 0);
+            Model0218fe1c_SetAnim3(self->model, 0, 0x1000, 0);
             n = self->altFrame << 12;
             if (self->altFrame != 0) {
                 frame = (s32)((float)n + 0.5f);
@@ -215,13 +215,13 @@ void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
         Model0218fe1c_SetAnim(self->model, data_ov003_021fa662, 0x1000, 1);
         if (self->altFrame != 0) {
             Ov003AnimLayer *layer;
-            func_ov000_02191870(self->model, &self->res);
+            Model0218fe1c_BindAnim3Res(self->model, &self->res);
             layer = Model0218fe1c_GetAnimCtrl(self->model, 3);
             if (layer != NULL) {
                 s32 frame;
                 s32 n;
                 Ov003AnimCtl *ctl;
-                func_ov000_02191920(self->model, 0, 0x1000, 0);
+                Model0218fe1c_SetAnim3(self->model, 0, 0x1000, 0);
                 n = self->altFrame << 12;
                 if (self->altFrame != 0) {
                     frame = (s32)((float)n + 0.5f);

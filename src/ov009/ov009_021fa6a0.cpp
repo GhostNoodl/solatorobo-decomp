@@ -3,7 +3,7 @@
 extern "C" {
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
@@ -19,7 +19,7 @@ void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
     dist = 0x7fffffff;
     o = ActorMgr_FindPlayer();
     if (o != NULL) {
-        if (func_ov000_021b4738(o)) {
+        if (Actor_IsDead(o)) {
             return;
         }
         self->target = o->id;

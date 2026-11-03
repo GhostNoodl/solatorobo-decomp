@@ -18,7 +18,7 @@ typedef struct {
     Rot16 rot;
 } Src0218b4b4;
 
-void func_ov000_0218b4b4(GroupNode *self, s32 mode, Src0218b4b4 *src) {
+void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Src0218b4b4 *src) {
     GroupEntry *slot = NULL;
     GroupEntry *e = self->entries;
     BOOL flag = self->flags.unk_5;

@@ -4,13 +4,13 @@
 extern "C" {
 
 extern const VecFx32 data_02092a50;
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 
 #pragma force_active on
 void Ov011Act7c4c_StateDie(Ov011Act7c4c *self) {
     VecFx32 v;
     if (self->fsm->st == 0) {
-        func_ov000_0218996c(0xf, 0x3c);
+        Field_ShakeCamera(0xf, 0x3c);
         SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
         Effect_SpawnId(4, &self->pos)->SetScaleAll(0x3800);
     }

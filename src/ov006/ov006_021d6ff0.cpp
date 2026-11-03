@@ -133,8 +133,8 @@ typedef struct ov006_RaceInfo021d6ff0 {
 ov006_RaceInfo021d6ff0 *ov006_Slot_GetSub2C(ov006_Slot *self);
 void ov006_Unk021dd5b8_SetText(void *p, u16 v, int a, int b);
 void ov006_Unk021dd2d8_Show(void *p, s8 v);
-void func_0203cb78(s32 a, int b, int c);
-void func_0203cc58(s32 a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
+void GfxSys_StartFadeOut(s32 a, int b, int c);
 struct EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void SndMgr_RequestBgm(void *p, s32 a);
@@ -403,8 +403,8 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             if (self->timer < 5) {
                 break;
             }
-            func_0203cb78(0xa000, 0, 0);
-            func_0203cb78(0xa000, 0, 1);
+            GfxSys_StartFadeIn(0xa000, 0, 0);
+            GfxSys_StartFadeIn(0xa000, 0, 1);
             self->step = 1;
             self->subStep = 0;
             self->timer = 0;
@@ -723,8 +723,8 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             if (self->result != NULL && self->result->state != 6) {
                 break;
             }
-            func_0203cc58(0xf000, 0, 0);
-            func_0203cc58(0xf000, 0, 1);
+            GfxSys_StartFadeOut(0xf000, 0, 0);
+            GfxSys_StartFadeOut(0xf000, 0, 1);
             self->timer = 0;
             self->subStep++;
             break;

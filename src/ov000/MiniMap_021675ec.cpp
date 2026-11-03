@@ -37,7 +37,7 @@ extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
 Robo021ca458 *ActorMgr_FindPlayer(void);
-void *func_0203bbfc(void *sys, int which);
+void *GfxSys_GetOamMgr(void *sys, int which);
 s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
@@ -123,7 +123,7 @@ void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
     if (skip) {
         return;
     }
-    oam = func_0203bbfc(data_02097d48, 1);
+    oam = GfxSys_GetOamMgr(data_02097d48, 1);
     pl = ActorMgr_FindPlayer();
     Ctr021675ec c(pl->pos.x, pl->pos.z);
     Pos021675ec m;

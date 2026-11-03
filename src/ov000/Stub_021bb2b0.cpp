@@ -28,7 +28,7 @@ u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
 void func_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);
 void SndQueue_Pop(SndQueue *queue);
-void func_0203cb78(int duration, int mode, int ch);
+void GfxSys_StartFadeIn(int duration, int mode, int ch);
 
 void func_ov000_021bb2b0(Obj021bb2b0 *self, s32 a, s16 *v, u8 c) {
     self->unk_04 = 4;
@@ -116,45 +116,45 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
         Effect3D *fx = NULL;
         switch (self->unk_04) {
         case 0:
-            fx = func_02066df0();
+            fx = EffectHud_New2711();
             self->fx = fx;
             break;
         case 1:
             Bgm021bb33c_Start();
-            fx = func_02066ec8();
+            fx = EffectHud_New2712();
             self->fx = fx;
             break;
         case 2:
             Bgm021bb33c_Resume();
-            fx = func_02066f90();
+            fx = EffectHud_New2713();
             self->fx = fx;
             break;
         case 3:
-            fx = func_02066c58();
+            fx = EffectHud_New2710();
             self->fx = fx;
             break;
         case 4:
             switch (self->unk_0c) {
             case 0x2711:
-                fx = func_02066df0();
+                fx = EffectHud_New2711();
                 self->fx = fx;
                 break;
             case 0x2712:
                 Bgm021bb33c_Start();
-                fx = func_02066ec8();
+                fx = EffectHud_New2712();
                 self->fx = fx;
                 break;
             case 0x2713:
                 Bgm021bb33c_Resume();
-                fx = func_02066f90();
+                fx = EffectHud_New2713();
                 self->fx = fx;
                 break;
             case 0x2715:
-                fx = func_02067058();
+                fx = EffectHud_New2715();
                 self->fx = fx;
                 break;
             case 0x2716:
-                fx = func_02067120();
+                fx = EffectHud_New2716();
                 self->fx = fx;
                 break;
             case 0x2717:
@@ -180,7 +180,7 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
     case 10:
         if (Fx021bb33c_Ready(self->fx)) {
             if (Game021bb33c_Is4()) {
-                func_0203cb78(0xa000, 2, 0);
+                GfxSys_StartFadeIn(0xa000, 2, 0);
             }
             self->fx->speed = 0x1000;
             self->state = 0xb;

@@ -4,13 +4,13 @@
 extern "C" {
 
 
-void func_ov000_0215a04c(Lo021cb5a8 *self) {
+void Lo021cb5a8_Init(Lo021cb5a8 *self) {
     self->unk_d4 = -1;
     self->dl = NULL;
     self->dlSize = 0;
 }
 
-void func_ov000_0215a064(Lo021cb5a8 *self) {
+void Lo021cb5a8_Release(Lo021cb5a8 *self) {
     if (self->dl != NULL) {
         Heap_FreeHi(self->dl);
         self->dl = NULL;

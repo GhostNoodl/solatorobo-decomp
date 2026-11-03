@@ -17,8 +17,8 @@ extern u8 data_ov000_021cb6b0[];
 extern u8 data_ov000_021cb6d0[];
 void *Heap_Alloc(u32 size);
 void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
-void func_0203c9e8(s32 a, s32 b);
-void func_0203cc58(s32 a, s32 b, s32 c);
+void GfxSys_SetFadePlanes(s32 a, s32 b);
+void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void func_ov000_021643e8(void *self);
 
 }
@@ -78,8 +78,8 @@ void func_ov000_0216f8b0(Obj0216f8b0 *self) {
         switch (self->unk_24) {
         case 0:
             if (Fade0216f8b0_Idle()) {
-                func_0203c9e8(0x3f, 1);
-                func_0203cc58(0x1e000, 2, 1);
+                GfxSys_SetFadePlanes(0x3f, 1);
+                GfxSys_StartFadeOut(0x1e000, 2, 1);
             }
             self->unk_24 = 1;
         case 1:

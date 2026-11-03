@@ -124,7 +124,7 @@ void func_ov000_0216c018(LoTicker *self) {
     func_ov000_0216bae4(&self->res[tbl[s->kind].a], NULL);
     func_ov000_0216bae4(&self->res[tbl[s->kind].b], NULL);
     if (s->kind == 7) {
-        s->eff = func_02066c58();
+        s->eff = EffectHud_New2710();
         s->eff->initCallback = func_ov000_0216bf18;
         s->eff->loopStart = 0x7fffffff;
         s->eff->loopCount = -1;

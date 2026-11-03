@@ -3,7 +3,7 @@
 extern "C" {
 
 void Ov002RowList_Setup(void *self) {
-    func_ov000_021c3d20(self);
+    LoBase021ccb54_021ccbe0_Setup(self);
     FIELD(self, 0x28, s32) = FIELD(self, 0x20, s32) * 15 + 0xc;
     FIELD(self, 0x6c, void *) = data_ov002_021ef038;
     FIELD(self, 0x70, s32) = 5;

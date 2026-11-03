@@ -354,7 +354,7 @@ extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *p);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 BOOL Ov003ActExMdl_DoAttack(Ov003ActExMdl *self);
 
 extern s32 **Model0218fe1c_GetAnimCtrl(Model0218fe1c *model, s32 a);
@@ -409,7 +409,7 @@ BOOL func_ov003_021e7ee4(ActorEx *self) {
 
 void Ov003ActVt_021f953c_Init(Ov003ActExMdl *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
@@ -499,7 +499,7 @@ void Ov003ActExMdl_StateIdle(Ov003ActExMdl *self) {
         s += 0x11f;
         if (s >= 0x1000) {
             s = 0x1000;
-            func_ov000_0218996c(4, 4);
+            Field_ShakeCamera(4, 4);
             SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
             self->fsm->st++;
         }
@@ -955,7 +955,7 @@ extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
 extern s32 func_ov000_0219a7bc(Actor *self, s32 a, VecFx32 *pos, s32 r, s32 b, Actor **list);
 extern Actor *Target_Get(ActorSub4c *p);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Actor_SendMsgU8(Actor *o, u16 id, s32 a);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
@@ -1076,7 +1076,7 @@ void Ov003ActVt_021f9114_State06(Ov003Gate *self) {
                     continue;
                 }
                 self->unk_ce = list[i]->id;
-                func_ov000_0218996c(10, 10);
+                Field_ShakeCamera(10, 10);
                 SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
                 s16 c = self->unk_18 + 1;
                 self->unk_18 = c;
@@ -1162,7 +1162,7 @@ static inline BOOL Ov003_GameIdle(void) {
 
 void Ov003ActVt_021f94a4_Init(Ov003Hover *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
@@ -1269,7 +1269,7 @@ void Ov003ActVt_021f94a4_State06(Ov003Hover *self) {
 
 void Ov003ActVt_021f940c_Init(Ov003Patrol *self) {
     Ov003Unit *u;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
@@ -1649,7 +1649,7 @@ namespace m_021ea588 {
 extern "C" {
 
 extern s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void Field_ShakeCamera(s32 a, s32 b);
 
 static inline s32 Ov003Eb_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -1724,7 +1724,7 @@ void Ov003ActVt_021f92dc_State06(ActorEx *self) {
     self->velY = 0x19a;
     self->gravity = 0x14;
     self->unk_ce_s = 0xaab;
-    func_ov000_0218996c(5, 5);
+    Field_ShakeCamera(5, 5);
     SndMgr_PlayAt(data_02097e4c, 0x7e, &self->pos, 0);
     if (self->unk_18 == 0) {
         self->unk_18 = 1;

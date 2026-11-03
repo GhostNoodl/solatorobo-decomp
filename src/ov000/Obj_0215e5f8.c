@@ -23,19 +23,19 @@ extern Dtcm02fe1534 data_02fe1534;
 
 void *func_02061d54(s32 a);
 void *MsgRes_GetString(void *a, void *b);
-void func_ov000_0215e344(Obj0215e5f8 *self);
+void Lo021cb0b8_Setup(Obj0215e5f8 *self);
 void func_0206281c(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void Ov000Vt_021cafc0_Setup(Obj0215e5f8 *self) {
     self->unk_1dc = MsgRes_GetString(data_02149ef8, func_02061d54(0x18));
-    func_ov000_0215e344(self);
+    Lo021cb0b8_Setup(self);
 }
 
-void func_ov000_0215e62c(void) {
+void Ov000Vt_021cafc0_Init(void) {
 }
 
-void func_ov000_0215e630(void) {
+void Ov000Vt_021cafc0_Release(void) {
 }
 
 BOOL Ov000Vt_021cafc0_OnDecide(Obj0215e5f8 *self, Msg0215e634 *msg) {

@@ -106,7 +106,7 @@ EffectGroup *func_02067984(const VecFx32 *pos) {
     return g;
 }
 
-EffectGroup *func_02067b08(s32 id, const VecFx32 *pos) {
+EffectGroup *Effect_SpawnGroup12c(s32 id, const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_New();
     const char *name = NULL;
     switch (id) {

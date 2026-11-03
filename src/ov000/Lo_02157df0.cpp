@@ -12,7 +12,7 @@ static inline void Free02157df0(UiLabel *p) {
     Heap_Free(p);
 }
 
-void func_ov000_02157df0(UiList021cb4a8 *self) {
+void UiList021cb4a8_Release(UiList021cb4a8 *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);

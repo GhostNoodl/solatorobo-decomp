@@ -57,8 +57,8 @@ void func_ov002_021d37f8(Task021ef91c *self) {
         ov002_021d37f8_stop(data_ov000_021ccd30);
         return;
     }
-    func_0203cc58(0, 0, 1);
-    func_0203cb78(0xc000, 0, 1);
+    GfxSys_StartFadeOut(0, 0, 1);
+    GfxSys_StartFadeIn(0xc000, 0, 1);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
         PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));

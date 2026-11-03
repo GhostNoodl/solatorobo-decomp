@@ -59,7 +59,7 @@ extern char data_0208c436[];
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
 
-EffectGroup *func_020671e8(const VecFx32 *pos) {
+EffectGroup *EffectGroup_New2717(const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_Create(data_0208c427, data_0208c436, pos);
     g->unk_20 = 0x2717;
     EffectObj_AddSndCue(g, 0x5e, 2);
@@ -78,7 +78,7 @@ static inline EffectGroup *Effect6_GroupNew(void) {
     return g;
 }
 
-EffectGroup *func_0206723c(s32 id, const VecFx32 *pos) {
+EffectGroup *Effect_SpawnGroupById(s32 id, const VecFx32 *pos) {
     EffectGroup *g = Effect6_GroupNew();
     const char *name = NULL;
     s32 scale = 0x1000;
@@ -196,7 +196,7 @@ static inline void Effect6_SetStr(char *dst, const char *src) {
     }
 }
 
-Effect3D *func_020674dc(s32 id, const VecFx32 *pos) {
+Effect3D *Effect_Spawn3DById(s32 id, const VecFx32 *pos) {
     Effect3D *e = Effect6_3DNew();
     const char *name = NULL;
     switch (id) {

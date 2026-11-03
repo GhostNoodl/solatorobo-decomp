@@ -7,7 +7,7 @@ extern void *data_ov000_021ccd44;
 void *TaskHost_RequestSwitch(void *a, int b, int c);
 void func_ov000_021736dc(void);
 void *Param_Get(u32 id);
-void func_0203cb78(s32 a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
 void ov006_SetupDefaultSlots(void);
 void func_ov006_021cd5a8(int type, UiList *obj);
 
@@ -19,8 +19,8 @@ void func_ov006_021cddf8(int type, UiList *obj, int arg) {
         break;
     case 3:
         func_ov006_021cd5a8(type, obj);
-        func_0203cb78(0x1e000, 0, 0);
-        func_0203cb78(0x1e000, 0, 1);
+        GfxSys_StartFadeIn(0x1e000, 0, 0);
+        GfxSys_StartFadeIn(0x1e000, 0, 1);
         break;
     case 4:
         if (obj != NULL) {

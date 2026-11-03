@@ -24,7 +24,7 @@ static inline void EffectPtcl_SetPlttIdx(EffectPtcl *p, s32 idx) {
     p->texIdx = idx;
 }
 
-BOOL func_02069e04(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
+BOOL EffectPtclCmd_Pltt(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
     if (cmd->mode == 2) {
         s32 to = cmd->b.x;
         s32 from = cmd->a.x;

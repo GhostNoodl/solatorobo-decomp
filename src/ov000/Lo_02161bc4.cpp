@@ -20,7 +20,7 @@ typedef struct {
 extern s32 data_02097d78[5];
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
-void func_0203cb78(s32 a, s32 b, s32 c);
+void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
     if (data_02097d78[3] == 4) {

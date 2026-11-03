@@ -8,7 +8,7 @@ void *ResSet_Init(void *p);
 
 void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     Ov013Names *n;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     n = (Ov013Names *)Heap_Alloc(0x138);
     if (n != NULL) {
         n = (Ov013Names *)ResSet_Init(n);

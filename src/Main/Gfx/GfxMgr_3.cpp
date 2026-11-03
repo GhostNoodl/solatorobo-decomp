@@ -79,7 +79,7 @@ typedef struct GfxOamTmp {
 
 extern u16 NNS_G2dFontFindGlyphIndex(const NNSG2dFont *pFont, u16 c);
 extern const NNSG2dCharWidths *NNS_G2dFontGetCharWidthsFromIndex(const NNSG2dFont *pFont, u16 idx);
-extern void *func_0203bbfc(GfxSys *sys, int which);
+extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
 void func_0203a5a4(GfxMgr *mgr, u16 c) {
@@ -185,7 +185,7 @@ void func_0203a5a4(GfxMgr *mgr, u16 c) {
         block->unk_10_6 = mgr->unk_00c;
         block->unk_10_14 = mgr->unk_00e;
     }
-    NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), &oam, 1);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), &oam, 1);
     idx = NNS_G2dFontFindGlyphIndex(font, c);
     if (idx == 0xffff) {
         idx = font->pRes->alterCharIndex;
@@ -238,7 +238,7 @@ void func_0203a984(GfxMgr *mgr, VramBlock **blocks, u16 n) {
         buf[i].attr01 = b->unk_14 | (oy & 0xff) | ((u32)(ox << 23) >> 7);
         buf[i].attr2 = nm | (pal << 12);
     }
-    NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), buf, n);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), buf, n);
 }
 #endif
 

@@ -5,11 +5,11 @@
 extern "C" {
 
 extern char data_ov013_0220be7c[];
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern void func_ov000_02182590(void *p);
 extern void Ov003_AddExp(u16 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
@@ -33,9 +33,9 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     }
     if (self->unk_111 == 0) {
         u16 pct = self->hp[0] * 100 / self->hp[1];
-        if (pct <= 0x14 && pl != NULL && !func_ov000_021b4738(pl)) {
+        if (pct <= 0x14 && pl != NULL && !Actor_IsDead(pl)) {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(5);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
@@ -116,7 +116,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
         if (st->timer <= 0x1e) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         {
@@ -308,7 +308,7 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
 
 extern char data_ov013_0220be82[];
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 c, fx32 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 
@@ -441,7 +441,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
             }
             if (self->pos.y < 0x1b33) {
                 self->pos.y = 0x1b33;
-                func_ov000_0218996c(5, 0x1e);
+                Field_ShakeCamera(5, 0x1e);
                 SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             }
         }

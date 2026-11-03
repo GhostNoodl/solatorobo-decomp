@@ -70,7 +70,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
         BOOL r = func_ov002_inline_flag1();
         if (r) {
             TaskHost_Destroy();
-            func_0203cc58(0x1e000, 2, -1);
+            GfxSys_StartFadeOut(0x1e000, 2, -1);
             self->flags.flag0 = 1;
             self->state = 4;
         }
@@ -258,7 +258,7 @@ void Task021ef530_Start(Task021ef530 *self) {
         }
     }
     if (func_ov002_isMode4()) {
-        func_0203cb78(self->fadeLen, 0, 0);
+        GfxSys_StartFadeIn(self->fadeLen, 0, 0);
     }
     TaskList_Insert(self);
 }

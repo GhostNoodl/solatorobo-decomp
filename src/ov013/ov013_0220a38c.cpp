@@ -106,7 +106,7 @@ extern char data_ov013_0220bfdc[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 extern Ov003Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -197,7 +197,7 @@ void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
             Ov003Actor *pl;
             e->SetScaleAll(self->unk_d0);
             pl = ActorMgr_FindPlayer();
-            if (pl != NULL && !func_ov000_021b4738(pl)) {
+            if (pl != NULL && !Actor_IsDead(pl)) {
                 Ov013ActEx_0220a9a8 *a = (Ov013ActEx_0220a9a8 *)Actor_SpawnKind(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);
                 if (a != NULL) {
                     a->unk_d4 = self->unk_d0;

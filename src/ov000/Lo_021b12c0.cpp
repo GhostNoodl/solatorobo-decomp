@@ -20,7 +20,7 @@ extern u8 data_ov000_021cc5e9[];
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 
 void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     Anm021b12c0 *anm;
@@ -43,7 +43,7 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     self->mdl0.unk_cc = -1;
     data_0214a424->bits18.flag8 = 0;
     data_0214a424->bits18.flag9 = 0;
-    func_02062764(3, 1);
+    Shared_ChangeFlags(3, 1);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
@@ -70,7 +70,7 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     data_0214a424->target = self->unk_75c;
     data_0214a424->targetRotY = self->unk_76e;
     SetRgb(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
-    func_02062764(3, 2);
+    Shared_ChangeFlags(3, 2);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }

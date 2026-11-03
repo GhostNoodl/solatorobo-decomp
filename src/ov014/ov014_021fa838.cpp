@@ -6,7 +6,7 @@ extern char data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
 extern char data_ov014_022170f4[];
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
-extern void func_ov000_02187a20(void *a, s32 b);
+extern void SceneCmd_Push25(void *a, s32 b);
 
 void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
     Ov003Actor_Init(self);
@@ -25,8 +25,8 @@ void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
         n->unk_00 = 0;
     }
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    func_ov000_02187a20(data_ov000_021ccd54, 9);
-    func_ov000_02187a20(data_ov000_021ccd54, 10);
+    SceneCmd_Push25(data_ov000_021ccd54, 9);
+    SceneCmd_Push25(data_ov000_021ccd54, 10);
     ResMgr_Load(data_ov014_022170d8, 7, 0);
 }
 

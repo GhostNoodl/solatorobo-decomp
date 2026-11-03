@@ -182,9 +182,9 @@ typedef struct LangArc {
 } LangArc;
 
 extern LangArc data_0214b0b8;
-void func_02038638(LangArc *arc, const char *name);
-void func_02038520(LangArc *arc);
-void *func_02038dbc(LangArc *arc);
+void ResHandle_LoadSync(LangArc *arc, const char *name);
+void ResHandle_Unload(LangArc *arc);
+void *ResHandle_GetData(LangArc *arc);
 LangTable **ResList_FindType0(void *res, const char *name);
 
 void func_0206e678(void);

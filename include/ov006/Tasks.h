@@ -177,8 +177,8 @@ extern s32 data_ov000_021ccd38;
 extern s32 data_02097d78[];
 
 void *TaskHost_RequestSwitch(void *a, int b, int c);
-void func_0203cc58(int a, int b, int c);
-void func_0203cb78(int a, int b, int c);
+void GfxSys_StartFadeOut(int a, int b, int c);
+void GfxSys_StartFadeIn(int a, int b, int c);
 
 #ifdef __cplusplus
 }

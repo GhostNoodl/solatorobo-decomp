@@ -68,7 +68,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 void func_ov000_0218df68(ActorGroup *group, Actor *actor);
-void func_ov000_0218b4b4(GroupNode *self, s32 mode, Actor *actor);
+void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Actor *actor);
 
 static inline Actor *GetActor0218ab00(u16 id) {
     Actor *a;
@@ -82,7 +82,7 @@ static inline Actor *GetActor0218ab00(u16 id) {
 
 #define ENTRY(base) ((GroupEntry *)((base) + 0xc))
 
-void func_ov000_0218ab00(GroupNode *self) {
+void GroupNode_Refresh(GroupNode *self) {
     FieldState *g;
     BOOL changed;
     Robo021ca458 *ctx;
@@ -128,7 +128,7 @@ void func_ov000_0218ab00(GroupNode *self) {
         if (self->flags.unk_6 && ctx != NULL && ENTRY(base)->actor == ctx->unk_b1c && data_ov000_021ccd54->unk_c9 == 0) {
             continue;
         }
-        func_ov000_0218b4b4(self, 2, a);
+        GroupNode_UpdateEntry(self, 2, a);
         func_ov000_0218df68(ActorMgr_GetGroup(data_ov000_021ccd68, a->id & 0xf000), a);
     }
     if (changed) {

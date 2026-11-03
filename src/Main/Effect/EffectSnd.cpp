@@ -11,7 +11,7 @@ typedef struct EffectSndCmd {
 extern SndMgr *data_02097e4c;
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 
-BOOL func_02069f10(void *a, void *b, const EffectSndCmd *cmd) {
+BOOL EffectPtclCmd_PlaySnd(void *a, void *b, const EffectSndCmd *cmd) {
     SndMgr_PlayVolume(data_02097e4c, cmd->id, -1, -1, -1);
     return TRUE;
 }

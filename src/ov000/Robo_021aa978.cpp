@@ -21,11 +21,11 @@ extern char data_ov000_021cc6ae[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Model0218fe1c_IsAnimDelayed(void *a);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
-void func_ov000_0218999c(u8 a, u8 b);
+void Field_ShakeCameraY(u8 a, u8 b);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 a, s32 b);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s16 i, s32 j);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 void Actor_SendMsgU8(Actor *o, u16 id, s32 m);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
@@ -237,7 +237,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
     if (!Hit_ApplyInArea(a, self, (u8)(self->unk_b2c_7 * 5), 0x30, 0x30, NULL, 0, a->radius + 0xccd, 0, 0x64, 0x1000)) {
         return;
     }
-    func_ov000_0218996c(8, 0xa);
+    Field_ShakeCamera(8, 0xa);
     SndMgr_PlayAt(data_02097e4c, 0x7d, &self->pos, 0);
     Model0218fe1c_SetAnimDelay(self->model, 3, 0);
 }

@@ -37,7 +37,7 @@ BOOL Menu021ca94c_IsLoaded(Scene0214ca8c *self) {
     return done;
 }
 
-void func_ov000_0214caf8(Scene0214ca8c *self) {
+void Menu021ca94c_PostUpdate(Scene0214ca8c *self) {
     if (self->state != 2) {
         return;
     }

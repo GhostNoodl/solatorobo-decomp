@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_ov002_021ce410(Task *self) {
+BOOL Ov002Task_TryReleaseCurrent(Task *self) {
     if (self->vfunc_54() != 0) {
         func_ov002_setCurrent021ccd40(NULL);
     }
@@ -68,7 +68,7 @@ void Task021ef4b0_Start(Task021ef4b0 *self) {
     }
     func_ov002_021ce7b8(self);
     if (func_ov002_isMode4()) {
-        func_0203cb78(self->fadeLen, 0, -1);
+        GfxSys_StartFadeIn(self->fadeLen, 0, -1);
     }
     self->vfunc_3c();
     TaskList_Insert(self);
@@ -300,13 +300,13 @@ void Task021ef4b0_UpdateActive(Task021ef4b0 *self) {
             return;
         case 4:
             self->vfunc_0c(0);
-            func_0203cc58(self->fadeLen, 2, -1);
+            GfxSys_StartFadeOut(self->fadeLen, 2, -1);
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             return;
         }
     } else if (keys & 2) {
         self->vfunc_0c(0);
-        func_0203cc58(self->fadeLen, 2, -1);
+        GfxSys_StartFadeOut(self->fadeLen, 2, -1);
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
 }

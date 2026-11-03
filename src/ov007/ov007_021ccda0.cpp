@@ -108,8 +108,8 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     case 1: {
         s32 m1 = -1;
         data_02097d48->pltt.id = m1;
-        func_0203c9e8(0x3f, m1);
-        func_0203cc58(0, 1, m1);
+        GfxSys_SetFadePlanes(0x3f, m1);
+        GfxSys_StartFadeOut(0, 1, m1);
         s->state = 2;
         s->sub = 0;
         s->idx = 0;
@@ -151,7 +151,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
                 s->player->flags |= 0x40000;
                 break;
             }
-            func_0203cb78(1, 0, 0);
+            GfxSys_StartFadeIn(1, 0, 0);
             if (s->player == NULL) {
                 pl = (Ov007Player *)Heap_Alloc(0xe8);
                 if (pl != NULL) {
@@ -262,7 +262,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
                 }
                 return;
             }
-            func_0203cc58(0, 1, -1);
+            GfxSys_StartFadeOut(0, 1, -1);
             if (s->unk_4d == 0 || (s->mode == 1 || s->mode == 2)) {
                 s->state = 5;
                 s->sub = 0;
@@ -306,9 +306,9 @@ void func_ov007_021cd628(Ov007Scene *s) {
             return;
         }
         if (s->unk_4e == 0) {
-            func_0203cb78(data_ov007_021cfa58[s->idx].v, 0, -1);
+            GfxSys_StartFadeIn(data_ov007_021cfa58[s->idx].v, 0, -1);
         } else {
-            func_0203cb78(0, 0, -1);
+            GfxSys_StartFadeIn(0, 0, -1);
         }
         s->unk_4e = 0;
         s->sub = 4;
@@ -321,7 +321,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             if (!(data_02097dc8->trig & 1)) {
                 return;
             }
-            func_0203cb78(0, 0, -1);
+            GfxSys_StartFadeIn(0, 0, -1);
             return;
         }
         s->timer = 0;
@@ -335,12 +335,12 @@ void func_ov007_021cd628(Ov007Scene *s) {
             }
             s->unk_4e = 1;
             if (kind == 1) {
-                func_0203cc58(0, 1, -1);
+                GfxSys_StartFadeOut(0, 1, -1);
                 s->timer = 0;
                 s->sub = 1;
                 return;
             }
-            func_0203cc58(data_ov007_021cfa60[s->idx].v, 1, -1);
+            GfxSys_StartFadeOut(data_ov007_021cfa60[s->idx].v, 1, -1);
             s->timer = 0;
             s->sub = 6;
             return;
@@ -348,7 +348,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         if (s->timer < data_ov007_021cfa5c[s->idx].v) {
             return;
         }
-        func_0203cc58(data_ov007_021cfa60[s->idx].v, 1, -1);
+        GfxSys_StartFadeOut(data_ov007_021cfa60[s->idx].v, 1, -1);
         s->sub = 6;
         return;
     }
@@ -362,7 +362,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
                 return;
             }
             if (kind == 1) {
-                func_0203cc58(0, 1, -1);
+                GfxSys_StartFadeOut(0, 1, -1);
             }
             s->unk_4e = 1;
             return;
@@ -384,7 +384,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         if (!func_ov000_02189068(data_ov000_021ccd54)) {
             return;
         }
-        func_0203cb78(1, 0, 0);
+        GfxSys_StartFadeIn(1, 0, 0);
         TaskHost_Create(8, 3);
         s->sub = 9;
         return;
@@ -430,7 +430,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             if (s->player == NULL) {
                 Ov007_NewPlayer(s, 0x6e);
             }
-            func_0203cb78(1, 0, 0);
+            GfxSys_StartFadeIn(1, 0, 0);
             s->sub = 0xf;
             data_02097dd0->unk_31 = 1;
             data_02097dd0->unk_1f = 1;
@@ -840,7 +840,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
             s->wins[0] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x51));
             s->wins[1] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x52));
         }
-        func_0203cb78(0x3c000, 0, -1);
+        GfxSys_StartFadeIn(0x3c000, 0, -1);
         Ov007_RequestBgm(data_02097e48, 3);
         Ov007_Go(s, 4, 1);
         if (s->mode == 2) {
@@ -911,7 +911,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         s->sub = 5;
         break;
     case 8:
-        func_0203cc58(0x3c000, 1, -1);
+        GfxSys_StartFadeOut(0x3c000, 1, -1);
         Ov007_StopBgm(data_02097e48, 0x1e);
         s->sub = 9;
         break;
@@ -947,7 +947,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         break;
     case 12:
-        func_0203cc58(0x3c000, 1, -1);
+        GfxSys_StartFadeOut(0x3c000, 1, -1);
         Ov007_StopBgm(data_02097e48, 0x1e);
         s->sub = 13;
         break;
@@ -1120,7 +1120,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
             return;
         }
         OV007_FREE_V(s->pic, v04);
-        func_0203cb78(0x1e000, 0, -1);
+        GfxSys_StartFadeIn(0x1e000, 0, -1);
         Movie_Load(data_02097e3c, Ov007_Choice(s), -1, 0);
         s->sub = 2;
         return;
@@ -1138,7 +1138,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
             s->pic = p;
             p->unk_44 = 7;
             s->pic->v20(buf);
-            func_0203cc58(0x3c000, 1, -1);
+            GfxSys_StartFadeOut(0x3c000, 1, -1);
             s->sub = 3;
             return;
         }

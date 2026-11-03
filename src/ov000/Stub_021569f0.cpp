@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_ov000_021569f0(void) {
+s32 UiList_GetPadBottom(void) {
     return 0x3;
 }
 

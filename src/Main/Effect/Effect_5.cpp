@@ -29,7 +29,7 @@ extern void EffectObj_Unregister(EffectObj *obj);
 extern void Effect3D_Init(Effect3D *e);
 extern void Effect3D_Release(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
-extern void func_02064b40(Effect3D *e);
+extern void EffectHud_Init(Effect3D *e);
 extern void func_02068540(struct EffectSetup *setup);
 extern void ResMgr_ReleaseList(void *arc);
 extern void LangData_LocalizePath(char *dst, const char *src);
@@ -61,7 +61,7 @@ static inline Effect3D *EffectHud3D_New(void) {
         *(u32 **)e = data_0208c290;
         Effect3D_Init(e);
         *(u32 **)e = data_0208c1e8;
-        func_02064b40(e);
+        EffectHud_Init(e);
     }
     return e;
 }
@@ -117,21 +117,21 @@ struct EffectSetup *func_020669ac(struct EffectSetup *setup) {
     return setup;
 }
 
-void func_020669cc(EffectObj *obj, const VecFx32 *offset) {
+void EffectObj_SetOffset(EffectObj *obj, const VecFx32 *offset) {
     obj->offset = *offset;
 }
 
-void func_020669e8(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectObj_SetOffsetXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->offset.x = x;
     obj->offset.y = y;
     obj->offset.z = z;
 }
 
-void func_020669f8(EffectObj *obj, s32 scale) {
+void EffectObj_SetScaleAll(EffectObj *obj, s32 scale) {
     obj->SetScaleXYZ(scale, scale, scale);
 }
 
-void func_02066a14(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectObj_SetScaleXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->scale.x = x;
     obj->scale.y = y;
     obj->scale.z = z;
@@ -158,24 +158,24 @@ EffectGroup *EffectGroup_DtorDelete(EffectGroup *g) {
     return g;
 }
 
-EffectGroup *func_02066a9c(EffectGroup *g) {
+EffectGroup *EffectGroup_Dtor_02066a9c(EffectGroup *g) {
     EffectGroup_Dtor(g);
     return g;
 }
 
-void func_02066b0c(EffectObj *obj, u16 x, u16 y, u16 z) {
+void EffectObj_SetRotXYZ(EffectObj *obj, u16 x, u16 y, u16 z) {
     obj->rot.x = x;
     obj->rot.y = y;
     obj->rot.z = z;
 }
 
-void func_02066b1c(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectObj_AddPosXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->pos.x += x;
     obj->pos.y += y;
     obj->pos.z += z;
 }
 
-void func_02066b48(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectObj_SetPosXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->pos.x = x;
     obj->pos.y = y;
     obj->pos.z = z;
@@ -227,7 +227,7 @@ static inline Effect3D *EffectHud_Create(const char *arc, const char *mdl, s32 i
     return e;
 }
 
-Effect3D *func_02066c58(void) {
+Effect3D *EffectHud_New2710(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -237,7 +237,7 @@ Effect3D *func_02066c58(void) {
     return e;
 }
 
-Effect3D *func_02066d10(const VecFx32 *pos) {
+Effect3D *EffectHud_New2714(const VecFx32 *pos) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -249,7 +249,7 @@ Effect3D *func_02066d10(const VecFx32 *pos) {
     return e;
 }
 
-Effect3D *func_02066df0(void) {
+Effect3D *EffectHud_New2711(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -261,7 +261,7 @@ Effect3D *func_02066df0(void) {
     return e;
 }
 
-Effect3D *func_02066ec8(void) {
+Effect3D *EffectHud_New2712(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -272,7 +272,7 @@ Effect3D *func_02066ec8(void) {
     return e;
 }
 
-Effect3D *func_02066f90(void) {
+Effect3D *EffectHud_New2713(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -283,7 +283,7 @@ Effect3D *func_02066f90(void) {
     return e;
 }
 
-Effect3D *func_02067058(void) {
+Effect3D *EffectHud_New2715(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;
@@ -294,7 +294,7 @@ Effect3D *func_02067058(void) {
     return e;
 }
 
-Effect3D *func_02067120(void) {
+Effect3D *EffectHud_New2716(void) {
     const char *arc;
     const char *mdl;
     Effect3D *e;

@@ -8,7 +8,7 @@ u16 ActorGroup_CountKind(void *g, u16 id);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 void Actor_DropStateMsgs(Actor *self, u8 a);
@@ -113,7 +113,7 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
     }
     case 2:
         if (++s->timer > 60) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             self->model->alpha = 0x1f;

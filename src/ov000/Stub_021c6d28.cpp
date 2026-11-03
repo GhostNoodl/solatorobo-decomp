@@ -3,15 +3,15 @@
 
 extern "C" {
 
-void func_ov000_02152f8c(UiObj *self, s32 a, VecFx32 *v, s32 d);
+void UiObj_DrawTitle(UiObj *self, s32 a, VecFx32 *v, s32 d);
 
-void func_ov000_021c6d28(TextList *self, s32 a, VecFx32 *v, s32 d) {
+void Ov000Vt_021ccadc_DrawTitle(TextList *self, s32 a, VecFx32 *v, s32 d) {
     VecFx32 tmp;
     tmp.x = v->x;
     tmp.y = v->y;
     tmp.z = v->z;
     tmp.y -= self->lift << 15;
-    func_ov000_02152f8c(self, a, &tmp, d);
+    UiObj_DrawTitle(self, a, &tmp, d);
 }
 
 }

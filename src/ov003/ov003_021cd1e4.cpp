@@ -127,7 +127,7 @@ static inline void Ov003Model_Load(Model *s, const char *file, const char *name)
     TexObj_SetRes(s, ResList_FindType2(ResMgr_GetArchiveList(file, name, 2), name));
 }
 
-void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
+void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     Ov003TlLabel *l;
     void *res;
     if (self->v28()) {

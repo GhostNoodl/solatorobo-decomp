@@ -23,8 +23,8 @@ extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
 extern void Model0218fe1c_SetLoop(void *model);
 extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern void *ActorMgr_FindPlayer(void);
-extern BOOL func_ov000_021b4738(void *p);
-extern void func_020627a0(u16 a, u16 b);
+extern BOOL Actor_IsDead(void *p);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(u8 *p);
 extern u32 Rand_UpTo(u32 max);
@@ -78,9 +78,9 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
             return;
         }
         pl = ActorMgr_FindPlayer();
-        if (pl != NULL && !func_ov000_021b4738(pl)) {
+        if (pl != NULL && !Actor_IsDead(pl)) {
             FieldState *g;
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
             g->stageFlags = 1;

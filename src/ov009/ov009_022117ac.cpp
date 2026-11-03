@@ -18,7 +18,7 @@ extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void Target_SetActor(void *p, Ov003Actor *a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
     VecFx32 p;
@@ -51,7 +51,7 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
             if (self->unk_ff == 0) {
                 return;
             }
-            func_ov000_0218996c(0x19, 0x3c);
+            Field_ShakeCamera(0x19, 0x3c);
             SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
             SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
             e = Effect_SpawnId(5, &self->pos);
@@ -85,7 +85,7 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         v.y = self->height >> 1;
         v.z = self->radius + (self->radius >> 1);
         Spawn_ScatterEffect(&p, &v, 0x800, 0xccd, 3, 0x32);
-        func_ov000_0218996c(10, 0xf);
+        Field_ShakeCamera(10, 0xf);
         SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
         return;
     }

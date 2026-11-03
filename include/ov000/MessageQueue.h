@@ -70,7 +70,7 @@ struct Lo0216b474 {
 
 // Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init ListBuffer021cb940_Init,
 // dtor ListBuffer021cb940_Release): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
-// func_ov000_02171478 / func_ov000_021854d4. func_ov000_02170a58 updates the object state selects (each
+// func_ov000_02171478 / SceneCmd_Push12. func_ov000_02170a58 updates the object state selects (each
 // is deleted once it reports done) and draws the always-present ones; func_ov000_02171270 draws.
 class ListBuffer021cb940 : public ListBuffer {
 public:

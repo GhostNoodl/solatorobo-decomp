@@ -432,7 +432,7 @@ void Ov012Act_02202b10_StateIdle(Ov012Act_02202b10 *self) {
     }
     if (self->unk_f0 & 0x400000) {
         Ov003Actor *o = (Ov003Actor *)ActorMgr_FindPlayer();
-        if (o != NULL && !func_ov000_021b4738(o)) {
+        if (o != NULL && !Actor_IsDead(o)) {
             func_ov012_022054cc(self);
         }
     }
@@ -1049,7 +1049,7 @@ void Ov012Act_02202b10_StateAttack3(Ov012Act_02202b10 *self) {
             func_01ffc9fc(&v, &v, self->rot_y);
             e->AddPos(&v);
             EffectObj_AddSndCue(e, 0x1a, 0);
-            func_ov000_0218996c(10, 10);
+            Field_ShakeCamera(10, 10);
         }
         if (!Model0218fe1c_IsAnimDone(self->model)) {
             break;
@@ -1372,7 +1372,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         if (s->timer <= 0x5a) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(5);
         {
             u8 *g = (u8 *)data_ov000_021ccd54;
@@ -1399,7 +1399,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
 extern "C" {
 extern const u8 data_ov012_0220b09c[];
 void Ov012ActExVt_0220b1e8_Init(Ov012ActExVt_0220b1e8 *self) {
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     ResSet_SetFile(&self->unk_d8, data_ov012_0220b09c, 1, 1, 0, 0);
     self->unk_d8.unk_00 = 0;
 }

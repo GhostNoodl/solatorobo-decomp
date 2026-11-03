@@ -66,7 +66,7 @@ struct UiObj : public VObj {
     TextWin *caption;   // 0x18 TextWin; slot 0x14 (UiObj_SetCaption): one line, font 4, scrolled by scrollPos
     s32 font;           // 0x1c copied to data_02097ce0->unk_004
     s32 rows;           // 0x20
-    s32 width;          // 0x24 G3 frame x scale (func_ov000_02153804)
+    s32 width;          // 0x24 G3 frame x scale (UiObj_DrawFrameEdge)
     s32 height;         // 0x28 G3 frame y scale
     s32 slideMode;      // 0x2c UiObj_GetSlide: 1 scales slideX/Y by 1 - sin(openRatio)
     s32 openTime;       // 0x30 +-0x1000 per frame while opening/closing

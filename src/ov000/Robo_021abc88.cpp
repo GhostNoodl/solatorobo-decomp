@@ -10,7 +10,7 @@ extern u8 data_ov000_021cc6c0[];
 extern u8 data_ov000_021cc5e3[];
 extern void *data_02097e4c;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
-void func_02062764(s32 a, s32 b);
+void Shared_ChangeFlags(s32 a, s32 b);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 BOOL History_SetState(void *p, s32 a, s32 b);
@@ -52,7 +52,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->fsm->st++;
         self->fsm->timer = 0;
         data_0214a424->bits18.flag8 = 0;
-        func_02062764(3, 1);
+        Shared_ChangeFlags(3, 1);
         data_ov000_021ccd54->stageFlags = 1;
         break;
     }

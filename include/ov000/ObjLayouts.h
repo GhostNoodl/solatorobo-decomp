@@ -461,7 +461,7 @@ SIZE_ASSERT(ObjBase021cac0c_021cb6f0, 0x9c);
 
 // Vtable data_ov000_021cacd8 (0xa0 bytes, init func_ov000_02160fc8): a count selector; methods in
 // Lo_02160ff8.cpp .. Lo_0216150c.cpp, Lo_02161798.cpp (draws count / max), Lo_02161994.cpp (the arrows).
-// Slot 0x54 (func_ov000_02161280) steps count by 1 (up/down) or 10 (left/right) within 1..max and
+// Slot 0x54 (Lo021cacd8_PostUpdate) steps count by 1 (up/down) or 10 (left/right) within 1..max and
 // calls onDone with TRUE for A and FALSE for B.
 struct Lo021cacd8;
 typedef void (*Lo021cacd8Fn)(Lo021cacd8 *self, BOOL ok);
@@ -495,7 +495,7 @@ struct Lo021cadcc : public UiObj {
 
 // Vtable data_ov000_021cae48: a number display (methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp,
 // TextWin_0215d758.cpp, Win_0215db70.cpp). func_ov000_0215d980 sets value (and shown too when asked);
-// slot 0x0c (func_ov000_0215dae0) moves shown towards value, and the draw prints shown with the digits.
+// slot 0x0c (Lo021cae48_PostUpdate) moves shown towards value, and the draw prints shown with the digits.
 struct Lo021cae48 : public UiObj {
     s32 style;      // 0x84 index into data_ov000_021cabe0 (the label part and string); 4: no label
     s32 shown;      // 0x88 the number drawn
@@ -508,11 +508,11 @@ struct Lo021cae48 : public UiObj {
 
 // Vtable data_ov000_021cafc0, data_ov000_021cb0b8, data_ov000_021cb1b0, data_ov006_021ec30c; methods in 6 files, G3_0215b2e4.cpp .. Text_0215b8f0.cpp.
 struct LoBase021cafc0_021cb0b8 : public UiList {
-    TextWin *title2; // second title line (slot 0x10 func_ov000_0215e0c0 splits the title), freed by slot 0x2c
+    TextWin *title2; // second title line (slot 0x10 LoBase021cafc0_021cb0b8_SetTitle splits the title), freed by slot 0x2c
 };
 
-// Vtable data_ov000_021cb0b8 (0x1e4 bytes, base data_ov000_021cb1b0, slot 0x28 func_ov000_0215e4fc): a list
-// dialog whose title and lines are copied into buf; slot 0x08 func_ov000_0215e344 builds it from message msgId
+// Vtable data_ov000_021cb0b8 (0x1e4 bytes, base data_ov000_021cb1b0, slot 0x28 Lo021cb0b8_Init): a list
+// dialog whose title and lines are copied into buf; slot 0x08 Lo021cb0b8_Setup builds it from message msgId
 // (or text) and selects the item with id key.
 struct Lo021cb0b8 : public LoBase021cafc0_021cb0b8 {
     char buf[0x100]; // 0xd8 the title and the item strings
@@ -636,7 +636,7 @@ struct LoBase021ccb54_021ccbe0 : public UiObj {
     Model *unk_84; // the three models and the object freed by LoBase021ccb54_021ccbe0_Release (both dtors)
     Model *unk_88;
     Model *unk_8c;
-    UiPanel *unk_90; // made by slot 0x08 (func_ov000_021c3d20), released with UiPanel_Release
+    UiPanel *unk_90; // made by slot 0x08 (LoBase021ccb54_021ccbe0_Setup), released with UiPanel_Release
     ListRow *unk_94; // the rows (ov000/ListRow.h), appended by LoBase021ccb54_021ccbe0_AppendRow
     s32 unk_98; // row count
     s32 unk_9c;
@@ -674,7 +674,7 @@ struct LoBase021ccb54_021ccbe0 : public UiObj {
 SIZE_ASSERT(LoBase021ccb54_021ccbe0, 0xf4);
 
 // Vtable data_ov000_021ccb54 (0x100 bytes; ov006 builds it): the row list with three labels, cleared by
-// Lo021ccb54_ClearLabels, ticked by slot 0x54 (func_ov000_021c56c0) and released by Lo021ccb54_FreeLabels.
+// Lo021ccb54_ClearLabels, ticked by slot 0x54 (Ov000Vt_021ccb54_PreUpdate) and released by Lo021ccb54_FreeLabels.
 struct Lo021ccb54 : public LoBase021ccb54_021ccbe0 {
     UiLabel *unk_f4;
     UiLabel *unk_f8;

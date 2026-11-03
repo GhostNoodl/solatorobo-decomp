@@ -40,7 +40,7 @@ extern void Model0218fe1c_ClearReverse(Model0218fe1c *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
 void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
@@ -109,10 +109,10 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
             break;
         case 2:
             if (Model0218fe1c_IsAnimDone(self->model)) {
-                func_020627a0(self->kind, self->id);
+                Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->stageFlags = 1;
-                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                Group_UpdateActor(data_ov000_021ccd64, 0, self);
                 self->vfunc_08();
             }
             break;
@@ -152,10 +152,10 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
             }
             if (Model0218fe1c_IsAnimDone(self->model)) {
                 Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
-                func_020627a0(self->kind, self->id);
+                Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->stageFlags = 1;
-                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                Group_UpdateActor(data_ov000_021ccd64, 0, self);
                 self->vfunc_08();
             }
             break;

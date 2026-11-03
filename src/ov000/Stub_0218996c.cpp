@@ -27,7 +27,7 @@ extern "C" {
 extern Data021ccd50 data_ov000_021ccd50;
 void func_ov000_0218a358(Sub0218996c *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 
-void func_ov000_0218996c(u8 a, u8 b) {
+void Field_ShakeCamera(u8 a, u8 b) {
     Sub0218996c *s = &data_ov000_021ccd50.unk_04->sub;
     if (s == NULL) {
         return;
@@ -40,7 +40,7 @@ void func_ov000_0218996c(u8 a, u8 b) {
     s->unk_9b = b;
 }
 
-void func_ov000_0218999c(u8 a, u8 b) {
+void Field_ShakeCameraY(u8 a, u8 b) {
     Sub0218996c *s = &data_ov000_021ccd50.unk_04->sub;
     if (s == NULL) {
         return;

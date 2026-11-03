@@ -118,7 +118,7 @@ extern Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02214f10(Actor *self);
 extern void HitSphere_Link(ActorSub48 *p);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 
 void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
     Ov014Mtx33 m;
@@ -314,7 +314,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &w);
         e->SetScaleXYZ(0x24cd, 0x299a, 0x24cd);
         SndMgr_PlayAt(data_02097e4c, 0x56, &w, 0);
-        func_ov000_0218996c(0xc, 0x19);
+        Field_ShakeCamera(0xc, 0x19);
         self->fsm->st++;
         self->fsm->timer = 0x14;
     }

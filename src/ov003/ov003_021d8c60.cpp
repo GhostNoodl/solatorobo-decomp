@@ -60,7 +60,7 @@ void Ov003Timer_Stop(Ov003Timer *self) {
 }
 
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern u32 Rand_UpTo(u32 max);
 
 void Ov003Timer_Update(Ov003Timer *self) {
@@ -117,7 +117,7 @@ void Ov003Timer_Update(Ov003Timer *self) {
         sc = self->unk_06 + 0x3800;
         fx->SetScaleXYZ(sc, sc, sc);
         SndMgr_PlayAtPitch(data_02097e4c, 0x56, &p, -3);
-        func_ov000_0218996c(0x10, 0x5a);
+        Field_ShakeCamera(0x10, 0x5a);
         self->state = 4;
         break;
     }
@@ -135,7 +135,7 @@ void Ov003Timer_Update(Ov003Timer *self) {
         p.x = self->target->pos.x;
         p.y = self->target->pos.y;
         p.z = self->target->pos.z;
-        func_ov000_0218996c(8, 0xc);
+        Field_ShakeCamera(8, 0xc);
         SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
     }
 }

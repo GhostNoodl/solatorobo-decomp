@@ -32,7 +32,7 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
-void func_ov000_02153804(UiObj *self, s32 on, s32 *pos, s32 scale) {
+void UiObj_DrawFrameEdge(UiObj *self, s32 on, s32 *pos, s32 scale) {
     s16 z;
     u16 c;
     s32 sx;

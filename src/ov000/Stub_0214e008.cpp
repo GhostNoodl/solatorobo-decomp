@@ -14,11 +14,11 @@ static inline void Obj0214e014_Delete(Model *obj) {
     }
 }
 
-void func_ov000_0214e008(Lo021caac8 *self) {
+void Lo021caac8_Init(Lo021caac8 *self) {
     self->unk_e0 = NULL;
 }
 
-void func_ov000_0214e014(Lo021caac8 *self) {
+void Lo021caac8_Release(Lo021caac8 *self) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_e0 != NULL) {

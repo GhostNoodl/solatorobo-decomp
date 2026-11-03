@@ -11,7 +11,7 @@ u8 data_0214a41d;
 u8 data_0214a41c;
 EffectMgr *data_0214a420;
 
-u8 func_0206379c(void) {
+u8 Effect_NextPolyId_0206379c(void) {
     return Effect_NextPolyId();
 }
 
@@ -55,7 +55,7 @@ BOOL func_020637d0(EffectObj *obj) {
         if (obj->onUpdate != NULL) {
             obj->onUpdate(obj);
         }
-        func_02063cac(obj);
+        EffectObj_UpdateSndCues(obj);
         if (!obj->Step()) {
             if (obj->loopCount != 0) {
                 if (obj->loopStart < obj->time) {
@@ -79,11 +79,11 @@ BOOL func_020637d0(EffectObj *obj) {
     return ret;
 }
 
-BOOL func_02063944(EffectObj *obj) {
+BOOL EffectObj_Step(EffectObj *obj) {
     return TRUE;
 }
 
-BOOL func_0206394c(EffectObj *obj) {
+BOOL EffectObj_Loop(EffectObj *obj) {
     return TRUE;
 }
 
@@ -109,7 +109,7 @@ void func_02063954(EffectObj *obj) {
     obj->Draw();
 }
 
-void func_020639d0(EffectObj *obj) {
+void EffectObj_Draw(EffectObj *obj) {
 }
 
 void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame) {
@@ -236,11 +236,11 @@ void EffectObj_Unregister(EffectObj *obj) {
     }
 }
 
-BOOL func_02063c9c(EffectObj *obj) {
+BOOL EffectObj_Load(EffectObj *obj) {
     return TRUE;
 }
 
-BOOL func_02063ca4(EffectObj *obj) {
+BOOL EffectObj_Setup(EffectObj *obj) {
     return TRUE;
 }
 
@@ -254,7 +254,7 @@ static inline BOOL Effect_CueHit(EffectObj *obj, s32 frame) {
     return FALSE;
 }
 
-void func_02063cac(EffectObj *obj) {
+void EffectObj_UpdateSndCues(EffectObj *obj) {
     s32 i;
     EffectSndCue *cue;
     s32 id;
@@ -303,7 +303,7 @@ typedef struct EffectPart {
     /* 0xb0 */ EffectPartMat *mat;
 } EffectPart;
 
-void func_02063d80(EffectPart *part) {
+void EffectPart_ApplyAlpha(EffectPart *part) {
     EffectPartMat *mat = part->mat;
     u32 attr;
     mat->polyAttr = (mat->polyAttr & ~0x3f000000) | (Effect_NextPolyId() << 24);
@@ -311,12 +311,12 @@ void func_02063d80(EffectPart *part) {
     mat->polyAttr = (attr & ~0x1f0000) | ((u8)((s32)(((s64)part->owner->res->alpha * (((s32)(attr & 0x1f0000) >> 16) << 12) + 0x800) >> 12) >> 12) << 16);
 }
 
-void func_02063e0c(EffectPart *part) {
-    part->func = func_02063d80;
+void Effect3D_DefaultInitCb(EffectPart *part) {
+    part->func = EffectPart_ApplyAlpha;
     part->unk_90 = 2;
 }
 
-void func_02063e24(Effect3D *e) {
+void Effect3D_BindAnims(Effect3D *e) {
     NNSG3dResName name;
     u32 i;
     for (i = 0; i < 4; i++) {
@@ -394,7 +394,7 @@ void Effect3D_Release(Effect3D *e) {
 }
 
 
-BOOL func_0206408c(Effect3D *e) {
+BOOL Effect3D_Load(Effect3D *e) {
     BOOL ret = FALSE;
     void *arc;
     switch (e->unk_2c) {
@@ -446,9 +446,9 @@ static inline void *Effect_GetMdlByIdx(u8 *mdlSet, u32 idx) {
     return NULL;
 }
 
-void func_02063e0c(EffectPart *part);
+void Effect3D_DefaultInitCb(EffectPart *part);
 
-BOOL func_020641b8(Effect3D *e) {
+BOOL Effect3D_Setup(Effect3D *e) {
     u8 *mdlSet = (u8 *)NNS_G3dGetMdlSet(e->mdlFile->data);
     void *mdl;
     u32 *ofs;
@@ -463,7 +463,7 @@ BOOL func_020641b8(Effect3D *e) {
     if (e->initCallback != NULL) {
         NNS_G3dRenderObjSetInitFunc(&e->renderObj, e->initCallback);
     } else {
-        NNS_G3dRenderObjSetInitFunc(&e->renderObj, (NNSG3dSbcCallBackFunc)func_02063e0c);
+        NNS_G3dRenderObjSetInitFunc(&e->renderObj, (NNSG3dSbcCallBackFunc)Effect3D_DefaultInitCb);
     }
     e->renderObj.ptrUser = e;
     if (e->anmFiles != NULL) {
@@ -483,7 +483,7 @@ BOOL func_020641b8(Effect3D *e) {
             e->anmObjs[4] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
     }
-    func_02063e24(e);
+    Effect3D_BindAnims(e);
     return TRUE;
 }
 
@@ -514,12 +514,12 @@ BOOL Effect3D_SetFrame(Effect3D *e, s32 frame) {
     return ret;
 }
 
-BOOL func_02064400(Effect3D *e) {
+BOOL Effect3D_Step(Effect3D *e) {
     return Effect3D_SetFrame(e, e->time);
 }
 
 
-// MtxFx33 with its rows as vectors: func_02064410 builds the billboard matrix row by row.
+// MtxFx33 with its rows as vectors: Effect3D_Draw builds the billboard matrix row by row.
 typedef union EfMtx33 {
     MtxFx33 mtx;
     VecFx32 r[3];
@@ -621,7 +621,7 @@ static inline void Ef_RotZYX(MtxFx33 *m, const EffectRot *rot) {
     }
 }
 
-void func_02064410(Effect3D *e) {
+void Effect3D_Draw(Effect3D *e) {
     VecFx32 trans;
     EfMtx33 rot;
     VecFx32 dir;
@@ -695,7 +695,7 @@ void func_02064410(Effect3D *e) {
 namespace m_02064b40 {
 extern "C" {
 
-void func_02064b40(Effect3D *e) {
+void EffectHud_Init(Effect3D *e) {
     e->unk_14 = 1;
     e->unk_c4 = 0;
 }
@@ -713,7 +713,7 @@ static inline void Effect_VecScale(VecFx32 *d, const VecFx32 *s, s32 k) {
     d->y = Effect_FxMul(s->y, k);
     d->z = Effect_FxMul(s->z, k);
 }
-void func_02064b54(Effect3D *e) {
+void EffectHud_Draw(Effect3D *e) {
     MtxFx44 proj;
     MtxFx43 cam;
     VecFx32 trans;
@@ -804,7 +804,7 @@ void EffectGroup_Reset(EffectGroup *g) {
     g->setup = NULL;
 }
 
-BOOL func_02064df8(EffectGroup *g) {
+BOOL EffectGroup_Load(EffectGroup *g) {
     BOOL ret = FALSE;
     const char *arcName = g->arcName[0] != 0 ? g->arcName : data_0208c33c;
     switch (g->unk_2c) {
@@ -828,7 +828,7 @@ BOOL func_02064df8(EffectGroup *g) {
 }
 
 
-BOOL func_02064e98(EffectGroup *g) {
+BOOL EffectGroup_Setup(EffectGroup *g) {
     EffectFile *file;
     EffectSetup *setup;
     EffectObj *first;
@@ -883,19 +883,19 @@ BOOL func_02064e98(EffectGroup *g) {
     return TRUE;
 }
 
-void func_0206500c(EffectObj *obj, const VecFx32 *pos) {
+void EffectObj_SetPos(EffectObj *obj, const VecFx32 *pos) {
     obj->pos = *pos;
 }
 
-void func_02065028(EffectObj *obj, const EffectRot *rot) {
+void EffectObj_SetRot(EffectObj *obj, const EffectRot *rot) {
     obj->rot = *rot;
 }
 
-void func_02065044(EffectObj *obj, const VecFx32 *scale) {
+void EffectObj_SetScale(EffectObj *obj, const VecFx32 *scale) {
     obj->scale = *scale;
 }
 
-void func_02065060(EffectObj *obj, s32 param) {
+void EffectObj_SetParam(EffectObj *obj, s32 param) {
     obj->unk_d4 = param;
 }
 
@@ -931,7 +931,7 @@ void EffectGroup_SetPos(EffectGroup *g, const VecFx32 *pos) {
     g->pos = *pos;
 }
 
-void func_0206516c(EffectObj *obj, const VecFx32 *delta) {
+void EffectObj_AddPos(EffectObj *obj, const VecFx32 *delta) {
     VEC_Add(&obj->pos, delta, &obj->pos);
 }
 
@@ -1147,7 +1147,7 @@ void EffectMgr_StopLoop(EffectMgr *m, u32 id) {
     }
 }
 
-EffectObj *func_020658cc(EffectMgr *m, s32 v) {
+EffectObj *EffectMgr_FindByKey(EffectMgr *m, s32 v) {
     EffectObj *o;
     for (o = m->head; o != NULL; o = o->next) {
         if (v == o->unk_20) {
@@ -1162,7 +1162,7 @@ EffectObj *func_020658cc(EffectMgr *m, s32 v) {
     return NULL;
 }
 
-void func_02065920(EffectMgr *m) {
+void EffectMgr_SortDraw(EffectMgr *m) {
     EffectObj *o = m->head;
     EffectObj *prev;
     EffectObj *p;
@@ -1197,7 +1197,7 @@ void func_02065920(EffectMgr *m) {
     }
 }
 
-BOOL func_020659c4(EffectMgr *m) {
+BOOL EffectMgr_Load(EffectMgr *m) {
     BOOL ret = FALSE;
     BOOL cont;
     do {
@@ -1239,7 +1239,7 @@ void EffectMgr_Update(EffectMgr *m) {
     EffectObj *next;
     switch (m->state) {
     case 0:
-        if (!func_020659c4(m)) {
+        if (!EffectMgr_Load(m)) {
             return;
         }
         m->state = 1;
@@ -1288,7 +1288,7 @@ static inline void Effect_GlbSetBaseRot(const MtxFx33 *rot) {
     NNS_G3dGlb.flag &= ~0xa4;
 }
 
-void func_02065b84(EffectMgr *m) {
+void EffectMgr_Draw(EffectMgr *m) {
     MtxFx33 rot;
     VecFx32 trans;
     VecFx32 scale;
@@ -1327,7 +1327,7 @@ void func_02065b84(EffectMgr *m) {
             o->unk_80 += o->unk_18;
         }
     }
-    func_02065920(m);
+    EffectMgr_SortDraw(m);
     o = m->drawHead;
     if (!m->drawFilter) {
         for (; o != NULL; o = next) {

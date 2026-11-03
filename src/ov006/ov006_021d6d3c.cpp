@@ -42,10 +42,10 @@ extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd6c;
 extern ov006_Fade021d6d3c data_02097d78;
 void SndMgr_StopAll(void *a, int b);
-void func_ov000_0218be9c(void *p);
+void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
-void func_0203cc58(s32 a, int b, int c);
+void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
 void *ov006_GetSlotManager(void);
@@ -79,7 +79,7 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
     case 0:
         SndMgr_StopAll(data_02097e4c, 0x1e);
         ov006_Game_SetColor(0xff, 0xff, 0xff);
-        func_ov000_0218be9c(data_ov000_021ccd64);
+        Group_RefreshAll(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         EffectMgr_FreeAll(data_0214a420);
@@ -94,8 +94,8 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
         data_02097dd0->frameWait = 1;
         data_ov006_021ec888->unk15E = 2;
         if (ov006_FadeIdle()) {
-            func_0203cc58(0x1000, 0, 0);
-            func_0203cc58(0x1000, 0, 1);
+            GfxSys_StartFadeOut(0x1000, 0, 0);
+            GfxSys_StartFadeOut(0x1000, 0, 1);
         }
         GfxSys_UpdateFade();
         if (func_ov006_021cd2a8(data_ov006_021ec860)) {

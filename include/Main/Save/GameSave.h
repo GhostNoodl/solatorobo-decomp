@@ -62,9 +62,9 @@ extern char data_0208cb18[];
 extern void SaveBase_AllocBuffers(SaveBase *s);
 extern void SaveBase_SetState_020473ac(SaveBase *s, s32 state);
 extern void func_02046cd0(SysCard *card);
-extern void func_02047c2c(SaveBase *s);
-extern void func_02048164(SaveBase *s);
-extern void func_0204880c(SaveBase *s);
+extern void SaveBase_State7(SaveBase *s);
+extern void SaveBase_State10(SaveBase *s);
+extern void SaveBase_State13(SaveBase *s);
 
 }
 

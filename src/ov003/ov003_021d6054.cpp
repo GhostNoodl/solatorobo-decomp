@@ -21,7 +21,7 @@ extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 a,
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
@@ -64,14 +64,14 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             self->fsm->st++;
             return;
         }
-        func_ov000_0218996c(9, 0x14);
+        Field_ShakeCamera(9, 0x14);
         self->fsm->st = 10;
         break;
     }
     case 1: {
         u16 t = self->fsm->timer;
         if (t >= 0x78) {
-            func_ov000_0218996c(0x19, 0x78);
+            Field_ShakeCamera(0x19, 0x78);
             SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
             SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
             self->fsm->st = 10;
@@ -87,7 +87,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             r.y = self->height >> 2;
             r.z = self->radius + (self->radius >> 2);
             Spawn_ScatterEffect(&v, &r, 0x733, 0xccd, e->unk_02, 0x32);
-            func_ov000_0218996c(8, 10);
+            Field_ShakeCamera(8, 10);
             SndMgr_PlayAt(data_02097e4c, 0x35, &v, 0);
         }
         self->fsm->timer++;

@@ -1196,7 +1196,7 @@ struct Ov010G54b {
 
 extern Ov010G54b *data_ov000_021ccd54;
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_0203cb78(s32 a, s32 b, s32 c);
+extern void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern BOOL Ov003Timer_IsStopped(void *a);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
@@ -1205,7 +1205,7 @@ static inline s32 Ov010g_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-// The screen argument of func_0203cb78 (its callers pass 0, 1 or -1).
+// The screen argument of GfxSys_StartFadeIn (its callers pass 0, 1 or -1).
 // As an enum local it is not propagated, so its `mov #0` is listed before
 // the jump's loads, as in the ROM (round o4B).
 typedef enum { OV010_FADE_SCREEN_MAIN = 0, OV010_FADE_SCREEN_SUB = 1 } Ov010FadeScreen;
@@ -1239,7 +1239,7 @@ void Ov010Obj02210154_StateDie(Ov010Obj02210154 *self) {
         Model0218fe1c_SetAnimDelay(self->model, 5, 1);
         scr = OV010_FADE_SCREEN_MAIN;
         Ov010_Jump640c(self);
-        func_0203cb78(0x1e000, 1, scr);
+        GfxSys_StartFadeIn(0x1e000, 1, scr);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4817, 0x15);
         o = Effect_SpawnId(0x69, &self->pos);
         if (o != NULL) {

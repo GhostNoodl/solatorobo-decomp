@@ -16,7 +16,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 void Robo021ca458_RestoreHp(void *p);
 char *func_02061f08(u16 id);
 int func_02060898(u16 a, s32 b, s32 c);
-void func_ov000_021837f8(void *p, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+void SceneCmd_Push07(void *p, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline void Beep02151664(void) {
     SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
@@ -77,7 +77,7 @@ BOOL func_ov000_02151664(UiList *p, UiListItem *msg) {
                 Robo021ca458_RestoreHp(pl);
             }
             func_02060898(o->unk_40, 0, -1);
-            func_ov000_021837f8(data_ov000_021ccd54, LFLD(u16, o->unk_54, 6), 10, 0, 0, 0, 0);
+            SceneCmd_Push07(data_ov000_021ccd54, LFLD(u16, o->unk_54, 6), 10, 0, 0, 0, 0);
             if (o->unk_4c != NULL) {
                 o->unk_4c->flags |= 2;
             }

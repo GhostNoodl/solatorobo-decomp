@@ -18,9 +18,9 @@ void HitSphere_Unlink_0203f364(void *a);
 void *Target_Get(void *p);
 void Ov003Pickup_Update(void *self, s32 a);
 void Actor_Move(Actor *self, s32 a);
-void func_ov000_0218bed8(void *a, s32 b, void *c);
-void func_02062764(s32 a, s32 b);
-void func_020627a0(u16 kind, u16 id);
+void Group_UpdateActor(void *a, s32 b, void *c);
+void Shared_ChangeFlags(s32 a, s32 b);
+void Shared_SetEventActor(u16 kind, u16 id);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
 u16 LangData_GetIndex(u32 a, u32 b);
@@ -60,8 +60,8 @@ static inline void Die02196258(VObj *obj) {
     Die02196258Self *self = (Die02196258Self *)obj;
     u8 k = LFLD(u8, self->unk_4c, 3);
     if (k != 0xa && k != 0xb) {
-        func_02062764(0x3c0, 0x100);
-        func_020627a0(self->unk_0e, self->unk_0c);
+        Shared_ChangeFlags(0x3c0, 0x100);
+        Shared_SetEventActor(self->unk_0e, self->unk_0c);
         {
             FieldState *pl = data_ov000_021ccd54;
             ((u8 *)pl)[0xac] = 1;
@@ -81,7 +81,7 @@ static inline void Die02196258(VObj *obj) {
         }
     }
     func_020627c8();
-    func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(data_ov000_021ccd64, 0, self);
     obj->vfunc_08();
 }
 

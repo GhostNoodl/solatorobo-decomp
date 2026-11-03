@@ -36,7 +36,7 @@ BOOL func_ov000_021b468c(Robo021ca458 *self) {
 
 u8 func_0206d204(void *p, s32 a);
 
-BOOL func_ov000_021b4738(Actor *self) {
+BOOL Actor_IsDead(Actor *self) {
     BOOL r = FALSE;
     s32 x = func_0206d204(data_0214a424, 0);
     if (self->hp[0] == 0 && x == 0) {

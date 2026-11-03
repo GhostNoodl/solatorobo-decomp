@@ -6,7 +6,7 @@ extern char data_ov009_022179b4[];
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {
     self->fsm->st++;
@@ -68,10 +68,10 @@ void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x3c) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;

@@ -34,9 +34,9 @@ void *SndMgr_PlayVolume(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 fra
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 void Model0218fe1c_SetLoop(void *p);
 void Actor_TurnToActor(Actor *self, void *other, s32 a);
-void func_ov000_0218996c(u8 a, u8 b);
+void Field_ShakeCamera(u8 a, u8 b);
 s32 SndMgr_PlayPan(void *mgr, s32 id, s32 pan);
-void func_020627a0(u16 a, u16 b);
+void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);
 void Model0218fe1c_SetAnimDelay(void *model, u16 delay, BOOL force);
@@ -50,7 +50,7 @@ u16 Actor_YawToPos(Actor *self, void *target);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 pan);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s16 d, s16 e);
 void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
-void func_02062764(u16 clear, u16 set);
+void Shared_ChangeFlags(u16 clear, u16 set);
 
 static inline Actor *FindActor_021a7af0(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -469,7 +469,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             if (self->unk_b3a >= self->unk_b3c) {
                 self->unk_b3a = self->unk_b3c - 1;
             }
-            func_ov000_0218996c(9, 0xf);
+            Field_ShakeCamera(9, 0xf);
             v = t->pos;
             v.y += t->height + 0x400;
             o2 = Effect_SpawnId(0x44c, &v);
@@ -482,7 +482,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             m->blendMax = 4;
             SndMgr_PlayPan(data_02097e4c, 0x4a, -5);
         } else {
-            func_ov000_0218996c(6, 10);
+            Field_ShakeCamera(6, 10);
         }
         SndMgr_PlayVolume(data_02097e4c, 0x45, -1, -1, -1);
         self->unk_b60 = Frame_021a7af0(self->model);
@@ -518,7 +518,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                         stop = FALSE;
                     } else if (k == 3) {
                         FieldState *g;
-                        func_020627a0(t->kind, t->id);
+                        Shared_SetEventActor(t->kind, t->id);
                         func_020627dc(5);
                         g = data_ov000_021ccd54;
                         g->stageFlags = stop;
@@ -647,7 +647,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     Target_Set(info, self);
                     SndMgr_PlayVolume(data_02097e4c, 0x302, -1, -1, -1);
                     SndMgr_PlayAt(data_02097e4c, 0x2c, &self->pos, 0);
-                    func_ov000_0218996c(8, 0xc);
+                    Field_ShakeCamera(8, 0xc);
                     o = Effect_SpawnId(0x69, &self->pos);
                     if (o != NULL) {
                         o->AddPosXYZ(0, self->centerY, 0);
@@ -695,13 +695,13 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                 if (t != NULL && SubKind_021a7af0(t) == 0x14) {
                     SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
                     SndMgr_PlayVolume(data_02097e4c, self->unk_b3c > 0x28 ? 0x303 : 0x302, -1, -1, -1);
-                    func_ov000_0218996c(4, 5);
+                    Field_ShakeCamera(4, 5);
                 }
             } else if (kind == 0x13) {
                 if (t != NULL && SubKind_021a7af0(t) == 9 && info->unk_18_1) {
                     FieldState *g;
-                    func_02062764(0x3c0, 0x200);
-                    func_020627a0(t->kind, t->id);
+                    Shared_ChangeFlags(0x3c0, 0x200);
+                    Shared_SetEventActor(t->kind, t->id);
                     g = data_ov000_021ccd54;
                     g->stageFlags = 1;
                     func_ov000_02182590((u8 *)g + 0xac);

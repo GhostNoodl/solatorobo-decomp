@@ -147,14 +147,14 @@ void MessageQueue_FreeBuffer(MessageQueue *self, ListBuffer *buf) {
     }
 }
 
-void func_ov000_0216f498(MessageQueue *self, Message *msg) {
+void MessageQueue_Dispatch(MessageQueue *self, Message *msg) {
     if (msg->id == -1) {
         return;
     }
     self->vfunc_18(msg->unk_00, msg->id, msg->unk_08, msg->unk_0c);
 }
 
-void func_ov000_0216f4cc(MessageQueue *self, u32 a, u32 b, u32 c, u32 d) {
+void MessageQueue_AddTimed(MessageQueue *self, u32 a, u32 b, u32 c, u32 d) {
     TimedBuffer *buf = (TimedBuffer *)Heap_Alloc(sizeof(TimedBuffer));
     if (buf != NULL) {
         buf->flags = 0;
@@ -174,7 +174,7 @@ void func_ov000_0216f4cc(MessageQueue *self, u32 a, u32 b, u32 c, u32 d) {
     buf->flags |= 0x10;
 }
 
-void func_ov000_0216f5c4(MessageQueue *self, u32 a, s32 id, u32 b, u32 c) {
+void MessageQueue_Post(MessageQueue *self, u32 a, s32 id, u32 b, u32 c) {
     u32 index = self->writeIndex;
     Message *msg = &self->messages[index];
     if (++self->writeIndex >= MESSAGE_QUEUE_LEN) {

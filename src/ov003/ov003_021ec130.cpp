@@ -21,12 +21,12 @@ extern "C" {
 extern u8 data_ov003_021f99e8[];
 extern char data_ov003_021f99d8[];
 extern const Ov003GmTable data_ov003_021f99c8;
-extern void func_020627a0(u16 a, u16 b);
+extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627b4(void);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void *ResSet_Init(ActorRes *res);
@@ -40,7 +40,7 @@ extern void ActorMgr_SendToKindOthers(u16 id, u16 a, s32 type, s32 b, s32 c, Ov0
 extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
-    func_020627a0(self->kind, self->id);
+    Shared_SetEventActor(self->kind, self->id);
     func_020627dc(4);
     data_ov000_021ccd54->stageFlags = 1;
     History_SetState(self->fsm, 1, 0);
@@ -61,7 +61,7 @@ void Ov003ActVt_021f9c48_State21(Ov003Gimmick *self) {
         v.y = 0x2000;
         v.z = 0x7800;
         Spawn_ScatterEffect(&pos, &v, 0x666, 0x1000, 0, 0x3c);
-        func_ov000_0218996c(8, 8);
+        Field_ShakeCamera(8, 8);
         SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
     }
     if (t <= 0xf0) {
@@ -103,7 +103,7 @@ Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
 
 void Ov003ActVt_021f99e8_Init(Ov003Gimmick *self) {
     Ov003GmTable tbl = data_ov003_021f99c8;
-    ActorEx_InitActor(self);
+    ActorEx_Init(self);
     ResSet_SetFile(&self->res, tbl.res[self->kind - 0x4063], 1, 0, 0, 0);
     self->res.unk_00 = 0;
 }

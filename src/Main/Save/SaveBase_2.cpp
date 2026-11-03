@@ -2,16 +2,16 @@
 
 extern "C" {
 
-void func_020477fc(SaveBase *s, void *src, u32 size) {}
+void SaveBase_OnLoadData(SaveBase *s, void *src, u32 size) {}
 
-void func_02047800(SaveBase *s, SaveHeader *hdr) {
+void SaveBase_InitHeader(SaveBase *s, SaveHeader *hdr) {
     MI_CpuFill8(hdr, 0, s->headerSize);
     STD_CopyString(hdr->magic, s->name);
     hdr->curSlot = 0xff;
     hdr->backupIdx = 0xff;
 }
 
-void func_02047838(SaveBase *s) {
+void SaveBase_State2(SaveBase *s) {
     SaveSlot *slot;
     s32 i;
     u8 x;

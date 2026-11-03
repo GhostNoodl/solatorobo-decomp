@@ -25,7 +25,7 @@ extern int data_02097da0[5];
 extern int data_02097db4[5];
 extern void *Heap_Alloc(u32 size);
 extern void Gfx3DState_Init(void *obj);
-void func_0203b70c(GfxSys *sys);
+void GfxSys_Init(GfxSys *sys);
 
 }
 
@@ -41,7 +41,7 @@ extern void NNS_G2dInitOamManagerModule(void);
 extern BOOL NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);
 extern void *NNS_GfdGetLnkTexVramManagerWorkSize(int n);
 extern void *NNS_GfdGetLnkPlttVramManagerWorkSize(int n);
-extern void func_0203beac(GfxSys *sys, int state);
+extern void GfxSys_SetMode(GfxSys *sys, int state);
 extern void NNS_G3dGeSetBuffer(void *arg);
 extern void NNS_G3dGeUseFastDma(int arg);
 extern BOOL OS_IsRunOnTwl(void);
@@ -83,8 +83,8 @@ extern void GX_SetBankForTex(int a);
 extern void GX_SetBankForTexPltt(int a);
 extern void NNS_GfdInitLnkTexVramManager(u32 a, u32 b, void *c, void *d, BOOL e);
 extern void NNS_GfdInitLnkPlttVramManager(u32 a, void *b, void *c, BOOL d);
-extern void func_0203c2bc(GfxSys *sys);
-extern void func_0203c638(GfxSys *sys);
+extern void GfxSys_SetupVram(GfxSys *sys);
+extern void GfxSys_SetupVramTwl(GfxSys *sys);
 extern void Sys_ResetVram(void);
 extern void GXS_SetGraphicsMode(int a);
 extern void GX_SetBankForLCDC(int a);
@@ -148,7 +148,7 @@ extern void GX_SetBankForSubOBJExtPltt(int a);
 extern void Gfx3DState_SetDefaults(void *obj);
 
 // NitroSDK-style register inlines (GX_SetVisiblePlane, G2_SetBGnPriority, ...).
-// With the same writes spelled out as plain REG expressions, func_0203c2bc
+// With the same writes spelled out as plain REG expressions, GfxSys_SetupVram
 // keeps sys in sb instead of r4.
 static inline void GX_SetVisiblePlane(int plane) {
     REG32(0x4000000) = (u32)((REG32(0x4000000) & ~0x1f00) | (plane << 8));
@@ -215,7 +215,7 @@ static inline int FX_Mul(int a, int b) {
 
 extern "C" {
 
-extern void func_0203d040(int v);
+extern void GfxSys_DrawFadeQuad(int v);
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void func_02043db4(int a, int b, int c, u32 d);
@@ -233,7 +233,7 @@ extern "C" {
 // the first two objects are defined before it. The rest are defined after it, which keeps
 // definition order: nine definitions before the first function come out in MWCC's own order
 // (d4c d48 d44, then the arrays from d8c). As TU objects in one pool their accesses stay in
-// source order against the context copy in func_0203ce3c, which is why that function needs no
+// source order against the context copy in GfxSys_RunFadeFunc, which is why that function needs no
 // volatile.
 u32 data_02097d44;
 GfxSys *data_02097d48;
@@ -247,7 +247,7 @@ void GfxSys_Create(void) {
     sys = (GfxSys *)Heap_Alloc(sizeof(GfxSys));
     if (sys != NULL) {
         Gfx3DState_Init(sys->unk_8b0);
-        func_0203b70c(sys);
+        GfxSys_Init(sys);
     }
     data_02097d48 = sys;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -261,7 +261,7 @@ int data_02097d8c[5];
 int data_02097da0[5];
 int data_02097db4[5];
 
-void func_0203b70c(GfxSys *sys) {
+void GfxSys_Init(GfxSys *sys) {
     int i;
     GfxOam *oam;
     G3X_Init();
@@ -282,7 +282,7 @@ void func_0203b70c(GfxSys *sys) {
     sys->unk_024 = 0;
     sys->unk_028 = 0;
     sys->nextState = 1;
-    func_0203beac(sys, 1);
+    GfxSys_SetMode(sys, 1);
     for (i = 0; i < 5; i++) {
         data_02097db4[i] = 0;
         data_02097d78[i] = 0;
@@ -332,14 +332,14 @@ void GfxSys_SetBackdropSub(GfxSys *sys, u16 color) {
     GXS_LoadBGPltt(&sys->unk_00a, 0, 2);
 }
 
-void func_0203b96c(GfxSys *sys) {
+void GfxSys_EndFrame(GfxSys *sys) {
     GfxSys *g;
     {
         // The target loads state before nextState; only a volatile read keeps that order.
         int s = *(volatile int *)&sys->state;
         int n = sys->nextState;
         if (s != n) {
-            func_0203beac(sys, n);
+            GfxSys_SetMode(sys, n);
         }
     }
     if (sys->state == 2) {
@@ -370,12 +370,12 @@ void func_0203b96c(GfxSys *sys) {
     }
 }
 
-void func_0203ba7c(GfxSys *sys) {
+void GfxSys_SwapBuffers(GfxSys *sys) {
     NNS_G3dGeFlushBuffer();
     REG32(0x4000540) = (sys->unk_00c << 1) | sys->unk_010;
 }
 
-void func_0203baa4(GfxSys *sys) {
+void GfxSys_FlipTextBg(GfxSys *sys) {
     u32 v;
     void *p;
     u32 size;
@@ -407,7 +407,7 @@ void func_0203baa4(GfxSys *sys) {
     MIi_CpuClearFast(0, p, size);
 }
 
-void *func_0203bb68(GfxSys *sys, BOOL main) {
+void *GfxSys_GetTextBgPtr(GfxSys *sys, BOOL main) {
     if (sys->state != 2) {
         if (main) {
             return !sys->unk_a30_1 ? G2S_GetBG1ScrPtr() : G2S_GetBG0ScrPtr();
@@ -426,7 +426,7 @@ void *func_0203bb68(GfxSys *sys, BOOL main) {
     return G2_GetBG2CharPtr();
 }
 
-void *func_0203bbfc(GfxSys *sys, int which) {
+void *GfxSys_GetOamMgr(GfxSys *sys, int which) {
     void *ret = NULL;
     switch (which) {
     case 0:
@@ -442,7 +442,7 @@ void *func_0203bbfc(GfxSys *sys, int which) {
 // Allocates `size` bytes from the main (sub == FALSE) or sub VRAM range heap and returns the
 // offset: first after the last node, otherwise in the first gap between two nodes that fits.
 // `cur` and `node` are locals; declaring them as parameters gives the target's registers.
-u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node) {
+u32 GfxSys_AllocVram(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node) {
     GfxVramHeap *heap = &sys->heaps[0];
     GfxVramNode *tail;
     GfxVramNode *next;
@@ -523,7 +523,7 @@ void GfxSys_FreeVram(GfxSys *sys, u32 offset, BOOL sub) {
     }
 }
 
-u16 func_0203bdb0(GfxSys *sys, int count, int idx) {
+u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx) {
     u16 mask = 0;
     int i;
     int n;
@@ -558,12 +558,12 @@ void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx) {
     sys->slotMasks[idx] &= mask;
 }
 
-void func_0203beac(GfxSys *sys, int state) {
+void GfxSys_SetMode(GfxSys *sys, int state) {
     int i;
     switch (state) {
     default:
         if (sys->state != 3) {
-            func_0203c2bc(sys);
+            GfxSys_SetupVram(sys);
         } else {
             GX_SetGraphicsMode(1, 5, 1);
             GX_SetBankForTex(7);
@@ -610,7 +610,7 @@ void func_0203beac(GfxSys *sys, int state) {
         break;
     case 3:
         if (sys->state != 1) {
-            func_0203c2bc(sys);
+            GfxSys_SetupVram(sys);
         }
         sys->unk_a30_3 = 0;
         sys->unk_a30_2 = 1;
@@ -618,13 +618,13 @@ void func_0203beac(GfxSys *sys, int state) {
         GX_SetBankForLCDC(3);
         break;
     case 4:
-        func_0203c638(sys);
+        GfxSys_SetupVramTwl(sys);
         break;
     }
     sys->state = state;
 }
 
-void func_0203c2bc(GfxSys *sys) {
+void GfxSys_SetupVram(GfxSys *sys) {
     int i;
     REG16(0x4000304) = (u16)(REG16(0x4000304) & ~0x8000);
     Sys_ResetVram();
@@ -671,7 +671,7 @@ void func_0203c2bc(GfxSys *sys) {
     }
 }
 
-void func_0203c638(GfxSys *sys) {
+void GfxSys_SetupVramTwl(GfxSys *sys) {
     int i;
 
     if (!OS_IsRunOnTwl()) {
@@ -724,7 +724,7 @@ void func_0203c880(GfxSys *sys) {
     }
 }
 
-void func_0203c9e8(int value, int ch) {
+void GfxSys_SetFadePlanes(int value, int ch) {
     int end;
     if (ch != -1) {
         end = ch + 1;
@@ -740,7 +740,7 @@ void func_0203c9e8(int value, int ch) {
     }
 }
 
-void func_0203ca24(int start, int end_, int ch) {
+void GfxSys_SetFadeRange(int start, int end_, int ch) {
     int end;
     if (ch != -1) {
         end = ch + 1;
@@ -758,11 +758,11 @@ void func_0203ca24(int start, int end_, int ch) {
     }
 }
 
-int func_0203ca74(int ch) {
+int GfxSys_GetFadeTimer(int ch) {
     return data_02097d64[ch];
 }
 
-int func_0203ca84(int ch) {
+int GfxSys_GetFadeLevel(int ch) {
     int t;
     int start;
     if (data_02097d8c[ch] == 0) {
@@ -777,7 +777,7 @@ int func_0203ca84(int ch) {
     return start + (FX_Mul((data_02097d50[ch] - start) << 12, t) >> 12);
 }
 
-void func_0203caf8(int ch) {
+void GfxSys_StopFade(int ch) {
     int end;
     if (ch != -1) {
         end = ch + 1;
@@ -795,7 +795,7 @@ void func_0203caf8(int ch) {
     }
 }
 
-void func_0203cb78(int duration, int mode, int ch) {
+void GfxSys_StartFadeIn(int duration, int mode, int ch) {
     int end;
     if (ch != -1) {
         if ((ch == 0 || ch == 3) && data_02097d78[3] != 0) {
@@ -826,7 +826,7 @@ void func_0203cb78(int duration, int mode, int ch) {
     }
 }
 
-void func_0203cc58(int duration, int mode, int ch) {
+void GfxSys_StartFadeOut(int duration, int mode, int ch) {
     int end;
     if (ch != -1) {
         if (ch == 3) {
@@ -872,11 +872,11 @@ void GfxSys_UpdateFade(void) {
     }
 }
 
-void func_0203cd84(void) {
+void GfxSys_ApplyFade3D(void) {
     int t;
     int v;
     if (data_02097d78[2] == 2 || data_02097d78[2] == 4) {
-        func_0203d040(data_02097d50[2]);
+        GfxSys_DrawFadeQuad(data_02097d50[2]);
         return;
     }
     if (data_02097d8c[2] == 0) {
@@ -899,11 +899,11 @@ void func_0203cd84(void) {
             data_02097d78[2] = 4;
         }
     }
-    func_0203d040(v);
+    GfxSys_DrawFadeQuad(v);
 }
 
 // The context is copied out and back one word at a time.
-void func_0203ce3c(void) {
+void GfxSys_RunFadeFunc(void) {
     GfxFadeCtx ctx;
     GfxFadeFunc func = data_02097d4c;
     if (func == NULL) {
@@ -925,16 +925,16 @@ void func_0203ce3c(void) {
     data_02097d50[3] = ctx.end;
 }
 
-void func_0203ced8(int mode) {
+void GfxSys_ApplyFade(int mode) {
     int ch;
     int t;
     int v;
     if (mode != -1) {
         if (data_02097d78[2] != 0) {
-            func_0203cd84();
+            GfxSys_ApplyFade3D();
         }
         if (data_02097d78[3] != 0) {
-            func_0203ce3c();
+            GfxSys_RunFadeFunc();
         }
         return;
     }
@@ -973,7 +973,7 @@ void func_0203ced8(int mode) {
     }
 }
 
-void func_0203d040(int v) {
+void GfxSys_DrawFadeQuad(int v) {
     GfxSys *sys;
     int t;
     u32 polyAttr;
@@ -997,7 +997,7 @@ void func_0203d040(int v) {
 }
 
 // Blends two RGB555 colors; t is fx32 in [0, 0x1000].
-u16 func_0203d144(int c0, int c1, int t) {
+u16 GfxSys_BlendColor(int c0, int c1, int t) {
     int r0 = c0 & 0x1f;
     int r1 = c1 & 0x1f;
     int g0 = (c0 >> 5) & 0x1f;

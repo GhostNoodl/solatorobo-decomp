@@ -15,8 +15,8 @@ typedef struct ov006_Scene021d8790 {
 extern "C" {
 
 extern ov006_Fade021d8790 data_02097d78;
-void func_0203cb78(s32 a, int b, int c);
-void func_0203cc58(s32 a, int b, int c);
+void GfxSys_StartFadeIn(s32 a, int b, int c);
+void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
 void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
 
@@ -45,8 +45,8 @@ u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
     case 0:
         if (data_ov006_021ec888->state == 9) {
             if (!ov006_FadeIdle()) {
-                func_0203cb78(0x1000, 0, 0);
-                func_0203cb78(0x1000, 0, 1);
+                GfxSys_StartFadeIn(0x1000, 0, 0);
+                GfxSys_StartFadeIn(0x1000, 0, 1);
             }
             self->unk6E = 1;
         }
@@ -57,8 +57,8 @@ u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
         break;
     case 2:
         if (data_ov006_021ec888->state != 9) {
-            func_0203cc58(0x1000, 0, 0);
-            func_0203cc58(0x1000, 0, 1);
+            GfxSys_StartFadeOut(0x1000, 0, 0);
+            GfxSys_StartFadeOut(0x1000, 0, 1);
             self->unk6E = 3;
         }
         break;

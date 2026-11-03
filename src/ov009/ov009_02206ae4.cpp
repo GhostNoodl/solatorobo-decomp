@@ -9,12 +9,12 @@ extern s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 
 extern VecFx32 data_ov009_02215f98[];
 extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
-extern void func_020627a0(u16 kind, u16 id);
+extern void Shared_SetEventActor(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void SndMgr_SetSlotVolume_0204a058(void *mgr, s32 a, s32 b, s32 c);
 
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern BOOL Actor_IsDead(Ov003Actor *a);
 
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 
@@ -99,7 +99,7 @@ void Ov009ActVt_022178f0_State21(Ov009ActVt_022178f0 *self) {
         if (st->timer <= 0x3c) {
             return;
         }
-        func_020627a0(self->kind, self->id);
+        Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
         SndMgr_SetSlotVolume_0204a058(data_02097e4c, self->unk_10c, 0x14, 0x1c2);
@@ -122,7 +122,7 @@ void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0xf) {
-            func_020627a0(self->kind, self->id);
+            Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
@@ -139,7 +139,7 @@ void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x104) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
         }
         break;
@@ -179,7 +179,7 @@ void Ov009ActVt_022178f0_StateIdle(Ov009ActVt_022178f0 *self) {
         return;
     }
     a = ActorMgr_FindPlayer();
-    if (a != NULL && !func_ov000_021b4738(a)) {
+    if (a != NULL && !Actor_IsDead(a)) {
         return;
     }
     SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);

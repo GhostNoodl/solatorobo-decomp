@@ -172,8 +172,8 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
         if (data_ov006_021ec888->state == 9) {
             return;
         }
-        func_0203cc58(0x1e000, 0, 0);
-        func_0203cc58(0x1e000, 0, 1);
+        GfxSys_StartFadeOut(0x1e000, 0, 0);
+        GfxSys_StartFadeOut(0x1e000, 0, 1);
         self->subStep++;
         break;
     case 2:
@@ -191,7 +191,7 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
     }
 }
 
-void func_ov006_021d33f4(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Draw(ov006_TaskD1F *self) {
     int i;
     if (!self->vfunc_28()) {
         return;

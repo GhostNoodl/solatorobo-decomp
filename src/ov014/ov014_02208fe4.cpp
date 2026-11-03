@@ -13,7 +13,7 @@ extern Ov003Actor *Target_Get(void *p);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 extern void Ov003Pickup_Update(Actor *self, s32 a);
-extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Field_ShakeCamera(u8 a, u8 b);
 extern void SndMgr_RequestLoad_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
@@ -51,7 +51,7 @@ void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self) {
                 Ov003Pickup_Update(self, 0);
                 self->unk_d0 |= 0x1000;
                 History_SetState(self->fsm, 0x15, 0);
-                func_ov000_0218996c(5, 8);
+                Field_ShakeCamera(5, 8);
                 return;
             }
         }
