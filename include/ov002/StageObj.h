@@ -291,7 +291,9 @@ struct Ov002StageFile : public VObj {
     u8 *unk_28;   // kind 6 records
     u8 *unk_2c;   // kind 10 records (func_ov002_021eb7c0)
     u8 *unk_30;   // effect records (func_ov002_021eb870)
-    u8 unk_34[0xc];
+    u8 *unk_34;   // three more record blocks found by func_ov002_021eb964
+    u8 *unk_38;
+    u8 *unk_3c;
     Ov002ObjLink *links;
     struct Ov002Obj021f075c **unk_44; // built from unk_1c
     struct Ov002Obj021f075c **unk_48; // from unk_20

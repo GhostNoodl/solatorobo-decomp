@@ -8,7 +8,7 @@ s32 func_02224eb8(s32 a);
 
 #pragma force_active on
 
-s32 func_ov000_0214b670(Twl0214b570 *self) {
+void *func_ov000_0214b670(Twl0214b570 *self) {
     if (self->state == 2 && self->unk_08 == -1) {
         return self->unk_0c;
     }

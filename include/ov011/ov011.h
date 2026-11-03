@@ -10,6 +10,7 @@
 #include "Main/Res/StageCmd.h"
 #include "ov000/Actor.h"
 #include "ov003/Actor.h"
+#include "ov000/TwlRequest.h"
 #include "Main/Effect/Effect.h"
 #include "ov000/ObjLayouts.h"
 
@@ -585,8 +586,8 @@ class Ov011Act7da4 : public Ov003Actor {
 public:
     u8 unk_f0;
     Ov011Anim unk_f4[2];
-    void *unk_364;
-    void *unk_368;
+    Twl0214b570 *unk_364; // TWL texture requests (Ov011Act7da4_Init); their results are the
+    Twl0214b570 *unk_368; // spawned actors' unk_60 (func_ov011_02205460)
     u16 unk_36c;
     u8 unk_36e;
     u8 unk_36f;

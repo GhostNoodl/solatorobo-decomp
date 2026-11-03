@@ -197,6 +197,7 @@ extern const VecFx32 data_ov015_02212584;
 extern const VecFx32 data_ov015_02212590;
 void func_ov000_021c8408(s32 idx, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
+// The bits of Model::flags (ov000's ModelFlags).
 struct Ov015cFlags {
     u32 unk_0 : 2;
     u32 alpha : 5;
@@ -204,8 +205,8 @@ struct Ov015cFlags {
 };
 
 static inline u8 Ov015c_SetAlpha(Model *m, u8 a) {
-    u8 old = FLD(Ov015cFlags, m, 0x6c).alpha;
-    FLD(Ov015cFlags, m, 0x6c).alpha = a;
+    u8 old = ((Ov015cFlags *)&m->flags)->alpha;
+    ((Ov015cFlags *)&m->flags)->alpha = a;
     return old;
 }
 
@@ -299,7 +300,7 @@ void func_ov015_021fc40c(Ov015Hud *self, s32 mode) {
         Ov015Model_PlayPart(m, alphaIdx, 0);
         self->mdl0->unk_150 = -0x199a;
         Ov015Model_PlayPart(self->mdl0, 0x16, 0);
-        FLD(Ov015cFlags, self->mdl0, 0x6c).alpha = old;
+        ((Ov015cFlags *)&self->mdl0->flags)->alpha = old;
     }
     VEC_Add((VecFx32 *)&b, (VecFx32 *)&a, (VecFx32 *)&a);
     if (flip) {

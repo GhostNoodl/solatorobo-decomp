@@ -1,5 +1,6 @@
 #include "types.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+#include "Main/Gfx/TexObj.h"
+#include "ov000/Obj0216c954.h"
 
 typedef struct {
     u32 a : 8;
@@ -12,14 +13,16 @@ typedef struct {
 
 extern "C" {
 
-Glyph0216c800 *func_ov000_0216c800(u8 *self, u16 *cmd, Glyph0216c800 *arr, u16 *count) {
+// The OAM callback of Obj0216c954's model (entry 6, registered by func_ov000_0216ca70 with the
+// object as the entry's argument): draws count and total as two digits each.
+Glyph0216c800 *func_ov000_0216c800(TexObj *self, TexObjEntry *e, Glyph0216c800 *arr, u16 *count) {
     u16 n = *count;
     Glyph0216c800 *last = &arr[n - 1];
-    if (*cmd == 6) {
-        u8 *o = LFLD(u8 *, cmd, 0x8);
+    if (e->index == 6) {
+        Obj0216c954 *o = (Obj0216c954 *)e->unk_08;
         u32 base = last->chr;
-        s32 a = LFLD(s32, o, 0x20);
-        s32 b = LFLD(s32, o, 0x24);
+        s32 a = o->count;
+        s32 b = o->total;
         arr[0].chr = base - a / 10;
         arr[0].x = 0x52;
         arr[0].a = 0x53;

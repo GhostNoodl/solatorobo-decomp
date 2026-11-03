@@ -46,6 +46,8 @@ struct Lo021cb7ec;
 struct Lo021cb840;
 struct Lo021cb894;
 struct Model;
+struct Obj0216c954; // ov000/Obj0216c954.h
+struct Obj0216ad04; // ov000/Obj0216ad04.h
 
 // 0x1c bytes, ListBuffer021cb940::unk_68 (init func_ov000_0216b474, release func_ov000_0216b490): a 2D model
 // that slides in while something keeps asking for it each frame (Lo0216b474_Ask, from the robot's
@@ -93,7 +95,7 @@ public:
     void *unk_44;
     Lo021cb0b8 *dialog; // list dialog, made by func_ov000_02170620
     void *unk_4c;
-    void *unk_50;
+    struct Obj0216c954 *unk_50; // made by field message 11
     struct LoTimer *unk_54; // the stage timer
     Lo021cb798 *unk_58;
     Lo021cb798 *unk_5c;
@@ -103,7 +105,7 @@ public:
     Lo021cb6f0 *unk_6c;
     Lo021cb840 *unk_70;
     Lo021cb894 *unk_74;
-    void *unk_78;
+    struct Obj0216ad04 *unk_78;
     LoTicker *ticker;
 };
 SIZE_ASSERT(ListBuffer021cb940, 0x80);

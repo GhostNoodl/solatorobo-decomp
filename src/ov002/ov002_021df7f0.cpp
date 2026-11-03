@@ -105,7 +105,7 @@ void func_ov002_021df7f0(Obj021eff30 *self, Obj021eff50 *a) {
             func_ov002_021dbd08(a, q, 0x14);
             h = Heap_GetCurrent();
             Heap_SetCurrentHi();
-            DELETE_VOBJ(FIELD(self, 0x10, VObj *));
+            DELETE_VOBJ(self->unk_10);
             Heap_SetCurrent(h);
             self->unk_18 = 0x32;
         } else {
@@ -125,7 +125,7 @@ void func_ov002_021df7f0(Obj021eff30 *self, Obj021eff50 *a) {
             func_ov002_021dbd08(self->owner, q, 10);
             h = Heap_GetCurrent();
             Heap_SetCurrentHi();
-            DELETE_VOBJ(FIELD(self, 0x10, VObj *));
+            DELETE_VOBJ(self->unk_10);
             Heap_SetCurrent(h);
             self->unk_18 = 0x32;
         } else {

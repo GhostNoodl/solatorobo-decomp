@@ -1,4 +1,6 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/TexObj.h"
+#include "ov000/Obj0216ad04.h"
 
 typedef struct {
     u32 a : 8;
@@ -11,12 +13,14 @@ typedef struct {
 
 extern "C" {
 
-LoGlyphEnt *func_ov000_0216ac14(void *self, u16 *msg, LoGlyphEnt *arr, u16 *cnt) {
+// The OAM callback of Obj0216ad04's model (entry 6, registered by func_ov000_0216b1b4 with the
+// object as the entry's argument): draws value as one or two digits.
+LoGlyphEnt *func_ov000_0216ac14(TexObj *self, TexObjEntry *msg, LoGlyphEnt *arr, u16 *cnt) {
     u16 n = *cnt;
     LoGlyphEnt *e = &arr[n - 1];
-    if (*msg == 6) {
+    if (msg->index == 6) {
         u32 f = e->f;
-        s32 v = LFLD(s32, LFLD(void *, msg, 8), 0x10);
+        s32 v = ((Obj0216ad04 *)msg->unk_08)->value;
         if (v >= 10) {
             e[-1].f = f - v % 10;
             e[0].f = f - v / 10;

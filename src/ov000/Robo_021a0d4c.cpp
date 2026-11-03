@@ -7,6 +7,7 @@
 #include "ov000/FieldMgr.h"
 #include "ov000/ActorMarker.h"
 #include "Main/Gfx/ObjPool.h"
+#include "ov000/Obj0216ad04.h"
 
 class Robo021a0d4cCls;
 typedef void (Robo021a0d4cCls::*Robo021a0d4cPmf)();
@@ -22,7 +23,6 @@ extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_ov000_021ccd64;
 void func_ov000_021b06dc(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_ov000_0216adc0(void *p, s32 a, u16 b);
 void func_ov000_021b3d78(u8 *self);
 void Obj0218c208_AddPoint(void *a, void *pos, u16 ang);
 void func_ov000_0219a088(void *p);

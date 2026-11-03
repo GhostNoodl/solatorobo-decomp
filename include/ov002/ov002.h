@@ -619,7 +619,7 @@ extern u8 data_ov002_021ef650[];
 
 void LoBase021ccb54_021ccbe0_Setup(void *self);
 void func_ov000_021c4ab8(void *self);
-extern u8 data_ov002_021ef038[];
+extern VecFx16 data_ov002_021ef038[]; // the list frame outline (Ov002RowList_Setup)
 
 extern VFunc data_ov002_021f075c[];
 void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self);
@@ -722,7 +722,7 @@ extern u8 data_ov002_021f0654[];
 extern u8 data_ov002_021f065e[];
 extern u8 data_ov002_021f0665[];
 extern VFunc data_ov002_021f002c[];
-void func_ov000_021c4738(void *self, void *a);
+void func_ov000_021c4738(void *self, s32 index);
 extern u16 data_ov002_021ef058[][5];
 typedef int (*SortCmp)(void *, void *);
 

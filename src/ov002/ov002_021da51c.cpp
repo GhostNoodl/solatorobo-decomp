@@ -7,7 +7,7 @@ void *Ov002Vt_021efe6c_DtorDelete(Obj021efe6c *self) {
     *(VFunc **)self = data_ov002_021efe6c;
     Obj021efe6c_FreePieces(self);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 4, VObj *));
+    DELETE_VOBJ(self->field);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (((void *)self->cam) != NULL) {

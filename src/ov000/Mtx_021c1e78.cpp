@@ -1,30 +1,8 @@
 #include "nitro/fx.h"
 #include "ov000/Bss021ccd74.h"
+#include "ov000/Obj0216c954.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 rest : 28;
-    s32 state;
-    u8 unk_08[4];
-    u8 *model;
-    u8 unk_10[0x14];
-    VecFx32 unk_24;
-    u16 rx;
-    u16 ry;
-    u16 rz;
-    u8 unk_36[0x12];
-    s32 unk_48;
-    u8 unk_4c[4];
-    s32 unk_50;
-} Obj021c1e78;
-
-typedef struct { u16 b0 : 5; u16 b5 : 1; u16 rest : 10; } Bits16;
 
 extern "C" {
 
@@ -32,34 +10,34 @@ void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 BOOL Model021903b4_Draw(void *m);
 void func_ov000_021c2078(void *self);
 
-void func_ov000_021c1e78(Obj021c1e78 *self) {
+void func_ov000_021c1e78(Obj021c2114 *self) {
     MtxFx33 m;
     MtxFx33 t;
     const fx16 *tbl = FX_SinCosTable_;
     MtxFx33 *pm = &m;
     u8 alpha;
-    u8 *model;
+    Model0218fe1c *model;
     if (self->state != 10) {
         return;
     }
     if (self->model == NULL) {
         return;
     }
-    alpha = FX_MUL(FX_MUL(self->unk_48, self->unk_50), 0x1f000) >> 12;
+    alpha = FX_MUL(FX_MUL(self->fade, self->pulse), 0x1f000) >> 12;
     if (alpha == 0) {
         return;
     }
-    if (self->b2) {
-        data_ov000_021ccd74.unk_10 = &self->unk_24;
+    if (self->useOfs) {
+        data_ov000_021ccd74.unk_10 = &self->ofs;
     }
-    if (self->b3) {
+    if (self->rotate) {
         BOOL any;
         u16 rz;
         u16 ry;
         u16 rx;
-        ry = self->ry;
-        rz = self->rz;
-        rx = self->rx;
+        ry = self->rot[1];
+        rz = self->rot[2];
+        rx = self->rot[0];
         any = FALSE;
         MTX_Identity33_(pm);
         if (ry != 0) {
@@ -86,9 +64,9 @@ void func_ov000_021c1e78(Obj021c1e78 *self) {
         data_ov000_021ccd74.unk_08 = pm;
     }
     model = self->model;
-    NNS_G3dRenderObjSetInitFunc(model + 0x24, (void *)func_ov000_021c2078);
-    LFLD(Bits16, model, 0xc2).b5 = 0;
-    LFLD(u8, self->model, 0xbe) = alpha;
+    NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c2078);
+    model->clearInit = 0;
+    self->model->alpha = alpha;
     Model021903b4_Draw(self->model);
 }
 

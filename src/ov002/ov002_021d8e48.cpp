@@ -21,7 +21,7 @@ void Obj021efed4_Init(Obj021efed4 *self) {
 }
 
 void Obj021efed4_Release(Obj021efed4 *self) {
-    Vram_FreeRes(*FIELD(self, 0x78, void **));
+    Vram_FreeRes((void *)*self->unk_78);
     {
         void *saved;
         HEAP_PUSH(saved);

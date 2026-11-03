@@ -18,22 +18,16 @@ void *const data_ov011_02207500[2] = { data_ov011_02207be0.photo1, data_ov011_02
 Ov011PhotoCfg data_ov011_02207be0 = {
     data_ov011_02207500[0], data_ov011_02207500[1], data_ov011_02207500[0], "photo01", "photo00",
 };
-void *func_ov000_0214b598(void *p);
-void *Twl0214b570_Init(void *p);
-void func_ov000_0214b5e8(void *p, void *t);
-u32 func_ov000_0214b6d0(void *p);
-BOOL func_ov000_0214b640(void *p);
-void func_ov000_0214b5bc(void *p);
 ResSet *ResSet_ReleaseAll(ResSet *p);
 BOOL func_02036328(void);
 BOOL Actor_IsReady(void *self);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 
-static inline void Ov011_FreeTwl(void **slot) {
+static inline void Ov011_FreeTwl(Twl0214b570 **slot) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (*slot != NULL) {
-        void *p = *slot;
+        Twl0214b570 *p = *slot;
         if (p != NULL) {
             func_ov000_0214b598(p);
             Heap_Free(p);
@@ -68,18 +62,18 @@ void Ov011Act7da4_Init(Ov011Act7da4 *self) {
     Ov003Actor_Init(self);
     ResMgr_Load(data_ov011_02207c35, 7, 0);
     if (OS_IsRunOnTwl()) {
-        void *p = Heap_Alloc(0x1c);
+        Twl0214b570 *p = (Twl0214b570 *)Heap_Alloc(sizeof(Twl0214b570));
         if (p != NULL) {
             p = Twl0214b570_Init(p);
         }
         self->unk_364 = p;
-        func_ov000_0214b5e8(p, data_ov011_02207500[1]);
-        p = Heap_Alloc(0x1c);
+        func_ov000_0214b5e8(p, (const char *)data_ov011_02207500[1]);
+        p = (Twl0214b570 *)Heap_Alloc(sizeof(Twl0214b570));
         if (p != NULL) {
             p = Twl0214b570_Init(p);
         }
         self->unk_368 = p;
-        func_ov000_0214b5e8(p, data_ov011_02207500[0]);
+        func_ov000_0214b5e8(p, (const char *)data_ov011_02207500[0]);
     }
     self->unk_398 = NULL;
     self->unk_394 = 0;

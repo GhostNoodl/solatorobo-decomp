@@ -1,5 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/MessageQueue.h"
+#include "ov000/Obj0216ad04.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/ModelPart.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
@@ -12,27 +14,19 @@ void *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
-struct Obj0216adc0 {
-    u32 unk_00;
-    u8 unk_04[0x4];
-    s32 unk_08;
-    u8 unk_0c[0x4];
-    s32 unk_10;
-};
-
-void func_ov000_0216adc0(Obj0216adc0 *self, s32 a, s32 b) {
-    if (self->unk_08 == a) {
-        self->unk_00 |= 6;
+void func_ov000_0216adc0(Obj0216ad04 *self, s32 a, s32 b) {
+    if (self->kind == a) {
+        self->flags |= 6;
     } else {
-        self->unk_00 &= ~2;
+        self->flags &= ~2;
     }
     if (b < 0) {
         b = 0;
     } else if (b > 0x63) {
         b = 0x63;
     }
-    self->unk_08 = a;
-    self->unk_10 = b;
+    self->kind = a;
+    self->value = b;
 }
 
 }
@@ -45,15 +39,7 @@ extern const char *data_0208cc88;
 BOOL Model_IsReady(void *m, s32 id);
 s32 FX_Div(s32 a, s32 b);
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 rest : 29;
-} Flags0216adf8;
-
-
-static inline void *GetObj0216adf8(void) {
+static inline Lo021cb798 *GetObj0216adf8(void) {
     ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
     return o != NULL ? o->unk_58 : NULL;
 }
@@ -79,54 +65,42 @@ static inline BOOL Idle0216adf8(void) {
     return data_02097d78[3] == 0 && data_02097d78[0] == 0 ? TRUE : FALSE;
 }
 
-static inline BOOL SubFlag0216adf8(void *o) {
-    return LFLD(Flags0216adf8, o, 0xc).b1 ? TRUE : FALSE;
+static inline BOOL SubFlag0216adf8(Lo021cb798 *o) {
+    return o->unk_0c_1 ? TRUE : FALSE;
 }
 
-struct Obj0216adf8 {
-    Flags0216adf8 unk_00;
-    s32 unk_04;
-    u8 unk_08[0x4];
-    Model *unk_0c;
-    u8 unk_10[0x4];
-    u16 unk_14;
-    u8 unk_16[0x2];
-    s32 unk_18;
-    s32 unk_1c;
-};
-
-void func_ov000_0216adf8(Obj0216adf8 *self) {
-    void *o = GetObj0216adf8();
+void func_ov000_0216adf8(Obj0216ad04 *self) {
+    Lo021cb798 *o = GetObj0216adf8();
     if (o == NULL) {
         return;
     }
     if (!Ready0216adf8(data_ov000_021ccd54) || !Idle0216adf8()) {
-        self->unk_00.b1 = 0;
+        self->want = 0;
     }
-    switch (self->unk_04) {
+    switch (self->state) {
     case 0:
     case 1:
         break;
     case 2:
-        self->unk_04 = 4;
+        self->state = 4;
         break;
     case 3:
-        LO_FREE_M(self, 0xc);
-        self->unk_04 = 4;
+        HEAP_DELETE_MODEL(self->model);
+        self->state = 4;
         break;
     case 4:
         if (SubFlag0216adf8(o)) {
             return;
         }
-        if (self->unk_00.b1) {
-            self->unk_00.b0 = TRUE;
-            self->unk_04 = 5;
+        if (self->want) {
+            self->opening = TRUE;
+            self->state = 5;
         }
         break;
     case 5: {
         void *res;
         Model *m;
-        self->unk_14 = 0xc;
+        self->part = 0xc;
         res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
@@ -134,55 +108,55 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
             PlttRes_Init_02041218((struct PlttRes *)((u8 *)m + 0x88));
             TexObj_Init(m, nm, 0);
         }
-        self->unk_0c = m;
+        self->model = m;
         TexObj_SetRes(m, res);
-        self->unk_0c->flags |= 2;
-        TexObj_SelectImage(self->unk_0c, 0, 0xb);
-        TexObj_SelectImage(self->unk_0c, 0, self->unk_14);
-        TexObj_SelectImage(self->unk_0c, 0, 7);
-        TexObj_SelectImage(self->unk_0c, 0, 6);
-        self->unk_0c->flags |= 0x80000;
-        self->unk_0c->flags |= 0x200000;
-        MODEL_FLAGS(self->unk_0c)->alpha = 0x1e;
-        self->unk_04 = 6;
+        self->model->flags |= 2;
+        TexObj_SelectImage(self->model, 0, 0xb);
+        TexObj_SelectImage(self->model, 0, self->part);
+        TexObj_SelectImage(self->model, 0, 7);
+        TexObj_SelectImage(self->model, 0, 6);
+        self->model->flags |= 0x80000;
+        self->model->flags |= 0x200000;
+        MODEL_FLAGS(self->model)->alpha = 0x1e;
+        self->state = 6;
         break;
     }
     case 6:
-        if (Model_IsReady(self->unk_0c, 0xffff)) {
-            self->unk_18 = 0;
-            self->unk_1c = 0x1000;
-            self->unk_04 = 8;
+        if (Model_IsReady(self->model, 0xffff)) {
+            self->frame = 0;
+            self->ratio = 0x1000;
+            self->state = 8;
         }
         break;
     case 7:
-        if (SubFlag0216adf8(o) || !self->unk_00.b2) {
-            self->unk_00.b1 = 0;
+        if (SubFlag0216adf8(o) || !self->asked) {
+            self->want = 0;
         }
-        self->unk_00.b2 = 0;
+        self->asked = 0;
     case 8:
-        if (!self->unk_00.b1) {
-            self->unk_00.b0 = 0;
-            self->unk_04 = 8;
+        if (!self->want) {
+            self->opening = 0;
+            self->state = 8;
         }
-        if (self->unk_04 == 7) {
+        if (self->state == 7) {
             return;
         }
-        if (self->unk_00.b0) {
-            self->unk_18++;
-            self->unk_1c = FX_Div(self->unk_18 << 12, 0xc000);
-            if (self->unk_1c >= 0x1000) {
-                self->unk_1c = 0x1000;
-                self->unk_04 = 7;
+        if (self->opening) {
+            self->frame++;
+            self->ratio = FX_Div(self->frame << 12, 0xc000);
+            if (self->ratio >= 0x1000) {
+                self->ratio = 0x1000;
+                self->state = 7;
             }
         } else {
-            self->unk_18--;
-            self->unk_1c = FX_Div(self->unk_18 << 12, 0xc000);
-            if (self->unk_1c <= 0) {
-                self->unk_1c = 0;
-                self->unk_04 = 3;
+            self->frame--;
+            self->ratio = FX_Div(self->frame << 12, 0xc000);
+            if (self->ratio <= 0) {
+                self->ratio = 0;
+                self->state = 3;
             }
         }
-        self->unk_1c = 0x1000 - FX_SinCosTable_[((self->unk_1c << 14) >> 16) * 2];
+        self->ratio = 0x1000 - FX_SinCosTable_[((self->ratio << 14) >> 16) * 2];
         break;
     }
 }

@@ -44,6 +44,13 @@ struct Ov015Vec : public VecFx32 {
     }
 };
 
+// The 4-byte record of func_0206ee20 (Main/Lang/ParamTbl.cpp) as ov015 reads it: the shop and
+// reward code multiplies price by the count and splits a budget by it (func_ov015_022113e8).
+typedef struct Ov015ParamPrice {
+    u16 unk_00;
+    u16 price;
+} Ov015ParamPrice;
+
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 #define SET_VT(p, vt) (*(void **)(p) = (void *)(vt))
 #define REG16(a) (*(volatile u16 *)(a))

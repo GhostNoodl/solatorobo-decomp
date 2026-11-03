@@ -8830,3 +8830,30 @@ This round only renames functions: 661 pairs, every object byte-identical to the
   - Actor slots `0x18`/`0x1c`.
   - The string-keyed Stage functions: their names would come from data.
 - **Gate:** 0 FAILED, 19/19 ROM checks, check symbols OK, 8138 matched, `check_drafts --score` exit 0.
+
+### Round acQ (ov000 event and gauge objects of the field holder, render callbacks and OAM callbacks typed; `Twl0214b570` in ov003/ov011; ov002 delete/row-list views; ov015 price record)
+
+Readability only; every function stays byte-identical. A baseline was built first at `01ca10f2`, and again at `ac93a04e` after round nmH landed (no nmH pair touched the edited code; the `ActorEx_Init`/`ActorEx_CtorBody` swap is only in untouched lines). Each step was compared function by function (code and relocations), and at the end all 1906 objects were compared again: 0 differ. Gate: 0 FAILED with 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0 (30 drafts, all unchanged).
+
+**Counts** (`grep -o` over src + include of each overlay)
+
+| | before | after |
+|---|---|---|
+| ov000 `LFLD` | 443 | 404 |
+| ov000 `LBIT` | 22 | 3 |
+| ov000 `void *self` | 143 | 124 |
+| ov002 `FIELD(` / `void *self` | 290 / 54 | 222 / 51 |
+| ov015 `FLD(` | 42 | 35 |
+
+- **TWL request.** `TwlRequest.h` now declares the `Twl0214b570` functions; `unk_0c` is the `void *` result (ov003 and ov011 bind it as texture data; `func_ov000_0214b670` returns it) and `unk_10` the `const char *` name argument. `Ov003ActExTex::tex` and `Ov011Act7da4::unk_364`/`unk_368` are `Twl0214b570 *`; their local `void *` prototypes are gone.
+- **The 0x3c event object (new untracked `include/ov000/Obj0216c954.h`).** `Obj0216c954` (`ListBuffer021cb940::unk_50`; ctor `0216c954`, update `0216ca70`, draw `0216d14c`, release `Obj0216c9b0_Release`; made by field message 11, stopped by message 12): `stop`/`opening`/`show`/`idleFrames`, `state`, `mode`, `model`, `effect`, `range`, `kind`, `count`/`total` (drawn by its OAM callback `0216c800`; `0216ca64` sets them), `part`, `findKind`, slide `frame`/`ratio`, `bounceFrame`/`bounce`. Its effect `Obj021c2114` (0x54; ctor `021c2114`, release `021c216c`, update `021c194c`, draw `021c1e78`): `pulseUp`/`active`/`useOfs`/`rotate`, `ActorRes *res`, `Model0218fe1c *model`, `pos`, the turn `rx`/`ry`/`rz`, `ofs`, the draw's own `rot[3]` at 0x30 (the old draw view read it as rx/ry/rz), `target`, `fade`/`pulse`. The local views `Obj0216c9b0`, `Obj0216ca70`/`Eff0216ca70`, `Obj0216d14c`, `Obj0216d474`, `Obj021c2114`, `Obj021c216c`, `Obj021c1e78`, `Self021c194c` and `Pl0216ca70` (now `Robo021ca458`) are gone. `021c194c` keeps its two extra parameters (used as locals; as locals they swap two registers), so the header does not declare it.
+- **The gauge object (new untracked `include/ov000/Obj0216ad04.h`).** `Obj0216ad04` (0x20, `ListBuffer021cb940::unk_78`; init `0216ad04`, release `0216ad34`, ask `0216adc0` from the robot, update `0216adf8`, draw `0216b1b4`, OAM callback `0216ac14` draws `value`): `opening`/`want`/`asked`, `state`, `kind`, `model`, `value`, `part`, `frame`, `ratio`. `ListBuffer021cb940::unk_34`'s stop bit is `Obj021b8284::stop`.
+- **Callbacks typed from their registration.**
+  - Render-object init callbacks `021c2078`/`021c14dc`/`021bb298` take `NNSG3dRS *` and call `NNS_G3dRSSetCallBack`; the SBC callbacks `021c2090` (joint result `rot`/`trans`, `NNS_G3dRSResetCallBack`), `021c1478` and `021bb248` (`pMatAnmResult->prmPolygonAttr`) use the NNS types.
+  - OAM callbacks `0216c800`, `0216ac14`, `021540b0` take `(TexObj *, TexObjEntry *, ...)` and read the entry's argument (`Obj0216c954`, `Obj0216ad04`, `UiList` from `UiList_Setup`). `0216d9dc` is the `Model::mtxFunc` (renamed from `unk_15c`; `TexObj_3` calls it as `TexObjMtxFunc`) set by `LoTimer_Draw`.
+  - `0215c1a8` is the `Text_ScanTags` callback (`s32 *font`); `021521ec` is a `UiItemFn` (`UiList *`, `UiListItem *`; the cast at `Lo_02155770` is gone).
+- **ov000 records.** `MessageQueue021cb980::flag0`/`flag1` replace `LBIT(x, 0x114)` (`02172078`/`02172450` take the class, `Sys_02189068`, `Lo_021645b8`, `Task_02170a58`'s owner). UI `LBIT(x, 0xc)` became `UiObj` flags or `ObjBase021cac0c_021cb6f0::unk_0c_N` (`Obj_0215fe60`'s `OB()` macro is gone). `Obj0215c1bc_SetText`/`func_ov000_0215c744`/`Obj0215c1bc_SetMsg` take `Lo021cad50 *` (the local copies `Obj0215c1bc`/`Obj0215c744` are gone; `unk_84` is `u32`, `unk_90` the `char *` line buffer). `LoBase021cafc0_021cb0b8_Setup` uses the class (its panel is a `UiPanel` subclass with the reset ctor). `Obj02152e5c_LoadModel` takes `UiObj *`. `func_ov000_0216f828` is the `TimedBuffer021cb920` ctor body.
+- **ov002.** `DELETE_VOBJ(FIELD(self, ...))` in the release/dtor functions use the members. `Ov002RowList_Setup` and `func_ov002_021e34fc` (row insertion sort over `ListRow`) use the row list; `data_ov002_021ef038` is `VecFx16[]` (the frame outline). `Ov002StageFile::unk_34`/`38`/`3c` are three record pointers; `021d7e54` writes the animation `frame`s; `021d9c04` reads pieces, `Ov002Shape` and cells by name; `Ov002Vt_021f0f2c_Clear` takes `Ov002StaffLoader *`.
+- **ov015.** `Ov015ParamPrice` (the 4-byte record of `func_0206ee20`: `price`) in `022113e8`, `02211334`, `0220ec40`; `021fb758`'s alpha view is on `Model::flags`. The `nodeMtx + 0x24` reads stay (`&nodeMtx.m[3]` folds the two adds).
+- **Left.** `Lo_02172450`'s `LBIT(self, 4)` (`ListBuffer::unk_0c` is the owner as `u32`); `Menu_021763c8`'s sound-queue views (its namespaces declare `data_02097e48` and `data_02097e4c` with their own types); the ov015 `TextWin`-as-`VObj` reads (`label->unk_84`); the board cell objects' subclass fields in `021dc278`; the `func_ov000_0215e6f0` draft.
+- **Renames:** none (types and fields only).

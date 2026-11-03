@@ -5,7 +5,8 @@
 #include "ov000/SceneCmd.h"
 #include "ov000/HeapScope.h"
 #include "Main/Gfx/SlideWin.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+#include "ov000/Obj0216c954.h"
+#include "ov000/Obj0216ad04.h"
 
 extern "C" {
 
@@ -19,7 +20,6 @@ extern u8 data_ov000_021cb840[];
 extern u8 data_ov000_021cb894[];
 void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(Lo0216b474 *p);
-void func_ov000_0216ad04(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
 BOOL func_0204c120(void);
@@ -30,23 +30,15 @@ BOOL func_0204fd60(void *p);
 BOOL func_ov000_021b8994(void *p);
 BOOL func_ov000_021bb33c(void *p);
 BOOL func_ov000_021b8284(void *p);
-BOOL func_ov000_0216ca70(void *p);
 void func_ov000_02182524(SceneStage *self);
 void func_ov000_0216b550(Lo0216b474 *p);
-void func_ov000_0216adf8(void *p);
 void Obj021bbc68_Release(void *p);
 void func_020507d8(void *p);
-void Obj0216c9b0_Release(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
 void Obj021b8ecc_Release(void *p);
 void Obj021bacf4_Release(void *p);
 void func_ov000_021bb840(void *p);
-
-typedef struct {
-    u32 b0 : 1;
-} Bit0;
-
 
 static inline VObj *NewObj2(u32 size, void *vt) {
     VObj *p = (VObj *)Heap_Alloc(size);
@@ -60,16 +52,16 @@ static inline VObj *NewObj2(u32 size, void *vt) {
 }
 
 void func_ov000_02170a58(ListBuffer021cb940 *self) {
-    u8 *c = (u8 *)self->unk_0c;
+    MessageQueue021cb980 *c = (MessageQueue021cb980 *)self->unk_0c; // the owner queue
     switch (self->state) {
     case 0:
         self->state = 1;
     case 1: {
         Lo021cb798 *p;
-        u8 *q;
+        Obj0216ad04 *q;
         Lo0216b474 *r;
         LoTicker *tk;
-        if (LFLD(Bit0, c, 0x114).b0) {
+        if (c->flag0) {
             break;
         }
         p = (Lo021cb798 *)Heap_Alloc(sizeof(Lo021cb798));
@@ -100,7 +92,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         self->unk_6c = (Lo021cb6f0 *)NewObj2(sizeof(Lo021cb6f0), data_ov000_021cb6f0);
         self->unk_70 = (Lo021cb840 *)NewObj2(sizeof(Lo021cb840), data_ov000_021cb840);
         self->unk_74 = (Lo021cb894 *)NewObj2(sizeof(Lo021cb894), data_ov000_021cb894);
-        q = (u8 *)Heap_Alloc(0x20);
+        q = (Obj0216ad04 *)Heap_Alloc(sizeof(Obj0216ad04));
         if (q != NULL) {
             func_ov000_0216ad04(q);
         }
@@ -184,7 +176,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         HEAP_DELETE_FN(self->unk_34, func_ov000_021b8800);
     }
     if (self->unk_50 != NULL && !func_ov000_0216ca70(self->unk_50)) {
-        HEAP_DELETE_FN(self->unk_50, Obj0216c9b0_Release);
+        HEAP_DELETE(Obj0216c954 *, self->unk_50, Obj0216c9b0_Release(p); Heap_Free(p));
     }
     if (self->unk_54 != NULL && !LoTimer_Update(self->unk_54)) {
         HEAP_DELETE(LoTimer *, self->unk_54, LoTimer_FreeModels(p); Heap_Free(p));

@@ -1,135 +1,98 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ModelPart.h"
 #include "Main/Res/ResArc.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
-void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
+void Obj02153c48_CreateText(UiListItem *item, s32 font, s32 b, s32 c, s32 d);
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 2;
-    u32 b3 : 1;
-    u32 rest : 28;
-} PFlags0215aa78;
-
-
-class Panel0215aa78 {
-public:
-    PFlags0215aa78 flags;
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    Model *model;
+// The list's highlight panel, made here with its reset values.
+struct Panel0215aa78 : public UiPanel {
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
-    void SetOfs(s32 x, s32 y) {
-        unk_18 = x;
-        unk_1c = y;
-    }
     Panel0215aa78() {
-        *(u32 *)&flags = 0;
-        unk_04 = 0;
-        unk_08 = 0;
-        unk_0c = 0;
-        unk_1c = 0;
-        unk_18 = 0;
-        unk_10 = 0x80000;
-        unk_14 = 0xf000;
+        flags = 0;
+        x = 0;
+        y = 0;
+        z = 0;
+        dy = 0;
+        dx = 0;
+        width = 0x80000;
+        height = 0xf000;
         unk_20 = 0;
         unk_24 = 0;
         model = NULL;
     }
 };
 
-void Obj0215e8b0_LoadModel(Panel0215aa78 *p);
+static inline void Panel0215aa78_SetOfs(UiPanel *p, s32 x, s32 y) {
+    p->dx = x;
+    p->dy = y;
+}
 
-struct Obj0215aa78 : public VObj {
-    u8 unk_04[0xc];
-    Model *unk_10;
-    u8 unk_14[0x8];
-    void *unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    s32 unk_2c;
-    u8 unk_30[0x34];
-    s16 unk_64;
-    s16 unk_66;
-    u8 unk_68[0x2c];
-    u8 *unk_94;
-    u8 unk_98[0x4];
-    s16 unk_9c;
-    u8 unk_9e[0xe];
-    Panel0215aa78 *unk_ac;
-};
+void Obj0215e8b0_LoadModel(UiPanel *p);
 
-void LoBase021cafc0_021cb0b8_Setup(Obj0215aa78 *self) {
-    u8 *node;
+void LoBase021cafc0_021cb0b8_Setup(LoBase021cafc0_021cb0b8 *self) {
+    UiListItem *node;
     s32 maxw;
 
-    node = self->unk_94;
+    node = self->items;
     maxw = 0;
     while (node != NULL) {
-        Obj02153c48_CreateText(node, self->unk_1c, 0, 0, 0);
-        if (LFLD(s32, LFLD(u8 *, node, 0x1c), 0x44) > maxw) {
-            maxw = LFLD(s32, LFLD(u8 *, node, 0x1c), 0x44);
+        Obj02153c48_CreateText(node, self->font, 0, 0, 0);
+        if (LFLD(s32, node->label, 0x44) > maxw) {
+            maxw = LFLD(s32, node->label, 0x44);
         }
-        node = LFLD(u8 *, node, 0x2c);
+        node = node->next;
     }
-    self->unk_20 = self->unk_9c;
-    if (self->unk_24 == -1) {
-        if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
-            self->unk_24 = 0x100;
+    self->rows = self->itemCount;
+    if (self->width == -1) {
+        if (self->flag3 ? TRUE : FALSE) {
+            self->width = 0x100;
         } else {
-            self->unk_24 = maxw + 0x40;
-            if (self->unk_24 < 0x98) {
-                self->unk_24 = 0x98;
+            self->width = maxw + 0x40;
+            if (self->width < 0x98) {
+                self->width = 0x98;
             }
         }
     }
-    self->unk_28 = self->vfunc_44();
-    if (self->unk_10 == NULL) {
-        if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-            self->unk_10 = new ModelObj(data_0208cb84, data_0208cc8c);
+    self->height = self->vfunc_44();
+    if (self->model == NULL) {
+        if (self->flag6 ? TRUE : FALSE) {
+            self->model = new ModelObj(data_0208cb84, data_0208cc8c);
         } else {
-            self->unk_10 = new ModelObj(data_0208cb74, data_0208cca0);
+            self->model = new ModelObj(data_0208cb74, data_0208cca0);
         }
         {
-            ResList *a = ResMgr_GetArcList(self->unk_10->name);
-            TexObj_SetRes(self->unk_10, ResList_FindType2(a, self->unk_10->unk_04c));
+            ResList *a = ResMgr_GetArcList(self->model->name);
+            TexObj_SetRes(self->model, ResList_FindType2(a, self->model->unk_04c));
         }
-        self->unk_10->flags |= 2;
-        TexObj_SelectImage(self->unk_10, 0, 7);
+        self->model->flags |= 2;
+        TexObj_SelectImage(self->model, 0, 7);
     }
-    if (self->unk_ac == NULL) {
-        self->unk_ac = new Panel0215aa78();
-        if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
-            self->unk_ac->flags.b3 = 1;
-            self->unk_ac->SetOfs((maxw >> 1) + 0x10, 0);
+    if (self->panel == NULL) {
+        self->panel = new Panel0215aa78();
+        if (self->flag3 ? TRUE : FALSE) {
+            self->panel->bits.b3 = 1;
+            Panel0215aa78_SetOfs(self->panel, (maxw >> 1) + 0x10, 0);
         } else {
-            self->unk_ac->flags.b1 = 3;
-            self->unk_ac->flags.b0 = 1;
+            self->panel->bits.b1 = 3;
+            self->panel->bits.centered = 1;
         }
-        Obj0215e8b0_LoadModel(self->unk_ac);
-        self->unk_ac->unk_10 = (self->unk_24 - 0x20) << 12;
-        self->unk_ac->model->flags |= 0x200000;
-        self->unk_ac->model->flags |= 0x100000;
-        self->unk_ac->model->flags |= 0x80000;
-        MODEL_FLAGS(self->unk_ac->model)->alpha = 0x1e;
+        Obj0215e8b0_LoadModel(self->panel);
+        self->panel->width = (self->width - 0x20) << 12;
+        self->panel->model->flags |= 0x200000;
+        self->panel->model->flags |= 0x100000;
+        self->panel->model->flags |= 0x80000;
+        MODEL_FLAGS(self->panel->model)->alpha = 0x1e;
     }
-    self->unk_2c = 0;
-    self->unk_64 = 0x80 - (self->unk_24 >> 1);
-    self->unk_66 = 0x60 - (self->unk_28 >> 1);
-    LBIT(self, 0xc).b0 = 1;
+    self->slideMode = 0;
+    self->posX = 0x80 - (self->width >> 1);
+    self->posY = 0x60 - (self->height >> 1);
+    self->busy = 1;
 }
 
 }

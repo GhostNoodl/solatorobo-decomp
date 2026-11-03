@@ -1,72 +1,50 @@
 #include "nitro/fx.h"
 #include "ov000/Model0218fe1c.h"
 #include "nitro/std.h"
+#include "ov000/ActorParts.h"
+#include "ov000/Obj0216c954.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} Flags021c194c;
-
-typedef struct {
-    Flags021c194c flags;
-    s32 state;
-    u8 *obj;
-    u8 *model;
-    VecFx32 pos;
-    u16 rx;
-    u16 ry;
-    u16 rz;
-    u8 pad22[0x16];
-    VecFx32 target;
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    s32 unk_50;
-} Self021c194c;
 
 extern "C" {
 
 extern char *data_ov000_021cc8a0[2];
 extern char data_ov000_021cc92d[];
 void *Heap_Alloc(u32 size);
-u8 *ResSet_Init(void *p);
-u8 *Model0218fe1c_Init(void *p);
-BOOL ResSet_UpdateLoad(u8 *o);
-BOOL Model0218fe1c_SetRes(u8 *m, u8 *o, s32 a, s32 b);
+ActorRes *ResSet_Init(void *p);
+Model0218fe1c *Model0218fe1c_Init(void *p);
+BOOL ResSet_UpdateLoad(ActorRes *o);
+BOOL Model0218fe1c_SetRes(Model0218fe1c *m, ActorRes *o, s32 a, s32 b);
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void Math_DirToAngles(u16 *out, VecFx32 *dir);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
-static inline void SetNamesA021c194c(u8 *o) {
+static inline void SetNamesA021c194c(ActorRes *o) {
     char **names = data_ov000_021cc8a0;
     char *n0 = names[0];
     char *n1 = names[1];
-    STD_CopyString((char *)o + 0x10, n0);
-    STD_CopyString((char *)o + 0x30, n1);
-    o[3] |= 2;
+    STD_CopyString(o->unk_10, n0);
+    STD_CopyString(o->unk_30, n1);
+    o->unk_03_1 = 1;
 }
 
-static inline void SetNamesB021c194c(u8 *o) {
+static inline void SetNamesB021c194c(ActorRes *o) {
     char **names = data_ov000_021cc8a0;
     char *n0 = names[0];
     char *n1 = names[1];
-    STD_CopyString((char *)o + 0x4c, n0);
-    STD_CopyString((char *)o + 0x6c, n1);
-    o[3] |= 4;
+    STD_CopyString(o->unk_4c, n0);
+    STD_CopyString(o->unk_6c, n1);
+    o->unk_03_2 = 1;
 }
 
-static inline u8 *GetObj021c194c(Self021c194c *s) {
-    return s->obj;
+static inline ActorRes *GetObj021c194c(Obj021c2114 *s) {
+    return s->res;
 }
 
-static inline BOOL Ready021c194c(u8 *o) {
+static inline BOOL Ready021c194c(ActorRes *o) {
     BOOL r = TRUE;
-    if (o != NULL && LFLD(s16, o, 0) >= 0) {
+    if (o != NULL && o->unk_00 >= 0) {
         if (!ResSet_UpdateLoad(o)) {
             r = FALSE;
         }
@@ -77,7 +55,7 @@ static inline BOOL Ready021c194c(u8 *o) {
 #define SIN021c194c(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS021c194c(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
+void func_ov000_021c194c(Obj021c2114 *self, BOOL flag, ActorRes *p) {
     MtxFx33 m_0;
     VecFx32 d4;
     VecFx32 d;
@@ -94,45 +72,45 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
     case 9:
         break;
     case 1: {
-        p = (u8 *)Heap_Alloc(0x138);
+        p = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
         if (p != NULL) {
             p = ResSet_Init(p);
         }
-        self->obj = p;
+        self->res = p;
         SetNamesA021c194c(p);
         SetNamesB021c194c(GetObj021c194c(self));
-        LFLD(s16, self->obj, 0) = 0;
+        self->res->unk_00 = 0;
         self->state = 7;
     }
     case 7: {
         Model0218fe1c *m_1;
-        if (!Ready021c194c(self->obj)) {
+        if (!Ready021c194c(self->res)) {
             return;
         }
-        m_1 = (Model0218fe1c *)Heap_Alloc(0xe8);
+        m_1 = (Model0218fe1c *)Heap_Alloc(sizeof(Model0218fe1c));
         if (m_1 != NULL) {
-            m_1 = (Model0218fe1c *)Model0218fe1c_Init(m_1);
+            m_1 = Model0218fe1c_Init(m_1);
         }
-        self->model = (u8 *)m_1;
-        Model0218fe1c_SetRes((u8 *)m_1, GetObj021c194c(self), 0, 1);
+        self->model = m_1;
+        Model0218fe1c_SetRes(m_1, GetObj021c194c(self), 0, 1);
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc92d, 0, 1);
-        LFLD(u16, self->model, 0xb4) = 0;
+        self->model->actor_id = 0;
         Model0218fe1c_SetLoop(self->model);
-        m_1 = (Model0218fe1c *)self->model;
+        m_1 = self->model;
         m_1->scale.x = 0xb33;
         m_1->scale.y = 0xb33;
         m_1->scale.z = 0xb33;
         self->state = 4;
     }
     case 4: {
-        self->unk_44 = 0;
-        self->unk_48 = 0;
-        self->unk_4c = 0xf000;
-        self->unk_50 = 0x1000;
-        if (!self->flags.b1) {
+        self->fadeFrame = 0;
+        self->fade = 0;
+        self->pulseFrame = 0xf000;
+        self->pulse = 0x1000;
+        if (!self->active) {
             return;
         }
-        self->flags.b0 = 1;
+        self->pulseUp = 1;
         d4.x = self->target.x - self->pos.x;
         d4.y = self->target.y - self->pos.y;
         d4.z = self->target.z - self->pos.z;
@@ -152,43 +130,43 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
             return;
         }
         flag = FALSE;
-        if (!self->flags.b1) {
-            self->unk_44 -= 0x1000;
+        if (!self->active) {
+            self->fadeFrame -= 0x1000;
         } else {
-            self->unk_44 += 0x1000;
+            self->fadeFrame += 0x1000;
         }
-        t = FX_Div(self->unk_44, 0xf000);
+        t = FX_Div(self->fadeFrame, 0xf000);
         if (t >= 0x1000) {
-            self->unk_44 = 0xf000;
+            self->fadeFrame = 0xf000;
             t = 0x1000;
         } else if (t <= 0) {
-            self->unk_44 = 0;
-            self->unk_48 = 0;
+            self->fadeFrame = 0;
+            self->fade = 0;
             self->state = 4;
             return;
-        } else if (self->flags.b1) {
+        } else if (self->active) {
             flag = TRUE;
         }
-        self->unk_48 = FX_SinCosTable_[((t << 14) >> 16) * 2];
+        self->fade = FX_SinCosTable_[((t << 14) >> 16) * 2];
         if (!flag) {
-            if (!self->flags.b0) {
-                self->unk_4c -= 0x1000;
+            if (!self->pulseUp) {
+                self->pulseFrame -= 0x1000;
             } else {
-                self->unk_4c += 0x1000;
+                self->pulseFrame += 0x1000;
             }
-            t = FX_Div(self->unk_4c, 0xf000);
+            t = FX_Div(self->pulseFrame, 0xf000);
             if (t >= 0x1000) {
-                if (self->unk_4c > 0x78000) {
-                    self->flags.b0 = 0;
+                if (self->pulseFrame > 0x78000) {
+                    self->pulseUp = 0;
                 }
                 t = 0x1000;
             } else if (t <= 0) {
-                if (self->unk_4c < -0x78000) {
-                    self->flags.b0 = 1;
+                if (self->pulseFrame < -0x78000) {
+                    self->pulseUp = 1;
                 }
                 t = 0;
             }
-            self->unk_50 = FX_SinCosTable_[((t << 14) >> 16) * 2];
+            self->pulse = FX_SinCosTable_[((t << 14) >> 16) * 2];
         }
         d.x = self->target.x - self->pos.x;
         d.y = self->target.y - self->pos.y;
@@ -223,12 +201,12 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
                 MTX_RotZ33_(&m_0, SIN021c194c(rz), COS021c194c(rz));
             }
         }
-        MI_Copy36B(&m_0, self->model + 0x84);
+        MI_Copy36B(&m_0, &self->model->rot);
         {
-            u8 *md = self->model;
-            LFLD(s32, md, 0x78) = self->pos.x;
-            LFLD(s32, md, 0x7c) = self->pos.y;
-            LFLD(s32, md, 0x80) = self->pos.z;
+            Model0218fe1c *md = self->model;
+            md->trans.x = self->pos.x;
+            md->trans.y = self->pos.y;
+            md->trans.z = self->pos.z;
         }
         Model0218fe1c_UpdateAnim(self->model, 0x1000);
         break;

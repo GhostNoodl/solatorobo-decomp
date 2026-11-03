@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
+#include "ov000/UiObj.h"
 #include "Main/Res/ResArc.h"
 
 typedef struct {
@@ -25,27 +26,22 @@ extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
-struct Obj02152e5c {
-    u8 unk_00[0x10];
-    Model *unk_10;
-};
-
-BOOL Obj02152e5c_LoadModel(Obj02152e5c *self) {
-    if (self->unk_10) {
+BOOL Obj02152e5c_LoadModel(UiObj *self) {
+    if (self->model) {
         return TRUE;
     }
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
+    if (self->flag6 ? TRUE : FALSE) {
+        MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
-        MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
+        MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = ResMgr_GetArcList(self->unk_10->name);
-        void *b = ResList_FindType2(a, self->unk_10->unk_04c);
-        TexObj_SetRes(self->unk_10, b);
+        ResList *a = ResMgr_GetArcList(self->model->name);
+        void *b = ResList_FindType2(a, self->model->unk_04c);
+        TexObj_SetRes(self->model, b);
     }
-    self->unk_10->flags |= 2;
-    TexObj_SelectImage(self->unk_10, 0, 7);
+    self->model->flags |= 2;
+    TexObj_SelectImage(self->model, 0, 7);
     return TRUE;
 }
 

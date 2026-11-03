@@ -4264,12 +4264,12 @@ void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_UpdateActive(Task021cbde0 *self) {
-    void *p = self->unk_44;
+    LoBase021ccb54_021ccbe0 *p = self->unk_44;
     u16 v;
     if (p == NULL) {
         return;
     }
-    LBIT(p, 0xc).b2 = 0;
+    p->flag2 = 0;
     if ((self->unk_44->busy == 0 ? TRUE : FALSE) == FALSE) {
         return;
     }

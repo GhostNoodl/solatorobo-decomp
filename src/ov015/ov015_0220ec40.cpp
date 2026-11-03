@@ -25,7 +25,7 @@ void Lo021ccb54_ClearLabels(void *p);
 void ListRow_Init(void *p);
 void func_ov000_021c5bac(void *p);
 void *Param_Get(u16 id);
-u8 *func_0206ee20(u16 id);
+Ov015ParamPrice *func_0206ee20(u16 id);
 void LoBase021ccb54_021ccbe0_AppendRow(void *a, void *b);
 void Obj021c55e8_SetLabel1(void *a, void *b);
 void Obj021c55e8_SetLabel2(void *a, void *b);
@@ -117,7 +117,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             void *name;
             u16 k;
             Lo021cca40 *e;
-            u8 *d;
+            Ov015ParamPrice *d;
             if (items[i].count == 0) {
                 break;
             }
@@ -132,7 +132,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             k = 0;
             d = func_0206ee20(items[i].id);
             if (d != NULL) {
-                k = FLD(u16, d, 2);
+                k = d->price;
             }
             n = items[i].count;
             e->unk_38 = name;

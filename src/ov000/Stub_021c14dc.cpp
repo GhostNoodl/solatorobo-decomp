@@ -1,12 +1,13 @@
-#include "ov000/VObj.h"
+#include "nnsys/g3d.h"
 
 extern "C" {
 
-void func_ov000_021c1478(void *self);
+void func_ov000_021c1478(NNSG3dRS *rs);
 
-void func_ov000_021c14dc(void *self) {
-    *(void (**)(void *))((u8 *)self + 0x1c) = func_ov000_021c1478;
-    *((u8 *)self + 0x90) = 2;
+// A render-object init callback (NNS_G3dRenderObjSetInitFunc): hooks func_ov000_021c1478 on the
+// NNS_G3D_SBC_MAT command.
+void func_ov000_021c14dc(NNSG3dRS *rs) {
+    NNS_G3dRSSetCallBack(rs, func_ov000_021c1478, NNS_G3D_SBC_MAT, NNS_G3D_SBC_CALLBACK_TIMING_B);
 }
 
 }

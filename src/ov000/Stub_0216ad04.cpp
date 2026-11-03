@@ -1,16 +1,16 @@
-#include "ov000/VObj.h"
+#include "ov000/Obj0216ad04.h"
 
 extern "C" {
 
-void func_ov000_0216ad04(void *self) {
-    *(s32 *)((u8 *)self + 0x0) = 0;
-    *(s32 *)((u8 *)self + 0x4) = 2;
-    *(s32 *)((u8 *)self + 0x8) = -1;
-    *(s32 *)((u8 *)self + 0xc) = 0;
-    *(s32 *)((u8 *)self + 0x10) = 0;
-    *(s16 *)((u8 *)self + 0x14) = 0;
-    *(s32 *)((u8 *)self + 0x18) = 0;
-    *(s32 *)((u8 *)self + 0x1c) = 0;
+void func_ov000_0216ad04(Obj0216ad04 *self) {
+    self->flags = 0;
+    self->state = 2;
+    self->kind = -1;
+    self->model = NULL;
+    self->value = 0;
+    self->part = 0;
+    self->frame = 0;
+    self->ratio = 0;
 }
 
 }

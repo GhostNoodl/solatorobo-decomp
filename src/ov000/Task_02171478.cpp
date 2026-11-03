@@ -3,6 +3,7 @@
 #include "ov000/MessageQueue.h"
 #include "ov000/LoTimer.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/Obj0216c954.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -31,8 +32,6 @@ BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_02170620(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
 void func_ov000_021b87d8(void *p, u16 a);
-void func_ov000_0216c954(void *p, u16 a, s32 b);
-void func_ov000_0216ca64(void *p, s32 a, s32 b);
 void func_ov000_021b8884(void *p, u16 a);
 void func_ov000_021bacb8(void *p, u16 a);
 void func_ov000_021bbc68(void *p, u8 a, u8 b, u8 c);
@@ -156,8 +155,16 @@ static inline BOOL Task_Stop(void *p) {
     return TRUE;
 }
 
+static inline BOOL Task_Stop50(Obj0216c954 *p) {
+    if (p == NULL) {
+        return FALSE;
+    }
+    p->stop = 1;
+    return TRUE;
+}
+
 static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
-    void *p;
+    Obj0216c954 *p;
     u16 bh;
     s32 bl;
     s32 cl;
@@ -169,7 +176,7 @@ static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
     bl = (u16)b;
     cl = (u16)c;
     ch = (u16)(c >> 16);
-    p = Heap_Alloc(0x3c);
+    p = (Obj0216c954 *)Heap_Alloc(sizeof(Obj0216c954));
     if (p != NULL) {
         func_ov000_0216c954(p, bh, bl);
     }
@@ -422,7 +429,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (a != 0) {
             return;
         }
-        if (Task_Stop(self->unk_11c->unk_50)) {
+        if (Task_Stop50(self->unk_11c->unk_50)) {
             return;
         }
         self->vfunc_08(a, kind, b, c);

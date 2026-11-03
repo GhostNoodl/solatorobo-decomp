@@ -90,17 +90,17 @@ void func_ov002_021eb964(Ov002StageFile *self) {
             p += sneSize + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d66, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x34, char *) = p;
+            self->unk_34 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d6e, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x38, char *) = p;
+            self->unk_38 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d75, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x3c, char *) = p;
+            self->unk_3c = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d7d, 8) == 0) {

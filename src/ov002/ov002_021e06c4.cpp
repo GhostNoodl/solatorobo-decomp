@@ -71,10 +71,10 @@ void *Ov002Vt_021eff74_DtorDelete(Obj021eff74 *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021eff74;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0xc, VObj *));
+    DELETE_VOBJ(self->unk_0c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x10, VObj *));
+    DELETE_VOBJ(self->unk_10);
     HEAP_POP(saved);
     Heap_Free(self);
     return self;
@@ -88,10 +88,10 @@ void *Ov002Vt_021eff74_Dtor(Obj021eff74 *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021eff74;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0xc, VObj *));
+    DELETE_VOBJ(self->unk_0c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x10, VObj *));
+    DELETE_VOBJ(self->unk_10);
     HEAP_POP(saved);
     return self;
 }
@@ -101,7 +101,7 @@ void *Ov002Vt_021efe6c_Dtor(Obj021efe6c *self) {
     *(VFunc **)self = data_ov002_021efe6c;
     Obj021efe6c_FreePieces(self);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 4, VObj *));
+    DELETE_VOBJ(self->field);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (((void *)self->cam) != NULL) {

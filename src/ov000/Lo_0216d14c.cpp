@@ -1,56 +1,42 @@
 #include "ov000/ModelPart.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/Obj0216c954.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
 BOOL PauseNode_IsDrawPaused(void *p, s32 a);
-void func_ov000_021c1e78(void *p);
 
-struct Obj0216d14c {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    Model *unk_0c;
-    void *unk_10;
-    u8 unk_14[0x14];
-    u16 unk_28;
-    u8 unk_2a[0x6];
-    s32 unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-};
-
-void func_ov000_0216d14c(Obj0216d14c *self) {
+void func_ov000_0216d14c(Obj0216c954 *self) {
     Model *m;
     s32 x;
     if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
         return;
     }
-    switch (self->unk_04) {
+    switch (self->state) {
     case 7:
     case 8:
-        x = LO_FX_MUL(self->unk_30, 0x80000) & ~0xfff;
-        if (self->unk_0c != NULL) {
-            MODEL_FLAGS(self->unk_0c)->unk_19 = 1;
-            MODEL_FLAGS(self->unk_0c)->unk_21 = 1;
-            MODEL_FLAGS(self->unk_0c)->alpha = 0x1e;
-            Model_SetPos(self->unk_0c, x, 0);
-            ((Model *)(void *)self->unk_0c)->unk_150 = -0x2000;
-            Model_PlayPart(self->unk_0c, 6);
-            Model_PlayPart(self->unk_0c, 8);
-            self->unk_0c->unk_150 = -0x2000;
-            m = self->unk_0c;
+        x = LO_FX_MUL(self->ratio, 0x80000) & ~0xfff;
+        if (self->model != NULL) {
+            MODEL_FLAGS(self->model)->unk_19 = 1;
+            MODEL_FLAGS(self->model)->unk_21 = 1;
+            MODEL_FLAGS(self->model)->alpha = 0x1e;
+            Model_SetPos(self->model, x, 0);
+            self->model->unk_150 = -0x2000;
+            Model_PlayPart(self->model, 6);
+            Model_PlayPart(self->model, 8);
+            self->model->unk_150 = -0x2000;
+            m = self->model;
             Model_PlayPart(m, 13);
-            Model_SetPos(self->unk_0c, x, self->unk_38 & ~0xfff);
-            Model_PlayPart(self->unk_0c, self->unk_28);
-            Model_SetPos(self->unk_0c, x, 0);
-            Model_PlayPart(self->unk_0c, 14);
+            Model_SetPos(self->model, x, self->bounce & ~0xfff);
+            Model_PlayPart(self->model, self->part);
+            Model_SetPos(self->model, x, 0);
+            Model_PlayPart(self->model, 14);
         }
         break;
     }
-    if (self->unk_10 != NULL) {
-        func_ov000_021c1e78(self->unk_10);
+    if (self->effect != NULL) {
+        func_ov000_021c1e78(self->effect);
     }
 }
 

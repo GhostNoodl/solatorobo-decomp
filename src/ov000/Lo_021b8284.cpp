@@ -36,8 +36,15 @@ static inline BOOL Fade4_021b8284(void) {
     return data_02097d78[0] == 4 ? TRUE : FALSE;
 }
 
+// ListBuffer021cb940::unk_34 (0x5c bytes, ctor func_ov000_021b87d8).
 struct Obj021b8284 {
-    u8 unk_00[0x4];
+    union {
+        u32 flags;
+        struct {
+            u32 stop : 1; // set by field message 10 (func_ov000_02171478)
+            u32 unk_00_1 : 31;
+        };
+    };
     char arcName[0x20]; // the part of func_02061f94's path before the separator
     char fileName[0x20]; // the part after it
 
@@ -124,7 +131,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         self->unk_44 = 0xb;
         break;
     case 11:
-        if (!LBIT(self, 0).b0) {
+        if (!self->stop) {
             break;
         }
         if (!FadeIdle021b8284()) {

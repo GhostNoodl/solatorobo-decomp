@@ -189,7 +189,7 @@ void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 0xc, VObj *));
+        DELETE_VOBJ(self->unk_0c);
         HEAP_POP(saved);
     }
     p = (UiObj *)Heap_Alloc(0x1e4);

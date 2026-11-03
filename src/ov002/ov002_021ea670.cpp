@@ -10,7 +10,7 @@ void *Ov002Vt_021f06bc_DtorDelete(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 t;
     *(VFunc **)self = data_ov002_021f06bc;
-    if (FIELD(self, 0x14, void *) != NULL) {
+    if (self->unk_14 != 0) {
         ResMgr_ReleaseArchive(self->unk_4c, self->unk_6c, 0);
     }
     for (p = self->snd.cur; p != NULL; p = self->snd.cur) {
@@ -31,7 +31,7 @@ void *Ov002Vt_021f06bc_Dtor(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 t;
     *(VFunc **)self = data_ov002_021f06bc;
-    if (FIELD(self, 0x14, void *) != NULL) {
+    if (self->unk_14 != 0) {
         ResMgr_ReleaseArchive(self->unk_4c, self->unk_6c, 0);
     }
     for (p = self->snd.cur; p != NULL; p = self->snd.cur) {

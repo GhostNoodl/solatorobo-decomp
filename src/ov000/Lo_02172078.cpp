@@ -17,13 +17,13 @@ void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-void func_ov000_02172078(MessageQueue *self) {
+void func_ov000_02172078(MessageQueue021cb980 *self) {
     BOOL r;
     if (!self->unk_04) {
         self->unk_04 = 1;
         self->vfunc_0c(2, 1, 0, 0);
     }
-    if (!LBIT(self, 0x114).b0) {
+    if (!self->flag0) {
         return;
     }
     r = TRUE;
@@ -37,7 +37,7 @@ void func_ov000_02172078(MessageQueue *self) {
         r = FALSE;
     }
     if (r) {
-        LBIT(self, 0x114).b0 = 0;
+        self->flag0 = 0;
     }
 }
 

@@ -8,12 +8,13 @@ void func_ov000_0216f814(MessageQueue *self) {
     func_ov000_0216f23c(&self->list, 1);
 }
 
-void func_ov000_0216f828(void *self) {
-    *(s32 *)((u8 *)self + 0x20) = 0x0;
-    *(s32 *)((u8 *)self + 0x24) = 0x0;
-    *(s32 *)((u8 *)self + 0x28) = 0x0;
-    *(s32 *)((u8 *)self + 0x2c) = 0x0;
-    *(s32 *)((u8 *)self + 0x30) = 0x0;
+// The body of the TimedBuffer021cb920 constructor (func_ov000_021814dc, ov002's func_ov002_021ccda0).
+void func_ov000_0216f828(TimedBuffer021cb920 *self) {
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_2c = 0;
+    self->unk_30 = NULL;
 }
 
 }

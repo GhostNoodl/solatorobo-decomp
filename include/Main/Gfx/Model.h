@@ -67,7 +67,7 @@ typedef struct Model {
     /* 0x154 */ u16 color;
     /* 0x156 */ u8 unk_156[2];
     /* 0x158 */ void *unk_158;
-    /* 0x15c */ u8 unk_15c[4];
+    /* 0x15c */ void *mtxFunc; // TexObjMtxFunc: builds the matrix of affine entries when set (TexObj_3.cpp)
 } Model; // size 0x160
 
 extern void TexObj_Init(Model *model, const char *name, int a);

@@ -3,6 +3,8 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
+#include "ov000/Obj0216c954.h"
+#include "ov000/Obj0216ad04.h"
 
 extern "C" {
 void func_ov000_021b9a84(void *p);
@@ -11,9 +13,7 @@ void func_ov000_021bbbdc(void *p);
 void func_0204ffdc(void *p);
 void func_ov000_021b8db4(void *p);
 void func_ov000_021b86a4(void *p);
-void func_ov000_0216d14c(void *p);
 void func_ov000_0216b880(void *p);
-void func_ov000_0216b1b4(void *p);
 
 void func_ov000_02171270(ListBuffer021cb940 *self) {
     switch (self->state) {

@@ -14,6 +14,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov003/ActEx.h"
 #include "ov000/Group.h"
+#include "ov000/TwlRequest.h"
 
 // The spawn point (vtable 021f8a60, 0x20c bytes: Factory_New4000, kinds 0x4009 and 0x4058).
 // Ov003ActVt_021f8a60_State0e spawns actor 0x4801 at pos and keeps its id.
@@ -59,7 +60,7 @@ SIZE_ASSERT(Ov003Spawner, 0x218);
 // (Twl0214b570_Init); Start binds the texture to the model.
 class Ov003ActExTex : public Ov003ActExRes {
 public:
-    void *tex; // 0x1c-byte loader object; freed by the dtor
+    Twl0214b570 *tex; // freed by the dtor
     u8 texFailed; // set when the loader reports state 2; Ov003ActVt_021f8768_StateIdle then opens msgWin
     Lo021cad50 *msgWin;
 };
@@ -2699,23 +2700,16 @@ extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 a,
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
-extern void *func_ov000_0214b598(void *p);
 extern void Heap_Free(void *p);
 extern const char *const data_ov003_021f4c64[2];
 extern char *func_0207011c(u16 id);
 extern char *Path_SkipDir(char *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *Heap_Alloc(u32 size);
-extern void *Twl0214b570_Init(void *p);
-extern void func_ov000_0214b5e8(void *p, const char *t);
 extern BOOL ResSet_UpdateLoad(ActorRes *res);
-extern s32 func_ov000_0214b6d0(void *p);
-extern BOOL func_ov000_0214b640(void *p);
-extern void func_ov000_0214b5bc(void *p);
 extern void ActorMarker_Draw(void *p);
 extern void *data_ov000_021ccd64;
 extern void *NNS_G3dGetTex(void *p);
-extern void *func_ov000_0214b670(void *p);
 extern void *func_020394cc(void *a, void *b);
 extern void *NNS_G3dGetMdlSet(void *p);
 extern BOOL NNS_G3dBindMdlSet(void *a, void *b);
@@ -2792,7 +2786,7 @@ void Ov003ActExWalk_StateMove(Ov003ActExWalk *self) {
 
 Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
     void *old;
-    void *p;
+    Twl0214b570 *p;
     *(void **)self = data_ov003_021f8768;
     old = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -2812,7 +2806,7 @@ Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
 
 Ov003ActExTex *Ov003ActVt_021f8768_DtorDelete(Ov003ActExTex *self) {
     void *old;
-    void *p;
+    Twl0214b570 *p;
     *(void **)self = data_ov003_021f8768;
     old = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -2857,7 +2851,7 @@ void Ov003ActVt_021f8768_Init(Ov003ActExTex *self) {
                     t = data_ov003_021f4c64[0];
                 }
                 if (t != NULL) {
-                    void *p = Heap_Alloc(0x1c);
+                    Twl0214b570 *p = (Twl0214b570 *)Heap_Alloc(sizeof(Twl0214b570));
                     if (p != NULL) {
                         p = Twl0214b570_Init(p);
                     }

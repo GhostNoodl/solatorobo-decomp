@@ -117,7 +117,7 @@ void Task021efc24_PreUpdate(Task021efc24 *self) {
         {
             void *saved;
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(self, 0x5c, VObj *));
+            DELETE_VOBJ(self->unk_5c);
             HEAP_POP(saved);
         }
         self->unk_50->flags &= ~4;

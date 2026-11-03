@@ -2,16 +2,16 @@
 
 extern "C" {
 
-void Ov002RowList_Setup(void *self) {
+void Ov002RowList_Setup(Ov002RowList *self) {
     LoBase021ccb54_021ccbe0_Setup(self);
-    FIELD(self, 0x28, s32) = FIELD(self, 0x20, s32) * 15 + 0xc;
-    FIELD(self, 0x6c, void *) = data_ov002_021ef038;
-    FIELD(self, 0x70, s32) = 5;
-    FIELD(self, 0xb4, s32) -= 0xc000;
-    FIELD(self, 0xb0, s32) = FIELD(self, 0x24, s32) - (FIELD(self, 0xb4, s32) >> 12) + 0xc;
-    FIELD(FIELD(self, 0x90, void *), 0x10, s32) = FIELD(self, 0xb0, s32) << 12;
-    FIELD(self, 0xb8, s32) = 0x6000;
-    FIELD(self, 0xc0, s32) = (FIELD(self, 0x28, s32) - 8) << 12;
+    self->height = self->rows * 15 + 0xc;
+    self->shape = data_ov002_021ef038;
+    self->shapeCount = 5;
+    self->unk_b4 -= 0xc000;
+    self->unk_b0 = self->width - (self->unk_b4 >> 12) + 0xc;
+    self->unk_90->width = self->unk_b0 << 12;
+    self->unk_b8 = 0x6000;
+    self->unk_c0 = (self->height - 8) << 12;
     func_ov000_021c4ab8(self);
 }
 

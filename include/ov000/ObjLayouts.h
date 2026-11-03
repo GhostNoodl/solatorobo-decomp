@@ -479,10 +479,10 @@ SIZE_ASSERT(Lo021cacd8, 0xa0);
 
 // Vtable data_ov000_021cad50; methods in G3_0215d4b4.cpp, Lo_0215d30c.cpp, Lo_0215d3bc.cpp.
 struct Lo021cad50 : public UiObj {
-    s32 unk_84;
-    u16 unk_88;
+    u32 unk_84;        // the flags of Obj0215c1bc_SetText / func_ov000_0215c744
+    u16 unk_88;        // item id (func_ov000_0215c744)
     void *unk_8c;      // Heap_FreeHi'd by slot 0x2c
-    void *unk_90;      // Heap_FreeHi'd by slot 0x2c
+    char *unk_90;      // the text split into lines; Heap_FreeHi'd by slot 0x2c
     s32 unk_94;
     VObj *unk_98[12];  // freed by slot 0x2c; slot 0x70 sets bit 2 of each one's word 4
 };

@@ -26,7 +26,6 @@ extern "C" {
 extern const u16 data_ov011_0220751c[];
 u32 Rand_UpTo(u32 max);
 void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
-void *func_ov000_0214b670(void *p);
 
 #pragma force_active on
 void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {

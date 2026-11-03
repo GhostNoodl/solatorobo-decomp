@@ -64,13 +64,13 @@ void LoTimer_Draw(LoTimer *self) {
         Model_SetPos(self->unk_14, (x + 0xf7) << 12, (y + 0xf) << 12);
         Model_PlayPart(self->unk_14, 0x1f);
         if (self->b11 == 1) {
-            LFLD(void *, self->unk_14, 0x15c) = (void *)func_ov000_0216d9dc;
+            self->unk_14->mtxFunc = (void *)func_ov000_0216d9dc;
             if (self->b12 == 1) {
                 self->unk_14->color = 0x7792;
             }
             Model_PlayPartF(self->unk_14, 0x1e, 1);
             self->unk_14->color = 0x7fff;
-            LFLD(s32, self->unk_14, 0x15c) = 0;
+            self->unk_14->mtxFunc = NULL;
         } else {
             Model_PlayPart(self->unk_14, 0x1e);
         }

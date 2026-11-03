@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/SceneRes.h"
+#include "Main/Gfx/TexObj.h"
 
 extern "C" {
 
@@ -39,10 +40,12 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-LoOam *func_ov000_021540b0(void *self, u16 *msg, LoOam *g, u16 *count) {
+// The OAM callback of a UiList's frame model (UiList_Setup registers it with the list as the
+// argument of entries 2 and 6): entry 2 places the bottom edge by the list's height.
+LoOam *func_ov000_021540b0(TexObj *self, TexObjEntry *msg, LoOam *g, u16 *count) {
     u16 n = *count;
-    if (msg[0] == 2) {
-        s32 v = LFLD(s32, LFLD(void *, msg, 8), 0x28) - 8;
+    if (msg->index == 2) {
+        s32 v = ((UiList *)msg->unk_08)->height - 8;
         v -= 6;
         g[0].x = 0;
         g[0].y = (u16)v & 0x1ff;

@@ -1,10 +1,11 @@
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/MessageQueue.h"
 
 extern "C" {
 extern u8 data_ov000_021cb8e0[];
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 void LangData_LocalizePath(char *buf, const void *s);
 void *ResMgr_Load(const char *name, s32 a, s32 b);
 BOOL ResMgr_IsLoaded(const char *name, s32 a);
@@ -23,7 +24,7 @@ void func_ov000_021645b8(Lo021cb6b0 *self) {
     case 1: {
         char buf[0x20];
         LangData_LocalizePath(buf, data_ov000_021cb8e0);
-        if (LBIT(data_ov000_021ccd30, 0x114).b0) {
+        if (data_ov000_021ccd30->flag0) {
             return;
         }
         if (!ResMgr_IsLoaded(buf, 7)) {

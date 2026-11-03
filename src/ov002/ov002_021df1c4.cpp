@@ -5,13 +5,13 @@ extern "C" {
 void Obj021eff30_Release(Obj021eff30 *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0xc, VObj *));
+    DELETE_VOBJ(self->unk_0c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x10, VObj *));
+    DELETE_VOBJ(self->unk_10);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x14, VObj *));
+    DELETE_VOBJ(self->unk_14);
     HEAP_POP(saved);
 }
 

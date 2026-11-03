@@ -4,7 +4,7 @@ extern "C" {
 
 BOOL OS_IsRunOnTwl(void);
 
-void func_ov000_0214b5e8(Twl0214b570 *self, s32 arg) {
+void func_ov000_0214b5e8(Twl0214b570 *self, const char *arg) {
     if (OS_IsRunOnTwl()) {
         if (self->state != 0) {
             return;

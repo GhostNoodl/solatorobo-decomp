@@ -17,8 +17,8 @@ void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-void func_ov000_02172450(MessageQueue *self, u32 mode) {
-    if (LBIT(self, 0x114).b1 && mode >= 1) {
+void func_ov000_02172450(MessageQueue021cb980 *self, u32 mode) {
+    if (self->flag1 && mode >= 1) {
         return;
     }
     if (mode == 1) {

@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/LoTimer.h"
+#include "Main/Gfx/TexObj.h"
 
 extern "C" {
 
@@ -8,16 +9,18 @@ void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
 void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
-void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg) {
-    u16 type = msg[0];
-    void *p = LFLD(void *, msg, 8);
+// The model matrix callback (Model::unk_15c, called by the TexObj draw for affine entries) that
+// LoTimer_Draw sets around part 0x1e: rotates entry 0x1e by the u16 angle at 0x44 of its argument.
+void func_ov000_0216d9dc(MtxFx43 *mtx, TexObj *obj, TexObjEntry *e) {
+    u16 type = e->index;
+    void *p = (void *)e->unk_08;
     u16 ang;
     if (type != 0x1e) {
         return;
     }
     ang = LFLD(u16, p, 0x44);
-    MTX_Identity43_((MtxFx43 *)self);
-    MTX_RotY43_((MtxFx43 *)self, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
+    MTX_Identity43_(mtx);
+    MTX_RotY43_(mtx, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
 }
 
 void LoTimer_Setup(LoTimer *self, s32 mode, s32 limit, s32 c) {

@@ -11,7 +11,7 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-BOOL func_ov000_021521ec(void *self, void *msg);
+BOOL func_ov000_021521ec(UiList *self, UiListItem *item);
 
 static inline void Lo_OpenSub02155770(UiList *self, u16 a, s32 b, UiItemFn c) {
     void *res = data_02149ef8;
@@ -130,7 +130,7 @@ void func_ov000_02155770(UiList *self) {
     if (!(trig & 0x400) || self->unk_8c == NULL) {
         return;
     }
-    Lo_OpenSub02155770(self, 0x8f, 0x18, (UiItemFn)func_ov000_021521ec);
+    Lo_OpenSub02155770(self, 0x8f, 0x18, func_ov000_021521ec);
     self->unk_90 = self->unk_8c;
 }
 

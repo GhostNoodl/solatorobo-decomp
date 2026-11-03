@@ -11,7 +11,7 @@ static inline BOOL LoIsState5(void *o) {
 
 void func_ov000_02150b78(Lo021ca9c4 *self, void *arg) {
     BOOL ok = TRUE;
-    void *q;
+    Lo021cb5a8 *q;
     if ((void *)self->unk_50 && !LoIsState5(self->unk_50)) {
         ok = FALSE;
     }
@@ -27,7 +27,7 @@ void func_ov000_02150b78(Lo021ca9c4 *self, void *arg) {
         return;
     }
     if (q) {
-        LBIT(q, 0xc).b1 = 1;
+        q->hidden = 1;
     }
     if (self->unk_50) {
         self->unk_50->hidden = 1;

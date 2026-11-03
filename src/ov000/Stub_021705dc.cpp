@@ -1,10 +1,10 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/Obj0216c954.h"
 
 static inline BOOL NotNull54_Inline(ListBuffer021cb940 *self) { return self->unk_54 != NULL; }
 
 extern "C" {
 
-void func_ov000_0216ca64(void *self, s32 a, s32 b);
 
 BOOL func_ov000_02170568(ListBuffer021cb940 *self) {
     if (self->state == 7 || self->unk_3c != NULL ||

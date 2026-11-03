@@ -1,9 +1,5 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    u8 unk_00[0x6];
-    u16 unk_06;
-} Msg021521ec;
+#include "ov000/UiObj.h"
 
 typedef struct {
     u8 unk_00[0x7c];
@@ -56,16 +52,18 @@ VObj *Menu021ca94c_Dtor(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_021521ec(void *self, Msg021521ec *msg) {
-    if (msg == NULL) {
+// A UiItemFn (decide callback of the list func_ov000_02155770 opens): item id 0 sets
+// data_02fe1534.unk_7c, id 1 clears it, and no item (cancel) only plays the sound.
+BOOL func_ov000_021521ec(UiList *self, UiListItem *item) {
+    if (item == NULL) {
         func_0206281c();
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return FALSE;
     }
-    if (msg->unk_06 == 0) {
+    if (item->id == 0) {
         data_02fe1534.unk_7c = 1;
         SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
-    } else if (msg->unk_06 == 1) {
+    } else if (item->id == 1) {
         data_02fe1534.unk_7c = 0;
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }

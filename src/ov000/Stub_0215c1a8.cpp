@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/std.h"
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
 
@@ -48,9 +49,10 @@ static inline BOOL Obj0215c720_TestBit3(Obj0215c720 *self) {
 
 extern "C" {
 
-void func_ov000_0215c1a8(void *self, s32 *msg) {
-    if (msg[0] == 0x10) {
-        *(s32 *)self = msg[1];
+// The Text_ScanTags callback of Obj0215c1bc_SetText / func_ov000_0215c744: tag 0x10 sets the font.
+void func_ov000_0215c1a8(s32 *font, s32 *tag) {
+    if (tag[0] == 0x10) {
+        *font = tag[1];
     }
 }
 
@@ -61,38 +63,20 @@ void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
 void Text_ScanTags(char *s, s32 a, s32 *out, void *cb);
 
-static inline BOOL Bit3_0215c1bc(VObj *self) {
-    return LBIT(self, 0xc).b3 ? TRUE : FALSE;
+static inline BOOL Bit3_0215c1bc(UiObj *self) {
+    return self->flag3 ? TRUE : FALSE;
 }
 
-static inline BOOL Bit6_0215c1bc(VObj *self) {
-    return LBIT(self, 0xc).b6 ? TRUE : FALSE;
+static inline BOOL Bit6_0215c1bc(UiObj *self) {
+    return self->flag6 ? TRUE : FALSE;
 }
 
-struct Obj0215c1bc : public VObj {
-    u8 unk_04[0x8];
-    u32 unk_0c;
-    u8 unk_10[0xc];
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    u8 unk_2c[0x1c];
-    u16 unk_48;
-    u8 unk_4a[0x1a];
-    s16 unk_64;
-    s16 unk_66;
-    s16 unk_68;
-    u8 unk_6a[0x1a];
-    u32 unk_84;
-    u16 unk_88;
-    u8 unk_8a[0x6];
-    char *unk_90;
-    s32 unk_94;
-    Text0215c1bc *unk_98;
-};
+// Lo021cad50::unk_98 holds one TextWin (Text0215c1bc) per line.
+static inline Text0215c1bc **Lo021cad50_Lines(Lo021cad50 *w) {
+    return (Text0215c1bc **)w->unk_98;
+}
 
-void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
+void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, char *str) {
     char *lines[13];
     s32 font;
     s32 i;
@@ -111,27 +95,27 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
     if (flags & 0x8000) {
         switch (flags & 0x30) {
         case 0x10:
-            self->unk_1c = 4;
-            self->unk_0c |= 0x20000;
+            self->font = 4;
+            self->flags |= 0x20000;
             break;
         case 0x20:
-            self->unk_1c = 8;
+            self->font = 8;
             break;
         }
         switch (flags & 3) {
         case 1:
-            self->unk_48 = 0;
+            self->color = 0;
             break;
         case 2:
-            self->unk_48 = 0x2803;
+            self->color = 0x2803;
             break;
         }
         switch (flags & 0xc) {
         case 4:
-            self->unk_0c &= ~0x20000;
+            self->flags &= ~0x20000;
             break;
         case 8:
-            self->unk_0c |= 0x20000;
+            self->flags |= 0x20000;
             break;
         }
     }
@@ -158,12 +142,12 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
         n = 2;
     }
     if (Bit3_0215c1bc(self)) {
-        self->unk_24 = 0x100;
+        self->width = 0x100;
     } else {
-        self->unk_24 = 0xd3;
+        self->width = 0xd3;
     }
-    self->unk_20 = n;
-    self->unk_28 = self->vfunc_44();
+    self->rows = n;
+    self->height = self->vfunc_44();
     font = 0;
     Text_ScanTags(str, 1, &font, (void *)func_ov000_0215c1a8);
     f = font;
@@ -172,7 +156,7 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
         tt->vtbl = data_0208ba70;
         TextWin_Init(tt);
     }
-    tt->unk_28 = self->unk_1c;
+    tt->unk_28 = self->font;
     tt->unk_2c = f;
     ((TextFlags0215c1bc *)&tt->flags)->b6 = 1;
     ((TextFlags0215c1bc *)&tt->flags)->b24 = 1;
@@ -181,7 +165,7 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
     if (Bit6_0215c1bc(self)) {
         ((TextFlags0215c1bc *)&tt->flags)->b31 = true;
     }
-    self->unk_98 = tt;
+    Lo021cad50_Lines(self)[0] = tt;
     tt->str = str;
     tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
     data_02097ce0->unk_004 = tt->unk_28;
@@ -194,7 +178,7 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
                 tt->vtbl = data_0208ba70;
                 TextWin_Init(tt);
             }
-            tt->unk_28 = self->unk_1c;
+            tt->unk_28 = self->font;
             tt->unk_2c = f;
             ((TextFlags0215c1bc *)&tt->flags)->b6 = 1;
             ((TextFlags0215c1bc *)&tt->flags)->b24 = 1;
@@ -203,51 +187,51 @@ void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
             if (Bit6_0215c1bc(self)) {
                 ((TextFlags0215c1bc *)&tt->flags)->b31 = true;
             }
-            ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
+            Lo021cad50_Lines(self)[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
             data_02097ce0->unk_004 = tt->unk_28;
         }
     }
-    w = self->unk_24 - self->vfunc_30() * 2;
+    w = self->width - self->vfunc_30() * 2;
     for (i = 0; i < 12; i++) {
-        t = ((Text0215c1bc **)((u8 *)self + 0x98))[i];
+        t = Lo021cad50_Lines(self)[i];
         if (t != NULL && t->unk_44 > w) {
             w = t->unk_44;
         }
     }
-    self->unk_24 = w + self->vfunc_30() * 2;
-    if (self->unk_24 > 0x100) {
-        self->unk_24 = 0x100;
+    self->width = w + self->vfunc_30() * 2;
+    if (self->width > 0x100) {
+        self->width = 0x100;
     }
-    self->unk_64 = (0x100 - self->unk_24) >> 1;
-    self->unk_66 = (0xc0 - self->unk_28) >> 1;
-    x = (self->unk_24 >> 1) - (self->unk_98->unk_44 >> 1);
+    self->posX = (0x100 - self->width) >> 1;
+    self->posY = (0xc0 - self->height) >> 1;
+    x = (self->width >> 1) - (Lo021cad50_Lines(self)[0]->unk_44 >> 1);
     if (lines[1] != NULL) {
         y = self->vfunc_34();
     } else {
-        y = (self->unk_28 >> 1) - (self->vfunc_40() >> 1);
+        y = (self->height >> 1) - (self->vfunc_40() >> 1);
     }
-    ((VObj *)self->unk_98)->vfunc_20(x, y);
-    if (!(self->unk_0c & 0x10000)) {
+    self->unk_98[0]->vfunc_20(x, y);
+    if (!(self->flags & 0x10000)) {
         s32 by;
         s32 bx;
-        bx = self->unk_64 + self->unk_24 - self->vfunc_30();
-        by = self->unk_66 + self->unk_28 - self->vfunc_38();
+        bx = self->posX + self->width - self->vfunc_30();
+        by = self->posY + self->height - self->vfunc_38();
         if (Bit3_0215c1bc(self)) {
             by += 4;
         }
         if (self->unk_94 == 1) {
             by -= self->vfunc_40() >> 2;
         }
-        ((VObj *)self->unk_98)->vfunc_1c(bx, by, self->unk_68);
+        self->unk_98[0]->vfunc_1c(bx, by, self->posZ);
     }
     for (i = 1; i < 12; i++) {
-        if (((VObj **)((u8 *)self + 0x98))[i] != NULL) {
-            x = (self->unk_24 >> 1) - (LFLD(s32, ((VObj **)((u8 *)self + 0x98))[i], 0x44) >> 1);
+        if (self->unk_98[i] != NULL) {
+            x = (self->width >> 1) - (Lo021cad50_Lines(self)[i]->unk_44 >> 1);
             y = self->vfunc_34();
             y += i * self->vfunc_40();
-            ((VObj **)((u8 *)self + 0x98))[i]->vfunc_20(x, y);
+            self->unk_98[i]->vfunc_20(x, y);
         }
     }
 }
@@ -272,28 +256,7 @@ char *func_ov000_0215cfd0(void *self);
 
 static inline u16 ItemKind_0215c744(u16 v) { return v >> 12; }
 
-struct Obj0215c744 : public VObj {
-    u8 unk_04[0x8];
-    u32 unk_0c;
-    u8 unk_10[0xc];
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    u8 unk_2c[0x38];
-    s16 unk_64;
-    s16 unk_66;
-    s16 unk_68;
-    u8 unk_6a[0x1a];
-    u32 unk_84;
-    u16 unk_88;
-    u8 unk_8a[0x6];
-    char *unk_90;
-    s32 unk_94;
-    Text0215c1bc *unk_98;
-};
-
-void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
+void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
     char *lines[13];
     BOOL star;
     s32 i;
@@ -374,19 +337,19 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         n = 2;
     }
     if (Bit3_0215c1bc(self)) {
-        self->unk_24 = 0x100;
+        self->width = 0x100;
     } else {
-        self->unk_24 = 0xd3;
+        self->width = 0xd3;
     }
-    self->unk_20 = n;
-    self->unk_28 = self->vfunc_44();
+    self->rows = n;
+    self->height = self->vfunc_44();
     if (lines[0] != NULL) {
         tt = (Text0215c1bc *)Heap_Alloc(0xb8);
         if (tt != NULL) {
             tt->vtbl = data_0208ba70;
             TextWin_Init(tt);
         }
-        tt->unk_28 = self->unk_1c;
+        tt->unk_28 = self->font;
         tt->unk_2c = 0;
         ((TextFlags0215c1bc *)&tt->flags)->b6 = 1;
         ((TextFlags0215c1bc *)&tt->flags)->b24 = 1;
@@ -395,7 +358,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         if (Bit6_0215c1bc(self)) {
             ((TextFlags0215c1bc *)&tt->flags)->b31 = true;
         }
-        self->unk_98 = tt;
+        Lo021cad50_Lines(self)[0] = tt;
         tt->str = lines[0];
         tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
         data_02097ce0->unk_004 = tt->unk_28;
@@ -408,7 +371,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
                 tt->vtbl = data_0208ba70;
                 TextWin_Init(tt);
             }
-            tt->unk_28 = self->unk_1c;
+            tt->unk_28 = self->font;
             tt->unk_2c = 0;
             ((TextFlags0215c1bc *)&tt->flags)->b6 = 1;
             ((TextFlags0215c1bc *)&tt->flags)->b24 = 1;
@@ -417,31 +380,31 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
             if (Bit6_0215c1bc(self)) {
                 ((TextFlags0215c1bc *)&tt->flags)->b31 = true;
             }
-            ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
+            Lo021cad50_Lines(self)[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
             data_02097ce0->unk_004 = tt->unk_28;
         }
     }
-    w = self->unk_24 - self->vfunc_30() * 2;
+    w = self->width - self->vfunc_30() * 2;
     for (i = 0; i < 12; i++) {
-        t = ((Text0215c1bc **)((u8 *)self + 0x98))[i];
+        t = Lo021cad50_Lines(self)[i];
         if (t != NULL && t->unk_44 > w) {
             w = t->unk_44;
         }
     }
-    self->unk_24 = w + self->vfunc_30() * 2;
-    if (self->unk_24 > 0x100) {
-        self->unk_24 = 0x100;
+    self->width = w + self->vfunc_30() * 2;
+    if (self->width > 0x100) {
+        self->width = 0x100;
     }
-    self->unk_64 = (0x100 - self->unk_24) >> 1;
-    self->unk_66 = (0xc0 - self->unk_28) >> 1;
-    if (self->unk_98 != NULL) {
-        x = self->unk_98->unk_44;
+    self->posX = (0x100 - self->width) >> 1;
+    self->posY = (0xc0 - self->height) >> 1;
+    if (self->unk_98[0] != NULL) {
+        x = Lo021cad50_Lines(self)[0]->unk_44;
         if (center) {
-            x = (self->unk_24 >> 1) - (x >> 1);
+            x = (self->width >> 1) - (x >> 1);
         } else {
-            w = self->unk_24 - self->vfunc_30() * 2;
+            w = self->width - self->vfunc_30() * 2;
             x = self->vfunc_30() + (w >> 1) - x - 8;
             if (x < self->vfunc_30()) {
                 x = self->vfunc_30();
@@ -450,32 +413,32 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         if (lines[1] != NULL) {
             y = self->vfunc_34();
         } else {
-            y = (self->unk_28 >> 1) - (self->vfunc_40() >> 1);
+            y = (self->height >> 1) - (self->vfunc_40() >> 1);
         }
-        ((VObj *)self->unk_98)->vfunc_20(x, y);
+        self->unk_98[0]->vfunc_20(x, y);
     }
-    if (!(self->unk_0c & 0x10000)) {
+    if (!(self->flags & 0x10000)) {
         s32 by;
         s32 bx;
-        bx = self->unk_64 + self->unk_24 - self->vfunc_30();
-        by = self->unk_66 + self->unk_28 - self->vfunc_38();
+        bx = self->posX + self->width - self->vfunc_30();
+        by = self->posY + self->height - self->vfunc_38();
         if (Bit3_0215c1bc(self)) {
             by += 4;
         }
         if (self->unk_94 == 1) {
             by -= self->vfunc_40() >> 2;
         }
-        ((VObj *)self->unk_98)->vfunc_1c(bx, by, self->unk_68);
+        self->unk_98[0]->vfunc_1c(bx, by, self->posZ);
     }
     for (i = 1; i < 12; i++) {
-        if (((VObj **)((u8 *)self + 0x98))[i] != NULL) {
-            x = LFLD(s32, ((VObj **)((u8 *)self + 0x98))[i], 0x44);
+        if (self->unk_98[i] != NULL) {
+            x = Lo021cad50_Lines(self)[i]->unk_44;
             if (center) {
-                x = (self->unk_24 >> 1) - (x >> 1);
+                x = (self->width >> 1) - (x >> 1);
             } else {
                 s32 lim;
                 s32 r;
-                y = self->unk_24;
+                y = self->width;
                 lim = y - self->vfunc_30() - 8;
                 r = x + (y >> 1);
                 x = y >> 1;
@@ -485,7 +448,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
             }
             y = self->vfunc_34();
             y += i * self->vfunc_40();
-            ((VObj **)((u8 *)self + 0x98))[i]->vfunc_20(x, y);
+            self->unk_98[i]->vfunc_20(x, y);
         }
     }
     if (self->unk_88 == 0) {

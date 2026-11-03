@@ -17,11 +17,11 @@ void LoBase021cafc0_021cb0b8_PostUpdate(LoBase021cafc0_021cb0b8 *self) {
     self->openTime = self->openLen;
     self->openRatio = 0x1000;
     self->vfunc_c4();
-    o = (UiPanel *)((u8 *)self->panel);
+    o = self->panel;
     if (o == NULL) {
         return;
     }
-    if (LBIT(o, 0).b3 != 1) {
+    if (o->bits.b3 != 1) {
         return;
     }
     n = ++o->unk_20;

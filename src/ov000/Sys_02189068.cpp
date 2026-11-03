@@ -1,9 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 
 extern "C" {
 extern VObj *data_02fe152c;
 extern VObj *data_02fe1530;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 BOOL func_0204c100(void);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
@@ -15,18 +16,18 @@ static inline BOOL HasMgr(void) {
     return data_02fe152c != NULL ? TRUE : FALSE;
 }
 
-static inline BOOL IsReady(u8 *c) {
+static inline BOOL IsReady(MessageQueue021cb980 *c) {
     BOOL ok;
-    if (LBIT(c, 0x114).b0) {
+    if (c->flag0) {
         ok = FALSE;
-    } else if (LFLD(VObj *, c, 0x118) == NULL || LFLD(VObj *, c, 0x11c) == NULL) {
+    } else if (c->unk_118 == NULL || c->unk_11c == NULL) {
         ok = TRUE;
     } else {
         ok = TRUE;
-        if (!LFLD(VObj *, c, 0x118)->vfunc_08()) {
+        if (!c->unk_118->vfunc_08()) {
             ok = FALSE;
         }
-        if (!LFLD(VObj *, c, 0x11c)->vfunc_08()) {
+        if (!c->unk_11c->vfunc_08()) {
             ok = FALSE;
         }
     }
