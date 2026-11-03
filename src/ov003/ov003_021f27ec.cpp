@@ -162,7 +162,6 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
     u16 rx;
     u16 ry;
     u16 ang;
-    s32 r;
     u8 cr, cg, cb;
     Ov003MCol col;
 

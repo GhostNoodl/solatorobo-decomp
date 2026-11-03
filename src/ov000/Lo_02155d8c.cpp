@@ -7,7 +7,6 @@ extern "C" {
 
 void UiList_UpdateMarkBounce(UiList *self) {
     s32 n = ++self->unk_cc;
-    s32 v;
     if (n < 0x14) {
         self->unk_d0 += LO_FX_MUL(0x6000 - self->unk_d0, 0x19a);
     } else if (n < 0x32) {

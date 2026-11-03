@@ -78,22 +78,23 @@ BOOL UiObj_Update(UiObj *self) {
         self->openRatio = 0x1000;
         {
             u32 f = self->fade;
-            if (f == 0) {
-            } else if (f == 1) {
-                self->fadeTime += 0x1000;
-                self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
-                if (self->fadeRatio >= 0x1000) {
-                    self->fadeTime = self->fadeLen;
-                    self->fadeRatio = 0x1000;
-                    self->fade = 2;
-                }
-            } else if (f == 3) {
-                self->fadeTime -= 0x1000;
-                self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
-                if (self->fadeRatio <= 0) {
-                    self->fadeTime = 0;
-                    self->fadeRatio = 0;
-                    self->fade = 0;
+            if (f != 0) {
+                if (f == 1) {
+                    self->fadeTime += 0x1000;
+                    self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
+                    if (self->fadeRatio >= 0x1000) {
+                        self->fadeTime = self->fadeLen;
+                        self->fadeRatio = 0x1000;
+                        self->fade = 2;
+                    }
+                } else if (f == 3) {
+                    self->fadeTime -= 0x1000;
+                    self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
+                    if (self->fadeRatio <= 0) {
+                        self->fadeTime = 0;
+                        self->fadeRatio = 0;
+                        self->fade = 0;
+                    }
                 }
             }
         }

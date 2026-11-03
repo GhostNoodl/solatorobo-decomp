@@ -10,6 +10,9 @@ void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 
 // The mixed (u8 *) casts below are no-ops, but they change which
 // addresses MWCC shares between the calls; this mix matches.
+// Kept (round auA honesty audit): plain, typed-struct and slot-pointer forms all differ.
+// Kept rather than demoted: a cast macro used at some call sites
+// (and not at others) plausibly gives the same mix in the original.
 static inline void StopSlot(u8 *self, u8 i) {
     if (i > 2) {
         return;

@@ -1,0 +1,100 @@
+# Triaged hits of tools/honesty_scan.py (round auA, docs/MATCHING.md "Round auA (honesty audit)").
+# Tab-separated: category ("*" for any)	file suffix, or a directory prefix ending in "/"	text fragment, function
+# name, or "*"	verdict. "legit" lines are source shapes the original plausibly had; "kept" lines are tricks with
+# no honest replacement that cannot be demoted (each has a "Kept (round auA ...)" comment at the site); "hygiene"
+# lines are codegen-neutral typing or prototype gaps left for a later cleanup.
+
+# --- SDK and runtime libraries (NitroSDK, NNS, MSL, runtime, mobiclip)
+volatile	libs/	*	legit: hardware registers, interrupt/PXI-shared state, SDK vu* types
+asm	libs/	*	legit: hand-written SDK/runtime/mobiclip asm functions and data tables in .text
+emptyloop	libs/	*	legit: spin-waits on hardware registers and shared flags
+empty	libs/	*	legit: SDK branches whose body is debug output compiled out in the release build
+noise	libs/	*	legit: SDK source idioms (goto labels, register variables, (void)x, dummy register reads, +0 offsets, MSL temp_r)
+oob	libs/	*	legit: SDK array/pointer idioms
+unusedparam	libs/	*	legit: SDK callback and API signatures
+unusedlocal	libs/	*	legit: SDK locals that only feed asserts compiled out in the release build
+deadstore	libs/	*	legit: SDK dummy register reads and assert-only values
+ptrbit	libs/	*	legit: SDK alignment checks on buffer addresses
+pragma	libs/	*	legit: SDK/runtime pragmas (warn_padding, exception_terminate)
+paramlocal	libs/	*	legit: SDK functions that reuse a real parameter
+arity	libs/	*	hygiene: caller-side prototypes in SDK files
+comment	libs/msl/ansi_fp.c	__two_exp	kept: __two_exp's exp / 2 form (mid-file in a TU with .data and pooled strings)
+
+# --- headers
+volatile	include/	*	legit: hardware registers, SDK vu* types, state written from interrupts or other threads
+noise	include/	*	legit: SDK inline idioms (+0 offsets, (u32)(u16) packing)
+emptyloop	include/	*	legit: SDK spin-waits on hardware registers
+unusedparam	include/	*	legit: SDK inline stubs and callback signatures
+
+# --- src: volatile
+volatile	src/	#define	legit: register-access macros on constant hardware addresses
+volatile	src/	G2x_SetBlend	legit: SDK prototype taking a register address
+volatile	src/	GXx_SetMasterBrightness_	legit: SDK prototype taking a register address
+volatile	src/Main/Sys/Sys.cpp	data_02fe0000	legit: OS_IRQ_CHECK_BUF, shared with the interrupt handler
+volatile	src/ov004/	reg	legit: DS protect hardware register access
+volatile	src/Main/Gfx/GfxSys.cpp	GfxSys_EndFrame	kept: volatile read orders state before nextState (GfxSys.cpp has .bss, mid-file)
+volatile	src/ov007/ov007_021ccda0.cpp	Ov007_HasMsg	kept: volatile read of gSceneCmd (file has .data, mid-file)
+volatile	src/ov009/ov009_02216240.cpp	Ov009ActVt_02217640_Update	kept: volatile read of v.y (file has .data/.ctor, mid-file)
+
+# --- src: asm
+asm	src/	_order	legit: empty asm functions that pin the TU's function order (layout workaround, documented)
+asm	src/	_Dummy	legit: empty asm function that pins the TU's function order
+asm	src/	G3_SetTransMtx	legit: matrix-load asm inline (documented, round strpool2)
+asm	src/	Box_SetMtx	legit: matrix-load asm inline (documented, round strpool2)
+asm	src/	TexObj_SetTransMtx	legit: matrix-load asm inline (documented, round strpool2)
+asm	src/ov004/	*	legit: DS protect obfuscated code, hand asm in the original
+asm	src/ov000/Lo_021814dc.cpp	func_ov000_02181624	kept: `ldr m, =3` for the OVERLAY_3_ID pool word (honest form swaps r7/r8; mid-file in a TU with .bss)
+
+# --- src: pointer-bit tests
+ptrbit	src/Main/Gfx/TextWin.cpp	TW_PlttAddr	legit: the key is a packed handle, not a pointer
+ptrbit	src/ov013/ov013_0220b444.cpp	Ov013Act_021fea8c_StateAttack	kept: never-true pointer-bit test (file has .data/.ctor, mid-file)
+ptrbit	src/ov014/ov014_02216ff0.cpp	Ov014Act_02201b94_StateDie	kept: never-true pointer-bit test (file has .data/.ctor, mid-file)
+ptrbit	src/ov015/ov015_022078bc.cpp	func_ov015_022078bc	kept: never-true pointer-bit test (uses @stringBase0, which a dsd gap cannot relocate to)
+deadstore	src/ov013/ov013_0220b444.cpp	Ov013Act_021fea8c_StateAttack	kept: the second store of the pointer-bit test above
+deadstore	src/ov014/ov014_02216ff0.cpp	Ov014Act_02201b94_StateDie	kept: the second store of the pointer-bit test above
+deadstore	src/ov015/ov015_022078bc.cpp	func_ov015_022078bc	kept: the second store of the pointer-bit test above
+
+# --- src: dead stores
+deadstore	src/Main/Sys/Sys.cpp	func_0203d6b4	legit: OS_EnableIrq() inlined with its return value discarded
+deadstore	src/ov006/ov006_021dc054.cpp	ov006_Label_Update	legit: dead initialised local, the ROM stores the zeros
+
+# --- src: parameters
+paramlocal	src/ov000/Hit_0219a8bc.cpp	Hit_Apply	legit: real parameter (callers pass it) that the body overwrites
+paramlocal	src/ov000/Lo_02161994.cpp	func_ov000_02161994	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/ov000/Robo_021b2f08.cpp	func_ov000_021b2f08	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/ov015/ov015_02200a18.cpp	func_ov015_02200bf4	legit: real parameter (callers pass spd), overwritten on some paths only
+paramlocal	src/Main/Gfx/SlideWin_3.cpp	func_020572f8	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/Main/Res/Stage.cpp	StageRes_ApplyArith	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: locals cur/node as fake parameters (GfxSys.cpp has .bss, mid-file)
+arity	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: see the paramlocal line
+paramlocal	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: local fn as a fake parameter (TextWin.cpp has .data, mid-file)
+arity	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: see the paramlocal line
+paramlocal	src/ov000/Menu_021763c8.cpp	Task021cbe60_Start	kept: local g as a fake parameter (file has .data/.bss, mid-file)
+arity	src/	*	hygiene: a caller-side prototype disagrees with the definition (`()` declarations for function addresses, or a caller that passes an argument the callee ignores); codegen-neutral for the callee
+unusedparam	src/	*	legit: callback, vtable-slot, state-table and command-table signatures, and real parameters the callee ignores (the scanner's arity lines list the definitions that callers do not declare)
+
+# --- src: pragmas
+pragma	src/	opt_	legit: per-function optimizer pragma, same class as optimization_level
+pragma	src/	inline_	legit: per-file inliner limits
+pragma	src/	auto_inline	legit: per-file inliner setting
+pragma	src/	short_enums	legit: enum size setting of the TU
+pragma	src/	explicit_zero_data	legit: data placement of zero-initialised globals
+
+# --- src: loops, out-of-bounds views, noise, comments
+emptyloop	src/	*	legit: spin-waits on hardware registers (sqrt, box test, DMA) and list walks to the tail
+oob	src/	[-1]	legit: the previous element of the array the pointer walks
+oob	src/	(u8 *)&	legit: byte access to an integer
+oob	src/	*	hygiene: consecutive same-type fields indexed as an array, or a typed view of a struct; codegen-neutral, the struct should get an array member
+noise	src/	goto	legit: goto in the original control flow
+noise	src/	(u16)(s16)	legit: stacked cast that spells an intermediate of that type; dropping the inner cast changes the code (round auA tested every one)
+noise	src/	(u32)(u16)	legit: stacked cast that spells an intermediate of that type (tested, round auA)
+noise	src/	(u8)(u16)	legit: stacked cast that spells an intermediate of that type (tested, round auA)
+noise	src/	(s32)(u16)	legit: stacked cast that spells an intermediate of that type (tested, round auA)
+noise	src/	+ 0	legit: offset 0 of an indexed access written like its neighbours
+noise	src/	| 0;	legit: field value 0 written like its neighbours
+noise	src/	<< 0	legit: field shift 0 written like its neighbours
+noise	src/	typeof	legit: names the field's anonymous struct type
+noise	src/ov000/Lo_021814dc.cpp	register s32 m	kept: the asm operand of func_ov000_02181624
+comment	src/	Kept (round auA	kept: the comment of a kept trick
+comment	src/	used to need	legit: history note, the trick is gone
+comment	src/	the old draft used	legit: history note, the trick is gone

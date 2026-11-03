@@ -1195,10 +1195,6 @@ src/ov000/Mtx_021c17dc.cpp:
     complete
     .text       start:0x021c17dc end:0x021c194c
 
-src/ov000/ov000_021c194c.cpp:
-    complete
-    .text       start:0x021c194c end:0x021c1e78
-
 src/ov000/Stub_021c2078.cpp:
     complete
     .text       start:0x021c2078 end:0x021c2090
@@ -1210,10 +1206,6 @@ src/ov000/Stub_021bc458.cpp:
 src/ov000/Stub_021c7000.cpp:
     complete
     .text       start:0x021c7000 end:0x021c7038
-
-src/ov000/Gauge_021c7038.cpp:
-    complete
-    .text       start:0x021c7038 end:0x021c740c
 
 src/ov000/Stub_021c5bac.cpp:
     complete
@@ -1470,10 +1462,6 @@ src/ov000/Loader_021b6d28.cpp:
 src/ov000/Stub_021b6f94.cpp:
     complete
     .text       start:0x021b6f94 end:0x021b70c0
-
-src/ov000/Mdl_021b70c0.cpp:
-    complete
-    .text       start:0x021b70c0 end:0x021b75e0
 
 src/ov000/Stub_021b8884.cpp:
     complete
@@ -2416,10 +2404,6 @@ src/ov000/Cam_02160414.cpp:
     complete
     .text       start:0x02160414 end:0x02160534
 
-src/ov000/ov000_02160534.cpp:
-    complete
-    .text       start:0x02160534 end:0x021609ec
-
 src/ov000/Robo_021b05b0.cpp:
     complete
     .text       start:0x021b05b0 end:0x021b06dc
@@ -2808,10 +2792,6 @@ src/ov000/Robo_021a5d00.cpp:
 src/ov000/Robo_021af464.cpp:
     complete
     .text       start:0x021af464 end:0x021afaf8
-
-src/ov000/Robo_021afaf8.cpp:
-    complete
-    .text       start:0x021afaf8 end:0x021b03c8
 
 src/ov000/Lo_02156d48.cpp:
     complete

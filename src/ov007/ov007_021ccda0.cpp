@@ -214,7 +214,6 @@ void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s) {
 extern "C" {
 
 void func_ov007_021cd628(Ov007Scene *s) {
-    void *saved;
     Ov007V *p;
     Model *m;
     Ov007Menu8 *t;
@@ -641,6 +640,9 @@ static inline BOOL Ov007_HasMsgN(s32 r, s32 w, s32 id) {
     return FALSE;
 }
 
+// Kept (round auA honesty audit): the volatile read of gSceneCmd is a scheduling lever (used by
+// func_ov007_021ce038), no honest form found; the file has .data and the function is mid-file,
+// so it can't be cut out to a dsd gap.
 static inline BOOL Ov007_HasMsg(s32 r, s32 w, s32 id) {
     Ov007MsgQ *q = (Ov007MsgQ *)*(volatile u32 *)&gSceneCmd;
     s32 i;
@@ -788,7 +790,6 @@ void func_ov007_021ce038(Ov007Scene *s) {
     case 2: {
         void *res;
         void *o;
-        u8 *k;
         if (!Model_IsReady(s->unk_28, 0xffff)) {
             break;
         }

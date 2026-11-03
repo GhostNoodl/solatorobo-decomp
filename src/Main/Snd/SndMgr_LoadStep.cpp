@@ -1,9 +1,4 @@
-// SndMgr.h declares SndMgr_UpdateLoad(SndMgr *) for its callers. The definition takes
-// an extra parameter that it assigns before use (it only changes register
-// allocation), so the header's prototype is renamed out of the way here.
-#define SndMgr_UpdateLoad func_02049690_hdr
 #include "Main/Snd/SndMgr.h"
-#undef SndMgr_UpdateLoad
 
 extern "C" {
 
@@ -17,7 +12,15 @@ static inline void SndMgr_StartBgm(SndMgr *mgr, s32 seq, s32 vol) {
     NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
 }
 
-void SndMgr_UpdateLoad(SndMgr *mgr, s32 seq) {
+void SndMgr_UpdateLoad(SndMgr *mgr);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the local seq as an unused second parameter
+// (callers pass only mgr) and renamed the header prototype out of the way; as a local the registers differ. This file
+// is the function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void SndMgr_UpdateLoad(SndMgr *mgr) {
+    s32 seq;
     s32 i;
     switch (mgr->loadType) {
         case 0:
@@ -65,5 +68,6 @@ void SndMgr_UpdateLoad(SndMgr *mgr, s32 seq) {
     NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[0]);
     NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[1]);
 }
+#endif
 
 }

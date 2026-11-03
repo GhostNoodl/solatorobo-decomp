@@ -54,7 +54,6 @@ struct Obj02161c14 {
 };
 
 void Ov000Vt_021cb2a8_DrawItemIcon(Obj02161c14 *self, void *msg, s32 c, s32 d, u8 e, u8 f) {
-    s32 v;
     if (self->unk_b8 == NULL || LFLD(u16, msg, 8) == 0xffff) {
         return;
     }

@@ -1831,7 +1831,6 @@ void func_ov012_021fd708(Ov012Lift *self) {
     VecFx32 v5;
     VecFx32 d12;
     Rot16 r1;
-    Rot16 r2;
     Ov003Actor *pl;
     Ov003BeamDef *tbl;
     ActorSub40 *s;

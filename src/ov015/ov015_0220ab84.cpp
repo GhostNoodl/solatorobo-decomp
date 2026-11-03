@@ -69,14 +69,18 @@ void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
     func_ov015_0220b1b8(self);
 }
 
+BOOL func_ov015_0220ae90(Ov015FishState2c *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match needed the pointer-bit trick (a second, never-taken
+// definition of a local under if ((u32)self & 3)); this is the honest code without it. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 BOOL func_ov015_0220ae90(Ov015FishState2c *self) {
     Ov015Fish *p = self->fish;
     s32 acc = p->info.unk_12;
     s32 dec = p->info.unk_20;
     Ov015Stat *st = &data_ov015_0221332c;
-    if ((u32)self & 3) {
-        dec = p->info.unk_20;
-    }
     s32 lim;
     s32 sp;
     s32 v;
@@ -111,5 +115,6 @@ BOOL func_ov015_0220ae90(Ov015FishState2c *self) {
     p->info.unk_1c = self->unk_0c;
     return self->unk_0c <= 0;
 }
+#endif
 
 }

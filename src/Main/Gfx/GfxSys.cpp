@@ -336,6 +336,8 @@ void GfxSys_EndFrame(GfxSys *sys) {
     GfxSys *g;
     {
         // The target loads state before nextState; only a volatile read keeps that order.
+        // Kept (round auA honesty audit): junk with no honest form found (jkK, auA). GfxSys.cpp has
+        // .bss and this function is mid-file, so it can't be cut out to a dsd gap.
         int s = *(volatile int *)&sys->state;
         int n = sys->nextState;
         if (s != n) {
@@ -442,6 +444,8 @@ void *GfxSys_GetOamMgr(GfxSys *sys, int which) {
 // Allocates `size` bytes from the main (sub == FALSE) or sub VRAM range heap and returns the
 // offset: first after the last node, otherwise in the first gap between two nodes that fits.
 // `cur` and `node` are locals; declaring them as parameters gives the target's registers.
+// Kept (round auA honesty audit): fake parameters with no honest form found. GfxSys.cpp has .bss and
+// this function is mid-file, so it can't be cut out to a dsd gap.
 u32 GfxSys_AllocVram(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node) {
     GfxVramHeap *heap = &sys->heaps[0];
     GfxVramNode *tail;

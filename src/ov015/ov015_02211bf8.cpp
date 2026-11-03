@@ -119,7 +119,6 @@ BOOL func_ov015_02211f54(Ov015Obj290 *self) {
 void Model0218fe1c_ClearLoop(void *a);
 void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *from) {
     Ov015Vec d;
-    s32 x, y, z;
     if (from != NULL) {
         self->unk_270 = *from;
     } else {

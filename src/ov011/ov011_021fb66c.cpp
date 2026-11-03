@@ -290,7 +290,14 @@ static inline void Ov011_Attach(Ov011PNode *p, Actor *owner, Actor *a) {
     a->pos.z = r.z;
 }
 
-void Ov011Mgr2_State02(Ov011Mgr2 *self, Actor *owner) {
+void Ov011Mgr2_State02(Ov011Mgr2 *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the local owner as an unused parameter (the
+// locals-as-parameters register lever); as a local at every position it differs. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov011Mgr2_State02(Ov011Mgr2 *self) {
+    Actor *owner;
     BOOL any;
     BOOL ok;
     Ov011Node *head;
@@ -348,5 +355,6 @@ void Ov011Mgr2_State02(Ov011Mgr2 *self, Actor *owner) {
     }
     }
 }
+#endif
 
 }

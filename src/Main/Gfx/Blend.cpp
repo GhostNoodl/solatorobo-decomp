@@ -6,8 +6,7 @@ extern int FX_Div(int a, int b);
 extern void G2x_SetBlendAlpha_(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
 extern const s16 FX_SinCosTable_[];
 
-// `volatile` keeps the index a separate value: without it the lerp's registers differ.
-static inline int FX_SinIdx(volatile int idx) {
+static inline int FX_SinIdx(int idx) {
     return FX_SinCosTable_[idx * 2];
 }
 
@@ -46,6 +45,12 @@ BOOL Blend_Tick(int ch) {
     return TRUE;
 }
 
+void func_02042f40(int ch);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match needed a `volatile int` parameter on FX_SinIdx to keep
+// the index a separate value; without it the lerp's registers differ. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void func_02042f40(int ch) {
     int t;
     int ev1;
@@ -80,5 +85,6 @@ void func_02042f40(int ch) {
         gBlendPlanes[ch] = 0;
     }
 }
+#endif
 
 }

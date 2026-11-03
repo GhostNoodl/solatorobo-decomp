@@ -124,7 +124,6 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
     switch (self->fsm->st) {
     case 0:
         if (self->unk_ce_u == 0) {
-            s16 m;
             EffectObj *e;
             if (self->unk_bc != NULL) {
                 EffectMgr_Kill(gEffectMgr, self->unk_bc);

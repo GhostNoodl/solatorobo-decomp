@@ -23,6 +23,8 @@ void ov006_ResLoader_Update(ov006_ResLoader *self);
 BOOL Model_IsReady(void *a, int b);
 
 void ov006_Label_Update(ov006_Label *self) {
+    // Never read, but the ROM stores the three zeros to its stack slot: a dead initialised local in the
+    // original (round auA).
     VecFx32 v = {0, 0, 0};
     fx32 t;
     u16 id;

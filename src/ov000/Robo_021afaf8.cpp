@@ -113,12 +113,19 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
     }
 }
 
-void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
+void Robo021ca458_State1f(VObj *self_);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals anm and def as unused parameters
+// assigned NULL in the body; as locals (initialised or not, at every position) the registers differ. This file is the
+// function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Robo021ca458_State1f(VObj *self_) {
     Robo021ca458 *self = (Robo021ca458 *)self_;
     BOOL big;
-    anm = NULL;
+    Param0206ef10 *anm = NULL;
     s32 ofs;
-    def = NULL;
+    RoboDef *def = NULL;
     StageFlags *sv;
     u32 mode;
     u32 lock;
@@ -328,4 +335,5 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
         break;
     }
 }
+#endif
 }

@@ -69,11 +69,12 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
             u16 t = self->runSpeed * (0xc0 - (h2 + 0x80)) / 0xe66;
             steer = (u16)(h + 0xc0) - t;
         }
-        if (dir & 0x40) {
-        } else if (dir & 0x80) {
-            steer = -steer;
-        } else {
-            steer = Angle_Approach(base, self->look.x, 0xcd, 1, 0x8000) - self->look.x;
+        if (!(dir & 0x40)) {
+            if (dir & 0x80) {
+                steer = -steer;
+            } else {
+                steer = Angle_Approach(base, self->look.x, 0xcd, 1, 0x8000) - self->look.x;
+            }
         }
         self->lookVX = Angle_Approach(steer, self->lookVX, (h << 5) + 0x6cd, 1, 0x8000);
         self->look.x += self->lookVX;

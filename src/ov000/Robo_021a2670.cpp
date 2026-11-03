@@ -85,9 +85,6 @@ void Robo021ca458_State03(Robo021ca458 *self) {
                 return;
             }
         }
-        if (0) {
-            return;
-        }
         if ((self->unk_b1c >> 12) == 5) {
             Actor *o = GetObj021a2670(self->unk_b1c);
             u8 *p = NULL;

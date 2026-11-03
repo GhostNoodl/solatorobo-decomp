@@ -40,7 +40,6 @@ void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
 BOOL func_ov015_0220c810(Ov015FishState1c *self) {
     Ov015Stat *g = &data_ov015_0221332c;
     s32 max = (self->fish)->info.unk_24;
-    u8 *p;
     BOOL r = TRUE;
     if (g->unk_14 == 4) {
         if (g->unk_1c != 0) {

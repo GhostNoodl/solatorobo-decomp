@@ -8978,3 +8978,119 @@ Readability only; every function stays byte-identical. The baseline was built at
 - **Smaller.** `gSndQueue` in `Cmd_02188ca0`/`02188d28`/`02189194` is the shared `SndGlobal` (`queue->flag1`/`flag2`/`flag3`, `SndQueue_ResetNodes_0204aa10(SndQueue *)`); the unused `Obj02097e48` externs of `Lo_021909a8`/`Lo_021b1740` are gone. `func_0206e340` returns `u8 *` in `Mgr_021b5dc0`. ov002: the animation frame counts read `NNSG3dResAnmCommon::numFrame` (`021d80a0`, `021e4b80`), and `Ov002Obj021f075c_UpdateAnmFrame` takes `NNSG3dAnmObj *` (`frame`, `resAnm`).
 - **Left.** ov003's `Ov003MCam`/`Ov003MGame` views of `gSceneCmd` (`ov003_021f27ec.cpp` keeps its own `unk_fa`/`unk_fc`). The ov007/ov008/ov015 camera classes (`Ov007Cam`, `Ov008Cam`, `Ov015Cam` are their own `VObj`-derived copies of `Camera`, so `Camera_Ctor`/`Camera_SetAnim` keep their `void *` prototypes there). `Ov002Obj021f07d4_Init`'s link loop (`&self->links[i]` changes the addressing) and `func_ov002_021e4dd4`'s `gOv002Stage` byte reads (typed, they change the code). The ov000 `void *self` prototypes whose classes are local to other files (`Target`, `Ov003Pickup`, `Obj021bb810`, `Buffer0216f144`/`Lo021cb6b0`, ...).
 - **Renames:** none of functions or globals; type renames `ObjPoolShared` -> `StageVars`, `ov006_Unk021ec888` -> `ov006_Menu`, `Unk021f0f80`/`Unk021cceb4` -> `Ov002Session`. New untracked headers: `include/Main/Res/StageVars.h`, `include/ov000/SceneCmdPool.h`, `include/ov002/Session.h`, `include/ov002/BoardRef.h`, `include/ov002/StaffPool.h`.
+
+## Round auA (honesty audit): 27 matches demoted to honest drafts, 8138 -> 8111
+
+An audit of `src/`, `include/` and `libs/` for matches that depend on a trick the project does not accept
+(`docs/UNMATCHED.md`, "Rules for a match"). Each hit was triaged as legitimate, replaced by honest code that
+compiles to the same bytes, or (no honest form found) demoted to a `NONMATCHING` draft or kept with a comment when
+it cannot be demoted. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` **8111** matched (8138
+at start), `tools/check_drafts.py --score` exit 0 (57 files, 27 new rows). Every other function is byte-identical
+to the start of the round (per-function hash of code and relocations over all 1906 objects; only the 27 demoted
+functions and their section hashes differ).
+
+### The scanner
+
+```sh
+python3 tools/honesty_scan.py                    # un-triaged hits only; exit 1 if there are any
+python3 tools/honesty_scan.py --all --summary    # hit counts per category, triaged ones included
+python3 tools/honesty_scan.py --cat ptrbit,volatile src/ov013
+python3 tools/honesty_scan.py --drafts           # also scan the NONMATCHING blocks
+```
+
+It strips comments and strings, skips `#ifdef NONMATCHING` and `#if 0` code, finds the function bodies and reports
+`ptrbit` (`(u32)self & 3`), `volatile`, `asm`, `empty`/`emptyloop` bodies, `deadstore` (overwritten, set twice to
+the same value, written and never read), `unusedlocal`, `unusedparam`, `paramlocal` (a parameter assigned before it
+is read: the locals-as-parameters lever), `arity` (a definition with a different parameter count from the
+prototypes elsewhere), `onceloop`, `oob` (negative indexes, `(&x)[i]`, indexes into `[1]` arrays), `selfassign`,
+`pragma` (outside the documented set), `noise` (permuter shapes: `__typeof__`, `if (0)`, `register`, `goto`,
+permuter names, no-op arithmetic, stacked casts) and `comment` (a comment that calls the shape a trick). Triaged
+hits are listed in `tools/honesty_allow.txt` (category, file or directory, fragment, verdict); a new hit should be
+fixed or added there with its reason.
+
+### Hits and verdicts (after the round)
+
+| Category | Hits | Verdict |
+|---|---|---|
+| ptrbit | 14 | 10 SDK alignment checks and `TW_PlttAddr` (a packed handle): legit. 3 kept (below). 4 more demoted |
+| volatile | 107 | hardware registers, SDK `vu*` types, interrupt-shared state (`SysState.vcount`, `OS_IRQ_CHECK_BUF`): legit. 3 kept. 4 more demoted |
+| asm | 207 | SDK/runtime/mobiclip hand asm, ov004 DS-protect code, the documented `_order`/`_Dummy` layout functions and matrix-load blocks: legit. 1 kept (`func_ov000_02181624`) |
+| empty / emptyloop | 10 / 126 | SDK branches emptied by the release build, spin-waits on the sqrt/box-test/DMA registers, list walks to the tail: legit. 4 empty arms in `src` fixed |
+| deadstore | 31 | SDK dummy register reads and assert-only values, `OS_EnableIrq()` inlined with the result discarded, `ov006_Label_Update`'s zeroed `v` (the ROM stores the zeros): legit. 3 kept (the second stores of the kept pointer-bit tests). 1 demoted (`Camera_Apply`) |
+| unusedlocal | 17 | SDK assert-only locals: legit. About 45 unused locals in `src` were removed (byte-identical) |
+| unusedparam | 286 | callback, vtable-slot, state-table and command-table signatures and real parameters the callee ignores: legit |
+| paramlocal | 12 | 6 real parameters (the callers pass them) that the body overwrites, 1 SDK: legit. 3 kept. 13 more demoted, 1 fixed |
+| arity | 42 | caller-side `()` prototypes for function addresses and callers that pass an argument the callee ignores: hygiene (codegen-neutral, left for a later cleanup). 2 kept. 3 caller prototypes fixed |
+| oob | 93 | `e[-1]` walks and byte access to integers: legit. Consecutive fields indexed as an array (`(&e->key)[i]`, `(&e->radius)[k]`, `(&gFadeState.unk_00)[ch]`, typed views): hygiene, the structs should get array members. The `u32 flags[1][4]` view of `StageFlags.unk_158` in six files is now `flags[60][4]` (byte-identical) |
+| pragma | 21 | per-function optimizer and inliner pragmas, `short_enums`, `explicit_zero_data`, SDK `warn_padding`, runtime `exception_terminate`: legit |
+| noise | 295 | `goto`, SDK idioms, `+ 0`/`<< 0` written like the neighbours, `typeof` for an anonymous struct, stacked casts: legit. Every stacked cast in `src` was tested without its inner cast and each changes the code, so each spells a real intermediate type. 1 kept (the `register` operand of the kept asm). `if (0) { return; }` removed |
+| comment | 5 | history notes and the comments of kept tricks |
+| onceloop / selfassign | 0 | |
+
+`libs/nnsys/g3d/nsbca.c.permbak` (a tracked permuter backup) was deleted.
+
+### Fixed in place (byte-identical)
+
+About 45 unused locals; `if (0) { return; }` in `Robo_021a2670.cpp`; `if (panel && panel && panel) {}` in
+`func_02056230` (now `panel = NULL` at the declaration); empty `if` arms nested away in `Lo_02152740.cpp`,
+`Lo_0214d304.cpp` and `ov006_021e8ef8.cpp`; the junk copy `s32 unused = type` in `TblEntry.cpp` (the type is
+`u32`); `Robo021ca458_HandleMsg`'s fake parameter `g` (a local now); caller prototypes of `func_ov006_021cd5a8`,
+`func_ov015_022003ec` and `MessageQueue021cb980_Push06` (the callers now pass the arguments the ROM already has in
+`r1`-`r3`); the `flags[1][4]` views above.
+
+### Demoted (27): the trick form matched, the honest form is the draft
+
+Each is a `NONMATCHING` block with a `Status (round auA)` comment that names the trick, and a row in
+`docs/UNMATCHED.md`. For the 12 at the start or end of their file the `.text` range in `delinks.txt` was cut; the
+15 that were their file's whole `.text` keep the draft in their file, and the file has no `delinks.txt` entry (it
+compiles to an empty object that is not linked).
+
+- Pointer-bit tests: `Ov002HudInfo_Draw`, `Ov003ActVt_021f7e7c_Start`, `Ov003ActExSway_StateDie`,
+  `func_ov015_0220ae90`, `Ov006Racer_UpdateCheckpoint`.
+- `volatile`: `func_02042f40` (Blend), `func_020554e4` (SlidePanel_2), `Ov003TickerSet_Start`,
+  `Ov013ActVt_0220bdd8_Update` (also a fake parameter).
+- Fake parameters (locals declared as parameters): `getMdlRot_`, `SndMgr_UpdateLoad` (its header prototype was
+  renamed out of the way; that hack is gone too), `func_02056230`, `Ov000Vt_021cca88_DrawFrame`,
+  `Ov000Vt_021cac0c_DrawFrame`, `Robo021ca458_State1f`, `func_ov000_021b70c0`, `func_ov000_021c194c`,
+  `func_ov002_021dd9dc`, `func_ov002_021ddf18`, `func_ov002_021dedf0`, `func_ov002_021df2ec`,
+  `Ov009ActVt_02217390_Update`, `Ov011Mgr2_State02`, `Ov013Boss_StateAttack2`.
+- Others: `Camera_Apply` (q defined twice), `Ov003TaskVt_021f78f4_Start` (always-true `if (name)`),
+  `ov006_UpdateNetSlots` (a C++ reference alias from the permuter).
+
+Several honest alternatives were tried for each before demoting (declaration orders, the parameter as a local at
+every position with `fp.py`, plain/typed/inline forms); earlier rounds (jkK, rgA, tmA-tmC, jkJ, ptA) had searched
+most of them too.
+
+### Kept with a comment (no honest form, cannot be demoted)
+
+A function in the middle of a file whose TU has `.data`, `.bss` or `.ctor` cannot be cut out to a `dsd` gap
+without splitting the TU, which changes MWCC's pooled-section addressing. A function that uses its TU's pooled
+strings (`@stringBase0`) cannot be demoted either: `dsd` refuses to relocate a gap object to a TU-local symbol.
+Each site has a `Kept (round auA ...)` comment:
+
+- `GfxSys_EndFrame` (volatile), `GfxSys_AllocVram` (fake parameters `cur`, `node`): `GfxSys.cpp`, `.bss`.
+- `func_02051a34` (fake parameter `fn`): `TextWin.cpp`, `.data`.
+- `Task021cbe60_Start` (fake parameter `g`): `Menu_021763c8.cpp`, `.data`/`.bss`.
+- `func_ov000_02181624` (`asm { ldr m, =3 }` for the `OVERLAY_3_ID` pool word; the honest
+  `extern u8 OVERLAY_3_ID[]` form swaps r7/r8 in all 720 declaration orders): `Lo_021814dc.cpp`, `.bss`.
+- `func_ov007_021ce038` (volatile read in `Ov007_HasMsg`): `ov007_021ccda0.cpp`, `.data`.
+- `Ov009ActVt_02217640_Update` (volatile read of `v.y`), `Ov013Act_021fea8c_StateAttack` and
+  `Ov014Act_02201b94_StateDie` (pointer-bit tests): big TUs with `.data`/`.ctor`.
+- `func_ov015_022078bc` (pointer-bit test): uses `@stringBase0`.
+- `__two_exp` (`libs/msl/ansi_fp.c`, the `exp / 2` form; no compiler version gives the ROM's code): `.data`.
+- `Slot_02161cd4.cpp`'s mixed no-op `(u8 *)` casts: typed forms differ; plausibly a cast macro used at some call
+  sites.
+
+### For a later round
+
+- The `arity` hygiene list: caller-side prototypes that disagree with the definition.
+- The `oob` typing gaps: struct members that should be arrays (the lerp triple at `Ov011Ent.radius`,
+  `TexObjEntry.key`, `gFadeState`).
+- Note on provenance: an earlier entry in this file says the MSL unwinder's `exception_terminate` structure "came
+  from other DS decompilations". That may conflict with the project's no-copying rule and should be checked.
+
+Scratch is in the session scratchpad `auA/`: `te.py` (per-object signature compare against the baseline),
+`vars.py FILE VARIANTS.py`, `vc.py` (instructions only, for reloc changes), `fp.py FILE FUNC P1,P2` (a parameter as a
+local at every declaration position), `dx.sh SRC FUNC`, `where.py NAME...` (address, size, owning delinks entry and
+its position), `demote.py FILE FUNC "REASON"` (start, end or whole-file demotion), `casts.py` (the stacked-cast test),
+`mksig.py` (per-function baseline over all objects).

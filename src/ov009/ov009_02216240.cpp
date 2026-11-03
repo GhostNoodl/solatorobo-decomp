@@ -122,6 +122,8 @@ void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
             Body_Update(self->hit, 1, 0, 0);
             v = self->pos;
             Geom_SnapToGround(&v, self->pos.y + 0x1800, -0xa000);
+            // Kept (round auA honesty audit): the volatile read of v.y is a scheduling lever, no honest
+            // form found; the file has .data and the function is mid-file, so it can't be cut out.
             self->pos.y += FX_Mul(*(volatile s32 *)&v.y + 0x1800 - self->pos.y, 0x19a);
             v.y += 0x1800;
             VEC_Distance(&self->pos, &v);

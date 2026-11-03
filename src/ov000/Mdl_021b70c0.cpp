@@ -24,10 +24,16 @@ if (res->anm[i] != NULL) {                                   \
     }                                                        \
 }
 
-// tex is a trailing parameter (callers pass six arguments); it fixes the
-// register order of mdl and tex. needMat and nsub are u8 for the
-// prologue order of the two stack-argument copies.
-void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub, NNSG3dResTex *tex) {
+// needMat and nsub are u8 for the prologue order of the two stack-argument copies.
+void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the local tex as a seventh parameter (callers
+// pass six) to fix the register order of mdl and tex; as a local the registers differ. This file is the function's
+// whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub) {
+    NNSG3dResTex *tex;
     NNSG3dResMdlSet *set;
     NNSG3dResMdl *mdl;
     BOOL needJnt;
@@ -105,5 +111,6 @@ void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u
         }
     }
 }
+#endif
 
 }

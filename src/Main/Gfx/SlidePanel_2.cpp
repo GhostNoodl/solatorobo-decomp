@@ -70,6 +70,13 @@ BOOL func_020554c8(SlidePanel *panel) {
     return panel->state <= 3 ? TRUE : FALSE;
 }
 
+void func_020554e4(SlidePanel *panel);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match read model->x through a `volatile s32 *` cast to order
+// the x load before y; plain reads, a Model local, y-first and direct arguments all differ. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void func_020554e4(SlidePanel *panel) {
     if (panel->pltt != NULL) {
         void *saved = gSysState->cur;
@@ -88,8 +95,7 @@ void func_020554e4(SlidePanel *panel) {
     }
     if (panel->model != NULL) {
         {
-            // The target reads x before y.
-            s32 x = *(volatile s32 *)&panel->model->x;
+            s32 x = panel->model->x;
             s32 y = panel->model->y;
             Model_SetPos(panel->nextModel, x, y);
         }
@@ -112,8 +118,7 @@ void func_020554e4(SlidePanel *panel) {
     }
     if (panel->model2 != NULL) {
         {
-            // The target reads x before y.
-            s32 x = *(volatile s32 *)&panel->model2->x;
+            s32 x = panel->model2->x;
             s32 y = panel->model2->y;
             Model_SetPos(panel->nextModel2, x, y);
         }
@@ -141,5 +146,6 @@ void func_020554e4(SlidePanel *panel) {
     panel->nextPltt = NULL;
     panel->nextModel2 = NULL;
 }
+#endif
 
 }

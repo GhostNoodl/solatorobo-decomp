@@ -71,7 +71,15 @@ static inline BOOL Ov009_Skip(u8 st, u32 f) {
     return flag;
 }
 
-void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
+void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the local st as an unused trailing u8
+// parameter (the locals-as-parameters register lever); as a local at every position it differs. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self) {
+    u8 st;
     VecFx32 v;
     Ov009RotS r;
     ActorSub40 *s;
@@ -186,6 +194,7 @@ void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
         break;
     }
 }
+#endif
 
 
 }

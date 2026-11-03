@@ -50,7 +50,6 @@ void Task021efc24_UpdateActive(Task021efc24 *self) {
     UiList *g;
     u16 keys;
     UiListItem *p;
-    void *o;
     Task021efba4 *x;
     if (self->unk_5c != NULL) {
         return;

@@ -142,7 +142,6 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
 }
 
 void func_ov015_0220e434(Ov015StageMdl *self) {
-    void *o;
     s32 c;
     if (self->vfunc_08() == 0) {
         return;

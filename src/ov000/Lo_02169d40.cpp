@@ -9,7 +9,6 @@ u32 Rand_GetGlobal(void);
 
 void Lo021cb798_PostUpdate(Lo021cb798 *self) {
     s32 s = self->unk_04;
-    s32 v;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 2;

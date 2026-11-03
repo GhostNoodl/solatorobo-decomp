@@ -53,7 +53,6 @@ void func_ov000_021badd4(Self021badd4 *self) {
     s32 c;
     s32 y;
     s32 t;
-    s32 base;
     t = self->t0;
     if (self->state != 13) {
         a = FxMulL021badd4(t, 0x16000) >> 12;

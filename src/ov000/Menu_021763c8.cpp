@@ -3526,7 +3526,9 @@ BOOL Task021cbe60_List3cOnDecide(void);
 BOOL Task021cbe60_List3cOnCursor(void);
 
 static inline u16 ItemIdx021782e0(u16 v) { return v & 0xfff; }
-/* `g` is an unused register parameter reused as a local: as a parameter its value
+/* Kept (round auA honesty audit): fake parameter, no honest form found; Menu_021763c8.cpp has .data and
+ * .bss and this function is mid-file, so it can't be cut out to a dsd gap.
+ * `g` is an unused register parameter reused as a local: as a parameter its value
  * gets the target's register order (g r4, 1 r6, vtable r8). The loop's task object
  * reuses `o`, so it is a split web of `o` (numbered below the other webs). */
 void Task021cbe60_Start(Task021cbe60 *self, void *g) {

@@ -33,14 +33,18 @@ void Ov003ActVt_021f7e7c_Init(Ov003Prop *self) {
     }
 }
 
+void Ov003ActVt_021f7e7c_Start(Ov003Prop *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match needed the pointer-bit trick (a second, never-taken
+// definition of a local under if ((u32)self & 3)); this is the honest code without it. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov003ActVt_021f7e7c_Start(Ov003Prop *self) {
     Ov003Part44 *p;
     ActorEx_Start(self);
     p = self->unk_44;
     if (self->unk_18 == 0) {
-        if ((u32)self & 3) {
-            p = self->unk_44;
-        }
         p->unk_22_0 = FALSE;
         p->unk_22_1 = FALSE;
     } else {
@@ -49,3 +53,4 @@ void Ov003ActVt_021f7e7c_Start(Ov003Prop *self) {
     }
     self->unk_93_1 = (u8)(u16)self->unk_18;
 }
+#endif

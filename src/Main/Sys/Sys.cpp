@@ -91,6 +91,7 @@ void func_0203d6b4(void) {
     OS_SetIrqFunction(1, func_0203d824);
     OS_EnableIrqMask(1);
     {
+        // OS_EnableIrq() inlined, its return value (the old IME) discarded.
         u16 old = *(volatile u16 *)0x4000208;
         *(volatile u16 *)0x4000208 = 1;
     }

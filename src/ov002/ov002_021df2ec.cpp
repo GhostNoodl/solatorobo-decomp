@@ -44,8 +44,18 @@ static inline void ov002_Cursor_SetMode(Obj021efe8c *c) {
     Ov002Mdl021efe3c_Load(&c->mdl);
 }
 
-// y, x, id and w are locals; declaring them as parameters gives the target register allocation.
-void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 id, Obj021efe6c *w) {
+void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals y, x, id and w as unused parameters
+// past (self, own); as locals the registers differ. This file is the function's whole .text, so it has no delinks
+// entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own) {
+    s32 y;
+    s32 x;
+    u16 id;
+    Obj021efe6c *w;
     s32 kind;
     Obj021efe8c *c;
     Obj021efe9c *o;
@@ -202,5 +212,6 @@ void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 
     self->unk_18 = 0;
     self->owner = NULL;
 }
+#endif
 
 }

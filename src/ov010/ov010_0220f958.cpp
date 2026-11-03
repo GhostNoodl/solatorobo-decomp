@@ -200,7 +200,6 @@ BOOL Ov010Obj02210154_HandleMsg(Ov010Obj02210154 *self, ActorMsg *msg) {
         r = TRUE;
     } else if (msg->type == 9) {
         Actor *o;
-        u16 *p;
         r = Ov003Actor_HandleMsg(self, msg);
         {
             u16 id = msg->unk_0c;

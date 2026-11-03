@@ -45,7 +45,18 @@ struct Obj02160534 : public VObj {
     u8 unk_98;
 };
 
-void Ov000Vt_021cac0c_DrawFrame(Obj02160534 *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y, s32 x) {
+void Ov000Vt_021cac0c_DrawFrame(Obj02160534 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals y and x as unused parameters past
+// the slot's five (self, a, pos, c, d) and reused a as the pid local; with real locals at every position the
+// registers differ. This file is the function's whole .text, so it has no delinks entry. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov000Vt_021cac0c_DrawFrame(Obj02160534 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
+    s32 pid;
+    s32 y;
+    s32 x;
     GfxSys *g;
     s32 z;
     s32 v;
@@ -118,5 +129,6 @@ void Ov000Vt_021cac0c_DrawFrame(Obj02160534 *self, s32 pid, VecFx32 *pos, s32 c,
     G3_Cmd1(0x29, 0x48d0 | (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | (alpha << 16));
     self->vfunc_44(pos->x, pos->y, pos->z, x, y, 4);
 }
+#endif
 
 }

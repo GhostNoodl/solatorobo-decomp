@@ -5,7 +5,7 @@
 void NNSi_G3dAnmCalcNsBca (NNSG3dJntAnmResult * pResult, const NNSG3dAnmObj * pAnmObj, u32 dataIdx);
 void getMdlTrans_ (NNSG3dJntAnmResult * pResult);
 void getMdlScale_ (NNSG3dJntAnmResult * pResult);
-void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNodeData * pNd);
+void getMdlRot_ (NNSG3dJntAnmResult * pResult);
 void getJntSRTAnmResult_(const NNSG3dResJntAnm * pJntAnm, u32 dataIdx, fx32 Frame, NNSG3dJntAnmResult * pResult);
 void getTransData_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);
 void getTransDataEx_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);
@@ -124,19 +124,23 @@ void getMdlScale_ (NNSG3dJntAnmResult * pResult)
     (*NNS_G3dRS->funcJntScale)(pResult, (const fx32 *)p, NNS_G3dRS->c, pNd->flag);
 }
 
-// A, B and pNd are locals in the SDK source. Declaring them as trailing parameters (callers still pass
-// only pResult) and going through the non-const temporary nd gives the target's register allocation.
-void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNodeData * pNd)
+void getMdlRot_ (NNSG3dJntAnmResult * pResult);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the SDK locals A, B and pNd as trailing
+// parameters (callers pass only pResult) and went through a non-const temporary; with them as locals the registers
+// differ. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void getMdlRot_ (NNSG3dJntAnmResult * pResult)
 {
     u32 idxNode;
     u32 idxPivot;
     const u8 * p;
+    const NNSG3dResNodeData * pNd;
+    fx32 A, B;
 
     idxNode = *(NNS_G3dRS->c + 1);
-    {
-        NNSG3dResNodeData * nd = NNS_G3dGetNodeDataByIdx(NNS_G3dRS->pResNodeInfo, idxNode);
-        pNd = nd;
-    }
+    pNd = NNS_G3dGetNodeDataByIdx(NNS_G3dRS->pResNodeInfo, idxNode);
     p = (const u8 *)pNd + sizeof(*pNd);
 
     if (!(pNd->flag & NNS_G3D_SRTFLAG_TRANS_ZERO)) {
@@ -169,3 +173,4 @@ void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNo
         pResult->flag |= NNS_G3D_JNTANM_RESULTFLAG_ROT_ZERO;
     }
 }
+#endif

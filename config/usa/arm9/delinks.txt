@@ -892,7 +892,7 @@ libs/nnsys/g3d/res_struct_accessor_anm.c:
 
 libs/nnsys/g3d/nsbca.c:
     complete
-    .text       start:0x0202ae6c end:0x0202b1c8
+    .text       start:0x0202ae6c end:0x0202b048
 
 libs/nnsys/g3d/nsbca_2.c:
     complete
@@ -1149,7 +1149,7 @@ src/Main/Gfx/TexObj_3.cpp:
 
 src/Main/Gfx/Blend.cpp:
     complete
-    .text       start:0x02042eac end:0x02043064
+    .text       start:0x02042eac end:0x02042f40
     .bss        start:0x02097e00 end:0x02097e3c
 
 src/Main/Movie/Movie.cpp:
@@ -1231,10 +1231,6 @@ src/Main/Snd/SndMgr_2.cpp:
     complete
     .text       start:0x02049550 end:0x02049690
 
-src/Main/Snd/SndMgr_LoadStep.cpp:
-    complete
-    .text       start:0x02049690 end:0x0204985c
-
 src/Main/Snd/SndMgr_3.cpp:
     complete
     .text       start:0x0204985c end:0x02049bdc
@@ -1254,7 +1250,7 @@ src/Main/Sys/Scene.cpp:
 
 src/Main/Gfx/Camera.cpp:
     complete
-    .text       start:0x0204b2c0 end:0x0204b8e8
+    .text       start:0x0204b2c0 end:0x0204b43c
 
 src/Main/Gfx/Camera_2.cpp:
     complete
@@ -1298,7 +1294,7 @@ src/Main/Gfx/SlidePanel.cpp:
 
 src/Main/Gfx/SlidePanel_2.cpp:
     complete
-    .text       start:0x02054f10 end:0x0205563c
+    .text       start:0x02054f10 end:0x020554e4
 
 src/Main/Gfx/SlidePanel_3.cpp:
     complete
@@ -1319,10 +1315,6 @@ src/Main/Sys/GameScene.cpp:
 src/Main/Sys/GameScene_2.cpp:
     complete
     .text       start:0x02055ff0 end:0x02056230
-
-src/Main/Sys/SlideDrawScene.cpp:
-    complete
-    .text       start:0x02056230 end:0x02056c0c
 
 src/Main/Sys/GameScene_3.cpp:
     complete

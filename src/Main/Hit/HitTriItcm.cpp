@@ -16,7 +16,6 @@ void HitTriRay_TestMesh(HitTriRay *ray) {
     VecFx32 e;
     fx32 f;
     fx32 t;
-    s32 i;
 
     HitBox_CalcWorld(ray);
     if (ray->owner->unk_84_1) {

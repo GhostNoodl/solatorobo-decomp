@@ -143,7 +143,6 @@ BOOL Ov003ActVt_021fa390_IsReady(Ov003Multi *self) {
 
 void Ov003ActVt_021fa390_Start(Ov003Multi *self) {
     const Ov003MultiDef *def = &data_ov003_021f7470[self->kind];
-    Ov003MultiRes *res;
     s8 *map;
     s32 idx;
     Ov003MultiModel *m;

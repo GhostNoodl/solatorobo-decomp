@@ -235,6 +235,13 @@ static inline void Ov003PartB_Assign(Ov003PartB *d, const Ov003PartB *s) {
     }
 }
 
+void Ov003ActExSway_StateDie(Ov003ActExSway *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match needed the pointer-bit trick (a second, never-taken
+// definition of a local under if ((u32)self & 3)); this is the honest code without it. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
     s32 sfxOn;
     if (self->hasModel) {
@@ -275,15 +282,13 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(0x8001);
         sfxOn = 1;
-        if ((u32)self & 3) {
-            sfxOn = 1;
-        }
         gSceneCmd->stageFlags = sfxOn;
     } else {
         History_SetState(self->fsm, 4, 0);
     }
     Ov003Sub44_Clear(self->unk_44);
 }
+#endif
 
 void Ov003ActExSway_State0a(Ov003ActExSway *self) {
     if (self->hasModel) {

@@ -51,7 +51,6 @@ Ov013ActEx_022065ac *Ov013ActEx_022065ac_DtorDelete(Ov013ActEx_022065ac *self) {
 
 void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     ActorSub48 *m;
-    ActorSub44 *n;
     Ov003Actor *p;
     Ov003Actor_Start(self);
     self->pos.x = -0x3000;
@@ -95,14 +94,19 @@ static inline s32 Ov013_Sqrt2(s64 sq) {
     return (s32)(OV013_SQRT_RESULT + 1) >> 1;
 }
 
-// `b` is a local written as an unused trailing parameter, and `t` is `volatile`:
-// both are register-allocation / scheduling levers (docs/MATCHING.md).
-void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
+void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match wrote the local b as an unused trailing parameter and
+// declared t `volatile` (register-allocation and scheduling levers). The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self) {
+    Ov003Actor *b;
     BOOL ok;
     s32 n;
     s32 m;
     Ov003Actor *a;
-    volatile Ov003Actor *t;
+    Ov003Actor *t;
     if (!Ov013_GameIdle()) {
         return;
     }
@@ -167,5 +171,6 @@ void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
     }
     self->unk_b6 = 0x5a;
 }
+#endif
 
 }

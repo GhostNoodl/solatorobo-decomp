@@ -29,7 +29,6 @@ BOOL Ov003ActVt_021fa5a0_IsReady(Ov003Prop021fa5a0 *self) {
 }
 
 void Ov003ActVt_021fa5a0_Start(Ov003Prop021fa5a0 *self) {
-    s32 *res;
     void *a;
     VecFx32 v;
     Ov000ActVt_021cc7cc_Start(self);

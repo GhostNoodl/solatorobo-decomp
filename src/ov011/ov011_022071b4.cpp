@@ -45,7 +45,6 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
     case 1: {
         EffectObj *e;
         ActorSub40 *s1 = self->fsm;
-        VecFx32 *arr;
         u8 c;
         if (s1->timer != 0) {
             s1->timer--;
@@ -55,7 +54,6 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
         }
         {
             VecFx32 *p;
-            s32 y;
             c = tbl.b[self->unk_36f][self->unk_36e];
             Ov011_VecSet(&self->unk_370[self->unk_36e], (c << 14) - 0x4000, Rand_PlusMinus(0x1800) + 0x3000, -0xf000);
             p = &self->unk_370[self->unk_36e];

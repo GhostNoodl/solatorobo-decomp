@@ -8,7 +8,7 @@
 
 typedef struct {
     u8 unk_00[0x158];
-    u32 flags[1][4];
+    u32 flags[(0x518 - 0x158) / 16][4]; // StageFlags.unk_158: 60 rows of 32 4-bit flags
 } Save02196258;
 
 extern "C" {

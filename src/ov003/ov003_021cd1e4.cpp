@@ -127,6 +127,14 @@ static inline void Ov003Model_Load(Model *s, const char *file, const char *name)
     TexObj_SetRes(s, ResList_FindType2(ResMgr_GetArchiveList(file, name, 2), name));
 }
 
+void Ov003TaskVt_021f78f4_Start(Ov003Tl *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match wrapped TexObj_Init in an always-true `if (name)` (name
+// is a string address) so name and file stay in callee-saved registers; unconditional, block, Ov003Model_Init and
+// swapped-order forms all differ. This file is the function's whole .text, so it has no delinks entry. The score is
+// in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     Ov003TlLabel *l;
     void *res;
@@ -213,11 +221,7 @@ void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
             const char *name = data_ov003_021f78cd;
             const char *file = data_ov003_021f78c4;
             PlttRes_Init_02041218(&s->pltt);
-            // fake match: the always-true check splits the block so name/file stay in
-            // callee-saved registers instead of being rematerialized after the call
-            if (name) {
-                TexObj_Init(s, name, 0);
-            }
+            TexObj_Init(s, name, 0);
             STD_CopyString(s->name, file);
         }
         self->unk_4c = s;
@@ -246,5 +250,6 @@ void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     }
     TaskList_Insert(self);
 }
+#endif
 
 }

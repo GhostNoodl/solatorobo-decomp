@@ -48,9 +48,6 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     GfxSys *g;
     s32 alpha;
     s32 t;
-    u32 k;
-    s32 d;
-    s32 v;
     alpha = LO_FX_MUL(self->unk_68, 0x14000) >> 12;
     g = gGfxSys;
     if (alpha == 0) {

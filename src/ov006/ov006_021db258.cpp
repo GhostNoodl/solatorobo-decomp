@@ -26,6 +26,14 @@ static inline void ov006_Slot_Unpack(ov006_Slot *self, const ov006_SlotPacked *s
     STD_CopyLString(self->name, src->name, sizeof(self->name));
 }
 
+void ov006_UpdateNetSlots(void);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match wrote slot->aid through a C++ reference alias
+// `ov006_Slot *&slotRef = slot` (a permuter result) for the register assignment of i and slot; through slot itself
+// the registers differ. This file is the function's whole .text, so it has no delinks entry. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void ov006_UpdateNetSlots(void) {
     u16 j;
     ov006_SlotManager *mgr;
@@ -43,9 +51,6 @@ void ov006_UpdateNetSlots(void) {
     if (gWhMgr->state != 5) {
         return;
     }
-    // Writing unk12 through a reference to `slot` gives the target's
-    // register assignment for `i` and `slot` in the first loop (permuter).
-    ov006_Slot *&slotRef = slot;
     mgr = gOv006SlotManager;
     mgr->numActive = 0;
     mgr->unk5 = 0xff;
@@ -61,7 +66,7 @@ void ov006_UpdateNetSlots(void) {
             slot->active = 1;
             slot->type = 1;
             MI_CpuCopy8(p->packed.name, slot->name, sizeof(slot->name));
-            slotRef->aid = i;
+            slot->aid = i;
             ov006_Slot_Unpack(slot, &p->packed);
             if (i == func_02046ab4(gWhMgr)) {
                 gOv006SlotManager->unk5 = n;
@@ -89,5 +94,6 @@ void ov006_UpdateNetSlots(void) {
         }
     }
 }
+#endif
 
 }

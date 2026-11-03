@@ -1017,6 +1017,9 @@ void Ov013Act_021fea8c_StateAttack(Ov013Act_021fea8c *self) {
     BOOL m;
     if (self->unk_15d != 1) {
         m = FALSE;
+        // Kept (round auA honesty audit): never-true pointer-bit test. Without it the call's argument
+        // moves are scheduled differently (9 if/ternary/init/u8 forms tried). The file has .rodata,
+        // .data and .ctor and the function is mid-file, so it can't be cut out to a dsd gap.
         if ((u32)self & 3) {
             m = FALSE;
         }
@@ -1933,7 +1936,6 @@ void Ov013Act_021fea8c_State30(Ov013Act_021fea8c *self) {
     switch (self->fsm->st) {
     case 0: {
         Model0218fe1c *m;
-        Ov013Obj1c *q;
         EffectObj *o;
         void *info;
         s32 k;

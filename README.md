@@ -12,7 +12,7 @@
 <img src="docs/progress.svg" alt="Decompilation progress" width="720">
 
 <!-- progress:start -->
-**96.9%** of the code and **8,138 / 8,216** functions match the original game (updated 2026-11-03). Fully matched: Overlay 12, Overlay 13, Overlay 14, Overlay 15, Overlay 4, Overlay 7, Overlay 8.
+**95.7%** of the code and **8,111 / 8,216** functions match the original game (updated 2026-11-03). Fully matched: Overlay 12, Overlay 14, Overlay 4, Overlay 7, Overlay 8.
 <!-- progress:end -->
 
 </div>
@@ -60,7 +60,7 @@ The first `ninja` run builds the patched dsd, which takes a few minutes.
 
 [`docs/MATCHING.md`](docs/MATCHING.md) collects every compiler quirk and matching trick we've found so far, from register colouring to string pools. Start there before tackling a function.
 
-[`docs/UNMATCHED.md`](docs/UNMATCHED.md) lists the functions that don't match yet; each has a draft in an `#ifdef NONMATCHING` block that the default build leaves out. After a refactor (types, names, headers), run `ninja` and then `python tools/check_drafts.py --score`, which compiles every draft with its file's build flags and flags compile errors and drafts that score worse than their entry.
+[`docs/UNMATCHED.md`](docs/UNMATCHED.md) lists the functions that don't match yet; each has a draft in an `#ifdef NONMATCHING` block that the default build leaves out. After a refactor (types, names, headers), run `ninja` and then `python tools/check_drafts.py --score`, which compiles every draft with its file's build flags and flags compile errors and drafts that score worse than their entry. `python3 tools/honesty_scan.py` checks the matched code for tricks the project does not accept (fake parameters, `volatile` on ordinary memory, pointer-bit tests, dead stores, inline `asm`, permuter noise); it exits non-zero on a hit that is not triaged in `tools/honesty_allow.txt`.
 
 ## Credits
 

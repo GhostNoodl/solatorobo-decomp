@@ -844,7 +844,6 @@ static inline Actor *Ov010_FindActor(u16 id) {
 }
 
 void Ov010Obj022020c8_StateFly(Obj022020c8 *self) {
-    u16 *st;
     Actor *actor;
     if (!self->unk_ce_2) {
         self->targetObj->target = ActorMgr_FindPlayer()->id;

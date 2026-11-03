@@ -59,8 +59,7 @@ u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32
     u16 base;
     u16 step;
     s32 i;
-    s32 idx;
-    s32 x, y, z, s, c;
+    s32 x, z, s, c;
 
     a.x = pos->x;
     a.y = pos->y;

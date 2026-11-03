@@ -9,10 +9,6 @@ src/ov013/ov013_021fa6a0.cpp:
     complete
     .text       start:0x021fa6a0 end:0x021fb1b4
 
-src/ov013/ov013_021fb1b4.cpp:
-    complete
-    .text       start:0x021fb1b4 end:0x021fbd20
-
 src/ov013/ov013_021fbd20.cpp:
     complete
     .text       start:0x021fbd20 end:0x021fc400
@@ -67,7 +63,7 @@ src/ov013/ov013_02204768.cpp:
 
 src/ov013/ov013_022065ac.cpp:
     complete
-    .text       start:0x022065ac end:0x022069ec
+    .text       start:0x022065ac end:0x02206764
 
 src/ov013/ov013_022069ec.cpp:
     complete

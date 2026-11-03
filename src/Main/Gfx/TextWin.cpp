@@ -1965,7 +1965,6 @@ char *TextWin_ParseTag16_17(TextWin *win, char *p) {
 
 char *TextWin_ParseTag18_19(TextWin *win, char *p) {
     int len;
-    s32 v;
     if (*p == 'p') {
         win->code = 0x18;
         win->value = Str_ParseHex(p + 1, &len);
@@ -6626,6 +6625,9 @@ static inline void SlidePanel_SetCur(SlidePanel *p, u8 v) {
     p->cur = v;
 }
 
+// Kept (round auA honesty audit): `fn` is a local declared as an unused second parameter (the caller passes
+// only win); as a local the registers differ. TextWin.cpp has .data and this function is mid-file,
+// so it can't be cut out to a dsd gap.
 void func_02051a34(SlideWin *win, SlideCharFn fn) {
     char name[0x20];
     BOOL open;

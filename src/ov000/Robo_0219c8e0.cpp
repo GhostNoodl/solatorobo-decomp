@@ -29,7 +29,6 @@ s32 Model_FindResIdxByName(Model0218fe1c *self, void *p, const char *name);
 void func_ov000_0219c8e0(Robo021ca458 *self) {
     AnimEventTable *tbl;
     u8 *base;
-    const char *name;
     Model0218fe1c_SetRes(&self->mdl1, &self->res1, 0, 1);
     self->mdl1.actor_id = self->id;
     tbl = self->res1.unk_c0 != NULL ? (AnimEventTable *)((u8 *)*self->res1.unk_c0 + 8) : NULL;

@@ -22,7 +22,6 @@ extern void func_020627dc(s32 a);
 
 void Ov013Boss_Start(Ov013Boss *self) {
     ActorSub48 *m;
-    ActorSub44 *n;
     Ov003Actor *p;
     Ov003Actor_Start(self);
     self->hit->unk_30 = 0;

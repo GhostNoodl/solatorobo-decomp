@@ -204,7 +204,12 @@ void func_ov000_02181624(void) {
     func_ov000_021b4f28();
     {
         u8 **scene = &gSceneMgr;
-        // Overlay id: a link-time symbol in the original, so it comes from the literal pool.
+        // Overlay id: a link-time symbol in the original, so it comes from the
+        // literal pool. Kept as asm (round auA): the honest form
+        // `extern "C" u8 OVERLAY_3_ID[]; m = (s32)OVERLAY_3_ID;` loads the same
+        // pool word but swaps r7/r8 (720 declaration orders, block/u32 forms all
+        // tried), and the function sits mid-TU in a file with .bss, so it can't
+        // be demoted to a gap.
         asm { ldr m, =3 }
         if (m != LFLD(s32, *scene, 0x2c) && ActorMgr_CountActors(gActorMgr, 0xf000) != 0) {
             Scene_SetSubOverlay_0204b270(*scene, m, 0);
@@ -3275,10 +3280,10 @@ void *MessageQueue_AddBuffer_0216f398(Mgr021854d4 *mgr, Task021854d4 *task, s32 
 void MessageQueue021cb980_Push07(void *mgr, s32 a, s32 b);
 
 extern Mgr021854d4 *gMessageQueue;
-void MessageQueue021cb980_Push06(Mgr021854d4 *p);
+void MessageQueue021cb980_Push06(Mgr021854d4 *p, s32 a, s32 b, s32 c);
 
 void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
-    MessageQueue021cb980_Push06(gMessageQueue);
+    MessageQueue021cb980_Push06(gMessageQueue, arg, (s32)res, id);
     CmdObj_Push(SceneCmd_Get(), 0x11, 0);
 }
 

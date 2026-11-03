@@ -9,8 +9,8 @@ struct ActorRes;      // ov000/ActorParts.h
 struct Model;         // Main/Gfx/Model.h
 
 // The 0x54-byte 3D effect of Obj0216c954 (ctor func_ov000_021c2114, release func_ov000_021c216c,
-// update func_ov000_021c194c, draw func_ov000_021c1e78; the update's definition keeps two more
-// parameters that it only uses as locals, so it is not declared here). Once active it loads its own model,
+// update func_ov000_021c194c, draw func_ov000_021c1e78; the update is a NONMATCHING draft, see
+// docs/UNMATCHED.md). Once active it loads its own model,
 // turns from pos toward target and fades in; while it is shown its alpha pulses.
 typedef struct Obj021c2114 {
     union {

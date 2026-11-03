@@ -67,11 +67,9 @@ void *Tbl_GetResFile(s32 id) {
 
 // The leading Tbl_FindEntry is dead apart from its search loop, which MWCC
 // keeps. The lookup that is used re-reads the category in its loop
-// condition, and the unused copy of the type is needed for the register
-// assignment.
+// condition. The type is unsigned (it is only used as an index).
 const char *func_020701d4(s32 id) {
-    s32 type = id >> 12;
-    s32 unused = type;
+    u32 type = id >> 12;
     TblCat *cat = &data_0208d6d0[(u16)(type - 1)];
     TblRange *ranges = cat->ranges;
     u16 idx;

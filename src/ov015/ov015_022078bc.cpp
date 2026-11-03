@@ -56,6 +56,9 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
         self->res3.unk_00 = 0;
         self->res3.ownMdl = 1;
         kq = 0xcb8;
+        // Kept (round auA honesty audit): never-true pointer-bit test, no honest form found (jkK). It can't be
+        // demoted: the function uses this file's pooled strings (@stringBase0), and a dsd gap object
+        // can't relocate to a TU-local symbol.
         if ((u32)self & 3) {
             kq = 0xcb8;
         }

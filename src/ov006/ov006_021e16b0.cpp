@@ -78,7 +78,6 @@ void ov006_Unk021e16b0_Load(ov006_Unk021e16b0 *self) {
     int zero = 0;
     ov006_Caption *s;
     ov006_Label *l;
-    Model *model;
     s = (ov006_Caption *)Heap_Alloc(0x2c);
     if (s != NULL) {
         s->vtbl = ov006_Caption_vtbl;

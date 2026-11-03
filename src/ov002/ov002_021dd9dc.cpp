@@ -73,12 +73,17 @@ static inline void ov002_Board_Add(Obj021efe6c *self, Obj021efeb8 *node) {
     }
 }
 
-// `w` is an unused register parameter reused as a local: it has to be numbered
-// below every compiler temp, which only a parameter is. Each new piece reuses `a`
-// (the first loop's cursor), so it is a split web of `a` with the target's register.
-void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
+// Each new piece reuses `a` (the first loop's cursor), so it is a split web of `a`.
+void func_ov002_021dd9dc(Obj021eff10 *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the local w as an unused second parameter
+// (callers pass only self) so it numbers below every compiler temp; as a local the registers differ. This file is the
+// function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_ov002_021dd9dc(Obj021eff10 *self) {
     Ent021dd9dc *e;
-    w = self->owner->board;
+    Obj021efe6c *w = self->owner->board;
     Obj021efe9c *a;
     Obj021efe9c *next;
     a = (Obj021efe9c *)w->pieces;
@@ -131,5 +136,6 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
     }
     MI_CpuCopy8((u8 *)gStageFlags + 0x2a, w->unk_08, sizeof(w->unk_08));
 }
+#endif
 
 }

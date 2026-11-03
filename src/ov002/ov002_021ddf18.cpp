@@ -87,9 +87,16 @@ static inline void ov002_CamMove(Obj021efe6c *c, const VecFx32 *pos, s32 tx, s32
 
 static inline void *GetMgr021ddf18(void) { return gMsgRes; }
 
-// h and cam are locals passed as unused register parameters (the locals-as-parameters lever).
-// As user variables they number above every temp and the registers rotate (124-127 diffs, round jkE).
-void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe6c *cam) {
+void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals h and cam as unused parameters
+// (round jkE: as locals the registers rotate, 124-127 diffs). This file is the function's whole .text, so it has no
+// delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner) {
+    s32 h;
+    Obj021efe6c *cam;
     s32 w;
     void *g;
     UiObj *p;
@@ -172,5 +179,6 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
     }
     self->owner = NULL;
 }
+#endif
 
 }

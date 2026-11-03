@@ -59,7 +59,6 @@ void Ov014ActEx_0220eca0_Draw(Ov014ActEx_0220eca0 *self) {
 }
 
 void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
-    Model0218fe1c *m;
     ActorEx_Start(self);
     self->unk_ce = self->unk_18;
     self->unk_d0 = self->unk_1a << 4;

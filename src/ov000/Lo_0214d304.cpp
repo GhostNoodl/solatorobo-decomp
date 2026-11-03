@@ -94,20 +94,21 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
         y += 0xb;
         LoSetPos(self->unk_10, y << 12, py);
         if (self->unk_0c & 0x10000) {
-            if (i > self->unk_208) {
-            } else if (i == self->unk_208) {
-                u8 al = LO_FX_MUL(self->unk_210, 0x1f000) >> 12;
-                if (al != 0) {
-                    MODEL_FLAGS(self->unk_10)->unk_19 = 1;
-                    MODEL_FLAGS(self->unk_10)->alpha = al;
-                    MODEL_FLAGS(self->unk_10)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
+            if (i <= self->unk_208) {
+                if (i == self->unk_208) {
+                    u8 al = LO_FX_MUL(self->unk_210, 0x1f000) >> 12;
+                    if (al != 0) {
+                        MODEL_FLAGS(self->unk_10)->unk_19 = 1;
+                        MODEL_FLAGS(self->unk_10)->alpha = al;
+                        MODEL_FLAGS(self->unk_10)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
+                        self->unk_10->unk_150 = self->unk_68;
+                        Model_PlayPart(self->unk_10, 0xd);
+                        func_02041774(self->unk_10, 0xffff);
+                    }
+                } else {
                     self->unk_10->unk_150 = self->unk_68;
                     Model_PlayPart(self->unk_10, 0xd);
-                    func_02041774(self->unk_10, 0xffff);
                 }
-            } else {
-                self->unk_10->unk_150 = self->unk_68;
-                Model_PlayPart(self->unk_10, 0xd);
             }
         } else if (i + 1 <= self->unk_208) {
             self->unk_10->unk_150 = self->unk_68;

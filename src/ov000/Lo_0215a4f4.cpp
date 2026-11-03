@@ -57,8 +57,6 @@ void func_ov000_0215a4f4(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     GfxSys *g;
     s32 sx;
     s32 sy;
-    s32 x;
-    s32 y;
     if (enable == 0) {
         return;
     }

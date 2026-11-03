@@ -162,7 +162,6 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         s32 v = gSceneCmd->unk_98;
         void *text;
         void *text1;
-        u8 *w;
         Model *m;
         VObj *o;
         if (!IsA_021b9010(v) && (u32)(v - 0x11) > 2) {

@@ -3030,6 +3030,8 @@ void Ov014Act_02201b94_StateDie(Ov014Act_02201b94 *self) {
         self->unk_f4 |= 0x1300000;
         Ov003TickerSet_SetPaused((u8 *)self + 0x100, FALSE);
         off = 0x100;
+        // Kept (round auA honesty audit): never-true pointer-bit test, no honest form found (jkK); the file
+        // has .data and the function is mid-file, so it can't be cut out to a dsd gap.
         if ((u32)self & 3) {
             off = 0x100;
         }

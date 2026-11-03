@@ -85,7 +85,6 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
 static inline void Ov015_SetXZ(s32 *v, s32 x, s32 z) { v[0] = x; v[2] = z; }
 BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     s32 a;
-    s32 x, z;
     Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
     p->animSpeed = 0x59a;
     Model0218fe1c_SetLoop(&p->model);

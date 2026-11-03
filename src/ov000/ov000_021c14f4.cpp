@@ -124,7 +124,6 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         s32 a;
         s32 b;
         s32 q;
-        Cam_021c14f4 *g;
         if (ActorMarker_UpdateFade(self, 0x6000)) {
             return;
         }

@@ -92,7 +92,17 @@ static inline void Ov013_Show(Ov003Actor *self) {
 
 extern "C" {
 
-void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, VecFx32 *cur) {
+void Ov013Boss_StateAttack2(Ov013Boss *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals pos, prev and cur as unused
+// parameters (state functions take only self); as locals the registers differ. This file is the function's whole
+// .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov013Boss_StateAttack2(Ov013Boss *self) {
+    const VecFx32 *pos;
+    VecFx32 *prev;
+    VecFx32 *cur;
     BOOL shake = FALSE;
     VecFx32 v_1;
     s32 z_0;
@@ -351,4 +361,5 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         }
     }
 }
+#endif
 }

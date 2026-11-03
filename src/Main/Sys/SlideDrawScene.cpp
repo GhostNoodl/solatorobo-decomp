@@ -112,7 +112,15 @@ u8 Model_GetAlpha(Model *model);
 void Model_SetPolyId(Model *model, u32 v);
 void func_02056d50(Model *model);
 
-void func_02056230(SlideDrawScene *scene, s32 i) {
+void func_02056230(SlideDrawScene *scene);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the loop counter i as an unused second
+// parameter; as a local at all 17 declaration positions the registers differ. This file is the function's whole
+// .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_02056230(SlideDrawScene *scene) {
+    s32 i;
     s16 y;
     s32 sx;
     SlideCol3 cols;
@@ -127,7 +135,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     s32 sy;
     SlidePanel *first;
     s32 s;
-    SlidePanel *panel;
+    SlidePanel *panel = NULL;
     s32 dy;
 
     gfx = func_0204f354();
@@ -152,7 +160,6 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
         polyId = 0x12;
         top = bottom;
     }
-    if (panel && panel && panel) {}
     dy = func_020534c4(Text_FxMul(scene->dimT, 0x7000));
     lift = func_020534d4(scene);
     GfxGe_PushMtx();
@@ -343,5 +350,6 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     }
     }
 }
+#endif
 
 }

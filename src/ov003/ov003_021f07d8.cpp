@@ -127,7 +127,6 @@ extern Ov003CntGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 
 s32 Ov003CntSelf_CountLiving(Ov003CntSelf *self) {
     Ov003CntGroup *g;
-    Ov003CntActor *head;
     Ov003CntActor *a;
     s32 r = 0;
     s32 total = 0;

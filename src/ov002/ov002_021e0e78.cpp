@@ -40,6 +40,13 @@ Ov002HudInfo *Ov002Vt_021f000c_DtorDelete(Ov002HudInfo *self) {
     return self;
 }
 
+void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match needed the pointer-bit trick (a second, never-taken
+// definition of a local under if ((u32)self & 3)); this is the honest code without it. The score is in
+// docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
     s32 x;
     s32 y;
@@ -52,12 +59,7 @@ void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
         int i;
         Ov002Text2 *o;
         s32 by;
-        /* i has a second, never-taken definition so the backend keeps the
-           i = 0 / by order of the source in the loop preheader. */
         i = 0;
-        if ((u32)self & 3) {
-            i = 0;
-        }
         by = y + 0x14;
         do {
             o = self->lines[i];
@@ -75,5 +77,6 @@ void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
     model->unk_110 = (y - 0x88) << 12;
     Model_PlayPart(model, 0);
 }
+#endif
 
 }

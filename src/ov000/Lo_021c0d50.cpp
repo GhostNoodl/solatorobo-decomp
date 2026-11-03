@@ -26,7 +26,6 @@ Glyph021c0d50 *func_ov000_021c0d50(ActorMarkerWork *work, u16 *cmd, Glyph021c0d5
     u16 n = *count;
     Glyph021c0d50 *last = &arr[n - 1];
     s32 off = 0;
-    s32 x;
     s32 c;
     u32 pal;
     s32 i;

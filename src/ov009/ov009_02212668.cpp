@@ -17,7 +17,6 @@ extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 a);
 void Ov009ActSpin_StateIdle(Ov009ActSpin *self) {
     VecFx32 d;
     s32 x, y, z;
-    int s;
     x = self->unk_134.x;
     self->unk_f2 += 0x60;
     y = self->unk_134.y + OV009_SIN(self->unk_f2);

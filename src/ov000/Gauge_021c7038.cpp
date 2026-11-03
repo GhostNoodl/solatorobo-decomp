@@ -68,11 +68,22 @@ static inline s32 Ratio021c7038(s32 n, s32 d) {
     return r;
 }
 
-// The gauge size, loop counter, step and alpha live in parameters: that gives
-// the target register assignment (see docs/MATCHING.md, round ovhimid6).
 #define FLAGS(g) (*(Flags021c7038 *)&(g)->unk_0c)
 
-void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 scale, s32 w, s32 i, s32 step) {
+void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 c, s32 scale);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the locals h, w, i and step as unused
+// parameters past the slot's five (self, a, pos, c, scale) and reused a as the alpha local (round ovhimid6); with
+// real locals at every position the registers differ. This file is the function's whole .text, so it has no delinks
+// entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 c, s32 scale) {
+    s32 h;
+    s32 w;
+    s32 i;
+    s32 step;
+    s32 alpha;
     GfxSys *g = gGfxSys;
     u32 attr;
     s32 z;
@@ -110,12 +121,13 @@ void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h,
     }
     z = pos->z;
     if (FLAGS(self).b4) {
-        a = LO_FX_MUL(LO_FX_MUL(self->unk_48, scale), 0x10000) >> 12;
-        if (a != 0) {
-            G3_Cmd1_021c7038(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x8d0 | (a << 16));
+        alpha = LO_FX_MUL(LO_FX_MUL(self->unk_48, scale), 0x10000) >> 12;
+        if (alpha != 0) {
+            G3_Cmd1_021c7038(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x8d0 | (alpha << 16));
             self->vfunc_44(pos->x, pos->y, z + 0x50, w, h, 4);
         }
     }
 }
+#endif
 
 }

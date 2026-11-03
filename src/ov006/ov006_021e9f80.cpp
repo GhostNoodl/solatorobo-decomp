@@ -20,8 +20,14 @@ static inline s64 ov006_Sq021e9f80(s32 v) {
     return (s64)v * v;
 }
 
+void Ov006Racer_UpdateCheckpoint(Ov006Racer *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match set the sqrt busy mask a second time under the
+// never-true pointer-bit test `if ((u32)self & 3)`; with the plain 0x8000 mask the registers and schedule differ.
+// This file is the function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
-    s32 sqrtBusy;
     Ov006RacerPt *p;
     Ov006RacerPt *goal;
     Ov006RacerPt *a;
@@ -52,17 +58,13 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
             b = &self->pts[self->lastPt];
             a = &self->pts[self->nextPt];
             if (b != NULL && a != NULL) {
-                sqrtBusy = 0x8000;
-                if ((u32)self & 3) {
-                    sqrtBusy = 0x8000;
-                }
                 s64 sq;
                 self->courseRot.y = FX_Atan2(a->pos.x - b->pos.x, a->pos.z - b->pos.z);
                 sq = ov006_Sq021e9f80(b->pos.x - a->pos.x);
                 sq += ov006_Sq021e9f80(b->pos.z - a->pos.z);
                 OV006R_SQRTCNT = 1;
                 OV006R_SQRT_PARAM = (u64)(sq * 4);
-                while (OV006R_SQRTCNT & sqrtBusy) {
+                while (OV006R_SQRTCNT & 0x8000) {
                 }
                 self->courseRot.x = -FX_Atan2(a->pos.y - b->pos.y, (s32)(OV006R_SQRT_RESULT + 1) >> 1);
             }
@@ -109,5 +111,6 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
         }
     }
 }
+#endif
 
 }

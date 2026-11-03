@@ -36,7 +36,6 @@ struct Obj021569f8 : public VObj {
 };
 
 void UiList_DrawItemText(Obj021569f8 *self, Item021569f8 *item, s32 x, s32 y, u8 col, u8 front) {
-    Model *m;
     if (self->unk_b4 == NULL || item->id == 0xffff) {
         return;
     }

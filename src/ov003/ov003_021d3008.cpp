@@ -107,8 +107,6 @@ static inline void Dispatch(Ov003Actor *self, u32 kind) {
 
 void Ov003Actor_RunState(Ov003Actor *self) {
     u16 *p50;
-    u8 kind;
-    s32 i;
     self->unk_ec = 0;
     switch (self->unk_b0->unk_0c_0) {
     case 1:

@@ -3397,7 +3397,6 @@ int StageCmd_Op3d(StageResSlot *slot) {
     StageVec pos;
     StageLightParam param;
     u8 color2[3];
-    int i;
     StageLight2 *light;
     StageRes *res;
     if (Field_HasEvent(0x11)) {

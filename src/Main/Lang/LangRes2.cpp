@@ -102,7 +102,6 @@ BOOL func_0206facc(void) {
 
 
 void func_0206faec(void) {
-    LangNamedTable *t;
     void **data;
     if (data_0214b160.res->IsLoaded()) {
         return;

@@ -14,8 +14,8 @@ static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
     }
 }
 
-// g is a local; as a trailing parameter it gets the target's registers.
-BOOL Robo021ca458_HandleMsg(Actor *self, ActorMsg *msg, FieldState *g) {
+BOOL Robo021ca458_HandleMsg(Actor *self, ActorMsg *msg) {
+    FieldState *g;
     Robo021ca458 *s = (Robo021ca458 *)self;
     BOOL callBase;
     BOOL ok;

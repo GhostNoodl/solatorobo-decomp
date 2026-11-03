@@ -77,8 +77,6 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
     s32 maxd;
     s32 d;
     s32 v;
-    s32 x;
-    s32 y;
     s32 z;
     u16 id;
 

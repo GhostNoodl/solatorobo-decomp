@@ -482,7 +482,6 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         ov006_Gauge021d6724 *g;
         Model *model;
         VecFx32021d6724 *p;
-        u8 n;
         ov006_Manager_DispatchMenuCb(7, ov006_GetSlotManager(), result);
         g = (ov006_Gauge021d6724 *)Heap_Alloc(0x38);
         if (g != NULL) {

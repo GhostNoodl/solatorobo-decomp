@@ -3251,7 +3251,6 @@ void Ov003ActVt_021f86d0_State20(ActorEx *self) {
     case 1: {
         ActorSub40 *w = self->fsm;
         u16 t;
-        s32 s;
         w->timer++;
         t = w->timer;
         self->model->alpha = t;

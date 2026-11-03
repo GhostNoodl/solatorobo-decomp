@@ -29,9 +29,15 @@ static inline void updateModel(Obj021efe8c *m) {
     }
 }
 
-// Callers pass only self. The loop counter `i` is declared as an unused second
-// parameter because that gives the target's register allocation.
-void func_ov002_021dedf0(Obj021efef0 *self, s32 i) {
+void func_ov002_021dedf0(Obj021efef0 *self);
+
+#ifdef NONMATCHING
+// Status (round auA): demoted in the honesty audit. The match declared the loop counter i as an unused second
+// parameter (callers pass only self); as a local the registers differ. This file is the function's whole .text, so it
+// has no delinks entry. The score is in docs/UNMATCHED.md;
+// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+void func_ov002_021dedf0(Obj021efef0 *self) {
+    s32 i;
     Ov002Shape *sh;
     s32 j;
     s32 rows;
@@ -68,5 +74,6 @@ void func_ov002_021dedf0(Obj021efef0 *self, s32 i) {
         }
     }
 }
+#endif
 
 }

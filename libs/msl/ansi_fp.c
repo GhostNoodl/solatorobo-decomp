@@ -218,7 +218,9 @@ void __two_exp(decimal *result, long exp) {
     }
     {
         decimal x2, temp;
-        // fake match: equivalent to exp / 2, which MWCC emits as add r1, r4, r4, lsr #31
+        // fake match: equivalent to exp / 2, which MWCC emits as add r1, r4, r4, lsr #31.
+        // Kept (round auA honesty audit): no compiler version gives the ROM's form for exp / 2; ansi_fp.c has
+        // .data and pooled strings and the function is mid-file, so it can't be cut out to a dsd gap.
         __two_exp(&x2, (exp + (long)((unsigned long)(exp & 0x80000000) >> 31)) >> 1);
         __timesdec(result, &x2, &x2);
         if (exp & 1) {

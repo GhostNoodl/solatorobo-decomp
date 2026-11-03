@@ -249,9 +249,6 @@ static inline void Effect_MtxRotYXZ(MtxFx43 *m, s32 range) {
 }
 
 void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
-    u16 rx;
-    u16 ry;
-    u16 rz;
     s32 f;
     s32 range;
 

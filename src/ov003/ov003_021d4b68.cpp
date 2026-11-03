@@ -494,7 +494,6 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0: {
         u16 ang;
-        s32 spd;
         Ov003KbObj *o;
         Model0218fe1c_SetAnim(self->model, data_ov003_021f7a7f, 0x2ab, 0);
         if (self->targetObj->type == 0) {
