@@ -66,7 +66,7 @@ typedef struct Obj0216c954 {
     s32 unk_18;
     u16 kind; // 0x1c
     u8 unk_1e[0x2];
-    s32 count; // 0x20 shown by func_ov000_0216c800 (func_ov000_0216ca64 sets both)
+    s32 count; // 0x20 shown by func_ov000_0216c800 (Obj0216c954_SetCount sets both)
     s32 total; // 0x24
     u16 part; // 0x28 model part played between parts 13 and 14 (0xffff: no model)
     u16 findKind; // 0x2a the kind whose spawn positions are searched
@@ -83,7 +83,7 @@ extern "C" {
 
 void func_ov000_0216c954(Obj0216c954 *self, u16 kind, s32 mode);
 void Obj0216c9b0_Release(Obj0216c954 *self);
-void func_ov000_0216ca64(Obj0216c954 *self, s32 count, s32 total);
+void Obj0216c954_SetCount(Obj0216c954 *self, s32 count, s32 total);
 BOOL func_ov000_0216ca70(Obj0216c954 *self);
 void func_ov000_0216d14c(Obj0216c954 *self);
 void func_ov000_0216d474(Obj0216c954 *self);

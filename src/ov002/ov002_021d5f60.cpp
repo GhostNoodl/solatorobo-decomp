@@ -7,7 +7,7 @@ void func_ov002_021e3620(UiList *self, u16 id, s32 b);
 
 void func_ov000_021b1d28(void);
 
-void func_0206d390(void *a, u8 b, u8 c);
+void StageFlags_SetCounter(void *a, u8 b, u8 c);
 
 s32 SndMgr_PlayPan(void *a, int b, int c);
 
@@ -47,7 +47,7 @@ void func_ov002_021d5f60(Task021efc24 *self) {
         } else if (v > 99) {
             v = 99;
         }
-        func_0206d390(gStageFlags, i, (s8)v);
+        StageFlags_SetCounter(gStageFlags, i, (s8)v);
     }
     SndMgr_PlayPan(gSndMgr, 0x2c, -5);
     SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);

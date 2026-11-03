@@ -16,7 +16,7 @@ void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
 void ListBuffer021cb940_Release(void *p);
 
-s32 func_ov000_02170100(ListBuffer021cb940 *self) {
+s32 ListBuffer021cb940_GetWindowMode(ListBuffer021cb940 *self) {
     if (self->win == NULL) {
         Message *m = MessageQueue_FindById((MessageQueue *)self->unk_0c, 6);
         return m != NULL ? (s32)(m->unk_0c >> 16) : -1;

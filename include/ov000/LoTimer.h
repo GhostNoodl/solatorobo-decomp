@@ -2,7 +2,7 @@
 #define OV000_LOTIMER_H
 
 // The field's stage timer (0x54 bytes, ctor LoTimer_Init; ListBuffer021cb940::unk_54, made by
-// func_ov000_02171478). LoTimer_Setup starts it counting up to `limit` (mode 1) or down from it
+// MessageQueue021cb980_HandleMsg). LoTimer_Setup starts it counting up to `limit` (mode 1) or down from it
 // to 0 (mode 2); LoTimer_Update runs it (state 0..9), LoTimer_Draw draws it with its two
 // models (built by func_ov000_0216e67c, freed by LoTimer_FreeModels). Times are in frames
 // (0x57e40: 99:59.99).

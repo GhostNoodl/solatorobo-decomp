@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021dc510(Obj021eff10 *self, Obj021eff50 *other) {
+void Obj021eff10_Exit(Obj021eff10 *self, Obj021eff50 *other) {
     Obj021efe6c *board = other->board;
     s32 row = self->unk_28;
     Obj021efe4c *q = board->field;

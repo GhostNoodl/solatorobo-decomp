@@ -9,16 +9,16 @@ void func_ov000_021736dc(void);
 void *Param_Get(u32 id);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void ov006_SetupDefaultSlots(void);
-void func_ov006_021cd5a8(int type, UiList *obj, int arg);
+void ov006_Manager_Mode00(int type, UiList *obj, int arg);
 
-void func_ov006_021cddf8(int type, UiList *obj, int arg) {
+void ov006_Manager_Mode08(int type, UiList *obj, int arg) {
     switch (type) {
     case 2:
         ov006_SetupDefaultSlots();
         TaskHost_RequestSwitch(gTaskHost, 0x29, 0);
         break;
     case 3:
-        func_ov006_021cd5a8(type, obj, arg);
+        ov006_Manager_Mode00(type, obj, arg);
         GfxSys_StartFadeIn(0x1e000, 0, 0);
         GfxSys_StartFadeIn(0x1e000, 0, 1);
         break;
@@ -38,7 +38,7 @@ void func_ov006_021cddf8(int type, UiList *obj, int arg) {
         obj->vfunc_74(Param_Get(0xb00a), 0xb00a, 0xffff, 0xffff);
         break;
     default:
-        func_ov006_021cd5a8(type, obj, arg);
+        ov006_Manager_Mode00(type, obj, arg);
         break;
     }
 }

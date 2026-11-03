@@ -34,7 +34,7 @@ static inline void ov002_setXY(Model *o, s32 x, s32 y) {
 
 void Ov002_ProjectToScreen(s32 *out, s32 *v, void *m);
 
-void func_ov002_021d9070(Obj021efed4 *self) {
+void Ov002Vt_021efed4_Draw(Obj021efed4 *self) {
     s32 out[2];
     if (self->unk_80 == NULL) {
         return;

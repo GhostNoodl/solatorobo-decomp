@@ -8,7 +8,7 @@ extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 void Obj0215eab4_Draw(void *p);
 
-void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
+void LoBase021cafc0_021cb0b8_DrawCursor(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
     s32 h = self->vfunc_40() << 12;
     s32 hh = h * self->cursor;
     s32 z;

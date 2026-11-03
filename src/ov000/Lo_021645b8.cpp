@@ -13,7 +13,7 @@ void func_ov000_02164a94(Lo021cb6b0 *self);
 void func_ov000_02167d64(Lo021cb6b0 *self);
 void func_ov000_02166be8(Lo021cb6b0 *self);
 
-void func_ov000_021645b8(Lo021cb6b0 *self) {
+void Lo021cb6b0_Update(Lo021cb6b0 *self) {
     switch (self->unk_20) {
     case 0: {
         char buf[0x20];

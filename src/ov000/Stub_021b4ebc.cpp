@@ -23,7 +23,7 @@ void func_ov000_021b4eec(void) {
     if (gFieldMgr == NULL) {
         FieldMgr *p = (FieldMgr *)Heap_Alloc(sizeof(FieldMgr));
         if (p != NULL) {
-            p = func_ov000_021b5054(p);
+            p = FieldMgr_Init(p);
         }
         gFieldMgr = p;
     }

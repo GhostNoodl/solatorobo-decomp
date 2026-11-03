@@ -53,7 +53,7 @@ VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block) {
     return block->next;
 }
 
-void func_02039a34(GfxMgr *mgr) {
+void GfxMgr_Init(GfxMgr *mgr) {
     int i;
     VramBlock *block;
     mgr->unk_004 = 0;

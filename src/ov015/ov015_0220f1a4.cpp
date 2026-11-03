@@ -6,7 +6,7 @@ Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 Ov015Result_vtbl[];
 extern u8 Ov015ResultPanel_vtbl[];
-void func_ov015_0220ec40(Ov015ResultPanel *self);
+void Ov015ResultPanel_DtorBase(Ov015ResultPanel *self);
 
 
 static inline BOOL Ov015_IsKind5f1a4(UiObj *o) {
@@ -207,7 +207,7 @@ Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
     return self;
 }
 
-void func_ov015_0220f470(Ov015Result *self) {
+void Ov015Result_Init(Ov015Result *self) {
     Ov015ResultPanel *p = (Ov015ResultPanel *)Heap_Alloc(0x64);
     if (p != NULL) {
         SET_VT(p, Ov015ResultPanel_vtbl);
@@ -224,7 +224,7 @@ void func_ov015_0220f470(Ov015Result *self) {
     self->panel = p;
 }
 
-void func_ov015_0220f4d4(Ov015Result *self) {
+void Ov015Result_DtorBase(Ov015Result *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->panel);
@@ -236,7 +236,7 @@ void func_ov015_0220f4d4(Ov015Result *self) {
 
 void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
     SET_VT(self, Ov015ResultPanel_vtbl);
-    func_ov015_0220ec40(self);
+    Ov015ResultPanel_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -251,7 +251,7 @@ static inline void Ov015_SetStageSkip(s32 v) {
     g->unk_14 = v;
     g->unk_18 = 0;
 }
-BOOL func_ov015_0220f568(Ov015Result *self) {
+BOOL Ov015Result_Update(Ov015Result *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:

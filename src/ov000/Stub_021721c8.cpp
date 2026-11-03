@@ -6,7 +6,7 @@ void func_ov000_0216f23c(BufferList *list, BOOL mode);
 extern void *gTaskHost;
 void func_ov000_02180bfc(void *p);
 
-void func_ov000_021721c8(MessageQueue021cb980 *self) {
+void MessageQueue021cb980_Draw(MessageQueue021cb980 *self) {
     func_ov000_0216f23c(&self->list, 1);
     if (gTaskHost != NULL) {
         func_ov000_02180bfc(gTaskHost);

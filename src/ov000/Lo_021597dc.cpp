@@ -23,7 +23,7 @@ static inline BOOL Lo_Busy021597dc(Lo021cb3a8 *self) {
 }
 
 // The list input handler of Lo_02155770.cpp without the item and sub-menu cases.
-void func_ov000_021597dc(Lo021cb3a8 *self) {
+void Lo021cb3a8_HandleInput(Lo021cb3a8 *self) {
     u16 cont;
     u16 trig;
     if (!Lo_Active021597dc(self)) {

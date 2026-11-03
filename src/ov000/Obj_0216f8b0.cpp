@@ -71,7 +71,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
 
 extern "C" {
 
-void func_ov000_0216f8b0(Obj0216f8b0 *self) {
+void TimedBuffer021cb920_Update(Obj0216f8b0 *self) {
     MessageQueue *q = self->unk_0c;
     switch (self->unk_20) {
     case 3:

@@ -78,7 +78,7 @@ extern void Model0218fe1c_BindAnim3Res(void *model, ActorRes *res);
 extern Ov003AnimLayer *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
 extern void Model0218fe1c_SetAnim3(void *model, s32 a, s32 b, s32 c);
 extern ActorSub40 *History_Init(void *p);
-extern u8 *func_0206ef10(u16 id);
+extern u8 *Param_GetRecord(u16 id);
 extern void Model0218fe1c_StopAnim(Model0218fe1c *model);
 extern void ResSet_SetName0(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
 extern void ResSet_SetName1(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
@@ -92,7 +92,7 @@ static inline ActorRes *Ov003Prop_MainRes(Ov003Prop021fa548 *self) {
 
 static inline Ov003PropDef *Ov003_GetDef(u16 a) {
     Ov003PropDef *def = NULL;
-    u8 *p = func_0206ef10(a | 0x8000);
+    u8 *p = Param_GetRecord(a | 0x8000);
     if (p != NULL) {
         def = (Ov003PropDef *)(p + 0xc);
     }

@@ -335,19 +335,19 @@ void NNS_SndArcSetFileAddress(u32 fileId, void *address) {
     arc->fat->files[fileId].mem = address;
 }
 
-const char *func_020304dc(void) {
+const char *SndArc_GetAltPath(void) {
     NNSSndArc *arc = sCurrent;
 
     return arc->altPath;
 }
 
-u32 func_020304f0(void) {
+u32 SndArc_GetAltTop(void) {
     NNSSndArc *arc = sCurrent;
 
     return arc->altTop;
 }
 
-u32 func_02030504(void) {
+u32 SndArc_GetAltBottom(void) {
     NNSSndArc *arc = sCurrent;
 
     return arc->altBottom;

@@ -1,13 +1,13 @@
 #include "nnsys/snd/sndarc_stream.h"
 
-StrmThread *func_02031ac0(void) {
+StrmThread *Strm_GetThread(void) {
     return &data_02096bd0;
 }
 
-StrmPlayer *func_02031acc(StrmHandle *handle, int playerNo, int prio) {
+StrmPlayer *Strm_AllocPlayer(StrmHandle *handle, int playerNo, int prio) {
     StrmPlayer *player;
     if (handle->player != NULL) {
-        func_0203199c(handle);
+        NNS_SndArcStrmReleaseHandle(handle);
     }
     player = &data_020965e0[playerNo];
     if (player->buffer == NULL) {
@@ -17,7 +17,7 @@ StrmPlayer *func_02031acc(StrmHandle *handle, int playerNo, int prio) {
         if (prio < player->prio) {
             return NULL;
         }
-        func_02031e48(player);
+        StrmPlayer_ForceStop(player);
     }
     player->prio = prio;
     player->active = TRUE;
@@ -26,7 +26,7 @@ StrmPlayer *func_02031acc(StrmHandle *handle, int playerNo, int prio) {
     return player;
 }
 
-void func_02031b58(StrmPlayer *player) {
+void StrmPlayer_Free(StrmPlayer *player) {
     if (player->handle != NULL) {
         player->handle->player = NULL;
         player->handle = NULL;
@@ -36,17 +36,17 @@ void func_02031b58(StrmPlayer *player) {
     player->playing = FALSE;
 }
 
-BOOL func_02031b84(StrmHandle *handle, const NNSSndArcStrmInfo *info, int playerNo, int prio, u32 strmNo, u32 offset, u32 a6, u32 a7, void *a8, u32 a9) {
+BOOL Strm_PreparePlayer(StrmHandle *handle, const NNSSndArcStrmInfo *info, int playerNo, int prio, u32 strmNo, u32 offset, u32 a6, u32 a7, void *a8, u32 a9) {
     StrmPlayer *player;
     int format;
     int chNum;
-    player = func_02031acc(handle, playerNo, prio);
+    player = Strm_AllocPlayer(handle, playerNo, prio);
     if (player == NULL) {
         return FALSE;
     }
-    func_02032c54(player, info->fileId);
+    StrmPlayer_SetFileFuncs(player, info->fileId);
     if (!player->openFn(player, info->fileId)) {
-        func_02031b58(player);
+        StrmPlayer_Free(player);
         return FALSE;
     }
     player->startOffset = (u32)((u64)player->header.sampleRate * offset / 1000);
@@ -89,15 +89,15 @@ BOOL func_02031b84(StrmHandle *handle, const NNSSndArcStrmInfo *info, int player
         chNum = player->chNum;
     }
     player->mono = chNum == 1;
-    if (!func_02031f48(player, chNum, player->chList)) {
+    if (!StrmPlayer_AllocChannel(player, chNum, player->chList)) {
         player->closeFn(player);
-        func_02031b58(player);
+        StrmPlayer_Free(player);
         return FALSE;
     }
-    if (!NNS_SndStrmSetup(&player->strm, format, player->buffer, player->bufSize * chNum / player->chNum, player->header.timer, 4, func_020321d4, player)) {
-        func_02031f80(player);
+    if (!NNS_SndStrmSetup(&player->strm, format, player->buffer, player->bufSize * chNum / player->chNum, player->header.timer, 4, StrmPlayer_OnStrmData, player)) {
+        StrmPlayer_FreeChannel(player);
         player->closeFn(player);
-        func_02031b58(player);
+        StrmPlayer_Free(player);
         return FALSE;
     }
     if (chNum == 2) {

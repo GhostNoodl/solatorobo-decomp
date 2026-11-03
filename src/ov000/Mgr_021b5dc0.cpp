@@ -19,8 +19,8 @@ typedef struct {
 extern "C" {
 
 extern Group *gGroup;
-extern const FieldMgrFn data_ov000_021cc81c;
-extern const FieldMgrFn data_ov000_021cc824;
+extern const FieldMgrFn FieldMgr_StepCameraAnim_pmf;
+extern const FieldMgrFn FieldMgr_StepTouchArea_pmf;
 extern char data_ov000_021cc82c[];
 extern char data_ov000_021cc83d[];
 
@@ -164,11 +164,11 @@ void func_ov000_021b5dc0(FieldMgr *self) {
                 self->unk_1f2 = 0xa4;
             }
             cam->base.speed = self->unk_1f2;
-            self->step = data_ov000_021cc81c;
+            self->step = FieldMgr_StepCameraAnim_pmf;
         }
     }
     if (self->blockB->unk_19_2) {
-        self->step = data_ov000_021cc824;
+        self->step = FieldMgr_StepTouchArea_pmf;
     }
     if (g->unk_ca.c[0] != 0x12) {
         return;

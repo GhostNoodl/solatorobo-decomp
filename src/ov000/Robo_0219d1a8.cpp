@@ -40,7 +40,7 @@ void *Heap_Alloc(u32 size);
 Info0219d1a8 *Tbl_FindEntry_0206fef8(u16 id);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 s32 Model_FindResIdxByName(void *m, void *p, const char *name);
-void func_ov000_0219c8e0(u8 *self);
+void Robo021ca458_SetupModel(u8 *self);
 void Body_SetOwner(void *o, u16 id);
 void HitSphere_Unlink_0203f364(void *o);
 void *Obj021984c8_Init(void *p);
@@ -129,7 +129,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->unk_a48 = Model_FindResIdxByName(&self->mdl0, (u8 *)self + 0x200, data_ov000_021cc60f);
     Model0218fe1c_SetRes(&self->mdl2, &self->res3, 0, 1);
     self->mdl2.actor_id = self->id;
-    func_ov000_0219c8e0((u8 *)self);
+    Robo021ca458_SetupModel((u8 *)self);
     x = self->radius;
     z = self->centerY;
     Body_SetOwner(&self->hit0, self->id);

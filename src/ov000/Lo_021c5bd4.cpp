@@ -12,7 +12,7 @@ void *ResList_FindType2(void *a, void *b);
 void TexObj_SetAllOamFuncs(void *model, void *fn);
 void *func_ov000_021c5a0c(u8 *self, u16 *cmd, void *arr, u16 *count);
 
-void func_ov000_021c5bd4(Lo021cca40 *self) {
+void Lo021cca40_Update(Lo021cca40 *self) {
     void *res;
     TextWin *p;
     u8 *m;

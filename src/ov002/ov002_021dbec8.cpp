@@ -46,7 +46,7 @@ static inline void ov002_Cursor_SetMode(Obj021efe8c *c) {
     Ov002Mdl021efe3c_Load(&c->mdl);
 }
 
-void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
+void Obj021eff10_Enter(Obj021eff10 *self, Obj021eff50 *owner) {
     Obj021efe5c *m;
     MtxFx22 r;
     self->owner = owner;

@@ -8,13 +8,13 @@ extern void *gMsgRes;
 void *MsgRes_GetString(void *a, int id);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_ov015_02203ee0(Ov015Scene2a08 *self);
-void func_ov015_02207c30(Ov015Ship *p);
+void Ov015Ship_Update(Ov015Ship *p);
 BOOL MsgBox_Update(void *p);
 extern Ov015Vec data_ov015_02212614;
 extern Ov015Vec data_ov015_02212620;
 void MsgBox_Render(void *p);
 void Ov015Shadow_DrawAt(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
-void func_ov015_02208070(Ov015Ship *p);
+void Ov015Ship_Draw(Ov015Ship *p);
 void *func_0206ec8c(u16 id);
 
 static inline UiListItem *Ov015_ListNth2(UiList *o) {
@@ -149,7 +149,7 @@ void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
             t->unk_84->vfunc_70();
         }
     }
-    func_ov015_02207c30(self->ship);
+    Ov015Ship_Update(self->ship);
     self->unk_80->vfunc_1c();
     self->unk_84->vfunc_1c();
     self->unk_88->vfunc_1c();
@@ -176,7 +176,7 @@ void Ov015Scene2a08_Draw(Ov015Scene2a08 *self) {
     if (self->fadeRatio == NULL) return;
     Task_Draw(self);
     Ov015_02203d64_Cam(self);
-    func_ov015_02208070(self->ship);
+    Ov015Ship_Draw(self->ship);
     o = self->ship;
     {
         Ov015Vec v = o->pos;
@@ -260,7 +260,7 @@ BOOL Ov015Scene2c08_List3cOnDecide(UiList *self, UiListItem *item) {
     return r;
 }
 
-void func_ov015_02204110(Ov015Scene2c08 *self) {
+void Ov015Scene2c08_DtorBase(Ov015Scene2c08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);

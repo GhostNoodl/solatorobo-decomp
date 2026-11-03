@@ -27,7 +27,7 @@ static inline BOOL IsIdle021b6be4(FieldState *m) {
     return r;
 }
 
-void func_ov000_021b6be4(FieldMgr *self) {
+void FieldMgr_StepCameraAnim(FieldMgr *self) {
     FieldState *m;
     Camera *s;
     if (self->unk_1f2 == 0) {

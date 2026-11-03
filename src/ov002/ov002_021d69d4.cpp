@@ -114,7 +114,7 @@ int Ov002Vt_021efca4_GetPadTop(void) {
     return 6;
 }
 
-int func_ov002_021d6c64(UiList *self) {
+int Ov002Vt_021efca4_GetTextX(UiList *self) {
     return self->vfunc_30() + self->unk_c0 + 0x12;
 }
 
@@ -126,7 +126,7 @@ int func_ov002_021d6c90(void) {
     return 0;
 }
 
-int func_ov002_021d6c98(UiList *self) {
+int Ov002Vt_021efca4_GetIconWidth(UiList *self) {
     return self->unk_b8 != NULL ? 0x12 : 0;
 }
 

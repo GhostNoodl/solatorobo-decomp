@@ -130,7 +130,7 @@ void MessageQueue_Init(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-void func_ov000_0216f394(void) {
+void MessageQueue_HandleMsg(void) {
 }
 
 ListBuffer *MessageQueue_AddBuffer_0216f398(MessageQueue *self, ListBuffer *buf, u32 priority, void *owner) {

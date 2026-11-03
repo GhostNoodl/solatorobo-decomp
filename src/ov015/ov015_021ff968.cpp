@@ -3,24 +3,24 @@
 extern "C" {
 
 extern u8 Ov015Fish_vtbl[];
-void func_ov015_02209270(Ov015Fish *p);
+void Ov015Fish_DtorBase(Ov015Fish *p);
 void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void Ov015FishInfo_Dtor(Ov015FishInfo *p);
-BOOL func_ov015_022121b4(Ov015Obj292c *self);
+BOOL Ov015Obj292c_Setup(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
-BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
+BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self);
 
 extern u8 Ov015Obj292c_vtbl[];
 extern u8 Ov015Obj290_vtbl[];
-void func_ov015_022120c0(Ov015Obj292c *self);
-void func_ov015_02212180(Ov015Obj292c *self);
-int func_ov015_0221219c(Ov015Obj292c *self);
+void Ov015Obj292c_Init(Ov015Obj292c *self);
+void Ov015Obj292c_Load(Ov015Obj292c *self);
+int Ov015Obj292c_IsLoaded(Ov015Obj292c *self);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
 void func_ov015_022119e8(Ov015Obj290 *self);
@@ -49,10 +49,10 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         VObj *o = (VObj *)Heap_Alloc(0x34);
         if (o != NULL) {
             SET_VT(o, Ov015Obj292c_vtbl);
-            func_ov015_022120c0((Ov015Obj292c *)o);
+            Ov015Obj292c_Init((Ov015Obj292c *)o);
         }
         self->unk_10 = (Ov015Obj292c *)o;
-        func_ov015_02212180((Ov015Obj292c *)o);
+        Ov015Obj292c_Load((Ov015Obj292c *)o);
         o = (VObj *)Heap_Alloc(0x290);
         if (o != NULL) {
             SET_VT(o, Ov015Obj290_vtbl);
@@ -65,7 +65,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         self->step = 1;
     }
     case 1: {
-        bool a = func_ov015_0221219c(self->unk_10) & 1;
+        bool a = Ov015Obj292c_IsLoaded(self->unk_10) & 1;
         bool ok = a & self->unk_14->vfunc_10();
         if (!ok) {
             break;
@@ -148,7 +148,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             Ov015Node *n;
             Ov015CamPair_SetMode(self->cam, 7, &self->unk_10->pos);
             for (n = self->fishList->head; n != NULL; n = n->next) {
-                func_ov015_02209790(n->fish, 1);
+                Ov015Fish_Update(n->fish, 1);
             }
             if (self->unk_14->vfunc_18() == 0) {
                 done = TRUE;
@@ -168,7 +168,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             Ov015Fish_GetFrontPos(self->fish, &v);
             Ov015CamPair_SetMode(self->cam, 8, &v);
             self->unk_14->vfunc_18();
-            func_ov015_02209790(self->fish, 1);
+            Ov015Fish_Update(self->fish, 1);
             if ((self->fish)->stateId == 2) {
                 done = TRUE;
             }
@@ -201,7 +201,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
 
 void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     SET_VT(self, Ov015Fish_vtbl);
-    func_ov015_02209270(self);
+    Ov015Fish_DtorBase(self);
     HitSphere_Unlink_0203f2b8(&self->hit);
     Shadow_DtorBase(&self->shadow);
     Model0218fe1c_FreeAnims(&self->model2);
@@ -222,7 +222,7 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
     Ov015Node *n;
     s32 cnt;
     s32 i;
-    func_ov015_022121b4(self->unk_10);
+    Ov015Obj292c_Setup(self->unk_10);
     {
         Ov015Obj292c *p = self->unk_10;
         i = 0;
@@ -259,15 +259,15 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         obj->maxX = 0x32000;
         obj->maxZ = -0x4b000;
         obj->minZ = -0x8c000;
-        func_ov015_02209790(obj, 1);
+        Ov015Fish_Update(obj, 1);
     }
 }
 
 
-BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
+BOOL Ov015Fish_HitTest(Ov015Fish *self, void *a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_02212250(Ov015Obj292c *self, s32 a);
-void func_ov015_02207c30(Ov015Ship *p);
+void Ov015Ship_Update(Ov015Ship *p);
 
 BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     BOOL r = FALSE;
@@ -293,7 +293,7 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         Ov015Vec v;
         n = n->next;
         v = self->unk_10->pos;
-        if (func_ov015_0220a028(obj, &v)) {
+        if (Ov015Fish_HitTest(obj, &v)) {
             found = obj;
             break;
         }
@@ -310,9 +310,9 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     }
     func_ov015_02212250(self->unk_10, 0);
     for (n = self->fishList->head; n != NULL; n = n->next) {
-        func_ov015_02209790(n->fish, 1);
+        Ov015Fish_Update(n->fish, 1);
     }
-    func_ov015_02207c30(self->ship);
+    Ov015Ship_Update(self->ship);
     {
         Ov015Obj292c *q = self->unk_10;
         Ov015Ship *d = self->ship;

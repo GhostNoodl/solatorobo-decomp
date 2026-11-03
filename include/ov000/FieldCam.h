@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-// What the zone commands produce (func_ov000_0218a670), filled by func_ov000_02189b44.
+// What the zone commands produce (func_ov000_0218a670), filled by FieldCam_Apply.
 typedef struct FieldCamZoneResult {
     /* 0x00 */ VecFx32 pos;
     /* 0x0c */ VecFx32 ofs;
@@ -24,7 +24,7 @@ typedef struct FieldCamZoneResult {
 } FieldCamZoneResult;
 
 u16 Camera_GetYaw(Camera *cam);
-void func_ov000_02189b44(FieldCam *self);
+void FieldCam_Apply(FieldCam *self);
 void func_ov000_021899d8(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7);
 void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 BOOL func_ov000_0218a670(FieldCam *self, const FieldCamZone *zone, const u32 *code, FieldCamZoneResult *st);

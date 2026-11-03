@@ -19,7 +19,7 @@ extern char data_ov015_02213170[];
 void MsgRes_Reset_0204bfcc(void *p);
 void MsgRes_OpenLocalized(void *p, const void *a, const void *b);
 
-void func_ov015_0220f7a8(Ov015Result *self) {
+void Ov015Result_Draw(Ov015Result *self) {
     Ov015ResultPanel *o;
     if (gOv002Stage != NULL) {
         func_ov002_021e8b3c(gOv002Stage);
@@ -287,7 +287,7 @@ static inline void Ov015_SetSeq(Ov015Msg *self, s32 n) {
     self->step = 0;
     self->timer = 0;
 }
-BOOL func_ov015_02210014(Ov015Msg *self) {
+BOOL Ov015Msg_Update(Ov015Msg *self) {
     BOOL r = TRUE;
     switch (self->seq) {
     case 0:
@@ -328,7 +328,7 @@ BOOL func_ov015_02210014(Ov015Msg *self) {
     return r;
 }
 
-void func_ov015_0221015c(Ov015Msg *self) {
+void Ov015Msg_Draw(Ov015Msg *self) {
     TextWin *p;
     if (!gGfxSys->unk_a30_4) {
         return;
@@ -353,7 +353,7 @@ void func_ov015_0221015c(Ov015Msg *self) {
     self->textWin->Render();
 }
 
-void func_ov015_02210298(Ov015Msg *self) {
+void Ov015Msg_Load(Ov015Msg *self) {
     MsgRes *p = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (p != NULL) {
         SET_VT(p, ResHandle_vtbl);
@@ -365,7 +365,7 @@ void func_ov015_02210298(Ov015Msg *self) {
     MsgRes_OpenLocalized(p, data_ov015_02213163, data_ov015_02213170);
 }
 
-void func_ov015_022102fc(Ov015Msg *self) {
+void Ov015Msg_LoadRes(Ov015Msg *self) {
     self->msgRes->Load();
 }
 
@@ -401,7 +401,7 @@ static inline void Ov015T_SetSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideZ = z;
 }
 
-BOOL func_ov015_02210314(Ov015Msg *self) {
+BOOL Ov015Msg_Setup(Ov015Msg *self) {
     UiObj *p;
     Model *m;
     MsgRes_Bind(self->msgRes);

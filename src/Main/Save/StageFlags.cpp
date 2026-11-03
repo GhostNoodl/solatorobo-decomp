@@ -6,7 +6,7 @@ extern "C" {
 
 extern StageFlags data_0214aa68;
 extern u8 gStageFlagsSave[0x640];
-extern void func_0206ccb8(StageFlags *f, u16 a);
+extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 DataRes_Unpack(DataRes *res, u8 *buf, s32 a);
@@ -57,7 +57,7 @@ void StageFlags_Reset(StageFlags *f) {
     MI_CpuFill8(f->items, 0, sizeof(f->items));
     StageFlags_ClearEntries(gStageFlags);
     MI_CpuFill8(f->bits, 0, sizeof(f->bits));
-    func_0206ccb8(f, 0x9000);
+    StageFlags_SetShape(f, 0x9000);
     MI_CpuFill8(f->unk_12c, 0, sizeof(f->unk_12c));
     StageFlags_CountItems(f);
     for (i = 0; i < 2; i++) {
@@ -81,11 +81,11 @@ extern BOOL Shared_HasMark_02062698(void);
 extern void Shared_GetMarkPos(StageVec *pos);
 extern u16 Shared_GetMarkRot(void);
 
-void func_0206c824(StageFlags *f);
+void StageFlags_CapturePlayer(StageFlags *f);
 
 void func_0206c620(StageFlags *f) {
     u16 *p;
-    func_0206c824(f);
+    StageFlags_CapturePlayer(f);
     p = StageRes_FindSlot(0x310);
     if (p != NULL) {
         f->color2.r = p[4];
@@ -109,14 +109,14 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
     f->unk_518_28 = v;
 }
 
-void func_0206c670(StageFlags *f) {
+void StageFlags_Commit(StageFlags *f) {
     StageFlags_SaveBuf(f);
     MI_CpuCopy8(f, gStageFlagsSave, sizeof(StageFlags));
 }
 
 void func_0206c72c(StageFlags *f, StageColor *rgb) {
     u16 *p;
-    func_0206c824(f);
+    StageFlags_CapturePlayer(f);
     if (rgb != NULL) {
         f->color2.r = rgb->r;
         f->color2.g = rgb->g;
@@ -147,7 +147,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
     MI_CpuCopy8(f, &data_0214aa68, sizeof(StageFlags));
 }
 
-void func_0206c824(StageFlags *f) {
+void StageFlags_CapturePlayer(StageFlags *f) {
     StagePlayer *pl;
     StageFlags_SaveBuf(f);
     pl = ActorMgr_FindPlayer();

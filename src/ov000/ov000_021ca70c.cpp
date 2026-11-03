@@ -55,7 +55,7 @@ u16 StageRes_EvalCond(StageRes *res, u16 *cmd);
 u16 StageRes_AccessVar(StageRes *res, u16 *cmd, BOOL set, u16 value);
 u16 StageRes_ExecCmd(StageRes *res, u16 *cmd);
 VObj *Ov000Vt_021cc158_DtorDelete(VObj *self);
-s32 func_ov000_02181efc(SceneScript *self, s32 a);
+s32 SceneScript_Run(SceneScript *self, s32 a);
 s32 SceneCmd_Run02(SceneCmd *self);
 s32 SceneCmd_Run03(SceneCmd *self);
 s32 SceneCmd_Run04(SceneCmd *self);
@@ -106,7 +106,7 @@ char data_ov000_021cc130[] = "misinfo";
 char data_ov000_021cc138[] = "scpqst%d.ccscp";
 char data_ov000_021cc147[] = "qstinfo";
 u32 data_ov000_021cc150[2] = {0, 0};
-Ov000Fn Ov000Vt_021cc158_vtbl[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)ResHandle_Clear, (Ov000Fn)ResHandle_Unload, (Ov000Fn)ResHandle_GetData, (Ov000Fn)ResHandle_LoadSync, (Ov000Fn)ResHandle_OpenInArc, (Ov000Fn)ResHandle_Request, (Ov000Fn)ResHandle_RequestFlag, (Ov000Fn)ResHandle_LoadFromArc, (Ov000Fn)ResHandle_LoadFromArcFlag, (Ov000Fn)ResHandle_IsLoaded, (Ov000Fn)ResHandle_OnLoad, (Ov000Fn)ResHandle_IsReady, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)StageRes_EvalCond, (Ov000Fn)StageRes_AccessVar, (Ov000Fn)StageRes_ExecCmd };
+Ov000Fn Ov000Vt_021cc158_vtbl[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)ResHandle_Clear, (Ov000Fn)ResHandle_Unload, (Ov000Fn)ResHandle_GetData, (Ov000Fn)ResHandle_LoadSync, (Ov000Fn)ResHandle_OpenInArc, (Ov000Fn)ResHandle_Request, (Ov000Fn)ResHandle_RequestFlag, (Ov000Fn)ResHandle_LoadFromArc, (Ov000Fn)ResHandle_LoadFromArcFlag, (Ov000Fn)ResHandle_IsLoaded, (Ov000Fn)ResHandle_OnLoad, (Ov000Fn)ResHandle_IsReady, (Ov000Fn)SceneScript_Run, (Ov000Fn)StageRes_EvalCond, (Ov000Fn)StageRes_AccessVar, (Ov000Fn)StageRes_ExecCmd };
 __declspec(weak) Ov000ScpEnt SceneCmd_Table[42] = {
     { 0, { .pm = 0 } },
     { 0, { .pm = 0 } },

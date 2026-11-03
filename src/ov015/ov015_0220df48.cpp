@@ -21,7 +21,7 @@ extern char data_ov015_02212def[];
 extern char data_ov015_02212df5[];
 extern char *data_ov015_02212db0[];
 
-BOOL func_ov015_0220df48(u8 *self) {
+BOOL Ov015StageMdl_Prepare(u8 *self) {
     Ov015Anim *n1 = (Ov015Anim *)(self + 0x4c);
     Ov015Anim *n2 = (Ov015Anim *)(self + 0x26c);
     {

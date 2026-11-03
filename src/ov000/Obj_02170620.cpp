@@ -27,7 +27,7 @@ extern u8 Ov000Vt_021cb0b8_vtbl[];
 void *Heap_Alloc(u32 size);
 BOOL func_ov000_02184498(FieldState *p);
 
-BOOL func_ov000_02170620(ListBuffer021cb940 *self, s32 kind, char *text) {
+BOOL ListBuffer021cb940_OpenDialog(ListBuffer021cb940 *self, s32 kind, char *text) {
     Lo021cb0b8 *o;
     if (self->dialog != NULL) {
         return FALSE;

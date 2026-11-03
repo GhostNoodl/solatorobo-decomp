@@ -86,7 +86,7 @@ s32 Ov008Menu_GetLineSpacing(void) {
     return 4;
 }
 
-s32 func_ov008_021d0124(Ov008Menu *self) {
+s32 Ov008Menu_GetTextX(Ov008Menu *self) {
     return self->v30() + self->unk_c0 + 0x12;
 }
 
@@ -98,7 +98,7 @@ s32 func_ov008_021d0150(void) {
     return 0;
 }
 
-s32 func_ov008_021d0158(Ov008Menu *self) {
+s32 Ov008Menu_GetIconWidth(Ov008Menu *self) {
     return self->unk_b8 != NULL ? 0x12 : 0;
 }
 

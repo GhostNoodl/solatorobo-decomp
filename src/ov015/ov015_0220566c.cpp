@@ -187,7 +187,7 @@ BOOL Ov015Scene2b08_List4cOnDecide(UiList *self, UiListItem *item) {
     return FALSE;
 }
 
-void func_ov015_02205c7c(Ov015Scene2b08 *self) {
+void Ov015Scene2b08_DtorBase(Ov015Scene2b08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);

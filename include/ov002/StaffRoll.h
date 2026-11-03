@@ -49,7 +49,7 @@ typedef struct Ov002StaffFlags {
 } Ov002StaffFlags;
 
 // State machine and clock, shared by the staff object (at +0x04) and every node (at +0x04).
-// A node's step function (func_ov002_021ec390) reads the staff's clock through it.
+// A node's step function (Ov002StaffNode_Update) reads the staff's clock through it.
 typedef struct Ov002StaffClock {
     /* 0x00 */ union {
         u32 bits;

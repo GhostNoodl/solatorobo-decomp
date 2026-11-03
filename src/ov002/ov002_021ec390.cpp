@@ -43,7 +43,7 @@ static inline void ov002_State_HoldClock(Ov002StaffNode *s, Ov002StaffClock *ctx
     }
 }
 
-BOOL func_ov002_021ec390(Ov002StaffNode *self, Ov002StaffClock *ctx) {
+BOOL Ov002StaffNode_Update(Ov002StaffNode *self, Ov002StaffClock *ctx) {
     BOOL result = TRUE;
     ov002_State_Update(self);
     self->clock.step = ctx->step;

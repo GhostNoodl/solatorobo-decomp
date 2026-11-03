@@ -23,10 +23,10 @@ typedef struct StageItemPos {
 } StageItemPos;
 
 extern u8 *func_0206ef50(u16 id);
-extern StageItemShape *func_02070dcc(int kind);
+extern StageItemShape *ParamKind_GetShape(int kind);
 extern int func_ov002_021e3dac(StageItemPos *pos, StageItemShape *a, StageItemShape *b, StageItemPos *out);
 extern BOOL StageFlags_AddEntry(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
-extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
+extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
 u16 StageFlags_CountItems(StageFlags *f);
 
 static inline void StageFlags_ClearEntries(StageFlags *f) {
@@ -43,7 +43,7 @@ static inline BOOL StageFlags_TestCell(StageFlags *f, StageItemShape *shape, u8 
     return f->bits[by] & (1 << bx);
 }
 
-void func_0206ccb8(StageFlags *f, u16 id) {
+void StageFlags_SetShape(StageFlags *f, u16 id) {
     StageItemShape *shape;
     u8 *grid;
     u16 w;
@@ -51,7 +51,7 @@ void func_0206ccb8(StageFlags *f, u16 id) {
     u16 y;
     u16 x;
     StageFlags_ClearEntries(f);
-    shape = func_02070dcc((s8)func_0206ef50(id)[1]);
+    shape = ParamKind_GetShape((s8)func_0206ef50(id)[1]);
     grid = shape->grid;
     w = shape->w;
     h = shape->h;
@@ -88,17 +88,17 @@ void func_0206ccb8(StageFlags *f, u16 id) {
     f->shapeId = id;
 }
 
-void func_0206ce78(StageFlags *f, u16 id) {
+void StageFlags_ChangeShape(StageFlags *f, u16 id) {
     StageItemEntry entries[STAGE_ITEM_ENTRY_MAX];
     StageItemPos pos;
     StageItemShape shape;
     StageItemShape *oldShape;
     StageItemShape *newShape;
     s32 i;
-    oldShape = func_02070dcc(func_0206ef50(f->shapeId)[0]);
-    newShape = func_02070dcc(func_0206ef50(id)[0]);
+    oldShape = ParamKind_GetShape(func_0206ef50(f->shapeId)[0]);
+    newShape = ParamKind_GetShape(func_0206ef50(id)[0]);
     MI_CpuCopy8(f->entries, entries, sizeof(entries));
-    func_0206ccb8(f, id);
+    StageFlags_SetShape(f, id);
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
         StageItemEntry *e = &entries[i];
         u8 *info = Param_GetEntry(e->id);
@@ -106,13 +106,13 @@ void func_0206ce78(StageFlags *f, u16 id) {
             BOOL used;
             pos.x = newShape->ox - oldShape->ox + e->bits.a;
             pos.y = newShape->oy - oldShape->oy + e->bits.b;
-            MI_CpuCopy8(func_02070dcc(info[1]), &shape, sizeof(shape));
+            MI_CpuCopy8(ParamKind_GetShape(info[1]), &shape, sizeof(shape));
             shape.rot = e->bits.c;
             used = e->bits.used ? TRUE : FALSE;
             if (func_ov002_021e3dac(&pos, newShape, &shape, NULL) == 0) {
                 StageFlags_AddEntry(gStageFlags, e->id, pos.x, pos.y, shape.rot, used);
             } else if (!used) {
-                func_0206d2ec(gStageFlags, e->id, 1);
+                StageFlags_AddItem(gStageFlags, e->id, 1);
             }
         }
     }
@@ -136,7 +136,7 @@ u16 StageFlags_CountItems(StageFlags *f) {
     return total;
 }
 
-void func_0206d0a8(StageFlags *f) {
+void StageFlags_ClearEntries_0206d0a8(StageFlags *f) {
     s32 i;
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
         f->entries[i].id = STAGE_ITEM_NONE;

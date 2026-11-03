@@ -94,11 +94,11 @@ Camera *Camera_CtorBase(Camera *cam);
 
 Camera *Camera_Ctor(Camera *cam);
 
-void func_0204b420(Camera *cam);
+void Camera_Dtor(Camera *cam);
 
 Camera *Camera_DtorDelete(Camera *cam);
 
-void func_0204b438(Camera *cam);
+void Camera_DtorBase(Camera *cam);
 
 void Camera_Apply(Camera *cam);
 

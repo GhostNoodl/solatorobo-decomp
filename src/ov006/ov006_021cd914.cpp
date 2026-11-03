@@ -46,7 +46,7 @@ static inline u32 ov006_RecordIdx(void) {
     return idx;
 }
 
-void func_ov006_021cd914(int type, void *obj, int arg) {
+void ov006_Manager_Mode01to07(int type, void *obj, int arg) {
     ov006_Slot *slot;
     switch (type) {
     case 1:

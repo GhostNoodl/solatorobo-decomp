@@ -20,11 +20,11 @@ typedef struct FieldCamZone {
     /* 0x18 */ u32 len;
 } FieldCamZone;
 
-// The field camera (ctor Ov000Vt_021cc3a0_Ctor, vtable data_ov000_021cc3a0): a Camera with
+// The field camera (ctor Ov000Vt_021cc3a0_Ctor, vtable FieldCam_vtbl): a Camera with
 // an overlay 0 extension, 0x120 bytes.
 typedef struct FieldCam {
     /* 0x00 */ Camera base;
-    /* 0xbc */ VecFx32 unk_bc; // the point tested against the zone boxes (func_ov000_02189b44)
+    /* 0xbc */ VecFx32 unk_bc; // the point tested against the zone boxes (FieldCam_Apply)
     /* 0xc8 */ const FieldCamZone *zones;
     /* 0xcc */ const FieldCamZone *zone;    // the zone whose box held the point last
     /* 0xd0 */ const u32 *zoneCode;   // that zone's commands

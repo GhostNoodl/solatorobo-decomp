@@ -56,7 +56,7 @@ static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
 
 static inline void ov002_021d58b8_setInfo(Task021efc24 *self, u16 id) {
     if (self->unk_58 != NULL) {
-        Param0206ef10 *info = func_0206ef10(id);
+        Param0206ef10 *info = Param_GetRecord(id);
         ModelViewer_SetModel(self->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
                             info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
     }

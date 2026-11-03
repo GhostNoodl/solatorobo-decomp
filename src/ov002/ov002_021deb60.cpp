@@ -28,7 +28,7 @@ static inline void updateModel(Obj021efe8c *m) {
     }
 }
 
-void func_ov002_021deb60(Obj021efef0 *self, Obj021eff50 *a) {
+void Obj021efef0_Draw(Obj021efef0 *self, Obj021eff50 *a) {
     Ov002RowList *c;
     Obj021efe8c *m;
     self->owner = a;

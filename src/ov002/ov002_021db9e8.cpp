@@ -39,7 +39,7 @@ static inline bool ov002_Ready(Obj021efe4c *m) {
     return m->unk_5d != 0 && m->unk_10 != NULL && Model0218fe1c_IsAnimDone(m->unk_10);
 }
 
-void func_ov002_021db9e8(Obj021eff50 *self) {
+void Obj021eff50_Update(Obj021eff50 *self) {
     switch (self->unk_14) {
     case 0:
         if (self->unk_34 <= 0 || ov002_Ready(self->board->field)) {

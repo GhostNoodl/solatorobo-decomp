@@ -37,7 +37,7 @@ extern "C" const char data_ov000_021cc747[];
 extern "C" {
 extern RoboDef data_ov000_021ca398[];
 extern RoboDef data_ov000_021ca248[];
-Param0206ef10 *func_0206ef10(u16 id);
+Param0206ef10 *Param_GetRecord(u16 id);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void *ResSet_Init(void *p);
@@ -166,7 +166,7 @@ void Robo021ca458_State1f(VObj *self_) {
             if (lock != 1) {
                 sv->bits18.mode = 1;
             }
-            anm = func_0206ef10(id | 0x8000);
+            anm = Param_GetRecord(id | 0x8000);
             if (anm != NULL) {
                 def = &anm->def;
             }
@@ -176,7 +176,7 @@ void Robo021ca458_State1f(VObj *self_) {
             if (lock != 1) {
                 sv->bits18.mode = 1;
             }
-            anm = func_0206ef10(id | 0x8000);
+            anm = Param_GetRecord(id | 0x8000);
             if (anm != NULL) {
                 def = &anm->def;
             }

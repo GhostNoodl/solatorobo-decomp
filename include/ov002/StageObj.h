@@ -10,12 +10,12 @@
 // Base of the ov002 stage objects (0x4c; ctor Ov002Obj_Init, dtor Ov002Obj_Detach).
 // The ctor appends the object to the list in gOv002Stage (head at 0xdc, tail at 0xe0,
 // linked through next); an object can own up to eight others (children, each pointing back
-// through owner). Vtable Ov002Vt_021f0734_vtbl: slot 0x08 func_ov002_021e8b28 (loaded: unk_0c >= 3),
+// through owner). Vtable Ov002Vt_021f0734_vtbl: slot 0x08 Ov002Obj_IsLoaded (loaded: unk_0c >= 3),
 // 0x0c..0x18 the load steps func_ov002_021e4dd4 runs while unk_0c goes 0..3.
 struct Ov002Obj : public VObj {
     s32 unk_04; // kind, -1 until set
     s32 unk_08;
-    s32 unk_0c; // 3 and above: loaded (func_ov015_0220e55c)
+    s32 unk_0c; // 3 and above: loaded (Ov015StageMdl_IsLoaded)
     s32 unk_10;
     s32 unk_14;
     s32 unk_18;
@@ -77,7 +77,7 @@ typedef struct Ov002ResName {
 } Ov002ResName;
 
 // Texture link record (0x1c bytes) appended by Ov002Obj021f07d4_AddLink / func_ov002_021e50d8: a texture
-// file bound to the model of the object whose unk_4c matches id (func_ov002_021e534c loads it).
+// file bound to the model of the object whose unk_4c matches id (Ov002Obj021f07d4_Load loads it).
 typedef struct Ov002ObjLink {
     s32 id;
     char *arc;  // archive, NULL: a loose file
@@ -100,12 +100,12 @@ struct Ov002Obj021f07d4 : public Ov002Obj {
     u32 unk_bc;   // texture upload (func_0203ebf8 / Vram_IsTransferDone)
     Ov002ObjLink links[8];
     s32 linkCount;
-    VecFx32 trans; // NNS_G3dGlbSetBaseTrans (func_ov002_021e5b08)
+    VecFx32 trans; // NNS_G3dGlbSetBaseTrans (Ov002Obj021f07d4_Draw)
     VecFx32 scale; // NNS_G3dGlbSetBaseScale
     MtxFx33 rot;
     struct Ov002Cam021f0854 *unk_1e0; // camera (kind 7, or 8 when unk_1f0_0) for screen 1
     struct Ov002Cam021f0854 *unk_1e4; // for screen 2
-    struct Ov002Obj021f075c *unk_1e8; // kind 2 child picked by func_ov002_021e5a10
+    struct Ov002Obj021f075c *unk_1e8; // kind 2 child picked by Ov002Obj021f07d4_Update
     struct Ov002Obj021f075c *unk_1ec; // kind 3 child
     union {
         u8 unk_1f0;
@@ -238,7 +238,7 @@ SIZE_ASSERT(Ov002Cam021f0854, 0xb4);
 
 // Vtable Ov002Vt_021f07fc_vtbl, 0xb8 bytes (Ov002Cam021f07fc_New): orthographic.
 struct Ov002Cam021f07fc : public Ov002Cam021f0854 {
-    struct Ov002Obj021f075c *unk_b4; // kind 3 child (func_ov002_021e7900)
+    struct Ov002Obj021f075c *unk_b4; // kind 3 child (Ov002Cam021f07fc_Update)
 };
 SIZE_ASSERT(Ov002Cam021f07fc, 0xb8);
 
@@ -251,7 +251,7 @@ struct Ov002Cam021f0828 : public Ov002Cam021f0854 {
     u16 unk_be;
     s32 unk_c0;
     s32 unk_c4;
-    struct Ov002Obj021f075c *unk_c8; // kind 3 child (func_ov002_021e75f0)
+    struct Ov002Obj021f075c *unk_c8; // kind 3 child (Ov002Cam021f0828_Update)
 };
 SIZE_ASSERT(Ov002Cam021f0828, 0xcc);
 

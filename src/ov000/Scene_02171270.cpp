@@ -15,7 +15,7 @@ void func_ov000_021b8db4(void *p);
 void func_ov000_021b86a4(void *p);
 void func_ov000_0216b880(void *p);
 
-void func_ov000_02171270(ListBuffer021cb940 *self) {
+void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
     switch (self->state) {
     case 4:
         if (self->win != NULL) {

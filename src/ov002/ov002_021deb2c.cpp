@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021deb2c(Obj021efef0 *self, Obj021eff50 *dst) {
+void Obj021efef0_Exit(Obj021efef0 *self, Obj021eff50 *dst) {
     Obj021f002c *node = (Obj021f002c *)self->unk_24;
     u16 id;
     if (node != NULL) {

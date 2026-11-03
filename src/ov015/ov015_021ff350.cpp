@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 Ov015Obj292c_vtbl[];
-void func_ov015_022120fc(Ov015Obj292c *self);
+void Ov015Obj292c_DtorBase(Ov015Obj292c *self);
 extern u8 Ov015Obj290_vtbl[];
 void func_ov015_02211a18(void);
 void *Model0218fe1c_FreeAnims(void *p);
@@ -26,7 +26,7 @@ void Ov015Obj30_Free(Ov015Obj30 *self) {
 
 void *Ov015Obj292c_DtorDelete(Ov015Obj292c *self) {
     SET_VT(self, Ov015Obj292c_vtbl);
-    func_ov015_022120fc(self);
+    Ov015Obj292c_DtorBase(self);
     Heap_Free(self);
     return self;
 }

@@ -72,20 +72,20 @@ struct Lo0216b474 {
 
 // Vtable Ov000Vt_021cb940_vtbl (0x80 bytes; base vtable Ov000Vt_021cb6d0_vtbl, init ListBuffer021cb940_Init,
 // dtor ListBuffer021cb940_Release): the field's sub-object holder, gMessageQueue's 0x11c buffer, made by
-// func_ov000_02171478 / SceneCmd_Push12. func_ov000_02170a58 updates the object state selects (each
-// is deleted once it reports done) and draws the always-present ones; func_ov000_02171270 draws.
+// MessageQueue021cb980_HandleMsg / SceneCmd_Push12. ListBuffer021cb940_Update updates the object state selects (each
+// is deleted once it reports done) and draws the always-present ones; ListBuffer021cb940_Draw draws.
 class ListBuffer021cb940 : public ListBuffer {
 public:
     union {
         u32 unk_20;
         struct {
             u32 unk_20_0 : 1;
-            u32 ready : 1; // set by func_ov000_02170a58 when its setup states (0..2) are done
+            u32 ready : 1; // set by ListBuffer021cb940_Update when its setup states (0..2) are done
             u32 unk_20_2 : 30;
         };
     };
     s32 state;
-    SlideWin *win; // message window, made by func_ov000_02170188
+    SlideWin *win; // message window, made by ListBuffer021cb940_OpenWindow
     void *unk_2c;
     VObj *unk_30;
     void *unk_34;
@@ -93,7 +93,7 @@ public:
     void *unk_3c;
     void *unk_40;
     void *unk_44;
-    Lo021cb0b8 *dialog; // list dialog, made by func_ov000_02170620
+    Lo021cb0b8 *dialog; // list dialog, made by ListBuffer021cb940_OpenDialog
     void *unk_4c;
     struct Obj0216c954 *unk_50; // made by field message 11
     struct LoTimer *unk_54; // the stage timer
@@ -131,7 +131,7 @@ public:
 
 // The field's message queue (vtable Ov000Vt_021cb980_vtbl, 0x120 bytes, base MessageQueue with vtable
 // Ov000Vt_021cb9b0_vtbl, init func_ov000_02171464): gMessageQueue, made by func_ov000_021814dc.
-// func_ov000_02171478 creates its two buffers. Main reads it as FieldPlayer (Main/Sys/Field.h).
+// MessageQueue021cb980_HandleMsg creates its two buffers. Main reads it as FieldPlayer (Main/Sys/Field.h).
 class MessageQueue021cb980 : public MessageQueue {
 public:
     union {

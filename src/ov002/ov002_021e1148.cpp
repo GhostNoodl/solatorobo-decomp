@@ -45,7 +45,7 @@ void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id) {
     if (id == 0xffff) {
         return;
     }
-    info = func_0206ef10(id);
+    info = Param_GetRecord(id);
     mgr = gMsgRes;
     if (id == 0x8008) {
         s32 text = (s32)MsgRes_GetString(gMsgRes, 0x15f);

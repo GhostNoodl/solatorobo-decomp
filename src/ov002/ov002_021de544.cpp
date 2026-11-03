@@ -37,7 +37,7 @@ static inline void ov002_ClrFlag1(UiObj *p) {
     p->hidden = 0;
 }
 
-void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
+void Obj021efef0_Update(Obj021efef0 *self, Obj021eff50 *a) {
     self->owner = a;
     self->unk_08->vfunc_1c();
     if (self->unk_0c != NULL) {

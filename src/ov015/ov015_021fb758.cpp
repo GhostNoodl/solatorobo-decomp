@@ -85,7 +85,7 @@ static inline void Ov015b_Quad(s32 sc, u32 c1, u32 c2) {
 }
 
 
-void func_ov015_021fb758(Ov015Hud *self) {
+void Ov015Hud_Draw(Ov015Hud *self) {
     VecFx32 off = {0, 0, 0};
     s32 trans[3];
     s32 mtxMode;
@@ -190,7 +190,7 @@ void func_ov015_021fb758(Ov015Hud *self) {
 // and the model passed to the PlayPart inline is read into m (round bgO).
 extern "C" {
 
-void func_0204b420(void *p);
+void Camera_Dtor(void *p);
 
 
 extern const VecFx32 data_ov015_02212584;

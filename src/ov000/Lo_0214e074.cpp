@@ -8,7 +8,7 @@
 extern "C" {
 void func_02041c18(Model *m, s32 a);
 
-void func_ov000_0214e074(Lo021caac8 *self, u8 *info, s32 x, s32 y, u8 polyId, u8 front) {
+void Lo021caac8_DrawItemIcon(Lo021caac8 *self, u8 *info, s32 x, s32 y, u8 polyId, u8 front) {
     s32 id;
     u16 n;
     if (self->unk_b4 == NULL || self->unk_b8 == NULL || LFLD(u16, info, 0x8) == 0xffff) {

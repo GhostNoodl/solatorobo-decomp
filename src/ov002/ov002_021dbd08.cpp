@@ -25,7 +25,7 @@ Obj021eff10 *Ov002Vt_021eff10_Ctor(Obj021eff10 *self) {
     return self;
 }
 
-void func_ov002_021dbd60(Obj021eff50 *self) {
+void Obj021eff50_Draw(Obj021eff50 *self) {
     if (self->unk_20 != NULL) {
         self->unk_20->vfunc_20();
     }

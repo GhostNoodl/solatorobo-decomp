@@ -41,7 +41,7 @@ void Obj021efe7c_Draw(Obj021efe7c *self) {
 }
 
 
-void func_ov002_021dab58(Obj021efe7c *self, s32 mode) {
+void Obj021efe7c_SetPhase(Obj021efe7c *self, s32 mode) {
     if (((void *)self->unk_08) != NULL && self->unk_0c == mode) {
         return;
     }

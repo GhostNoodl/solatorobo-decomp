@@ -16,7 +16,7 @@ void MessageQueue_RemoveAll(MessageQueue *self, s32 id, u32 a, u32 b) {
     } while (msg != NULL);
 }
 
-void func_ov000_0216f758(MessageQueue *self) {
+void MessageQueue_Start(MessageQueue *self) {
     if (self->unk_04) {
         return;
     }

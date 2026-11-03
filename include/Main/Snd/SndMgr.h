@@ -135,7 +135,7 @@ static inline void SndMgr_StopSlot(SndMgr *mgr, s32 idx) {
 }
 
 static inline void SndMgr_StopStrm(SndMgr *mgr) {
-    func_0203192c((StrmHandle *)&mgr->strm, 10);
+    NNS_SndArcStrmStop((StrmHandle *)&mgr->strm, 10);
     mgr->curStrm = -1;
 }
 
@@ -146,7 +146,7 @@ static inline void SndMgr_SetStrmVolume(SndMgr *mgr, s32 volume, s32 frames) {
     if (volume > 0x7f) {
         volume = 0x7f;
     }
-    func_0203195c((StrmHandle *)&mgr->strm, volume, frames);
+    NNS_SndArcStrmMoveVolume((StrmHandle *)&mgr->strm, volume, frames);
 }
 
 void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);

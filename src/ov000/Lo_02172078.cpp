@@ -17,7 +17,7 @@ void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-void func_ov000_02172078(MessageQueue021cb980 *self) {
+void MessageQueue021cb980_Start(MessageQueue021cb980 *self) {
     BOOL r;
     if (!self->unk_04) {
         self->unk_04 = 1;
@@ -41,7 +41,7 @@ void func_ov000_02172078(MessageQueue021cb980 *self) {
     }
 }
 
-void func_ov000_02172124(VObj *self) {
+void MessageQueue021cb980_Update(VObj *self) {
     u8 buf[0x10];
     self->vfunc_1c();
     while (self->vfunc_14(buf, 1)) {

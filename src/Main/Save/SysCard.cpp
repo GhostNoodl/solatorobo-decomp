@@ -99,12 +99,12 @@ s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len) {
         SysCard_End(card);
         return 2;
     }
-    CARDi_RequestStreamCommand(src, (u32)dst, len, func_02046fac, card, TRUE, 6, 1, 0);
+    CARDi_RequestStreamCommand(src, (u32)dst, len, SysCard_OnReadDone, card, TRUE, 6, 1, 0);
     SysCard_CheckError(gSysCard, 11);
     return 0;
 }
 
-void func_02046fac(void *arg) {
+void SysCard_OnReadDone(void *arg) {
     SysCard_SetState(gSysCard, 4);
     if (gSysCard->callback != NULL) {
         gSysCard->callback(gSysCard->callbackArg);

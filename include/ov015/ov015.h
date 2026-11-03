@@ -121,7 +121,7 @@ struct Ov015Mtx33 {
     s32 m[3][3];
 };
 
-// Camera (0xbc bytes, Camera_Ctor / func_0204b420).
+// Camera (0xbc bytes, Camera_Ctor / Camera_Dtor).
 struct Ov015Bits8a0 {
     u8 b0 : 2;
     u8 shakeX : 1;
@@ -310,7 +310,7 @@ struct Ov015SceneSeq : public Ov015Child {
 };
 SIZE_ASSERT(Ov015SceneSeq, 0x14);
 
-void func_ov015_021fa6cc(Ov015Child *self);
+void Ov015Child_DtorBase(Ov015Child *self);
 
 // ov000 task helpers: TaskList_Insert inserts a task into the list by priority (then calls its
 // slot 0x20); Task_Draw resets the draw scale and updates fadeSin.
@@ -555,7 +555,7 @@ struct Ov015MdlPair {
     Ov015Anim res;
     Ov015Model mdl;
 };
-// Three models (0x664, vtable Ov015Vt_0221294c_vtbl; built by func_ov015_02201344, Ov015Game::unk_20).
+// Three models (0x664, vtable Ov015Vt_0221294c_vtbl; built by Ov015Game_Create, Ov015Game::unk_20).
 struct Ov015MdlSet : public VObj {
     Ov015MdlPair p[3];
 };
@@ -620,7 +620,7 @@ struct Ov015Fish : public VObj {
     Ov015Obj48 hit;
 };
 OV015_SIZE(Ov015Fish, 0x5b0);
-// Fishing phase state (0x34 bytes, func_ov015_0220015c / func_ov015_02200194).
+// Fishing phase state (0x34 bytes, Ov015Obj34_Init / Ov015Obj34_DtorBase).
 struct Ov015Obj34 : public VObj {
     EffectObj *fx;
     s32 step;
@@ -636,7 +636,7 @@ struct Ov015Obj34 : public VObj {
     Ov015Info38 *info;
 };
 OV015_SIZE(Ov015Obj34, 0x34);
-// Player ship (0xd58 bytes, ctor func_ov015_0220765c, dtor func_ov015_02207738).
+// Player ship (0xd58 bytes, ctor Ov015Ship_Ctor, dtor Ov015Ship_Dtor).
 struct Ov015Ship {
     Ov015Anim res;
     Ov015Model model;
@@ -689,9 +689,9 @@ struct Ov015Info38 : public VObj {
 };
 OV015_SIZE(Ov015Info38, 0x38);
 // Fishing game controller (0xcc bytes, vtable Ov015Game_vtbl, func_ov015_02200f74).
-// Fishing HUD (0x30, vtable Ov015Hud_vtbl; built by func_ov015_02201344, dtor
-// func_ov015_022027e8). func_ov015_021fb5d4 updates the counters from data_ov015_0221332c each frame;
-// func_ov015_021fb758 draws the two 2D models.
+// Fishing HUD (0x30, vtable Ov015Hud_vtbl; built by Ov015Game_Create, dtor
+// Ov015Hud_Dtor). func_ov015_021fb5d4 updates the counters from data_ov015_0221332c each frame;
+// Ov015Hud_Draw draws the two 2D models.
 struct Ov015Hud : public VObj {
     s32 unk_04;
     s32 frame; // frame counter, wraps at 0x7fff
@@ -709,7 +709,7 @@ OV015_SIZE(Ov015Hud, 0x30);
 
 s32 func_ov015_021fb474(Ov015Hud *self);
 BOOL func_ov015_021fb5d4(Ov015Hud *self);
-void func_ov015_021fb758(Ov015Hud *self);
+void Ov015Hud_Draw(Ov015Hud *self);
 void func_ov015_021fc40c(Ov015Hud *self, s32 mode);
 void func_ov015_021fcb1c(Ov015Hud *self);
 
@@ -833,7 +833,7 @@ struct Ov015FishState08 : public Ov015FishState {
 };
 SIZE_ASSERT(Ov015FishState08, 0x8);
 
-// Scene task, vtable Ov015Scene2a88_vtbl (0x58 bytes, built by func_ov015_02206f04).
+// Scene task, vtable Ov015Scene2a88_vtbl (0x58 bytes, built by Ov015Scene2a88_New).
 struct Ov015Scene2a88 : public Task {
     Model *model;
     u8 unk_40;
@@ -863,7 +863,7 @@ struct Ov015MsgBox : public VObj {
 };
 SIZE_ASSERT(Ov015MsgBox, 0x2c);
 
-// Scene task, vtable Ov015Scene2a08_vtbl (0xb0 bytes, built by func_ov015_02206f7c).
+// Scene task, vtable Ov015Scene2a08_vtbl (0xb0 bytes, built by Ov015Scene2a08_New).
 struct Ov015Scene2a08 : public Task {
     Ov015Ship *ship;
     Ov015Shadow *shadow;
@@ -884,7 +884,7 @@ struct Ov015Scene2a08 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2a08, 0xb0);
 
-// Scene task, vtable Ov015Scene2c08_vtbl (0x6c bytes, built by func_ov015_02207020).
+// Scene task, vtable Ov015Scene2c08_vtbl (0x6c bytes, built by Ov015Scene2c08_New).
 struct Ov015Scene2c08 : public Task {
     UiList *unk_3c;
     Lo021cadcc *unk_40;
@@ -903,7 +903,7 @@ struct Ov015Scene2c08 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2c08, 0x6c);
 
-// Scene task, vtable Ov015Scene2b88_vtbl (0x58 bytes, built by func_ov015_022070b8).
+// Scene task, vtable Ov015Scene2b88_vtbl (0x58 bytes, built by Ov015Scene2b88_New).
 struct Ov015Scene2b88 : public Task {
     UiList *unk_3c;
     Lo021cadcc *unk_40;
@@ -917,7 +917,7 @@ struct Ov015Scene2b88 : public Task {
 SIZE_ASSERT(Ov015Scene2b88, 0x58);
 extern "C" void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a);
 
-// Scene task, vtable Ov015Scene2b08_vtbl (0x164 bytes, built by func_ov015_02207138).
+// Scene task, vtable Ov015Scene2b08_vtbl (0x164 bytes, built by Ov015Scene2b08_New).
 struct Ov015Scene2b08 : public Task {
     UiList *unk_3c;
     Ov015UiNum *unk_40;
@@ -972,7 +972,7 @@ SIZE_ASSERT(Ov015UiText, 0xb4);
 struct Ov015MsgMgr : public VObj {
     VObj *unk_04;
     union {
-        u8 unk_08; // one bit per message already shown (func_ov015_02210d24)
+        u8 unk_08; // one bit per message already shown (Ov015MsgMgr_HandleEvent)
         struct {
             u8 unk_08_0 : 1;
             u8 unk_08_1 : 1;
@@ -989,7 +989,7 @@ struct Ov015MsgMgr : public VObj {
 };
 SIZE_ASSERT(Ov015MsgMgr, 0x14);
 
-// Result panel (0x64 bytes, vtable Ov015ResultPanel_vtbl, built by func_ov015_0220f470 and set up by
+// Result panel (0x64 bytes, vtable Ov015ResultPanel_vtbl, built by Ov015Result_Init and set up by
 // func_ov015_0220e634).
 struct Ov015ResultPanel : public VObj {
     Lo021cb3a8 *unk_04;
@@ -1018,10 +1018,10 @@ extern "C" {
 Ov015Result *Ov015Result_Ctor(Ov015Result *self);
 void *Ov015Result_Dtor(Ov015Result *self);
 void *Ov015Result_DtorDelete(Ov015Result *self);
-void func_ov015_0220f470(Ov015Result *self);
-void func_ov015_0220f4d4(Ov015Result *self);
-BOOL func_ov015_0220f568(Ov015Result *self);
-void func_ov015_0220f7a8(Ov015Result *self);
+void Ov015Result_Init(Ov015Result *self);
+void Ov015Result_DtorBase(Ov015Result *self);
+BOOL Ov015Result_Update(Ov015Result *self);
+void Ov015Result_Draw(Ov015Result *self);
 }
 
 // Fishing tackle object (0x290 bytes, vtable Ov015Obj290_vtbl, init func_ov015_022119e8), with
@@ -1044,13 +1044,13 @@ struct Ov015Obj290 : public VObj {
 };
 SIZE_ASSERT(Ov015Obj290, 0x290);
 
-// Object holding a spawned effect (0x34 bytes, vtable Ov015Obj292c_vtbl, init func_ov015_022120c0).
+// Object holding a spawned effect (0x34 bytes, vtable Ov015Obj292c_vtbl, init Ov015Obj292c_Init).
 struct Ov015Obj292c : public VObj {
     EffectObj *fx; // effect object
-    struct ActorMarker *marker; // 0x08 (ov000/ActorMarker.h), made by func_ov015_022121b4
+    struct ActorMarker *marker; // 0x08 (ov000/ActorMarker.h), made by Ov015Obj292c_Setup
     Ov015Vec pos; // position
     Ov015Vec scale; // scale
-    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); func_ov015_02212264 copies it to marker->unk_50
+    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); Ov015Obj292c_Draw copies it to marker->unk_50
     s32 unk_30;
 };
 SIZE_ASSERT(Ov015Obj292c, 0x34);

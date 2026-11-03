@@ -22,7 +22,7 @@ static inline BOOL Obj021c0958_Wait(Marker021c0958 *self) {
     return FALSE;
 }
 
-void func_ov000_021c0958(Marker021c0958 *self) {
+void ActorMarker_UpdateKind09(Marker021c0958 *self) {
     switch (self->work.state) {
     case 5:
         HEAP_DELETE_MODEL(self->unk_8c);

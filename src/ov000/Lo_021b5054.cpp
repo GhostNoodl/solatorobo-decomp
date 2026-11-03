@@ -7,7 +7,7 @@ extern "C" {
 void PauseNode_Init(PauseNode *node);
 void HitMesh_Init(void *p);
 
-FieldMgr *func_ov000_021b5054(FieldMgr *self) {
+FieldMgr *FieldMgr_Init(FieldMgr *self) {
     s32 i;
 
     PauseNode_Init(&self->pause);

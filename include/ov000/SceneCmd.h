@@ -44,7 +44,7 @@ public:
     /* 0x0ea */ u8 unk_ea[2];
     /* 0x0ec */ s32 unk_ec;
     /* 0x0f0 */ s16 unk_f0;
-    /* 0x0f4 */ FieldCam cam; // vtable data_ov000_021cc3a0
+    /* 0x0f4 */ FieldCam cam; // vtable FieldCam_vtbl
 };
 SIZE_ASSERT(SceneCmd, 0x214);
 

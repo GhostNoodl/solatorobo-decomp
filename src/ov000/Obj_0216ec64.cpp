@@ -34,7 +34,7 @@ extern Data02097d78 gFadeState;
 
 void Heap_Free(void *ptr);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_ov000_02164420(void *self);
+void Lo021cb6b0_DtorBase(void *self);
 void Buffer0216f144_Free(Buffer0216f144 *self);
 
 VObj *Lo021cb744_DtorDelete(VObj *self) {
@@ -181,13 +181,13 @@ VObj *Lo021cb6f0_Dtor(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216f00c(void) {
+BOOL ListBuffer_IsReady(void) {
     return FALSE;
 }
 
 Buffer0216f144 *Lo021cb6b0_DtorDelete(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, Lo021cb6b0_vtbl);
-    func_ov000_02164420(self);
+    Lo021cb6b0_DtorBase(self);
     VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     Buffer0216f144_Free(self);
     Heap_Free(self);
@@ -196,7 +196,7 @@ Buffer0216f144 *Lo021cb6b0_DtorDelete(Buffer0216f144 *self) {
 
 Buffer0216f144 *Lo021cb6b0_Dtor(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, Lo021cb6b0_vtbl);
-    func_ov000_02164420(self);
+    Lo021cb6b0_DtorBase(self);
     VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     Buffer0216f144_Free(self);
     return self;
@@ -209,13 +209,13 @@ Buffer0216f144 *Ov000Vt_021cb6d0_DtorDelete(Buffer0216f144 *self) {
     return self;
 }
 
-void func_ov000_0216f0ac(Buffer0216f144 *self) {
+void ListBuffer_Draw(Buffer0216f144 *self) {
     if (self->unk_14 != NULL) {
         self->unk_14(self);
     }
 }
 
-void func_ov000_0216f0c4(Buffer0216f144 *self) {
+void ListBuffer_Update(Buffer0216f144 *self) {
     if (self->unk_10 != NULL) {
         self->unk_10(self);
     }
@@ -228,7 +228,7 @@ static inline BOOL func_0216f0dc_Check(void) {
     return gFadeState.unk_04 == 4;
 }
 
-void func_ov000_0216f0dc(void) {
+void ListBuffer_FadeIn(void) {
     if (func_0216f0dc_Check()) {
         GfxSys_StartFadeIn(0xa000, 0, 1);
     }

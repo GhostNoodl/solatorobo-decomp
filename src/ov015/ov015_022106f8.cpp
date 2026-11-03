@@ -4,7 +4,7 @@ extern "C" {
 
 s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
 
-BOOL func_ov015_022106f8(Ov015Msg *self) {
+BOOL Ov015Msg_Appear(Ov015Msg *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
@@ -51,7 +51,7 @@ s32 func_0204c2f4(void *p, s32 n, void *src);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_ov015_0220866c(Ov015UiText *self, void *msg);
 
-BOOL func_ov015_02210860(Ov015Msg *self) {
+BOOL Ov015Msg_Run(Ov015Msg *self) {
     BOOL r = TRUE;
     self->posX = 0x50000;
     self->posY = FX_Mul(FX_SinCosTable_[((self->timer * 0x3fff / 80) >> 4) * 2], 0x6000) - 0x46000;

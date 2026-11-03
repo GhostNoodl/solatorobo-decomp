@@ -85,7 +85,7 @@ static inline void Die02196258(VObj *obj) {
     obj->vfunc_08();
 }
 
-void func_ov000_02196258(VObj *obj) {
+void ActorEx_State0d(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     s32 zero = 0;
     u8 *t = (u8 *)Target_Get(((u8 *)self->targetObj));

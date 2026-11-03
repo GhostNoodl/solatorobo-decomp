@@ -26,14 +26,14 @@ extern void OS_DestroyThread(Movie *m);
 extern void OS_SleepThreadDirect(Movie *m, int arg);
 extern void OS_SleepThread(int arg);
 extern void Heap_FreeLo(void *ptr);
-extern void func_0203365c(void *audio);
-extern BOOL func_0203379c(void *audio);
-extern u32 func_020336dc(void *audio);
-extern u32 func_020336f4(void *audio);
-extern BOOL func_0203370c(void *audio);
-extern BOOL func_02033754(void *audio);
-extern u32 func_020337c0(void *audio);
-extern BOOL func_020337d8(void *audio, s16 *dst);
+extern void Mo_ClosePlayer(void *audio);
+extern BOOL Mo_SkipFrame(void *audio);
+extern u32 Mo_GetBlockSize(void *audio);
+extern u32 Mo_GetCurFrame(void *audio);
+extern BOOL Mo_ReadFrame(void *audio);
+extern BOOL Mo_DecodeFrame(void *audio);
+extern u32 Mo_GetChunkSamples(void *audio);
+extern BOOL Mo_DecodeAudio(void *audio, s16 *dst);
 extern BOOL FS_CloseFile(void *file);
 extern void DC_StoreRange(const void *addr, u32 size);
 extern void SndMgr_LoadHeapState(void *obj, int a, int b);
@@ -94,19 +94,19 @@ void func_02043ef8(Movie *m) {
 
 extern u32 OS_GetArenaLo(int region);
 extern u32 OS_GetArenaHi(int region);
-extern u32 func_02034600(void);
-extern u32 func_0203460c(void);
-extern int func_02034614(u32 addr, u32 size);
-extern int func_02034634(u32 addr, u32 size);
+extern u32 MoMem_GetLargeSize(void);
+extern u32 MoMem_GetSmallSize(void);
+extern int MoMem_SetLargeMem(u32 addr, u32 size);
+extern int MoMem_SetSmallMem(u32 addr, u32 size);
 extern void FS_InitFile(void *file);
 extern BOOL FS_OpenFile(void *file, const char *path);
-extern void *func_02033580(void *file, int n);
-extern u32 func_020336c4(void *audio);
+extern void *Mo_OpenFile(void *file, int n);
+extern u32 Mo_GetNumFrames(void *audio);
 extern u32 func_020336ac(void *audio);
-extern u32 func_0203367c(void *audio);
-extern u16 func_02033694(void *audio);
-extern BOOL func_02033730(void *audio);
-extern BOOL func_02033778(void *audio, u32 vram, int stride, int mode);
+extern u32 Mo_GetSampleRate(void *audio);
+extern u16 Mo_GetAudioChannels(void *audio);
+extern BOOL Mo_Rewind(void *audio);
+extern BOOL Mo_ConvertFrame(void *audio, u32 vram, int stride, int mode);
 extern NNSSndHeap *SndMgr_GetHeap(void *obj, int idx);
 extern void *Heap_AllocLo(u32 size, u32 align);
 extern void OS_CreateThread(Movie *m, void (*cb)(int), int arg, void *buf, u32 size, int prio);
@@ -144,16 +144,16 @@ void func_02043f70(Movie *m) {
         gGfxSys->nextState = 3;
         lo = OS_GetArenaLo(3);
         size = OS_GetArenaHi(3) - lo;
-        if (size >= func_02034600()) {
-            size = func_02034600();
+        if (size >= MoMem_GetLargeSize()) {
+            size = MoMem_GetLargeSize();
         }
-        func_02034614(OS_GetArenaLo(3), size);
+        MoMem_SetLargeMem(OS_GetArenaLo(3), size);
         lo = OS_GetArenaLo(4);
         size = OS_GetArenaHi(4) - lo;
-        if (size >= func_0203460c()) {
-            size = func_0203460c();
+        if (size >= MoMem_GetSmallSize()) {
+            size = MoMem_GetSmallSize();
         }
-        func_02034634(OS_GetArenaLo(4), size);
+        MoMem_SetSmallMem(OS_GetArenaLo(4), size);
         STD_CopyString(path, data_0208b3d8);
         STD_ConcatenateString(path, m->name);
         FS_InitFile(m->file);
@@ -161,7 +161,7 @@ void func_02043f70(Movie *m) {
             m->state = 0;
             return;
         }
-        m->audio = func_02033580(m->file, 10);
+        m->audio = Mo_OpenFile(m->file, 10);
         if (m->audio == NULL) {
             FS_CloseFile(m->file);
             m->state = 0;
@@ -169,14 +169,14 @@ void func_02043f70(Movie *m) {
         }
         m->unk_138 = 0;
         m->opened = TRUE;
-        m->unk_13c = func_020336c4(m->audio);
+        m->unk_13c = Mo_GetNumFrames(m->audio);
         m->unk_140 = func_020336ac(m->audio);
-        m->sampleRate = func_0203367c(m->audio);
-        m->channels = func_02033694(m->audio);
+        m->sampleRate = Mo_GetSampleRate(m->audio);
+        m->channels = Mo_GetAudioChannels(m->audio);
         m->numQueued = 0;
         m->writePos = 0;
         m->numBlocks = 0;
-        bs = func_020336dc(m->audio);
+        bs = Mo_GetBlockSize(m->audio);
         n = ((u64)m->sampleRate << 24) / ((u64)m->unk_140 * bs);
         n = (n + 1) * 11;
         m->bufSize = n * bs * 2;
@@ -219,12 +219,12 @@ void func_02043f70(Movie *m) {
         }
         if (m->numQueued >= 3 && m->numBlocks >= 4) {
             gGfxSys->unk_a30_2 = 1;
-            func_02033778(m->audio, gGfxSys->unk_a30_3 == 0 ? 0x6820000 : 0x6800000, 0x100, m->mode);
+            Mo_ConvertFrame(m->audio, gGfxSys->unk_a30_3 == 0 ? 0x6820000 : 0x6800000, 0x100, m->mode);
             m->numQueued--;
-        } else if (func_020336f4(m->audio) < m->unk_13c) {
+        } else if (Mo_GetCurFrame(m->audio) < m->unk_13c) {
             gGfxSys->unk_a30_2 = 0;
             if (m->numQueued != 0) {
-                func_0203379c(m->audio);
+                Mo_SkipFrame(m->audio);
                 m->numQueued--;
             }
         }
@@ -235,7 +235,7 @@ void func_02043f70(Movie *m) {
                 return;
             }
             m->unk_138 = 0;
-            func_02033730(m->audio);
+            Mo_Rewind(m->audio);
         }
         OS_WakeupThreadDirect(m);
         return;
@@ -320,10 +320,10 @@ void Movie_Close(Movie *m) {
         }
     }
     for (i = 0; i < m->numQueued; i++) {
-        func_0203379c(m->audio);
+        Mo_SkipFrame(m->audio);
     }
     m->numQueued = 0;
-    func_0203365c(m->audio);
+    Mo_ClosePlayer(m->audio);
     FS_CloseFile(m->file);
     if (m->bufL != NULL || m->bufR != NULL) {
         SndMgr_LoadHeapState(gSndMgr, 1, 1);
@@ -354,32 +354,32 @@ void func_02044670(Movie *m) {
         if (m->numBlocks < 0x18) {
             m->numBlocks = 0x18;
         }
-        m->writePos = func_020336dc(m->audio) * m->numBlocks;
+        m->writePos = Mo_GetBlockSize(m->audio) * m->numBlocks;
     }
     m->state = 7;
 }
 
 void func_0204479c(Movie *m, int arg) {
-    u32 bs = func_020336dc(m->audio);
+    u32 bs = Mo_GetBlockSize(m->audio);
     u32 total = m->blockCount * bs;
     for (;;) {
-        if (m->numQueued >= 10 || func_020336f4(m->audio) >= m->unk_13c || m->state == 6) {
+        if (m->numQueued >= 10 || Mo_GetCurFrame(m->audio) >= m->unk_13c || m->state == 6) {
             OS_SleepThread(0);
             continue;
         }
-        if (!func_0203370c(m->audio)) {
+        if (!Mo_ReadFrame(m->audio)) {
             return;
         }
-        if (!func_02033754(m->audio)) {
+        if (!Mo_DecodeFrame(m->audio)) {
             return;
         }
         if (m->channels != 0) {
-            u64 n = func_020337c0(m->audio);
+            u64 n = Mo_GetChunkSamples(m->audio);
             int i;
             for (i = 0; i < n; i++) {
-                func_020337d8(m->audio, m->bufL + m->writePos);
+                Mo_DecodeAudio(m->audio, m->bufL + m->writePos);
                 if (m->channels >= 2) {
-                    func_020337d8(m->audio, m->bufR + m->writePos);
+                    Mo_DecodeAudio(m->audio, m->bufR + m->writePos);
                 }
                 m->writePos += bs;
                 if (m->writePos >= total) {
@@ -406,7 +406,7 @@ void func_020448dc(Movie *m) {
     int pan;
     m->soundOn = TRUE;
     timer = 0xffb0ff / m->sampleRate;
-    bs = func_020336dc(m->audio);
+    bs = Mo_GetBlockSize(m->audio);
     ch = 3;
     pan = 0;
     if (m->channels == 1) {

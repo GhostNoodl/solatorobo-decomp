@@ -69,9 +69,9 @@ extern void EffectEmitter_Reset(EffectEmitter *em);
 extern void EffectEmitter_ResetParams(EffectEmitter *em);
 extern void EffectPartSet_Init(EffectPartSet *parts);
 extern void EffectPartSet_Reset(EffectPartSet *parts);
-extern void func_0206a0d8(EffectPartSet *parts);
+extern void EffectPartSet_DtorBase(EffectPartSet *parts);
 extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, const u8 *data);
-extern void func_02069248(EffectEmitterSub *sub);
+extern void EffectEmitterSub_DtorBase(EffectEmitterSub *sub);
 
 void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id);
 void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name);
@@ -145,7 +145,7 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
 
 EffectEmitterSub *MainVt_0208c354_Dtor(EffectEmitterSub *sub) {
     *(u32 **)sub = MainVt_0208c354_vtbl;
-    func_02069248(sub);
+    EffectEmitterSub_DtorBase(sub);
     return sub;
 }
 
@@ -250,7 +250,7 @@ void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id) {
 
 EffectPartSet *MainVt_0208c364_DtorDelete(EffectPartSet *parts) {
     *(u32 **)parts = MainVt_0208c364_vtbl;
-    func_0206a0d8(parts);
+    EffectPartSet_DtorBase(parts);
     Heap_Free(parts);
     return parts;
 }
@@ -264,13 +264,13 @@ void func_02068d5c(EffectPartSet *parts) {
 
 EffectPartSet *MainVt_0208c364_Dtor(EffectPartSet *parts) {
     *(u32 **)parts = MainVt_0208c364_vtbl;
-    func_0206a0d8(parts);
+    EffectPartSet_DtorBase(parts);
     return parts;
 }
 
 EffectEmitterSub *MainVt_0208c354_DtorDelete(EffectEmitterSub *sub) {
     *(u32 **)sub = MainVt_0208c354_vtbl;
-    func_02069248(sub);
+    EffectEmitterSub_DtorBase(sub);
     Heap_Free(sub);
     return sub;
 }

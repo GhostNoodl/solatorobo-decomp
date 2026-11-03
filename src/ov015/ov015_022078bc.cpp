@@ -21,7 +21,7 @@ extern const char *data_ov015_02212cbc[];
 extern const char *data_ov015_02212cc4[];
 
 // STD_CopyString (nitro/std.h) returns its destination; this TU was built against a void-returning
-// declaration, and the char * result changes the scheduling of func_ov015_022078bc, so the calls
+// declaration, and the char * result changes the scheduling of Ov015Ship_Load, so the calls
 // go through a void view of the same function.
 typedef void (*Ov015CopyStringFn)(char *dst, const char *src);
 #define OV015_COPY_STRING(d, s) ((Ov015CopyStringFn)STD_CopyString)(d, s)
@@ -37,7 +37,7 @@ static inline void Ov015_SetAnim(Ov015Anim *o, const char *file, const char *nam
     o->ownAnm = 1;
 }
 
-BOOL func_ov015_022078bc(Ov015Ship *self) {
+BOOL Ov015Ship_Load(Ov015Ship *self) {
     s32 kq;
     BOOL r = FALSE;
     switch (self->loadStep) {
@@ -89,7 +89,7 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
     return r;
 }
 
-BOOL func_ov015_02207adc(Ov015Ship *self) {
+BOOL Ov015Ship_Setup(Ov015Ship *self) {
     s32 i;
     Model0218fe1c_SetRes(&self->model, self, 0, 1);
     Model0218fe1c_SetAnim(&self->model, "ang00", 0x1000, 0);
@@ -126,7 +126,7 @@ u16 Angle_Approach(u16 a, u16 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 
-void func_ov015_02207c30(Ov015Ship *self) {
+void Ov015Ship_Update(Ov015Ship *self) {
     u16 ang = 0x8000;
     switch (self->unk_d3a) {
     case 0:

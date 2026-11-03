@@ -11,7 +11,7 @@ extern int FS_ReadFileAsync(void *file, void *buf, u32 size);
 extern u32 FS_GetLength(void *file);
 extern u32 FS_GetPosition(void *file);
 
-BOOL func_02034830(MoStream *stream, void *file) {
+BOOL MoFileStream_Open(MoStream *stream, void *file) {
     stream->file = file;
     stream->length = FS_GetLength(file);
     stream->position = FS_GetPosition(stream->file);
@@ -19,7 +19,7 @@ BOOL func_02034830(MoStream *stream, void *file) {
     return TRUE;
 }
 
-BOOL func_02034864(MoStream *stream, u32 offset) {
+BOOL MoFileStream_Seek(MoStream *stream, u32 offset) {
     if (stream->asyncPending == TRUE) {
         FS_WaitAsync(stream->file);
         stream->asyncPending = FALSE;
@@ -31,7 +31,7 @@ BOOL func_02034864(MoStream *stream, u32 offset) {
     return TRUE;
 }
 
-BOOL func_020348b4(MoStream *stream, void *buffer, u32 size) {
+BOOL MoFileStream_Read(MoStream *stream, void *buffer, u32 size) {
     if (stream->asyncPending == TRUE) {
         FS_WaitAsync(stream->file);
         FS_SeekFile(stream->file, stream->position, 0);
@@ -44,7 +44,7 @@ BOOL func_020348b4(MoStream *stream, void *buffer, u32 size) {
     return TRUE;
 }
 
-u32 func_0203491c(MoStream *stream, void *buffer, u32 size) {
+u32 MoFileStream_ReadAsync(MoStream *stream, void *buffer, u32 size) {
     u32 pos = stream->position;
     u32 skip = pos - (pos & ~0x1ff);
     u32 total = size + skip;
@@ -60,14 +60,14 @@ u32 func_0203491c(MoStream *stream, void *buffer, u32 size) {
     return skip;
 }
 
-void func_0203499c(MoStream *stream) {
+void MoFileStream_WaitAsync(MoStream *stream) {
     if (stream->asyncPending == TRUE) {
         FS_WaitAsync(stream->file);
     }
     stream->asyncPending = FALSE;
 }
 
-void func_020349c4(MoStream *stream) {
+void MoFileStream_Close(MoStream *stream) {
     stream->WaitAsync();
 }
 

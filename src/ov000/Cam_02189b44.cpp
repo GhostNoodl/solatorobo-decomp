@@ -90,7 +90,7 @@ static inline void DistTo9b44(FieldCam *self, s32 dist, s32 rate) {
     self->base.distRate = 0x733;
 }
 
-void func_ov000_02189b44(FieldCam *self) {
+void FieldCam_Apply(FieldCam *self) {
     if (self->unk_d8_0 || self->base.animated) {
         Camera_Apply(&self->base);
         return;

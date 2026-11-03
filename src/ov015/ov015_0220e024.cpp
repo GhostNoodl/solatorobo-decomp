@@ -19,7 +19,7 @@ BOOL Model021903b4_Draw(void *a);
 extern u8 Ov015FishState_vtbl[];
 extern u8 Ov015Vt_02212f64_vtbl[];
 
-BOOL func_ov015_0220e024(Ov015StageMdl *self) {
+BOOL Ov015StageMdl_Load(Ov015StageMdl *self) {
     BOOL r = TRUE;
     if (self->res0.unk_00 >= 0) {
         if (ResSet_UpdateLoad(&self->res0) == 0) r = FALSE;
@@ -30,7 +30,7 @@ BOOL func_ov015_0220e024(Ov015StageMdl *self) {
     return r;
 }
 
-BOOL func_ov015_0220e074(Ov015StageMdl *self) {
+BOOL Ov015StageMdl_Setup(Ov015StageMdl *self) {
     s32 i;
     s32 cur;
     Ov002Obj *n;
@@ -87,7 +87,7 @@ struct Ov015Bits8e294 {
     u8 b1 : 1;
     u8 rest : 6;
 };
-BOOL func_ov015_0220e294(Ov015StageMdl *self) {
+BOOL Ov015StageMdl_Update(Ov015StageMdl *self) {
     s32 sel;
     s32 i;
     s32 t;
@@ -141,7 +141,7 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
     return TRUE;
 }
 
-void func_ov015_0220e434(Ov015StageMdl *self) {
+void Ov015StageMdl_Draw(Ov015StageMdl *self) {
     s32 c;
     if (self->vfunc_08() == 0) {
         return;
@@ -171,7 +171,7 @@ void func_ov015_0220e434(Ov015StageMdl *self) {
     NNS_G3dGeFlushBuffer();
 }
 
-BOOL func_ov015_0220e55c(Ov015StageMdl *self) {
+BOOL Ov015StageMdl_IsLoaded(Ov015StageMdl *self) {
     return self->unk_0c >= 3;
 }
 
@@ -200,22 +200,22 @@ void *Ov015Vt_02212f64_DtorDelete(Ov002Obj *self) {
     return self;
 }
 
-void func_ov015_0220e5f0(void) {
+void Ov015Vt_02212f64_Draw(void) {
 }
 
-BOOL func_ov015_0220e5f4(void) {
+BOOL Ov015Vt_02212f64_Update(void) {
     return FALSE;
 }
 
-BOOL func_ov015_0220e5fc(void) {
+BOOL Ov015Vt_02212f64_Setup(void) {
     return TRUE;
 }
 
-BOOL func_ov015_0220e604(void) {
+BOOL Ov015Vt_02212f64_Load(void) {
     return TRUE;
 }
 
-BOOL func_ov015_0220e60c(void) {
+BOOL Ov015Vt_02212f64_Prepare(void) {
     return TRUE;
 }
 

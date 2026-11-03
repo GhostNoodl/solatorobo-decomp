@@ -86,7 +86,7 @@ typedef struct Ov002CamPos {
 } Ov002CamPos;
 
 // Board shape (8 bytes): a grid of w x h cells (grid[y * w + x]), its origin cell (ox, oy) and its
-// rotation. func_02070dcc returns the shape of a kind (Main's StageFlags_3 reads it the same way).
+// rotation. ParamKind_GetShape returns the shape of a kind (Main's StageFlags_3 reads it the same way).
 typedef struct Ov002Shape {
     u8 *grid;
     u16 unk_4 : 8;
@@ -201,7 +201,7 @@ struct Obj021efe6c : public VObj {
 SIZE_ASSERT(Obj021efe6c, 0xc8);
 
 // Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90.top):
-// the board and its current mode object (func_ov002_021dab58 builds mode unk_0c: 021eff74, 021eff50, ...).
+// the board and its current mode object (Obj021efe7c_SetPhase builds mode unk_0c: 021eff74, 021eff50, ...).
 struct Obj021efe7c : public VObj {
     Obj021efe6c *board;
     VObj *unk_08;
@@ -260,7 +260,7 @@ struct Obj021efef0 : public VObj {
     u8 unk_21;
     u8 unk_22;
     u8 unk_23;
-    ListRow *unk_24; // the row taken from unk_0c->unk_a4 (func_ov002_021deb2c reads its id)
+    ListRow *unk_24; // the row taken from unk_0c->unk_a4 (Obj021efef0_Exit reads its id)
     s32 unk_28;
     s32 unk_2c;
     s32 unk_30;
@@ -340,7 +340,7 @@ SIZE_ASSERT(Obj021eff74, 0x24);
 
 // Text window as ov002 uses it (vtable TextWin_vtbl, TextWin_Init; 0xb8 bytes). It is the
 // object TextWin (Main/Gfx/TextWin.h) describes; this view keeps width and height signed, as
-// Text_Measure writes them and func_ov002_021ed270 and Ov002HudInfo_Draw halve them.
+// Text_Measure writes them and Ov002StaffText_Start and Ov002HudInfo_Draw halve them.
 struct Ov002Text2 : public VObj {
     union {
         u32 flags;
@@ -377,9 +377,9 @@ struct Ov002Text2 : public VObj {
 // copy of the row base vtable, Ov002Vt_021ef684_vtbl.
 
 // Board item row (vtable Ov002Vt_021f002c_vtbl, 0x4c bytes; ctor Obj021f002c_Init, dtors
-// Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (func_ov002_021e2fb4) steps state: 0 builds the
+// Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (Obj021f002c_Update) steps state: 0 builds the
 // item model (when hasModel is set) and the name text, 1 frees them once the row is hidden, 2 waits
-// to be shown again. Slot 0x0c (func_ov002_021e31fc) draws both at the row's position.
+// to be shown again. Slot 0x0c (Obj021f002c_Draw) draws both at the row's position.
 struct Obj021f002c : public ListRow {
     Model *model;
     Ov002Text2 *text; // Obj021f002c_CreateText builds it from str

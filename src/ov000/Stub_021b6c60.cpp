@@ -7,7 +7,7 @@ extern "C" {
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void TouchQuad_Init(void *q, u16 a, u16 b, u16 c, u16 d);
 
-void func_ov000_021b6c60(FieldMgr *self) {
+void FieldMgr_StepTouchArea(FieldMgr *self) {
     Robo021ca458 *pl = ActorMgr_FindPlayer();
     LangBlockB *r;
     FieldCam *cam;

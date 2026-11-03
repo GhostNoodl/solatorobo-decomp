@@ -1,20 +1,20 @@
 #include "nnsys/snd/sndarc_stream.h"
 
-void func_02032c54(StrmPlayer *player, u32 fileId) {
+void StrmPlayer_SetFileFuncs(StrmPlayer *player, u32 fileId) {
     if (NNS_SndArcGetFileAddress(fileId) == NULL) {
-        player->openFn = func_02032cbc;
-        player->closeFn = func_02032db4;
-        player->readFn = func_02032dc4;
-        player->stopFn = func_02032dfc;
+        player->openFn = StrmPlayer_OpenArcFile;
+        player->closeFn = StrmPlayer_CloseArcFile;
+        player->readFn = StrmPlayer_ReadArcFile;
+        player->stopFn = StrmPlayer_CancelArcFile;
     } else {
-        player->openFn = func_02032e0c;
-        player->closeFn = func_02032e34;
-        player->readFn = func_02032e38;
-        player->stopFn = func_02032e54;
+        player->openFn = StrmPlayer_OpenMem;
+        player->closeFn = StrmPlayer_CloseMem;
+        player->readFn = StrmPlayer_ReadMem;
+        player->stopFn = StrmPlayer_CancelMem;
     }
 }
 
-BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
+BOOL StrmPlayer_OpenArcFile(StrmPlayer *player, u32 fileId) {
     if (NNS_SndArcReadFile(fileId, &player->header, sizeof(StrmHeader), 0) != sizeof(StrmHeader)) {
         return FALSE;
     }
@@ -24,12 +24,12 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
         u32 bottom;
         BOOL opened;
         BOOL set;
-        arc = func_020304dc();
+        arc = SndArc_GetAltPath();
         if (arc == NULL) {
             return FALSE;
         }
-        top = func_020304f0();
-        bottom = func_02030504();
+        top = SndArc_GetAltTop();
+        bottom = SndArc_GetAltBottom();
         if (top == 0) {
             return FALSE;
         }
@@ -49,50 +49,50 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
     return TRUE;
 }
 
-void func_02032db4(StrmPlayer *player) {
+void StrmPlayer_CloseArcFile(StrmPlayer *player) {
     FS_CloseFile(player->file);
 }
 
-u32 func_02032dc4(StrmPlayer *player, void *buf, u32 size, u32 offset) {
+u32 StrmPlayer_ReadArcFile(StrmPlayer *player, void *buf, u32 size, u32 offset) {
     FS_SeekFile(player->file, player->fileOffset + offset, 0);
     return FS_ReadFile(player->file, buf, size);
 }
 
-void func_02032dfc(StrmPlayer *player) {
+void StrmPlayer_CancelArcFile(StrmPlayer *player) {
     FS_CancelFile(player->file);
 }
 
-BOOL func_02032e0c(StrmPlayer *player, u32 fileId) {
+BOOL StrmPlayer_OpenMem(StrmPlayer *player, u32 fileId) {
     player->fileOffset = (u32)NNS_SndArcGetFileAddress(fileId);
     MI_CpuCopy8((void *)player->fileOffset, &player->header, sizeof(StrmHeader));
     return TRUE;
 }
 
-void func_02032e34(StrmPlayer *player) {
+void StrmPlayer_CloseMem(StrmPlayer *player) {
 }
 
-u32 func_02032e38(StrmPlayer *player, void *buf, u32 size, u32 offset) {
+u32 StrmPlayer_ReadMem(StrmPlayer *player, void *buf, u32 size, u32 offset) {
     MI_CpuCopy8((u8 *)player->fileOffset + offset, buf, size);
     return size;
 }
 
-void func_02032e54(StrmPlayer *player) {
+void StrmPlayer_CancelMem(StrmPlayer *player) {
 }
 
-void func_02032e58(void *arg) {
+void StrmThread_Main(void *arg) {
     StrmThread *thread = arg;
     StrmCommand *cmd;
     while (TRUE) {
         OS_SleepThread(&thread->queue);
         while (TRUE) {
             OS_LockMutex(&thread->mutex);
-            cmd = func_0203207c(&thread->cmdList);
+            cmd = Strm_PopCommand(&thread->cmdList);
             if (cmd == NULL) {
                 OS_UnlockMutex(&thread->mutex);
                 break;
             }
-            func_0203244c(cmd);
-            func_02032110(cmd);
+            Strm_ProcessCommand(cmd);
+            Strm_FreeCommand(cmd);
             OS_UnlockMutex(&thread->mutex);
         }
     }

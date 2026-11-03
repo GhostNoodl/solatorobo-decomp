@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov000_021bf308();
+void ActorMarker_UpdateKind04();
 
-void func_ov000_021bce84(void) {
-    func_ov000_021bf308();
+void ActorMarker_UpdateKind05(void) {
+    ActorMarker_UpdateKind04();
 }
 
 }

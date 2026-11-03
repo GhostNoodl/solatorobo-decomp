@@ -97,7 +97,7 @@ void func_ov015_022119e8(Ov015Obj290 *self) {
 void func_ov015_02211a18(void) {
 }
 
-void func_ov015_02211a1c(Ov015Obj290 *self) {
+void Ov015Obj290_Init(Ov015Obj290 *self) {
     self->step = 0;
     self->unk_234.x = 0;
     self->unk_234.y = 0;
@@ -121,14 +121,14 @@ static inline void Ov015_SetPairB(u8 *l, s32 i, const void *a, const void *b) {
     STD_CopyString((char *)(l + 0x30 + i * 0x3c), (char *)b);
     l[3] |= 2 << i;
 }
-void func_ov015_02211a74(Ov015Obj290 *self) {
+void Ov015Obj290_Load(Ov015Obj290 *self) {
     s32 idx = gOv015Shared->unk_2c;
     Ov015_SetPairB((u8 *)&self->res, 0, data_ov015_02213230[idx], data_ov015_02213228[idx]);
     Ov015_SetPairB((u8 *)&self->res, 1, data_ov015_02213230[idx], data_ov015_02213208[idx]);
     self->res.unk_00 = 0;
 }
 
-BOOL func_ov015_02211b00(Ov015Obj290 *self) {
+BOOL Ov015Obj290_IsLoaded(Ov015Obj290 *self) {
     BOOL r = TRUE;
     if (self->res.unk_00 >= 0) {
         if ((ResSet_UpdateLoad(&self->res) & 1) == 0) r = FALSE;
@@ -144,7 +144,7 @@ s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 extern u8 data_ov015_02213280[];
 extern const char *data_ov015_02213210[];
 
-BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
+BOOL Ov015Obj290_Setup(Ov015Obj290 *self) {
     Model0218fe1c_SetRes(&self->model, &self->res, 0, 1);
     Model0218fe1c_SetAnim(&self->model, data_ov015_02213280, 0x1000, 0);
     Model0218fe1c_ClearLoop(&self->model);

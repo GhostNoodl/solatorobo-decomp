@@ -19,11 +19,11 @@ void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
 void *Ov015Fish_Ctor(Ov015Fish *self);
 void func_ov015_02209364(Ov015Fish *self);
 
-BOOL func_ov015_022015f4(void) {
+BOOL Ov015Game_Load(void) {
     return ResMgr_IsLoaded(data_ov015_022128c1, 7) != 0 ? TRUE : FALSE;
 }
 
-BOOL func_ov015_02201618(Ov015Game *self) {
+BOOL Ov015Game_Setup(Ov015Game *self) {
     u16 ids[4];
     Ov015CamPair *o;
     Ov015List *l;
@@ -115,12 +115,12 @@ void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d);
 void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d);
-BOOL func_ov015_022078bc(Ov015Ship *p);
+BOOL Ov015Ship_Load(Ov015Ship *p);
 s32 ResSet_UpdateLoad(void *a);
-BOOL func_ov015_0220947c(Ov015Fish *self);
+BOOL Ov015Fish_IsLoaded(Ov015Fish *self);
 void LangData_LocalizePath(char *buf, const char *name);
 int func_ov015_02210bd8(Ov015MsgMgr *self);
-BOOL func_ov015_02207adc(Ov015Ship *self);
+BOOL Ov015Ship_Setup(Ov015Ship *self);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
@@ -192,7 +192,7 @@ static inline void Ov015_ModelsReset(Ov015MdlSet *p) {
 
 typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
 
-BOOL func_ov015_0220182c(Ov015Game *self) {
+BOOL Ov015Game_Update(Ov015Game *self) {
     BOOL ret = TRUE;
     bool a = true;
     switch (self->step) {
@@ -218,7 +218,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         bool c;
         bool b;
         char buf[0x20];
-        if (!(func_ov015_022078bc(self->ship) & 1)) {
+        if (!(Ov015Ship_Load(self->ship) & 1)) {
             a = false;
         } else {
             a = true;
@@ -237,7 +237,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         b = a & b;
         c = true;
         for (n = self->fishList->head; n != NULL; n = n->next) {
-            c &= func_ov015_0220947c(n->fish);
+            c &= Ov015Fish_IsLoaded(n->fish);
         }
         c = b & c;
         q = self->hud;
@@ -269,7 +269,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0x1e: {
         Ov015MdlSet *p;
         Ov015Node *n;
-        func_ov015_02207adc(self->ship);
+        Ov015Ship_Setup(self->ship);
         p = self->unk_20;
         Model0218fe1c_SetRes(&p->p[0].mdl, &p->p[0].res, 0, 1);
         Model0218fe1c_SetAnim(&p->p[0].mdl, data_ov015_02212899, 0x1000, 0);
@@ -375,7 +375,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         break;
     }
     case 0x46:
-        if (!func_ov015_0220f568(self->result)) {
+        if (!Ov015Result_Update(self->result)) {
             self->step = 0x50;
         }
         break;

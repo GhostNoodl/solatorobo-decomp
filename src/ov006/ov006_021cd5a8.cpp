@@ -19,7 +19,7 @@ static inline u16 ov006_SlotId(ov006_SlotManager *m) {
     return m->unk6 & 0xfff;
 }
 
-void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
+void ov006_Manager_Mode00(int type, UiList *obj, int arg) {
     switch (type) {
     case 0:
         break;

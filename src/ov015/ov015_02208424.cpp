@@ -44,7 +44,7 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov015_02208070(Ov015Ship *self) {
+void Ov015Ship_Draw(Ov015Ship *self) {
     Ov015Vec p;
     Ov015Vec d;
     Ov015Vec out;
@@ -557,7 +557,7 @@ void *Ov015Fish_Ctor(Ov015Fish *self) {
     return self;
 }
 
-void func_ov015_02209270(Ov015Fish *self) {
+void Ov015Fish_DtorBase(Ov015Fish *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->nextState);

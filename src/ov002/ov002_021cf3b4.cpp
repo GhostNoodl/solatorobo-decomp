@@ -152,27 +152,27 @@ void *Ov002Vt_021ef410_DtorDelete(void *self) {
     return self;
 }
 
-void func_ov002_021cf918(void *self) {
+void Ov002Vt_021ef410_Draw(void *self) {
     Callback cb = FIELD(self, 0x14, Callback);
     if (cb != NULL) {
         cb(self);
     }
 }
 
-void func_ov002_021cf930(void *self) {
+void Ov002Vt_021ef410_Update(void *self) {
     Callback cb = FIELD(self, 0x10, Callback);
     if (cb != NULL) {
         cb(self);
     }
 }
 
-void func_ov002_021cf948(void) {
+void Ov002Vt_021ef410_FadeIn(void) {
     if (func_ov002_isMode4b()) {
         GfxSys_StartFadeIn(0xa000, 0, 1);
     }
 }
 
-BOOL func_ov002_021cf990(void) {
+BOOL Ov002Vt_021ef410_IsReady(void) {
     return FALSE;
 }
 

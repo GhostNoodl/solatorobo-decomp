@@ -2,7 +2,7 @@
 #define OV000_GROUP_H
 
 // The spawn groups (gGroup, a Group of 0x48 bytes built by Group_Init_0218bb34).
-// Each GroupNode (0xa4 bytes, ctor func_ov000_0218a9d8, made by func_ov000_0218b9ec) spawns its
+// Each GroupNode (0xa4 bytes, ctor GroupNode_Init, made by func_ov000_0218b9ec) spawns its
 // actor from `spawn` (Group_SpawnActor) once one of the views the field camera registered this
 // frame (Group_AddCamView) is inside its spawn volume (func_ov000_0218adf0), and removes the
 // actor again once every view has left its despawn volume (func_ov000_0218af9c). The spawned
@@ -108,7 +108,7 @@ typedef struct Group {
 extern "C" {
 #endif
 
-GroupNode *func_ov000_0218a9d8(GroupNode *self);
+GroupNode *GroupNode_Init(GroupNode *self);
 GroupNode *func_ov000_0218b9ec(GroupActorDesc *desc, const FieldId *fieldId, const FieldId *fieldFilter, VecFx32 *pos, Rot16 *rot);
 void func_ov000_0218b420(GroupNode *self);
 void func_ov000_0218b60c(GroupNode *self, const FieldId *fieldId, const VecFx32 *pos, const Rot16 *rot);

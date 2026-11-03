@@ -26,10 +26,10 @@ void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
 void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
 VObj *ActorMgr_FindPlayer(void);
 void SceneCmd_Push0d(FieldState *q);
-BOOL func_ov000_02170188(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL ListBuffer021cb940_OpenWindow(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
-BOOL func_ov000_02170620(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL ListBuffer021cb940_OpenDialog(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
 void func_ov000_021b87d8(void *p, u16 a);
 void func_ov000_021b8884(void *p, u16 a);
@@ -181,7 +181,7 @@ static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
         func_ov000_0216c954(p, bh, bl);
     }
     t->unk_50 = p;
-    func_ov000_0216ca64(p, cl, ch);
+    Obj0216c954_SetCount(p, cl, ch);
     return TRUE;
 }
 
@@ -311,7 +311,7 @@ static inline BOOL Task_Start4c(ListBuffer021cb940 *t, u32 b, s32 c) {
 
 extern "C" {
 
-void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32 c) {
+void MessageQueue021cb980_HandleMsg(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32 c) {
     switch (kind) {
     case 1:
         self->flag0 = 1;
@@ -375,7 +375,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (a != 0) {
             return;
         }
-        if (func_ov000_02170188(self->unk_11c, b, c)) {
+        if (ListBuffer021cb940_OpenWindow(self->unk_11c, b, c)) {
             return;
         }
         self->vfunc_08(a, kind, b, c);
@@ -456,7 +456,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (a != 0) {
             return;
         }
-        if (func_ov000_02170620(self->unk_11c, b, c)) {
+        if (ListBuffer021cb940_OpenDialog(self->unk_11c, b, c)) {
             return;
         }
         self->vfunc_08(a, kind, b, c);

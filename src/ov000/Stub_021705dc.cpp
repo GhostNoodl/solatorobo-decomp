@@ -6,7 +6,7 @@ static inline BOOL NotNull54_Inline(ListBuffer021cb940 *self) { return self->unk
 extern "C" {
 
 
-BOOL func_ov000_02170568(ListBuffer021cb940 *self) {
+BOOL ListBuffer021cb940_IsBusy(ListBuffer021cb940 *self) {
     if (self->state == 7 || self->unk_3c != NULL ||
         self->unk_40 != NULL || self->unk_44 != NULL) {
         return TRUE;
@@ -27,8 +27,8 @@ BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check) {
     return TRUE;
 }
 
-void func_ov000_021705dc(ListBuffer021cb940 *self, s32 a, s32 b) {
-    func_ov000_0216ca64(self->unk_50, a, b);
+void ListBuffer021cb940_SetEventCount(ListBuffer021cb940 *self, s32 a, s32 b) {
+    Obj0216c954_SetCount(self->unk_50, a, b);
 }
 
 bool func_ov000_021705ec(ListBuffer021cb940 *self) {

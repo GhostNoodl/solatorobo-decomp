@@ -184,12 +184,12 @@ extern Ov003Save *gStageFlags;
 extern Ov003Player *ActorMgr_FindPlayer(void);
 extern s16 *AnimEvent_Exec(s16 *p, Ov003Hit *hit);
 extern s32 Ov003_SurfaceSoundId(u32 color);
-extern u8 func_0206d37c(Ov003Save *save, s32 a);
+extern u8 StageFlags_GetCounter(Ov003Save *save, s32 a);
 extern u16 Ov003_ScaleDamage(u16 v);
 extern u8 data_ov000_021c9fe4;
 extern void *gMsgRes;
 extern BOOL func_020621f8(void);
-extern Ov003Area *func_0206ef10(u16 id);
+extern Ov003Area *Param_GetRecord(u16 id);
 extern s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
@@ -239,7 +239,7 @@ u16 Ov003_ScaleDamage(u16 v) {
         return v;
     }
     if (ActorMgr_FindPlayer()->hard) {
-        u16 a = func_0206d37c(gStageFlags, 0);
+        u16 a = StageFlags_GetCounter(gStageFlags, 0);
         v = a + v;
     }
     n = (u8)gStageFlags->bonus;
@@ -285,7 +285,7 @@ u16 Ov003_ScaleReward(u16 v) {
     if (!hard) {
         v = v + (((u32)v << 15) >> 16);
     } else {
-        base = func_0206d37c(gStageFlags, 1);
+        base = StageFlags_GetCounter(gStageFlags, 1);
         if (gStageFlags->mode == 1 && pl->boosted) {
             base += 0x32;
         }
@@ -348,7 +348,7 @@ void Ov003_AddExp(u16 exp) {
     boosted = FALSE;
     bonus = 0;
     if (gStageFlags->mode == 1) {
-        area = func_0206ef10(gStageFlags->area | 0x8000);
+        area = Param_GetRecord(gStageFlags->area | 0x8000);
         if (area != NULL) {
             Ov003Player *pl;
             bonus = area->bonus;

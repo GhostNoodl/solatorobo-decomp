@@ -41,7 +41,7 @@ struct Obj021b8284 {
     union {
         u32 flags;
         struct {
-            u32 stop : 1; // set by field message 10 (func_ov000_02171478)
+            u32 stop : 1; // set by field message 10 (MessageQueue021cb980_HandleMsg)
             u32 unk_00_1 : 31;
         };
     };

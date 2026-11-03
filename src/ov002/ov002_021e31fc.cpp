@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov002_021e31fc(Obj021f002c *self) {
+void Obj021f002c_Draw(Obj021f002c *self) {
     Model *model;
     s32 x;
     s32 y;

@@ -9,7 +9,7 @@ typedef struct Bits021d95e0 {
 } Bits021d95e0;
 
 void *GfxCamPos_Init(void *p);
-void func_0206ce78(void *a, u16 b);
+void StageFlags_ChangeShape(void *a, u16 b);
 
 static inline void ov002_Vec_Copy(s32 *src, s32 *dst) {
     dst[0] = src[0];
@@ -33,7 +33,7 @@ void func_ov002_021d95e0(Obj021efe6c *self) {
     void *cam;
     Task021efba4 *t;
     if (gStageFlags->shapeId == 0x9000 && gStageFlags->bits18.mode != 0) {
-        func_0206ce78(gStageFlags, 0x9001);
+        StageFlags_ChangeShape(gStageFlags, 0x9001);
     }
     self->field->unk_68 = gStageFlags->shapeId;
     func_ov002_021d7058(self->field);

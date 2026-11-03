@@ -7,8 +7,8 @@ extern "C" {
 void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b);
 void Ov015Fish_GetFrontPos(Ov015Fish *b, Ov015Vec *out);
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
-void func_ov015_02207c30(Ov015Ship *p);
-BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
+void Ov015Ship_Update(Ov015Ship *p);
+BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
 
 BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c) {
     Ov015Vec v;
@@ -82,8 +82,8 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             self->fx->SetParam(0);
         }
     }
-    func_ov015_02207c30(a);
-    func_ov015_02209790(b, 1);
+    Ov015Ship_Update(a);
+    Ov015Fish_Update(b, 1);
     self->unk_0c += 0x1000;
     if (self->unk_0c > 0x70000000) self->unk_0c = 0x70000000;
     return ok;

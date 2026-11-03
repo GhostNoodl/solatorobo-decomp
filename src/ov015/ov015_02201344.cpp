@@ -13,7 +13,7 @@ extern char data_ov015_02212857[];
 extern char data_ov015_02212883[];
 extern char data_ov015_02212878[];
 extern char data_ov015_022128c1[];
-u8 *func_ov015_0220765c(Ov015Ship *p);
+u8 *Ov015Ship_Ctor(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
@@ -27,13 +27,13 @@ static inline Model *Ov015_NewTex(void) {
     return t;
 }
 
-BOOL func_ov015_02201344(Ov015Game *self) {
+BOOL Ov015Game_Create(Ov015Game *self) {
     Ov015Ship *s;
     Ov015MdlSet *o;
     Ov015Hud *q;
     s = (Ov015Ship *)Heap_Alloc(0xd58);
     if (s != NULL) {
-        s = (Ov015Ship *)func_ov015_0220765c(s);
+        s = (Ov015Ship *)Ov015Ship_Ctor(s);
     }
     self->ship = s;
     func_ov015_02207858(s);
@@ -129,7 +129,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
             f = Ov015Result_Ctor(f);
         }
         self->result = f;
-        func_ov015_0220f470(f);
+        Ov015Result_Init(f);
     }
     ResMgr_Load(data_ov015_022128c1, 7, 0);
     return TRUE;

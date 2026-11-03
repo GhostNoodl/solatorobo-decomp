@@ -113,32 +113,32 @@ extern "C" {
 #endif
 
 // mobiclip_api.cpp
-BOOL func_02033550(MoPlayer *player, MoStream *stream, u32 flags);
-MoPlayer *func_02033580(void *file, u32 flags);
-void *func_02033648(void *ptr);
-void func_0203365c(MoPlayer *player);
-void *func_020337fc(u32 size);
-void func_02033808(void *ptr);
-MoPlayer *func_02033814(MoPlayer *player);
-MoPlayer *func_02033844(MoPlayer *player);
+BOOL Mo_InitPlayer(MoPlayer *player, MoStream *stream, u32 flags);
+MoPlayer *Mo_OpenFile(void *file, u32 flags);
+void *MoFileStream_Release(void *ptr);
+void Mo_ClosePlayer(MoPlayer *player);
+void *Mo_Alloc(u32 size);
+void Mo_Free(void *ptr);
+MoPlayer *MoPlayer_Ctor(MoPlayer *player);
+MoPlayer *MoPlayer_Dtor(MoPlayer *player);
 
 // mobiclip_player.cpp
-BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags);
-void func_02033df0(MoPlayer *player);
-u32 func_02033f54(MoPlayer *player);
-u16 func_02033f5c(MoPlayer *player);
+BOOL MoPlayer_Open(MoPlayer *player, MoStream *stream, u32 flags);
+void MoPlayer_Close(MoPlayer *player);
+u32 MoPlayer_GetSampleRate(MoPlayer *player);
+u16 MoPlayer_GetAudioChannels(MoPlayer *player);
 u32 func_02033f64(MoPlayer *player);
-u32 func_02033f6c(MoPlayer *player);
-u32 func_02033f74(MoPlayer *player);
-u32 func_02033f7c(MoPlayer *player);
-BOOL func_02033fa0(MoPlayer *player);
-BOOL func_020340d8(MoPlayer *player, int keyFrame);
-BOOL func_020341ac(MoPlayer *player);
-BOOL func_020341bc(MoPlayer *player);
-BOOL func_02034298(MoPlayer *player, void *dst, u32 stride, int mode);
-BOOL func_02034408(MoPlayer *player);
-u32 func_02034448(MoPlayer *player);
-BOOL func_02034458(MoPlayer *player, void *out);
+u32 MoPlayer_GetNumFrames(MoPlayer *player);
+u32 MoPlayer_GetCurFrame(MoPlayer *player);
+u32 MoPlayer_GetBlockSize(MoPlayer *player);
+BOOL MoPlayer_ReadFrame(MoPlayer *player);
+BOOL MoPlayer_SeekKeyFrame(MoPlayer *player, int keyFrame);
+BOOL MoPlayer_Rewind(MoPlayer *player);
+BOOL MoPlayer_DecodeFrame(MoPlayer *player);
+BOOL MoPlayer_ConvertFrame(MoPlayer *player, void *dst, u32 stride, int mode);
+BOOL MoPlayer_SkipFrame(MoPlayer *player);
+u32 MoPlayer_GetChunkSamples(MoPlayer *player);
+BOOL MoPlayer_DecodeAudio(MoPlayer *player, void *out);
 
 #ifdef __cplusplus
 }

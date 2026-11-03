@@ -759,7 +759,7 @@ extern "C" {
 extern EffectFile *ResList_FindType0(void *arc, const char *name);
 extern void EffectSetup_Init(struct EffectSetup *setup, void *data, VecFx32 *pos);
 extern EffectObj *func_02068544(struct EffectSetup *setup);
-extern void func_02068540(struct EffectSetup *setup);
+extern void EffectSetup_DtorBase(struct EffectSetup *setup);
 extern u32 EffectSetup_vtbl[];
 extern u32 EffectObj_vtbl[];
 
@@ -901,7 +901,7 @@ void EffectObj_SetParam(EffectObj *obj, s32 param) {
 
 EffectSetup *EffectSetup_DtorDelete(EffectSetup *setup) {
     *(u32 **)setup = EffectSetup_vtbl;
-    func_02068540(setup);
+    EffectSetup_DtorBase(setup);
     Heap_Free(setup);
     return setup;
 }

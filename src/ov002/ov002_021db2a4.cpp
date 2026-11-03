@@ -31,7 +31,7 @@ static inline void ov002_Menu_Close(Obj021eff74 *self) {
     }
 }
 
-void func_ov002_021db2a4(Obj021eff74 *self) {
+void Obj021eff74_PreUpdate(Obj021eff74 *self) {
     u16 id;
     u32 flags;
     if (self->unk_18 >= 2) {

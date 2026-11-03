@@ -157,7 +157,7 @@ extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void func_ov003_021cf3fc(s32 a);
 void Ov013Act_021fea8c_ClearFields(Ov013Act_021fea8c *self);
-void func_ov013_021febf8(Ov013Act_021fea8c *self);
+void Ov013Act_021fea8c_DtorBase(Ov013Act_021fea8c *self);
 
 Ov013Act_021fea8c *Ov013Act_021fea8c_Ctor(Ov013Act_021fea8c *self) {
     Ov003Actor_Ctor(self);
@@ -171,7 +171,7 @@ Ov013Act_021fea8c *Ov013Act_021fea8c_Ctor(Ov013Act_021fea8c *self) {
 
 Ov013Act_021fea8c *Ov013Act_021fea8c_Dtor(Ov013Act_021fea8c *self) {
     *(void **)self = Ov013Act_021fea8c_vtbl;
-    func_ov013_021febf8(self);
+    Ov013Act_021fea8c_DtorBase(self);
     Ov003Flag_Stop((u8 *)self + 0x14c);
     Ov003Vt_021f79a8_Dtor((u8 *)self + 0x13c);
     Ov003Vt_021f7cf4_Dtor((u8 *)self + 0x12c);
@@ -181,7 +181,7 @@ Ov013Act_021fea8c *Ov013Act_021fea8c_Dtor(Ov013Act_021fea8c *self) {
 
 Ov013Act_021fea8c *Ov013Act_021fea8c_DtorDelete(Ov013Act_021fea8c *self) {
     *(void **)self = Ov013Act_021fea8c_vtbl;
-    func_ov013_021febf8(self);
+    Ov013Act_021fea8c_DtorBase(self);
     Ov003Flag_Stop((u8 *)self + 0x14c);
     Ov003Vt_021f79a8_Dtor((u8 *)self + 0x13c);
     Ov003Vt_021f7cf4_Dtor((u8 *)self + 0x12c);
@@ -224,7 +224,7 @@ static inline void Ov013_DelOpt(Ov013Opt120 *o) {
     }
 }
 
-void func_ov013_021febf8(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_DtorBase(Ov013Act_021fea8c *self) {
     void *saved;
     ((Ov013V *)((u8 *)self + 0x12c))->v08();
     ((Ov013V *)((u8 *)self + 0x13c))->v08();

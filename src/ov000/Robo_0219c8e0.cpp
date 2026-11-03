@@ -26,7 +26,7 @@ void Model0218fe1c_SetAnim3(Model0218fe1c *self, s32 index, s16 blend, u8 force)
 void Model0218fe1c_UpdateAnim(Model0218fe1c *self, s32 a);
 s32 Model_FindResIdxByName(Model0218fe1c *self, void *p, const char *name);
 
-void func_ov000_0219c8e0(Robo021ca458 *self) {
+void Robo021ca458_SetupModel(Robo021ca458 *self) {
     AnimEventTable *tbl;
     u8 *base;
     Model0218fe1c_SetRes(&self->mdl1, &self->res1, 0, 1);

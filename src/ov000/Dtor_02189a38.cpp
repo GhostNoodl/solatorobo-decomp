@@ -8,7 +8,7 @@ extern u8 ResHandle_vtbl[];
 extern u8 StageRes_vtbl[];
 void StageRes_CancelSlots(void *ptr);
 Camera *Camera_CtorBase(Camera *cam);
-extern u8 data_ov000_021cc3a0[];
+extern u8 FieldCam_vtbl[];
 extern const VecFx32 data_ov000_021c9d4c; // added to the look-at point when no offset is set
 
 VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
@@ -22,7 +22,7 @@ VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
 FieldCam *Ov000Vt_021cc3a0_Ctor(FieldCam *self) {
     VecFx32 v;
     Camera_CtorBase(&self->base);
-    self->base.vtable = data_ov000_021cc3a0;
+    self->base.vtable = FieldCam_vtbl;
     v = self->base.at;
     VEC_Add(&v, &data_ov000_021c9d4c, &v);
     self->base.at = v;

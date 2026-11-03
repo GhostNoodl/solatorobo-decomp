@@ -15,7 +15,7 @@ static inline BOOL ov002_021e2fb4_flag2(Ov002Text2 *o) {
     return o->unk_4_2 ? TRUE : FALSE;
 }
 
-void func_ov002_021e2fb4(Obj021f002c *self) {
+void Obj021f002c_Update(Obj021f002c *self) {
     switch (self->state) {
     case 0:
         if (self->hasModel) {
@@ -38,7 +38,7 @@ void func_ov002_021e2fb4(Obj021f002c *self) {
             self->model->flags |= 0x200000;
             TexObj_SetAllOamFuncs(self->model, (void *)func_ov002_021e2f04);
             info = Param_GetEntry(self->id);
-            self->part = func_02070dcc(info[1])->unk_4;
+            self->part = ParamKind_GetShape(info[1])->unk_4;
             func_02041c18(self->model, info[0]);
             TexObj_SelectImage(self->model, 0, self->part);
             MODEL_FLAGS(self->model)->alpha = 0x1e;

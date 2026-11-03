@@ -369,7 +369,7 @@ void Task021efb24_Start(Task021efb24 *self) {
 void Task021efb24_PreUpdate(Task021efb24 *self) {
     switch (self->state) {
     case 8:
-        func_ov002_021dab58(Obj021efe7c_Get(), 0);
+        Obj021efe7c_SetPhase(Obj021efe7c_Get(), 0);
         break;
     case 0xd:
         if (Obj021efe7c_Update(Obj021efe7c_Get()) != 0) {
@@ -445,7 +445,7 @@ BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev) {
             owner->unk_54->vfunc_70();
         }
         if (owner->unk_58 != NULL) {
-            Param0206ef10 *info = func_0206ef10(id);
+            Param0206ef10 *info = Param_GetRecord(id);
             ModelViewer_SetModel(owner->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
                                 info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
         }

@@ -198,7 +198,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     Lo021cae48_SetValue(self->unk_10, gStageFlags->unk_618, 0);
 }
 
-void func_ov015_0220ec40(Ov015ResultPanel *self) {
+void Ov015ResultPanel_DtorBase(Ov015ResultPanel *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);

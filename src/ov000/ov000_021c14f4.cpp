@@ -51,7 +51,7 @@ static inline s32 CalcSub_021c14f4(CamSub_021c14f4 *s, s32 q) {
     return FX_Div(r - s->b, s->a);
 }
 
-void func_ov000_021c14f4(ActorMarker3D *self) {
+void ActorMarker_UpdateKind0b(ActorMarker3D *self) {
     BOOL ok = FALSE;
 
     switch (self->work.state) {

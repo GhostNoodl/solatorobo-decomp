@@ -42,7 +42,7 @@ static inline void SetScale021c17dc(Model0218fe1c *model, s32 x, s32 y, s32 z) {
     model->scale.z = z;
 }
 
-void func_ov000_021c17dc(ActorMarker3D *self) {
+void ActorMarker_DrawKind0b(ActorMarker3D *self) {
     u8 proj[0x40];
     u8 cam[0x30];
     Ofs021c17dc *o;

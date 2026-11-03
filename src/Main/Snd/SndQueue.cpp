@@ -361,10 +361,10 @@ void SndMgr_ResumeAll(SndMgr *mgr) {
 void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo) {
     void *thread;
     s32 prio;
-    if (func_02031904((StrmHandle *)&mgr->strm, strmNo, 0)) {
+    if (NNS_SndArcStrmStart((StrmHandle *)&mgr->strm, strmNo, 0)) {
         mgr->curStrm = strmNo;
-        func_02031948((StrmHandle *)&mgr->strm, 0x7f);
-        thread = func_02031ac0();
+        NNS_SndArcStrmSetVolume((StrmHandle *)&mgr->strm, 0x7f);
+        thread = Strm_GetThread();
         prio = 0xf;
         if (mgr->unk_5b) {
             prio = 0x11;

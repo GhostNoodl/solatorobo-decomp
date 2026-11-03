@@ -26,7 +26,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     TexObj_DrawCell(model, anim, part, flag);
 }
 
-void func_ov000_021bf518(ActorMarker2D *self) {
+void ActorMarker_DrawKind04(ActorMarker2D *self) {
     GfxSys *g;
     s32 x;
     s32 y;
@@ -62,7 +62,7 @@ void func_ov000_021bf518(ActorMarker2D *self) {
     Model_PlayPartEx(self->unk_8c, 0x10, 1);
 }
 
-void func_ov000_021bf794(ActorMarker2D *self) {
+void ActorMarker_DrawKind05(ActorMarker2D *self) {
     GfxSys *g;
     s32 x;
     s32 y;

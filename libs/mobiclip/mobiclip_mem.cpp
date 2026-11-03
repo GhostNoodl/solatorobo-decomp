@@ -32,22 +32,22 @@ extern u8 data_02082254[];
 #define MO_CODE_00 ((void *)data_020823d4)
 #define MO_CODE_1C ((void *)data_02082254)
 
-u32 func_02034600(void) {
+u32 MoMem_GetLargeSize(void) {
     return 0x659c;
 }
 
-u32 func_0203460c(void) {
+u32 MoMem_GetSmallSize(void) {
     return 0x2580;
 }
 
-int func_02034614(u8 *mem, u32 size) {
+int MoMem_SetLargeMem(u8 *mem, u32 size) {
     data_02097cbc.largeMem = mem;
     data_02097cbc.largeSize = size & ~3;
     data_02097cbc.videoCode = NULL;
     return 0;
 }
 
-int func_02034634(u8 *mem, u32 size) {
+int MoMem_SetSmallMem(u8 *mem, u32 size) {
     data_02097cbc.smallMem = mem;
     data_02097cbc.smallSize = size & ~3;
     data_02097cbc.unk_04 = NULL;
@@ -56,7 +56,7 @@ int func_02034634(u8 *mem, u32 size) {
     return 0;
 }
 
-void *func_0203465c(void) {
+void *MoMem_GetVideoCode(void) {
     if (data_02097cbc.videoCode == NULL) {
         if (data_02097cbc.largeSize >= 0x659c) {
             data_02097cbc.videoCode = data_02097cbc.largeMem;
@@ -112,11 +112,11 @@ void *func_020347ac(void) {
     return data_02097cbc.unk_1c;
 }
 
-void *func_02034818(u32 size) {
+void *MoMem_Alloc(u32 size) {
     return Gfx3D_AllocHi(size);
 }
 
-void func_02034824(void *ptr) {
+void MoMem_Free(void *ptr) {
     Gfx3D_FreeHi(ptr);
 }
 

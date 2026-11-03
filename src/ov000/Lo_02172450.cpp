@@ -45,7 +45,7 @@ struct Obj02172544 {
     s32 unk_2c;
 };
 
-void func_ov000_02172544(Obj02172544 *self) {
+void Ov000Vt_021cb960_Update(Obj02172544 *self) {
     self->unk_0c->vfunc_0c(self->unk_20, self->unk_24, self->unk_28, self->unk_2c);
     LBIT(self, 4).b2 = 1;
 }

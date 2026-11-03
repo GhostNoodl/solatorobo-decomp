@@ -183,23 +183,23 @@ BOOL func_ov002_021e4dd4(Ov002Obj *self) {
 namespace m_021e4ec0 {
 extern "C" {
 
-BOOL func_ov002_021e4ec0(void) {
+BOOL Ov002Obj_Prepare(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e4ec8(void) {
+BOOL Ov002Obj_Load(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e4ed0(void) {
+BOOL Ov002Obj_Setup(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e4ed8(void) {
+BOOL Ov002Obj_Update(void) {
     return FALSE;
 }
 
-void func_ov002_021e4ee0(void) {
+void Ov002Obj_Draw(void) {
 }
 
 Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min) {
@@ -220,7 +220,7 @@ Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min) {
     return best;
 }
 
-// NODEDESC callback of the model being drawn (func_ov002_021e5b08): node 0 takes the transform of the
+// NODEDESC callback of the model being drawn (Ov002Obj021f07d4_Draw): node 0 takes the transform of the
 // model's kind 3 animation object and, with unk_1f0_1, faces the camera. self is the NNSG3dRS; its
 // variable is reused for the joint result.
 void func_ov002_021e4f48(void *self) {
@@ -439,7 +439,7 @@ void Ov002Obj021f07d4_Release(Ov002Obj021f07d4 *self) {
 namespace m_021e5344 {
 extern "C" {
 
-BOOL func_ov002_021e5344(void) {
+BOOL Ov002Obj021f07d4_Prepare(void) {
     return TRUE;
 }
 
@@ -487,7 +487,7 @@ static inline u32 *ov002_021e534c_res(Ent021e534c *e) {
     return e->alt ? e->res2 : e->res;
 }
 
-BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
+BOOL Ov002Obj021f07d4_Load(Ov002Obj021f07d4 *self) {
     BOOL done = FALSE;
     switch (self->unk_10) {
     case 0:
@@ -673,13 +673,13 @@ namespace m_021e5974 {
 extern "C" {
 
 // Kinds of the scene objects in the `+0xdc` list (the `+0x4` word). 7 is the camera
-// (func_ov002_021e7390 reads its position, target, up vector and angle).
+// (Ov002Cam021f0828_Apply reads its position, target, up vector and angle).
 typedef enum Ov002ObjKind {
     OV002_OBJ_CAMERA = 7,
     OV002_OBJ_CAMERA2 = 8
 } Ov002ObjKind;
 
-BOOL func_ov002_021e5974(Ov002Obj021f07d4 *self) {
+BOOL Ov002Obj021f07d4_Setup(Ov002Obj021f07d4 *self) {
     Ov002ObjKind kind;
     Ov002Obj *p;
     NNS_G3dRenderObjInit((NNSG3dRenderObj *)((u8 *)self + 0x68), self->unk_60);
@@ -718,7 +718,7 @@ extern "C" {
 
 void func_ov002_021e5fe4(Ov002Obj021f075c *p);
 
-BOOL func_ov002_021e5a10(Ov002Obj021f07d4 *self) {
+BOOL Ov002Obj021f07d4_Update(Ov002Obj021f07d4 *self) {
     Ov002Obj021f075c *n;
     Ov002Obj021f075c *c;
     if (gOv002Stage->unk_d0 > self->unk_1c) {
@@ -770,7 +770,7 @@ static inline void ov002_021e5b08_Scale(VecFx32 *out, const VecFx32 *in, s32 s) 
     out->z = FX_MUL(in->z, s);
 }
 
-void func_ov002_021e5b08(Ov002Obj021f07d4 *self) {
+void Ov002Obj021f07d4_Draw(Ov002Obj021f07d4 *self) {
     VObj *o;
     if (gOv002Stage->unk_d0 <= self->unk_18) {
         return;
@@ -812,10 +812,10 @@ void func_ov002_021e5b08(Ov002Obj021f07d4 *self) {
 }
 
 
-void func_ov002_021e5cf4(void) {
+void Ov002Cam021f0854_Apply(void) {
 }
 
-BOOL func_ov002_021e5cf8(Ov002Obj021f07d4 *self) {
+BOOL Ov002Obj021f07d4_IsLoaded(Ov002Obj021f07d4 *self) {
     return self->unk_0c >= 3;
 }
 
@@ -873,11 +873,11 @@ void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self) {
     }
 }
 
-BOOL func_ov002_021e5e3c(void) {
+BOOL Ov002Obj021f075c_Prepare(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e5e44(Ov002Obj021f075c *self) {
+BOOL Ov002Obj021f075c_Load(Ov002Obj021f075c *self) {
     BOOL r = FALSE;
     switch (self->unk_10) {
     case 0:
@@ -912,11 +912,11 @@ BOOL func_ov002_021e5e44(Ov002Obj021f075c *self) {
     return r;
 }
 
-BOOL func_ov002_021e5f2c(void) {
+BOOL Ov002Obj021f075c_Setup(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e5f34(Ov002Obj021f075c *self) {
+BOOL Ov002Obj021f075c_Update(Ov002Obj021f075c *self) {
     Bits8 *fl = &FIELD(self, 0xe8, Bits8);
     s32 lim = gOv002Stage->unk_d0;
     if (fl->b2) {
@@ -1154,7 +1154,7 @@ void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, NNSG3dAnmObj *out) 
 namespace m_021e659c {
 extern "C" {
 
-BOOL func_ov002_021e659c(Ov002Obj021f070c *self) {
+BOOL Ov002Obj021f070c_Setup(Ov002Obj021f070c *self) {
     self->unk_6c = self->unk_18;
     return TRUE;
 }
@@ -1179,7 +1179,7 @@ static inline BOOL ov002_inWindow(s32 t) {
     return r;
 }
 
-BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
+BOOL Ov002Obj021f070c_Update(Ov002Obj021f070c *self) {
     Ov002Stage *g = gOv002Stage;
     s32 now = g->unk_d0;
     s32 i;
@@ -1283,7 +1283,7 @@ void func_ov002_021e6784(Ov002Obj021f070c *self) {
 namespace m_021e68d4 {
 extern "C" {
 
-BOOL func_ov002_021e68d4(Ov002Obj021f06bc *self) {
+BOOL Ov002Obj021f06bc_Load(Ov002Obj021f06bc *self) {
     BOOL r = FALSE;
     switch (self->unk_10) {
     case 0:
@@ -1317,7 +1317,7 @@ BOOL func_ov002_021e68d4(Ov002Obj021f06bc *self) {
     return r;
 }
 
-BOOL func_ov002_021e69a8(void) {
+BOOL Ov002Obj021f06bc_Setup(void) {
     return TRUE;
 }
 
@@ -1328,7 +1328,7 @@ BOOL func_ov002_021e69a8(void) {
 namespace m_021e69b0 {
 extern "C" {
 
-BOOL func_ov002_021e69b0(Ov002Obj021f06bc *self) {
+BOOL Ov002Obj021f06bc_Update(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 v;
     while ((p = self->snd.cur) != NULL && gOv002Stage->unk_d4 < (v = *p << 12) && v <= gOv002Stage->unk_d0) {
@@ -1365,7 +1365,7 @@ void Ov002Obj021f07ac_Init(Ov002Obj021f07ac *self) {
     self->unk_15c = NULL;
 }
 
-BOOL func_ov002_021e6aac(Ov002Obj021f07ac *self) {
+BOOL Ov002Obj021f07ac_Load(Ov002Obj021f07ac *self) {
     BOOL r = FALSE;
     switch (self->unk_10) {
     case 0:
@@ -1390,7 +1390,7 @@ BOOL func_ov002_021e6aac(Ov002Obj021f07ac *self) {
     return r;
 }
 
-BOOL func_ov002_021e6b54(Ov002Obj021f07ac *self) {
+BOOL Ov002Obj021f07ac_Setup(Ov002Obj021f07ac *self) {
     s8 **r;
     if (self->unk_14 != 0) {
         void *t = func_02035fe8(self->unk_4c, self->unk_6c);
@@ -1439,7 +1439,7 @@ static inline bool isVisible021e6c0c(Ov002Obj021f07ac *self) {
     return in;
 }
 
-BOOL func_ov002_021e6c0c(Ov002Obj021f07ac *self) {
+BOOL Ov002Obj021f07ac_Update(Ov002Obj021f07ac *self) {
     if (self->msg.count != 0) {
         if (gOv002Stage->unk_d4 < self->msg.unk_10 << 12 && self->msg.unk_10 << 12 <= gOv002Stage->unk_d0) {
             BOOL has;
@@ -1485,7 +1485,7 @@ extern "C" {
 
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 u8 LangData_GetLang(void);
-void func_0203a4e4(void *mgr, void *arg);
+void GfxMgr_PutString(void *mgr, void *arg);
 int NNSi_G2dFontGetTextWidth(const void *pFont, int hSpace, const void *txt);
 
 static inline BOOL Ov002_IsValidIdx(s32 idx) {
@@ -1504,7 +1504,7 @@ static inline void Pos_Set(s16 *p, s16 x, s16 y) {
     p[1] = y;
 }
 
-void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
+void Ov002Obj021f07ac_Draw(Ov002Obj021f07ac *self) {
     s16 x;
     s16 y;
     s16 pal;
@@ -1524,7 +1524,7 @@ void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
     gGfxMgr->unk_008 = 0;
     Pos_Set((s16 *)((u8 *)gGfxMgr + 0xc), x, y);
     gGfxMgr->unk_010 = pal;
-    func_0203a4e4(gGfxMgr, self->unk_c4);
+    GfxMgr_PutString(gGfxMgr, self->unk_c4);
     if (self->unk_148 == 0xff) {
         return;
     }
@@ -1535,7 +1535,7 @@ void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
         gGfxMgr->unk_004 = self->unk_154;
         gGfxMgr->unk_008 = 0;
         Pos_Set((s16 *)((u8 *)gGfxMgr + 0xc), (0x60 - w) >> 1, 0x8d);
-        func_0203a4e4(gGfxMgr, self->unk_14c);
+        GfxMgr_PutString(gGfxMgr, self->unk_14c);
     }
 }
 
@@ -1645,11 +1645,11 @@ void Ov002Obj021f07ac_AppendChar(Ov002Obj021f07ac *self, s32 ch) {
 namespace m_021e7118 {
 extern "C" {
 
-BOOL func_ov002_021e7118(void) {
+BOOL Ov002Obj021f0784_Prepare(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e7120(Ov002Obj021f0784 *self) {
+BOOL Ov002Obj021f0784_Setup(Ov002Obj021f0784 *self) {
     switch (self->unk_4c) {
     case 0:
         self->unk_54 = 0x1f;
@@ -1663,7 +1663,7 @@ BOOL func_ov002_021e7120(Ov002Obj021f0784 *self) {
     return TRUE;
 }
 
-BOOL func_ov002_021e715c(Ov002Obj021f0784 *self) {
+BOOL Ov002Obj021f0784_Update(Ov002Obj021f0784 *self) {
     Ov002Stage *ctx = gOv002Stage;
     s32 v = ctx->unk_d0;
     if (v <= self->unk_18) {
@@ -1695,7 +1695,7 @@ extern VecFx32 data_ov002_021ef104;
 
 extern VecFx32 data_ov002_021ef0bc;
 
-void func_ov002_021e719c(Ov002Obj021f0784 *self) {
+void Ov002Obj021f0784_Draw(Ov002Obj021f0784 *self) {
     s32 now = gOv002Stage->unk_d0;
     s32 a;
     if (now < self->unk_18) {
@@ -1767,7 +1767,7 @@ static inline void ov002_Cross(const VecFx32 *a, const VecFx32 *b, VecFx32 *axb)
     axb->z = z;
 }
 
-void func_ov002_021e7390(Ov002Cam021f0828 *self) {
+void Ov002Cam021f0828_Apply(Ov002Cam021f0828 *self) {
     Ov002Cam021f0828 *obj = (Ov002Cam021f0828 *)self->owner;
     if (obj != NULL && obj->unk_04 == 7) {
         VecFx32 pos;
@@ -1817,7 +1817,7 @@ extern VecFx32 data_ov002_021ef0d4;
 
 void VEC_Add(void *a, void *b, void *c);
 
-BOOL func_ov002_021e75f0(Ov002Cam021f0828 *self) {
+BOOL Ov002Cam021f0828_Update(Ov002Cam021f0828 *self) {
     Ov002Obj021f075c *n;
     Ov002Obj021f075c *c;
     Ov002Obj021f075c *m;
@@ -1869,7 +1869,7 @@ void Ov002Cam021f0828_SetFovy(Ov002Cam021f0828 *self, s32 deg) {
 namespace m_021e779c {
 extern "C" {
 
-void func_ov002_021e779c(Ov002Cam021f07fc *self) {
+void Ov002Cam021f07fc_Apply(Ov002Cam021f07fc *self) {
     Ov002Cam021f07fc *o = (Ov002Cam021f07fc *)self->owner;
     NNSG3dGlb *g;
     if (o != NULL && o->unk_04 == 8) {
@@ -1894,7 +1894,7 @@ void func_ov002_021e779c(Ov002Cam021f07fc *self) {
     g->flag &= ~0x50;
 }
 
-BOOL func_ov002_021e7880(Ov002Cam021f07fc *self) {
+BOOL Ov002Cam021f07fc_Setup(Ov002Cam021f07fc *self) {
     VecFx32 v = data_ov002_021ef110;
     s32 x;
     self->up = v;
@@ -1912,7 +1912,7 @@ BOOL func_ov002_021e7880(Ov002Cam021f07fc *self) {
     return TRUE;
 }
 
-BOOL func_ov002_021e7900(Ov002Cam021f07fc *self) {
+BOOL Ov002Cam021f07fc_Update(Ov002Cam021f07fc *self) {
     Ov002Obj021f075c *found = NULL;
     Ov002Obj021f075c *cur = self->unk_b4;
     if (cur == NULL) {
@@ -1943,12 +1943,12 @@ BOOL func_ov002_021e7900(Ov002Cam021f07fc *self) {
     return TRUE;
 }
 
-BOOL func_ov002_021e79b0(Ov002Obj021f06e4 *self) {
+BOOL Ov002Obj021f06e4_Setup(Ov002Obj021f06e4 *self) {
     self->unk_4c_6 = 0;
     return TRUE;
 }
 
-BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
+BOOL Ov002Obj021f06e4_Update(Ov002Obj021f06e4 *self) {
     Ov002Stage *ctx = gOv002Stage;
     BOOL r = TRUE;
     if (self->unk_18 > ctx->unk_d4 && self->unk_18 <= ctx->unk_d0) {
@@ -1970,7 +1970,7 @@ BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
     return r;
 }
 
-BOOL func_ov002_021e7a94(Ov002Obj *self) {
+BOOL Ov002Vt_021f0694_Update(Ov002Obj *self) {
     BOOL r = TRUE;
     if (gOv002Stage->unk_d0 >= self->unk_1c) {
         r = FALSE;
@@ -2548,7 +2548,7 @@ void *Ov002Vt_021f0734_DtorDelete(Ov002Obj *self) {
     return self;
 }
 
-BOOL func_ov002_021e8b28(Ov002Obj *self) {
+BOOL Ov002Obj_IsLoaded(Ov002Obj *self) {
     return self->unk_0c >= 3;
 }
 

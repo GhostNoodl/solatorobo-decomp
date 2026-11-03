@@ -135,7 +135,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
     }
     if (rep & 0xf0) {
         Vec2 np;
-        Ov002Shape *v = func_02070dcc(4);
+        Ov002Shape *v = ParamKind_GetShape(4);
         Ov002Shape *map = w->field->map;
         np.x = self->unk_24;
         np.y = self->unk_28;

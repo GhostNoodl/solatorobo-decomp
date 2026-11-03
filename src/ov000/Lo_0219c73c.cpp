@@ -5,7 +5,7 @@
 extern "C" {
 BOOL ResSet_UpdateLoad(void *p);
 BOOL Shadow_UpdateLoad(void *p);
-void func_ov000_0219c8e0(Robo021ca458 *self);
+void Robo021ca458_SetupModel(Robo021ca458 *self);
 
 BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
     BOOL ret = TRUE;
@@ -41,7 +41,7 @@ BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
         }
     }
     if (ret && self->unk_b22_11) {
-        func_ov000_0219c8e0(self);
+        Robo021ca458_SetupModel(self);
         self->unk_b22_11 = 0;
     }
     return ret;

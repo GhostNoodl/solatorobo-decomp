@@ -44,14 +44,14 @@ static inline void ov002_Cursor_SetMode(Obj021efe8c *c) {
     Ov002Mdl021efe3c_Load(&c->mdl);
 }
 
-void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own);
+void Obj021eff30_Enter(Obj021eff30 *self, Obj021eff50 *own);
 
 #ifdef NONMATCHING
 // Status (round auA): demoted in the honesty audit. The match declared the locals y, x, id and w as unused parameters
 // past (self, own); as locals the registers differ. This file is the function's whole .text, so it has no delinks
 // entry. The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
-void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own) {
+void Obj021eff30_Enter(Obj021eff30 *self, Obj021eff50 *own) {
     s32 y;
     s32 x;
     u16 id;

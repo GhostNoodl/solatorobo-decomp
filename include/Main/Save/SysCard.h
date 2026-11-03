@@ -43,7 +43,7 @@ extern BOOL func_02036328(void);
 void func_02046d1c(SysCard *card);
 s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len);
 s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len);
-void func_02046fac(void *arg);
+void SysCard_OnReadDone(void *arg);
 void func_02047198(void *arg);
 BOOL SysCard_CheckError(SysCard *card, s32 err);
 

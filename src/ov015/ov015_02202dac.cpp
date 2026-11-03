@@ -5,16 +5,16 @@ extern "C" {
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 void Obj0215bb14_SetText(void *a, void *b);
-void *func_ov015_02207738(Ov015Ship *p);
+void *Ov015Ship_Dtor(Ov015Ship *p);
 extern u8 Ov015MsgBox_vtbl[];
 void MsgBox_Release(void *p);
 void *Shadow_DtorBase(void *p);
 extern u8 Ov015Shadow_vtbl[];
-void *func_ov015_0220765c(Ov015Ship *p);
+void *Ov015Ship_Ctor(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *Shadow_CtorBase(void *p);
 void Shadow_Load(void *p);
-BOOL func_ov015_022078bc(Ov015Ship *p);
+BOOL Ov015Ship_Load(Ov015Ship *p);
 BOOL Shadow_UpdateLoad(void *p);
 
 static inline bool Ov015Task_Flag4(Task *t) {
@@ -130,14 +130,14 @@ BOOL Ov015Scene2a08_List80OnCursor(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-void func_ov015_02203020(Ov015Scene2a08 *self) {
+void Ov015Scene2a08_DtorBase(Ov015Scene2a08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     {
     Ov015Ship *o = self->ship;
     if (o != NULL) {
         if (o != NULL) {
-            func_ov015_02207738(o);
+            Ov015Ship_Dtor(o);
             Heap_Free(o);
         }
         self->ship = NULL;
@@ -179,7 +179,7 @@ void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
     void *q;
     p = (Ov015Ship *)Heap_Alloc(0xd58);
     if (p != NULL) {
-        p = (Ov015Ship *)func_ov015_0220765c(p);
+        p = (Ov015Ship *)Ov015Ship_Ctor(p);
     }
     self->ship = p;
     func_ov015_02207858(p);
@@ -194,7 +194,7 @@ void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
 }
 
 BOOL Ov015Scene2a08_IsLoaded(Ov015Scene2a08 *self) {
-    BOOL r = func_ov015_022078bc(self->ship) & 1 ? TRUE : FALSE;
+    BOOL r = Ov015Ship_Load(self->ship) & 1 ? TRUE : FALSE;
     u8 st = self->shadow->state;
     BOOL idle = TRUE;
     if (st != 3 && st != 0) {
@@ -213,7 +213,7 @@ extern u8 Lo021cadcc_vtbl[];
 extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
-BOOL func_ov015_02207adc(Ov015Ship *p);
+BOOL Ov015Ship_Setup(Ov015Ship *p);
 void GfxCamParam_Init(void *p);
 void MsgBox_Init(void *p);
 void MsgBox_Open(void *p, s32 a, void *b, void *c, s32 d);
@@ -241,7 +241,7 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     }
     res = gMsgRes;
     self->ship->unk_d3c = 2;
-    func_ov015_02207adc(self->ship);
+    Ov015Ship_Setup(self->ship);
     {
         Ov015Ship *o = self->ship;
         o->rotX = 0;

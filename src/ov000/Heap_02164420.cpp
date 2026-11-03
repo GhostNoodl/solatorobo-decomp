@@ -11,7 +11,7 @@ extern char data_ov000_021cb8e0[];
 void LangData_LocalizePath(char *dst, const char *src);
 void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self);
 
-void func_ov000_02164420(Lo021cb6b0 *self) {
+void Lo021cb6b0_DtorBase(Lo021cb6b0 *self) {
     Ctx0216607c *s = self->unk_30;
     if (s != NULL && s->anim != NULL) {
         Heap_FreeHi(s->anim);

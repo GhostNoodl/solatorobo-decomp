@@ -43,8 +43,8 @@ struct ListRow : public VObj {
 };
 
 // Vtable Hud021cca10_vtbl (0x48 bytes, init Hud021cca10_Init, release Hud021cca10_Release):
-// two 2D models and a name text (Hud021cca10_SetText sets it), built by slot 0x08 (func_ov000_021c2450)
-// and drawn by slot 0x0c (func_ov000_021c28cc).
+// two 2D models and a name text (Hud021cca10_SetText sets it), built by slot 0x08 (Hud021cca10_Update)
+// and drawn by slot 0x0c (Hud021cca10_Draw).
 struct Hud021cca10 : public ListRow {
     Model *unk_30;
     Model *unk_34;

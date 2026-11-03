@@ -19,7 +19,7 @@ static inline BOOL LoIsMode4(void) {
     return gFadeState[1] == 4 ? TRUE : FALSE;
 }
 
-void func_ov000_02164708(void) {
+void Lo021cb6b0_FadeIn(void) {
     if (LoIsMode4()) {
         GfxSys_StartFadeIn(0x10000, 0, 1);
     }
@@ -50,7 +50,7 @@ static inline void LoTail(Lo021cb6b0 *self, Ctx0216607c *p) {
     }
 }
 
-void func_ov000_02164750(Lo021cb6b0 *self) {
+void Lo021cb6b0_Draw(Lo021cb6b0 *self) {
     Model *m;
     VObj *o;
     if (self->unk_20 != 7) {

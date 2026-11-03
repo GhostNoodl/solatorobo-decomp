@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021d98a4(void) {
+void Ov002Vt_021efeb8_Update(void) {
 }
 
-void func_ov002_021d98a8(void) {
+void Ov002Vt_021efeb8_Draw(void) {
 }
 
 }

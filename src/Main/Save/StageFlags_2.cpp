@@ -5,7 +5,7 @@ extern "C" {
 
 extern StageFlags data_0214aa68;
 extern u8 gStageFlagsSave[0x640];
-extern void func_0206ccb8(StageFlags *f, u16 a);
+extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 DataRes_Unpack(DataRes *res, u8 *buf, s32 a);
@@ -33,7 +33,7 @@ void StageFlags_Restore(StageFlags *f) {
     StageFlags_LoadBuf(f);
 }
 
-void func_0206ca44(StageFlags *f) {
+void StageFlags_LoadDefault(StageFlags *f) {
     MI_CpuCopy8(&data_0214aa68, f, sizeof(StageFlags));
     StageFlags_LoadBuf(f);
 }
@@ -41,7 +41,7 @@ void func_0206ca44(StageFlags *f) {
 extern void StageFlags_Reset(StageFlags *f);
 extern u32 DataRes_UnpackKeep(DataRes *res, u8 *buf);
 
-void func_0206cadc(StageFlags *f) {
+void StageFlags_ResetFromSave(StageFlags *f) {
     StageFlags tmp;
     u32 i;
     MI_CpuCopy8(gStageFlagsSave, &tmp, sizeof(StageFlags));

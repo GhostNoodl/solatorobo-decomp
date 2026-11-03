@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0204b420(void *p);
+void Camera_Dtor(void *p);
 
 
 extern const VecFx32 data_ov015_02212584;
@@ -59,14 +59,14 @@ void func_ov015_021fcb1c(Ov015Hud *self) {
 }
 
 void *Ov015Vt_0221291c_Dtor(u8 *self) {
-    func_0204b420(self + 0xc0);
-    func_0204b420(self + 0x4);
+    Camera_Dtor(self + 0xc0);
+    Camera_Dtor(self + 0x4);
     return self;
 }
 
 void *Ov015Vt_0221291c_DtorDelete(u8 *self) {
-    func_0204b420(self + 0xc0);
-    func_0204b420(self + 0x4);
+    Camera_Dtor(self + 0xc0);
+    Camera_Dtor(self + 0x4);
     Heap_Free(self);
     return self;
 }

@@ -9,21 +9,21 @@ extern const char data_02005068[];
 extern const u32 data_0208b2ac[];
 
 extern void OSi_ReferSymbol(const char *string);
-extern void *func_02034818(u32 size);
-extern void func_02034824(void *ptr);
-extern BOOL func_02034830(MoStream *stream, void *file);
-extern BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags);
+extern void *MoMem_Alloc(u32 size);
+extern void MoMem_Free(void *ptr);
+extern BOOL MoFileStream_Open(MoStream *stream, void *file);
+extern BOOL MoPlayer_Open(MoPlayer *player, MoStream *stream, u32 flags);
 extern void *Gfx3D_AllocHi(u32 size);
 extern void Gfx3D_FreeHi(void *ptr);
 
 
-BOOL func_02033550(MoPlayer *player, MoStream *stream, u32 flags) {
+BOOL Mo_InitPlayer(MoPlayer *player, MoStream *stream, u32 flags) {
     OSi_ReferSymbol(data_02005068);
-    return func_02033858(player, stream, flags);
+    return MoPlayer_Open(player, stream, flags);
 }
 
-MoPlayer *func_02033580(void *file, u32 flags) {
-    MoStream *stream = (MoStream *)func_02034818(sizeof(MoStream));
+MoPlayer *Mo_OpenFile(void *file, u32 flags) {
+    MoStream *stream = (MoStream *)MoMem_Alloc(sizeof(MoStream));
     MoPlayer *player;
     if (stream != NULL) {
         stream->length = 0;
@@ -33,50 +33,50 @@ MoPlayer *func_02033580(void *file, u32 flags) {
     if (stream == NULL) {
         return NULL;
     }
-    if (!func_02034830(stream, file)) {
+    if (!MoFileStream_Open(stream, file)) {
         if (stream != NULL) {
             stream->Release();
         }
         return NULL;
     }
-    player = (MoPlayer *)func_020337fc(sizeof(MoPlayer));
+    player = (MoPlayer *)Mo_Alloc(sizeof(MoPlayer));
     if (player != NULL) {
-        player = func_02033814(player);
+        player = MoPlayer_Ctor(player);
     }
-    if (!func_02033550(player, stream, flags)) {
+    if (!Mo_InitPlayer(player, stream, flags)) {
         if (player != NULL) {
-            func_02033844(player);
-            func_02033808(player);
+            MoPlayer_Dtor(player);
+            Mo_Free(player);
         }
         return NULL;
     }
     return player;
 }
 
-void *func_02033648(void *ptr) {
-    func_02034824(ptr);
+void *MoFileStream_Release(void *ptr) {
+    MoMem_Free(ptr);
     return ptr;
 }
 
-void func_0203365c(MoPlayer *player) {
+void Mo_ClosePlayer(MoPlayer *player) {
     if (player != NULL && player != NULL) {
-        func_02033844(player);
-        func_02033808(player);
+        MoPlayer_Dtor(player);
+        Mo_Free(player);
     }
 }
 
-u32 func_0203367c(MoPlayer *player) {
+u32 Mo_GetSampleRate(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02033f54(player);
+    return MoPlayer_GetSampleRate(player);
 }
 
-u16 func_02033694(MoPlayer *player) {
+u16 Mo_GetAudioChannels(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02033f5c(player);
+    return MoPlayer_GetAudioChannels(player);
 }
 
 u32 func_020336ac(MoPlayer *player) {
@@ -86,85 +86,85 @@ u32 func_020336ac(MoPlayer *player) {
     return func_02033f64(player);
 }
 
-u32 func_020336c4(MoPlayer *player) {
+u32 Mo_GetNumFrames(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02033f6c(player);
+    return MoPlayer_GetNumFrames(player);
 }
 
-u32 func_020336dc(MoPlayer *player) {
+u32 Mo_GetBlockSize(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02033f7c(player);
+    return MoPlayer_GetBlockSize(player);
 }
 
-u32 func_020336f4(MoPlayer *player) {
+u32 Mo_GetCurFrame(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02033f74(player);
+    return MoPlayer_GetCurFrame(player);
 }
 
-BOOL func_0203370c(MoPlayer *player) {
+BOOL Mo_ReadFrame(MoPlayer *player) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_02033fa0(player) == 1;
+    return MoPlayer_ReadFrame(player) == 1;
 }
 
-BOOL func_02033730(MoPlayer *player) {
+BOOL Mo_Rewind(MoPlayer *player) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_020341ac(player) == 1;
+    return MoPlayer_Rewind(player) == 1;
 }
 
-BOOL func_02033754(MoPlayer *player) {
+BOOL Mo_DecodeFrame(MoPlayer *player) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_020341bc(player) == 1;
+    return MoPlayer_DecodeFrame(player) == 1;
 }
 
-BOOL func_02033778(MoPlayer *player, void *dst, u32 stride, int mode) {
+BOOL Mo_ConvertFrame(MoPlayer *player, void *dst, u32 stride, int mode) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_02034298(player, dst, stride, mode) == 1;
+    return MoPlayer_ConvertFrame(player, dst, stride, mode) == 1;
 }
 
-BOOL func_0203379c(MoPlayer *player) {
+BOOL Mo_SkipFrame(MoPlayer *player) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_02034408(player) == 1;
+    return MoPlayer_SkipFrame(player) == 1;
 }
 
-u32 func_020337c0(MoPlayer *player) {
+u32 Mo_GetChunkSamples(MoPlayer *player) {
     if (player == NULL) {
         return 0;
     }
-    return func_02034448(player);
+    return MoPlayer_GetChunkSamples(player);
 }
 
-BOOL func_020337d8(MoPlayer *player, void *out) {
+BOOL Mo_DecodeAudio(MoPlayer *player, void *out) {
     if (player == NULL) {
         return FALSE;
     }
-    return func_02034458(player, out) == 1;
+    return MoPlayer_DecodeAudio(player, out) == 1;
 }
 
-void *func_020337fc(u32 size) {
+void *Mo_Alloc(u32 size) {
     return Gfx3D_AllocHi(size);
 }
 
-void func_02033808(void *ptr) {
+void Mo_Free(void *ptr) {
     Gfx3D_FreeHi(ptr);
 }
 
-MoPlayer *func_02033814(MoPlayer *player) {
+MoPlayer *MoPlayer_Ctor(MoPlayer *player) {
     player->stream = NULL;
     player->framesY = NULL;
     player->framesUV = NULL;
@@ -178,8 +178,8 @@ MoPlayer *func_02033814(MoPlayer *player) {
     return player;
 }
 
-MoPlayer *func_02033844(MoPlayer *player) {
-    func_02033df0(player);
+MoPlayer *MoPlayer_Dtor(MoPlayer *player) {
+    MoPlayer_Close(player);
     return player;
 }
 

@@ -10,7 +10,7 @@ struct Marker021be8ac : ActorMarker {
 
 extern "C" {
 
-void func_ov000_021be8ac(Marker021be8ac *self) {
+void ActorMarker_DrawKind01(Marker021be8ac *self) {
     s32 x;
     s32 y;
     if (self->work.state != 10) {

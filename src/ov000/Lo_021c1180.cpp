@@ -45,7 +45,7 @@ struct Marker021c1180 : ActorMarker {
     s32 unk_98;
 };
 
-void func_ov000_021c1180(Marker021c1180 *self) {
+void ActorMarker_DrawKind0a(Marker021c1180 *self) {
     s32 h;
     GfxSys *g;
     u8 a;

@@ -25,7 +25,7 @@ static inline BOOL IsFlag(void) {
     return gFieldFade->flag0 == 1 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
+BOOL ListBuffer021cb940_OpenWindow(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
     FieldState *p;
     char *text;
     u16 hi;

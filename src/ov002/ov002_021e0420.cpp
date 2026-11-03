@@ -54,7 +54,7 @@ static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
     v[2] = z;
 }
 
-// The OAM callback of entry 6 of Obj021eff10::unk_10 (func_ov002_021dbec8): the entry argument is a
+// The OAM callback of entry 6 of Obj021eff10::unk_10 (Obj021eff10_Enter): the entry argument is a
 // piece list; each kind 2 piece gets its unk_a8 drawn as up to two digits over its cell.
 Oam0488 *func_ov002_021e0488(TexObj *ctx, TexObjEntry *cell, Oam0488 *oam, u16 *num) {
     u16 n = *num;

@@ -50,7 +50,7 @@ void func_ov002_021dedf0(Obj021efef0 *self) {
     sh = NULL;
     t = (Obj021f002c *)self->unk_0c->unk_a0;
     if (t != NULL) {
-        sh = func_02070dcc(Param_GetEntry(t->id)[1]);
+        sh = ParamKind_GetShape(Param_GetEntry(t->id)[1]);
     }
     pos.x = self->unk_2c;
     pos.y = self->unk_30;

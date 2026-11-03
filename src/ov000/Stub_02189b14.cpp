@@ -2,16 +2,16 @@
 
 extern "C" {
 
-void func_0204b438(void *ptr);
+void Camera_DtorBase(void *ptr);
 void Heap_Free(void *ptr);
 
-void *func_ov000_02189b14(void *self) {
-    func_0204b438(self);
+void *FieldCam_Dtor(void *self) {
+    Camera_DtorBase(self);
     return self;
 }
 
-void *func_ov000_02189b28(void *self) {
-    func_0204b438(self);
+void *FieldCam_DtorDelete(void *self) {
+    Camera_DtorBase(self);
     Heap_Free(self);
     return self;
 }

@@ -15,7 +15,7 @@ static inline void SetVec(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->z = z;
 }
 
-void func_ov000_02159720(Lo021cb3a8 *self, s32 unused, VecFx32 *pos) {
+void Lo021cb3a8_DrawCursor(Lo021cb3a8 *self, s32 unused, VecFx32 *pos) {
     s32 x;
     s32 y;
     UiPanel *t;

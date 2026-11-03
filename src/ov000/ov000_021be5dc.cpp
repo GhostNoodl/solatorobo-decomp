@@ -59,7 +59,7 @@ static inline s32 CalcDepth(VecFx32 *pos) {
     return DepthFromW((DepthCam021be5dc *)gGfxSys, FxMulL(q, 0x2000));
 }
 
-void Ov000Vt_021cc938_DtorDelete(Marker021be5dc *self) {
+void ActorMarker_UpdateKind01(Marker021be5dc *self) {
     VecFx32 pos;
     switch (self->work.state) {
     case 5:

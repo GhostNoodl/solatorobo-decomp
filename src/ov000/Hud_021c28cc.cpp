@@ -18,7 +18,7 @@ static inline void ScreenPos021c28cc(s32 *ox, s32 *oy, s32 x, s32 y, s32 h) {
     *oy = (y >> 12) - 0x60;
 }
 
-void func_ov000_021c28cc(Hud021cca10 *self) {
+void Hud021cca10_Draw(Hud021cca10 *self) {
     s32 x;
     s32 y;
     Model *m;

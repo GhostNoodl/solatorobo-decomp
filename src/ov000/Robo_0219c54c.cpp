@@ -10,7 +10,7 @@ extern char data_ov000_021cc5d2[];
 extern char data_ov000_021cc5d9[];
 void *Tbl_GetResFile(u16 id);
 s32 func_020701d4(u16 id);
-Param0206ef10 *func_0206ef10(u16 id);
+Param0206ef10 *Param_GetRecord(u16 id);
 void *Heap_Alloc(u32 size);
 void *Shadow_Ctor(void *p);
 void Shadow_Load(void *s);
@@ -49,7 +49,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
-        Param0206ef10 *x = func_0206ef10(gStageFlags->bits18.unk_3 | 0x8000);
+        Param0206ef10 *x = Param_GetRecord(gStageFlags->bits18.unk_3 | 0x8000);
         if (x != NULL) {
             self->unk_ba4 = x;
             e = &x->def;

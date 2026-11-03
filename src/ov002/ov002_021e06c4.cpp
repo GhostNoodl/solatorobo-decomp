@@ -58,7 +58,7 @@ BOOL Ov002Vt_021eff50_IsDone(Obj021eff50 *self) {
     return self->unk_14 == 0x32;
 }
 
-void func_ov002_021e07f8(void) {
+void Obj021eff50_PreUpdate(void) {
 }
 
 void *Ov002Vt_021eff50_Dtor(Obj021eff50 *self) {

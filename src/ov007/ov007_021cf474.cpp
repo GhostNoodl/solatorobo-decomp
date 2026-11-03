@@ -17,11 +17,11 @@ extern const u16 data_ov007_021cfa98[][0x20];
 extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 BOOL Model021903b4_Draw(void *a);
-void *func_02070dcc(int kind);
+void *ParamKind_GetShape(int kind);
 
 }
 
-#define OV007_SINCOS ((const s16 *)((const u8 *)func_02070dcc + 0x294))
+#define OV007_SINCOS ((const s16 *)((const u8 *)ParamKind_GetShape + 0x294))
 
 static inline s32 Ov007_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

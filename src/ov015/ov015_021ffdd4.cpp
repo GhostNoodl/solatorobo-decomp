@@ -2,13 +2,13 @@
 
 extern "C" {
 
-BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
+BOOL Ov015Fish_HitTest(Ov015Fish *self, void *a);
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
-BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
+BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
 Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self);
-BOOL func_ov015_02209ff0(Ov015Fish *self, void *a);
+BOOL Ov015Fish_HitTestWide(Ov015Fish *self, void *a);
 
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     BOOL r = FALSE;
@@ -44,7 +44,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         Ov015Vec v;
         n = n->next;
         v = self->unk_10->pos;
-        if (func_ov015_0220a028(obj, &v)) {
+        if (Ov015Fish_HitTest(obj, &v)) {
             found = obj;
             break;
         }
@@ -61,7 +61,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     }
     self->ship->unk_d3e = 0x1000;
     for (n = self->fishList->head; n != NULL; n = n->next) {
-        func_ov015_02209790(n->fish, 1);
+        Ov015Fish_Update(n->fish, 1);
     }
     return r;
 }
@@ -76,7 +76,7 @@ Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
     while (n != NULL) {
         Ov015Fish *obj = n->fish;
         n = n->next;
-        if (func_ov015_02209ff0(obj, &self->unk_14->unk_234)) {
+        if (Ov015Fish_HitTestWide(obj, &self->unk_14->unk_234)) {
             Ov015Vec v;
             EffectObj *e;
             v = FLD(Ov015Vec, self->unk_14, 0x240);

@@ -11,7 +11,7 @@ BOOL EffectPartSet_AddSpeed(EffectPartSet *s, EffectPartSlot *slot) {
     return TRUE;
 }
 
-BOOL func_0206ab04(EffectPartSet *s, EffectPartSlot *slot) {
+BOOL EffectPartSet_None(EffectPartSet *s, EffectPartSlot *slot) {
     return FALSE;
 }
 

@@ -6,7 +6,7 @@
 
 extern "C" {
 
-GroupNode *func_ov000_0218a9d8(GroupNode *self) {
+GroupNode *GroupNode_Init(GroupNode *self) {
     s32 i;
     self->prev = NULL;
     self->next = NULL;

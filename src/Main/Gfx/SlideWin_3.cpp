@@ -72,7 +72,7 @@ struct SlideModel : Model {
 extern "C" {
 
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
-extern void func_0203a5a4(GfxMgr *mgr, u16 c);
+extern void GfxMgr_PutChar(GfxMgr *mgr, u16 c);
 extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern void func_0204cb28(TextWin *win, u32 arg);
@@ -643,7 +643,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
             func_0203a4dc(gGfxMgr, msg->blocks[msg->count]);
             GfxMgr_SetCursor(gGfxMgr, win->cursorX, win->cursorY - 1);
             gGfxMgr->unk_008 = color;
-            func_0203a5a4(gGfxMgr, c);
+            GfxMgr_PutChar(gGfxMgr, c);
             count++;
             if (c < 0x80 || c > 0xaf) {
                 SndMgr_PlayVolume(gSndMgr, 0x23, 0xe, -1, -1);

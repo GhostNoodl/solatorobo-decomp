@@ -510,7 +510,7 @@ static inline void Ov011B_Dtor(Ov011Scene *b) {
     Ov011B_FreeBuf(b);
 }
 
-void func_ov011_0220068c(Ov011SceneActor *self) {
+void Ov011SceneActor_DtorBase(Ov011SceneActor *self) {
     Ov011Sa104 *a = self->unk_104;
     if (a != NULL) {
         Ov003ActorSub40_ForceState(a, 0);

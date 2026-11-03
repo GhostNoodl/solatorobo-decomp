@@ -4924,7 +4924,7 @@ namespace m_Lo_0217a480 {
 
 extern "C" {
 void func_0206c620(void *p);
-void func_0206c670(void *p);
+void StageFlags_Commit(void *p);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
 BOOL Task021cbc60_Task3Callback(void *self, s32 msg);
 
@@ -4985,7 +4985,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         if (self->param == 0) {
             func_0206c620(gStageFlags);
         } else if (self->param == 1) {
-            func_0206c670(gStageFlags);
+            StageFlags_Commit(gStageFlags);
         }
         self->unk_44->bits.active = TRUE;
         self->unk_44->flags |= 0x20;

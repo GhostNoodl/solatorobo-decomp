@@ -30,7 +30,7 @@ extern void Effect3D_Init(Effect3D *e);
 extern void Effect3D_Release(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern void EffectHud_Init(Effect3D *e);
-extern void func_02068540(struct EffectSetup *setup);
+extern void EffectSetup_DtorBase(struct EffectSetup *setup);
 extern void ResMgr_ReleaseList(void *arc);
 extern void LangData_LocalizePath(char *dst, const char *src);
 
@@ -113,7 +113,7 @@ EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32
 
 struct EffectSetup *EffectSetup_Dtor(struct EffectSetup *setup) {
     *(u32 **)setup = EffectSetup_vtbl;
-    func_02068540(setup);
+    EffectSetup_DtorBase(setup);
     return setup;
 }
 

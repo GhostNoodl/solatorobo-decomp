@@ -28,7 +28,7 @@ static inline BOOL ov002_Msg_IsDone(UiObj *m) {
     return m->state == 5;
 }
 
-void func_ov002_021dc278(Obj021eff10 *self, Obj021eff50 *other) {
+void Obj021eff10_Update(Obj021eff10 *self, Obj021eff50 *other) {
     self->owner = other;
     ov002_Anim_Tick(&self->unk_14->mdl);
     if (self->unk_0c != NULL) {

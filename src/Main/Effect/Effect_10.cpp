@@ -23,7 +23,7 @@ void EffectEmitterSub_InitFuncs(EffectEmitterSub *sub) {
     sub->funcs[7] = EffectPtclCmd_Color_pmf;
 }
 
-void func_02069248(EffectEmitterSub *sub) {
+void EffectEmitterSub_DtorBase(EffectEmitterSub *sub) {
 }
 
 BOOL EffectEmitterSub_RunCmds(EffectEmitterSub *sub, EffectPtcl *p) {

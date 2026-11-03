@@ -12,7 +12,7 @@ static inline void SetOfs(Model *m, s32 x, s32 y) {
     Model_SetPos(m, x << 12, (y - 0x58) << 12);
 }
 
-void func_ov000_021c0b84(ActorMarker2D *self) {
+void ActorMarker_DrawKind09(ActorMarker2D *self) {
     GfxSys *g;
     s32 x;
     s32 id;

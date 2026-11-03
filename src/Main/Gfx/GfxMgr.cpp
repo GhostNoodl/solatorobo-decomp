@@ -6,7 +6,7 @@ extern "C" {
 extern u8 data_02097ce4[];
 
 
-extern void func_02039a34(GfxMgr *mgr);
+extern void GfxMgr_Init(GfxMgr *mgr);
 extern void *GfxMgr_AllocCharBlock(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
 extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);
 extern VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block);
@@ -29,7 +29,7 @@ void func_02039750(void) {
         return;
     }
     gGfxMgr = (GfxMgr *)Heap_AllocLo(sizeof(GfxMgr), 4);
-    func_02039a34(gGfxMgr);
+    GfxMgr_Init(gGfxMgr);
     mgr = gGfxMgr;
     for (i = 0; i < 10; i++) {
         mgr->fonts[i] = NULL;
@@ -50,7 +50,7 @@ VramBlock *VramBlock_Free(VramBlock *block) {
     return GfxMgr_FreeBlock(gGfxMgr, block);
 }
 
-VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {
+VramBlock *GfxMgr_AllocPoolBlock(GfxMgr *mgr, VramPool *pool, u32 size) {
     int i;
     u32 mask;
     VramBlock *block;

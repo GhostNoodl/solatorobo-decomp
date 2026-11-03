@@ -64,7 +64,7 @@ void SndMgr_Init(SndMgr *mgr) {
     }
     NNS_SndHandleInit(&mgr->voice);
     NNS_SndArcStrmInit(0xf, mgr->heaps[1]);
-    func_02031990((StrmHandle *)&mgr->strm);
+    NNS_SndArcStrmInitHandle((StrmHandle *)&mgr->strm);
     mgr->heapLevels[1] = NNS_SndHeapSaveState(mgr->heaps[1]);
     mgr->unk_00 = 0x80;
     mgr->unk_04 = 0x100;

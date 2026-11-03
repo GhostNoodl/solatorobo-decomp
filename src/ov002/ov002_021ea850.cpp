@@ -50,7 +50,7 @@ void *Ov002Vt_021f075c_DtorDelete(Ov002Obj021f075c *self) {
     return self;
 }
 
-void func_ov002_021eaaa4(void) {
+void Ov002Obj021f075c_Draw(void) {
 }
 
 void *Ov002Vt_021f075c_Dtor(Ov002Obj021f075c *self) {

@@ -172,12 +172,12 @@ void func_ov015_02206aa0(Ov015SceneSeq *self) {
     self->next = 5;
 }
 
-BOOL func_ov015_02206abc(void) {
+BOOL Ov015SceneSeq_Create(void) {
     TaskHost_Create(0x1e, gOv015Globals.mainSeq->unk_04);
     return TRUE;
 }
 
-BOOL func_ov015_02206ae0(void) {
+BOOL Ov015SceneSeq_Load(void) {
     BOOL r = FALSE;
     if (gFinishingTask != NULL) {
         r = TRUE;
@@ -185,7 +185,7 @@ BOOL func_ov015_02206ae0(void) {
     return r;
 }
 
-BOOL func_ov015_02206afc(void) {
+BOOL Ov015SceneSeq_Setup(void) {
     data_ov015_02213360[0] = 0;
     data_ov015_02213360[1] = 0;
     data_ov015_02213360[2] = 0;
@@ -200,7 +200,7 @@ static inline bool Ov015Host_Flag1(TaskHost *t) {
     return t->unk_00_1;
 }
 
-BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
+BOOL Ov015SceneSeq_Update(Ov015SceneSeq *self) {
     BOOL r;
     Task *t;
     self->scene = gFinishingTask;
@@ -231,10 +231,10 @@ BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
     return r;
 }
 
-void func_ov015_02206bcc(void) {
+void Ov015SceneSeq_Draw(void) {
 }
 
-s32 func_ov015_02206bd0(Ov015SceneSeq *self) {
+s32 Ov015SceneSeq_GetNext(Ov015SceneSeq *self) {
     s32 r;
     switch (self->next) {
     case 4:

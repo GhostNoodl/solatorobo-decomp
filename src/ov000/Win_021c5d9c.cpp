@@ -5,7 +5,7 @@
 extern "C" {
 void func_02041c18(Model *m, u32 a);
 
-void func_ov000_021c5d9c(Lo021cca40 *self) {
+void Lo021cca40_Draw(Lo021cca40 *self) {
     s32 x;
     s32 y;
     if (self->built == 0) {

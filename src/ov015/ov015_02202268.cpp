@@ -3,10 +3,10 @@
 extern "C" {
 
 extern Ov015Globals gOv015Globals;
-void func_ov015_02208070(Ov015Ship *p);
-void func_ov015_02209b8c(Ov015Fish *self);
+void Ov015Ship_Draw(Ov015Ship *p);
+void Ov015Fish_Draw(Ov015Fish *self);
 void func_ov015_02210d04(Ov015MsgMgr *self);
-void func_ov015_02212264(Ov015Obj292c *self);
+void Ov015Obj292c_Draw(Ov015Obj292c *self);
 BOOL Model021903b4_Draw(void *a);
 void func_ov015_0220101c(Ov015Game *self);
 void Ov015Info38_Dtor(Ov015Info38 *p);
@@ -23,18 +23,18 @@ void *Model0218fe1c_FreeAnims(void *a);
 void *ResSet_ReleaseAll(void *a);
 extern u8 Ov015Result_vtbl[];
 extern u8 Ov015Fish_vtbl[];
-void func_ov015_02209270(Ov015Fish *p);
+void Ov015Fish_DtorBase(Ov015Fish *p);
 void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void Ov015FishInfo_Dtor(Ov015FishInfo *p);
 extern u8 Ov015Obj292c_vtbl[];
-void func_ov015_022120fc(Ov015Obj292c *self);
+void Ov015Obj292c_DtorBase(Ov015Obj292c *self);
 extern u8 Ov015List_vtbl[];
 extern u8 Ov015Node_vtbl[];
 
-s32 func_ov015_02202268(void) {
+s32 Ov015Game_GetNext(void) {
     switch (gOv015Globals.mainSeq->unk_04) {
     case 1:
     case 2:
@@ -51,24 +51,24 @@ s32 func_ov015_02202268(void) {
 static inline void Ov015_022022ac_Draw(Ov015Game *self) {
     Ov015MdlSet *p;
     Ov015Node *n;
-    func_ov015_02208070(self->ship);
+    Ov015Ship_Draw(self->ship);
     p = self->unk_20;
     Model021903b4_Draw(&p->p[0].mdl);
     Model021903b4_Draw(&p->p[1].mdl);
     Model021903b4_Draw(&p->p[2].mdl);
     NNS_G3dGeFlushBuffer();
     for (n = self->fishList->head; n != NULL; n = n->next) {
-        func_ov015_02209b8c(n->fish);
+        Ov015Fish_Draw(n->fish);
     }
 }
-void func_ov015_022022ac(Ov015Game *self) {
+void Ov015Game_Draw(Ov015Game *self) {
     switch (self->step) {
     case 0:
         break;
 
     case 0x28:
         if (self->phase1.step > 2 && gGfxSys->unk_a30_4) {
-            if (self->phase1.unk_10 != NULL) func_ov015_02212264(self->phase1.unk_10);
+            if (self->phase1.unk_10 != NULL) Ov015Obj292c_Draw(self->phase1.unk_10);
             if (self->phase1.unk_14 != NULL) self->phase1.unk_14->vfunc_1c();
         }
         if (self->phase1.step >= 3) {
@@ -79,14 +79,14 @@ void func_ov015_022022ac(Ov015Game *self) {
     case 0x32:
     case 0x3c:
         if (gGfxSys->unk_a30_4) {
-            func_ov015_021fb758(self->hud);
+            Ov015Hud_Draw(self->hud);
         }
         Ov015_022022ac_Draw(self);
         if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
         NNS_G3dGeFlushBuffer();
         break;
     case 0x46:
-        func_ov015_0220f7a8(self->result);
+        Ov015Result_Draw(self->result);
         break;
     }
 }
@@ -127,7 +127,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     self->phase1.fishList = 0;
     self->phase1.info = 0;
     SET_VT(self, Ov015Child_vtbl);
-    func_ov015_021fa6cc(self);
+    Ov015Child_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -168,11 +168,11 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     self->phase1.fishList = 0;
     self->phase1.info = 0;
     SET_VT(self, Ov015Child_vtbl);
-    func_ov015_021fa6cc(self);
+    Ov015Child_DtorBase(self);
     return self;
 }
 
-void *func_ov015_022027e8(Ov015Hud *self) {
+void *Ov015Hud_Dtor(Ov015Hud *self) {
     char buf[0x20];
     SET_VT(self, Ov015Hud_vtbl);
     {
@@ -226,13 +226,13 @@ void *Ov015Vt_0221294c_Dtor(u8 *self) {
 
 void *Ov015Result_Dtor(Ov015Result *self) {
     SET_VT(self, Ov015Result_vtbl);
-    func_ov015_0220f4d4(self);
+    Ov015Result_DtorBase(self);
     return self;
 }
 
 void *Ov015Fish_Dtor(Ov015Fish *self) {
     SET_VT(self, Ov015Fish_vtbl);
-    func_ov015_02209270(self);
+    Ov015Fish_DtorBase(self);
     HitSphere_Unlink_0203f2b8(&self->hit);
     Shadow_DtorBase(&self->shadow);
     Model0218fe1c_FreeAnims(&self->model2);
@@ -245,7 +245,7 @@ void *Ov015Fish_Dtor(Ov015Fish *self) {
 
 void *Ov015Obj292c_Dtor(Ov015Obj292c *self) {
     SET_VT(self, Ov015Obj292c_vtbl);
-    func_ov015_022120fc(self);
+    Ov015Obj292c_DtorBase(self);
     return self;
 }
 

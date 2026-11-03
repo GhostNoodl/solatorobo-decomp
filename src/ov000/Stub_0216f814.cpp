@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov000_0216f23c(BufferList *list, BOOL mode);
 
-void func_ov000_0216f814(MessageQueue *self) {
+void MessageQueue_Draw(MessageQueue *self) {
     func_ov000_0216f23c(&self->list, 1);
 }
 

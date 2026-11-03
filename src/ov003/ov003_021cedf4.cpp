@@ -25,7 +25,7 @@ extern "C" {
 extern Ov003Save *gStageFlags;
 extern u8 Ov003Vt_021f7974_vtbl[];
 extern s32 SndMgr_PlayPan(SndMgr *mgr, s32 a, s32 b);
-extern Ov003Area *func_0206ef10(u16 id);
+extern Ov003Area *Param_GetRecord(u16 id);
 extern void Heap_Free(void *p);
 extern s32 Rand_UpTo(s32 max);
 
@@ -50,7 +50,7 @@ void Ov003_AddMeter_021cedf4(u16 add) {
 u8 Ov003_GetMaxCombo(void) {
     u8 r = 3;
     if (gStageFlags->mode == 1) {
-        Ov003Area *area = func_0206ef10(gStageFlags->area | 0x8000);
+        Ov003Area *area = Param_GetRecord(gStageFlags->area | 0x8000);
         if (area != NULL) {
             r += area->bonus;
         }

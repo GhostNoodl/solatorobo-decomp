@@ -92,7 +92,7 @@ void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
 void *Group_Clear(void *p);
 void ActorMgr_Destroy(void);
 void EffectMgr_Delete(void);
-void *func_ov000_02189b14(FieldCam *self);
+void *FieldCam_Dtor(FieldCam *self);
 void func_02062a24(void);
 s32 PauseNode_IsUpdatePaused(void *p, s32 a);
 void ObjPool_Update(void *p);
@@ -233,7 +233,7 @@ void func_ov000_02181624(void) {
     scene = SceneCmd_Get();
     if (scene != NULL) {
         if (scene != NULL) {
-            func_ov000_02189b14(&scene->cam);
+            FieldCam_Dtor(&scene->cam);
             SceneStage_FreeScripts(&scene->stage);
             Heap_Free(scene);
         }
@@ -552,7 +552,7 @@ extern "C" {
 
 s32 StageRes_Run(SceneScript *self, s32 a);
 
-s32 func_ov000_02181efc(SceneScript *self, s32 a) {
+s32 SceneScript_Run(SceneScript *self, s32 a) {
     s32 r;
     StageVars *d = &data_02fe1534;
     d->unk_08 = self->unk_c8;
@@ -1276,9 +1276,9 @@ void ListBuffer021cb940_Init(Task *self);
 void func_ov000_0216f828(Task *self);
 void *MessageQueue_AddBuffer_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
 void func_0206222c(void);
-void func_0206cadc(Obj0214a424 *p);
+void StageFlags_ResetFromSave(Obj0214a424 *p);
 void StageFlags_Reset(Obj0214a424 *p);
-void func_0206ca44(Obj0214a424 *p);
+void StageFlags_LoadDefault(Obj0214a424 *p);
 void StageFlags_Restore(Obj0214a424 *p);
 void func_ov000_02181f54(SceneStage *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -1369,7 +1369,7 @@ s32 SceneCmd_Run02(SceneCmd *self) {
         if ((u32)(mode - 1) <= 1) {
             if (mode == 2) {
                 func_0206222c();
-                func_0206cadc(gStageFlags);
+                StageFlags_ResetFromSave(gStageFlags);
                 gSysState->frameCount = gStageFlags->unk_04;
             } else {
                 StageFlags_Reset(gStageFlags);
@@ -1390,7 +1390,7 @@ s32 SceneCmd_Run02(SceneCmd *self) {
         } else if ((u32)(mode - 3) <= 1) {
             u32 kind = 0xffff;
             if (mode == 4) {
-                func_0206ca44(gStageFlags);
+                StageFlags_LoadDefault(gStageFlags);
             } else {
                 StageFlags_Restore(gStageFlags);
                 gSysState->frameCount = gStageFlags->unk_04;
@@ -3319,7 +3319,7 @@ BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL func_ov000_021700c4(ListBuffer021cb940 *self);
 BOOL func_ov000_021700d8(ListBuffer021cb940 *self);
 BOOL func_ov000_021700ec(ListBuffer021cb940 *self);
-s32 func_ov000_02170100(void *p);
+s32 ListBuffer021cb940_GetWindowMode(void *p);
 
 static inline BOOL Busy11(void) {
     BOOL r;
@@ -3374,7 +3374,7 @@ static inline s32 State11c(void) {
     } else if (m->unk_11c == NULL) {
         r = -1;
     } else {
-        r = func_ov000_02170100(m->unk_11c);
+        r = ListBuffer021cb940_GetWindowMode(m->unk_11c);
     }
     return r;
 }
@@ -3593,7 +3593,7 @@ extern u8 OVERLAY_2_ID[];
 
 void func_ov000_0216f844(TimedBuffer021cb920 *self, s32 a);
 BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
-BOOL func_ov000_02170568(ListBuffer021cb940 *self);
+BOOL ListBuffer021cb940_IsBusy(ListBuffer021cb940 *self);
 BOOL func_ov000_021708d8(ListBuffer021cb940 *self);
 BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
@@ -3640,7 +3640,7 @@ static inline BOOL Busy14(void) {
     } else if (mgr->unk_11c == NULL) {
         r = FALSE;
     } else {
-        r = func_ov000_02170568(mgr->unk_11c);
+        r = ListBuffer021cb940_IsBusy(mgr->unk_11c);
     }
     return r;
 }

@@ -18,9 +18,9 @@ func_ov006_021cd2a8 kind:function(arm,size=0x20) addr:0x021cd2a8
 ov006_Manager_SwitchTask kind:function(arm,size=0x1f8) addr:0x021cd2c8
 func_ov006_021cd4c0 kind:function(arm,size=0xc0) addr:0x021cd4c0
 ov006_Manager_DispatchMenuCb kind:function(arm,size=0x28) addr:0x021cd580
-func_ov006_021cd5a8 kind:function(arm,size=0x36c) addr:0x021cd5a8
-func_ov006_021cd914 kind:function(arm,size=0x4e4) addr:0x021cd914
-func_ov006_021cddf8 kind:function(arm,size=0x1cc) addr:0x021cddf8
+ov006_Manager_Mode00 kind:function(arm,size=0x36c) addr:0x021cd5a8
+ov006_Manager_Mode01to07 kind:function(arm,size=0x4e4) addr:0x021cd914
+ov006_Manager_Mode08 kind:function(arm,size=0x1cc) addr:0x021cddf8
 ov006_Emblem_New kind:function(arm,size=0x84) addr:0x021cdfc4
 ov006_DrawSprite3D kind:function(arm,size=0x32c) addr:0x021ce048
 ov006_Emblem_Load kind:function(arm,size=0x4) addr:0x021ce374
@@ -307,9 +307,9 @@ ov006_Window_OnChildDone kind:function(arm,size=0x5c) addr:0x021e39b0
 func_ov006_021e3a0c kind:function(arm,size=0x1c) addr:0x021e3a0c
 ov006_Window_OnCursor kind:function(arm,size=0x1c) addr:0x021e3a28
 ov006_ListWin_CalcSize kind:function(arm,size=0xb4) addr:0x021e3a44
-func_ov006_021e3af8 kind:function(arm,size=0x24) addr:0x021e3af8
+ov006_ListWin_GetTextX kind:function(arm,size=0x24) addr:0x021e3af8
 func_ov006_021e3b1c kind:function(arm,size=0x8) addr:0x021e3b1c
-func_ov006_021e3b24 kind:function(arm,size=0x14) addr:0x021e3b24
+ov006_ListWin_GetIconWidth kind:function(arm,size=0x14) addr:0x021e3b24
 func_ov006_021e3b38 kind:function(arm,size=0xc) addr:0x021e3b38
 ov006_Window_GetLineSpacing kind:function(arm,size=0x8) addr:0x021e3b44
 ov006_Window_GetPadBottom kind:function(arm,size=0x8) addr:0x021e3b4c
@@ -427,7 +427,7 @@ Ov006ActVt_021ec67c_Dtor kind:function(arm,size=0x14) addr:0x021eb678
 Ov006ActVt_021ec67c_DtorDelete kind:function(arm,size=0x1c) addr:0x021eb68c
 Ov006ActVt_021ec714_Dtor kind:function(arm,size=0x14) addr:0x021eb6a8
 Ov006ActVt_021ec714_DtorDelete kind:function(arm,size=0x1c) addr:0x021eb6bc
-data_ov006_021eb6d8 kind:data(any) addr:0x021eb6d8
+ov006_Manager_ModeTable kind:data(any) addr:0x021eb6d8
 data_ov006_021eb6fc kind:data(any) addr:0x021eb6fc
 data_ov006_021eb6fe kind:data(any) addr:0x021eb6fe
 data_ov006_021eb702 kind:data(any) addr:0x021eb702

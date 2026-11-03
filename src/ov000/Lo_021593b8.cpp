@@ -28,7 +28,7 @@ void Obj02153c48_CreateText(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
 
-void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
+void Lo021cb3a8_DrawItems(Lo021cb3a8 *self, s32 on, s32 *pos) {
     s32 lo;
     s32 k;
     s32 px;

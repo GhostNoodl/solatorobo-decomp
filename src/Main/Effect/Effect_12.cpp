@@ -3,12 +3,12 @@
 extern "C" {
 
 extern EffectPartHandler EffectPartSet_Accel_pmf;
-extern EffectPartHandler data_0208c950;
-extern EffectPartHandler data_0208c958;
-extern EffectPartHandler data_0208c960;
-extern EffectPartHandler data_0208c968;
+extern EffectPartHandler EffectPartSet_Radial_pmf;
+extern EffectPartHandler EffectPartSet_AxisRadial_pmf;
+extern EffectPartHandler EffectPartSet_RadialInv_pmf;
+extern EffectPartHandler EffectPartSet_AxisRadialInv_pmf;
 extern EffectPartHandler EffectPartSet_AddSpeed_pmf;
-extern EffectPartHandler data_0208c978;
+extern EffectPartHandler EffectPartSet_None_pmf;
 
 
 static inline void Effect_VecSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
@@ -69,7 +69,7 @@ void EffectPartSet_Init(EffectPartSet *s) {
     s->ptcls = NULL;
 }
 
-void func_0206a0d8(EffectPartSet *s) {
+void EffectPartSet_DtorBase(EffectPartSet *s) {
 }
 
 BOOL EffectPartSet_AddSlot(EffectPartSet *s, const u8 *data) {
@@ -95,12 +95,12 @@ void EffectPartSet_Reset(EffectPartSet *s) {
     s->pos.y = 0;
     s->pos.z = 0;
     s->funcs[0] = EffectPartSet_Accel_pmf;
-    s->funcs[1] = data_0208c950;
-    s->funcs[2] = data_0208c958;
-    s->funcs[3] = data_0208c960;
-    s->funcs[4] = data_0208c968;
+    s->funcs[1] = EffectPartSet_Radial_pmf;
+    s->funcs[2] = EffectPartSet_AxisRadial_pmf;
+    s->funcs[3] = EffectPartSet_RadialInv_pmf;
+    s->funcs[4] = EffectPartSet_AxisRadialInv_pmf;
     s->funcs[5] = EffectPartSet_AddSpeed_pmf;
-    s->funcs[6] = data_0208c978;
+    s->funcs[6] = EffectPartSet_None_pmf;
 }
 
 BOOL func_0206a218(EffectPartSet *s) {
@@ -145,7 +145,7 @@ BOOL EffectPartSet_Accel(EffectPartSet *s, EffectPartSlot *slot) {
 }
 
 
-BOOL func_0206a3a4(EffectPartSet *s, const EffectPartSlot *slot) {
+BOOL EffectPartSet_Radial(EffectPartSet *s, const EffectPartSlot *slot) {
     VecFx32 center;
     VecFx32 pos;
     VecFx32 rel;
@@ -174,7 +174,7 @@ BOOL func_0206a3a4(EffectPartSet *s, const EffectPartSlot *slot) {
     return TRUE;
 }
 
-BOOL func_0206a530(EffectPartSet *s, const EffectPartSlot *slot) {
+BOOL EffectPartSet_AxisRadial(EffectPartSet *s, const EffectPartSlot *slot) {
     VecFx32 center;
     VecFx32 axis;
     VecFx32 pos;
@@ -210,7 +210,7 @@ BOOL func_0206a530(EffectPartSet *s, const EffectPartSlot *slot) {
     return TRUE;
 }
 
-BOOL func_0206a71c(EffectPartSet *s, const EffectPartSlot *slot) {
+BOOL EffectPartSet_RadialInv(EffectPartSet *s, const EffectPartSlot *slot) {
     VecFx32 center;
     VecFx32 rel;
     VecFx32 pos;
@@ -243,7 +243,7 @@ BOOL func_0206a71c(EffectPartSet *s, const EffectPartSlot *slot) {
     return TRUE;
 }
 
-BOOL func_0206a8d4(EffectPartSet *s, const EffectPartSlot *slot) {
+BOOL EffectPartSet_AxisRadialInv(EffectPartSet *s, const EffectPartSlot *slot) {
     VecFx32 axis;
     VecFx32 center;
     VecFx32 pos;

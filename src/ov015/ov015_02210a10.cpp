@@ -10,12 +10,12 @@ int ResMgr_IsArchiveLoaded(void *a, void *b, int c);
 void *Ov015Msg_Ctor(Ov015Msg *self);
 extern u8 Ov015MsgMgr_vtbl[];
 extern u8 Ov015ResultPanel_vtbl[];
-void func_ov015_0220ec40(Ov015ResultPanel *self);
+void Ov015ResultPanel_DtorBase(Ov015ResultPanel *self);
 extern u8 Ov015Vt_022131ac_vtbl[];
 void ListRow_Unlink(Lo021cca40 *self); // the row base teardown (ctor ListRow_Init)
 extern u8 Ov015Vt_02213200_vtbl[];
 
-void func_ov015_02210a10(Ov015Msg *self) {
+void Ov015Msg_Close(Ov015Msg *self) {
     self->label->flags |= 2;
     self->textBox->flags |= 2;
     SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
@@ -24,7 +24,7 @@ void func_ov015_02210a10(Ov015Msg *self) {
 static inline BOOL Ov015_IsState5(UiObj *o) {
     return o->state == 5 ? TRUE : FALSE;
 }
-BOOL func_ov015_02210a58(Ov015Msg *self) {
+BOOL Ov015Msg_Disappear(Ov015Msg *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0: {
@@ -102,7 +102,7 @@ s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b) {
     return r;
 }
 
-u8 func_ov015_02210cfc(Ov015Msg *self) {
+u8 Ov015Msg_IsShown(Ov015Msg *self) {
     return self->unk_04;
 }
 
@@ -118,7 +118,7 @@ static inline Ov015Msg *Ov015_NewMsg(void) {
     if (o != NULL) o = (Ov015Msg *)Ov015Msg_Ctor(o);
     return o;
 }
-Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
+Ov015Msg *Ov015MsgMgr_HandleEvent(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
     Ov015Msg *r = NULL;
     switch (msg) {
     case 0x28:
@@ -201,7 +201,7 @@ void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
 
 void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
     SET_VT(self, Ov015ResultPanel_vtbl);
-    func_ov015_0220ec40(self);
+    Ov015ResultPanel_DtorBase(self);
     return self;
 }
 

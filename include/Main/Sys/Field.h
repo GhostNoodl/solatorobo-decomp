@@ -46,7 +46,7 @@ typedef struct FieldPlayer {
 
 extern FieldPlayer *gMessageQueue;
 extern BOOL MessageQueue_GetById(FieldPlayer *player, int id);
-extern BOOL func_ov000_02170568(void *p);
+extern BOOL ListBuffer021cb940_IsBusy(void *p);
 extern void func_ov000_021bc458(FieldFade *fade);
 
 
@@ -70,7 +70,7 @@ static inline BOOL Field_IsPlayerBusy(void) {
     if (player->unk_11c == NULL) {
         return FALSE;
     }
-    return func_ov000_02170568(player->unk_11c);
+    return ListBuffer021cb940_IsBusy(player->unk_11c);
 }
 
 #ifdef __cplusplus

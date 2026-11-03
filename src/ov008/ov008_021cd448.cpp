@@ -7,7 +7,7 @@ extern "C" {
 
 extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
-void func_0204b420(void *p);
+void Camera_Dtor(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
 void func_ov000_0214bc10(void);
@@ -31,7 +31,7 @@ void Ov008Mgr_Delete(void) {
     if (gOv008Mgr == NULL) {
         return;
     }
-    OV008_FREE(gOv008Mgr, Ov008Mgr *, (func_ov008_021cd584(p_), func_0204b420(&p_->cam), Heap_Free(p_)));
+    OV008_FREE(gOv008Mgr, Ov008Mgr *, (func_ov008_021cd584(p_), Camera_Dtor(&p_->cam), Heap_Free(p_)));
 }
 
 void func_ov008_021cd500(Ov008Mgr *m) {

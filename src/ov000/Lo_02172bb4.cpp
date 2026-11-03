@@ -17,7 +17,7 @@ void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-BOOL func_ov000_02172bb4(TimedBuffer021cb920 *self) {
+BOOL TimedBuffer021cb920_IsReady(TimedBuffer021cb920 *self) {
     if (((s32)self->unk_20) == 0) {
         return TRUE;
     }

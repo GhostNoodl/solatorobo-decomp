@@ -14,7 +14,7 @@ extern s32 data_ov000_021ca00c[];
 extern s32 data_ov000_021ca100[];
 extern s32 data_ov000_021ca168[];
 void func_ov000_021b05b0(u8 *self);
-u8 func_0206d37c(void *save, s32 a);
+u8 StageFlags_GetCounter(void *save, s32 a);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 void Actor_SendMsgU8(Actor *self, u16 id, u8 value);
@@ -75,7 +75,7 @@ void Robo021ca458_SelectState(Robo021ca458 *self) {
         if (self->unk_b22_3) {
             self->unk_b08 += 0x8f;
         }
-        self->unk_b08 += func_0206d37c(gStageFlags, 3) * 4;
+        self->unk_b08 += StageFlags_GetCounter(gStageFlags, 3) * 4;
     } else {
         self->model = (Model0218fe1c *)&self->mdl0;
         self->hit = (ActorSub48 *)&self->hit0;

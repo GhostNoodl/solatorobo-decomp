@@ -48,7 +48,7 @@ static inline BOOL Obj021c0e30_Wait(Marker021c0e30 *self) {
     return FALSE;
 }
 
-void func_ov000_021c0e30(Marker021c0e30 *self) {
+void ActorMarker_UpdateKind0a(Marker021c0e30 *self) {
     VecFx32 pos;
     switch (self->work.state) {
     case 5:

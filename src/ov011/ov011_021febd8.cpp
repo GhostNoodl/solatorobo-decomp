@@ -82,14 +82,14 @@ Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
 
 void *Ov011SceneActor_Dtor(Ov011SceneActor *self) {
     *(void **)self = Ov011SceneActor_vtbl;
-    func_ov011_0220068c(self);
+    Ov011SceneActor_DtorBase(self);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011SceneActor_DtorDelete(Ov011SceneActor *self) {
     *(void **)self = Ov011SceneActor_vtbl;
-    func_ov011_0220068c(self);
+    Ov011SceneActor_DtorBase(self);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;

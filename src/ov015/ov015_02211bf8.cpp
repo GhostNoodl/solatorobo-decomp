@@ -14,7 +14,7 @@ void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 extern u8 data_ov015_02213280[];
 
-BOOL func_ov015_02211bf8(Ov015Obj290 *self) {
+BOOL Ov015Obj290_Update(Ov015Obj290 *self) {
     BOOL r = TRUE;
     switch (self->step) {
     case 0:
@@ -36,11 +36,11 @@ BOOL func_ov015_02211bf8(Ov015Obj290 *self) {
     return r;
 }
 
-BOOL func_ov015_02211c98(void) {
+BOOL Ov015Obj290_StepWait(void) {
     return TRUE;
 }
 
-void func_ov015_02211ca0(Ov015Obj290 *self) {
+void Ov015Obj290_Draw(Ov015Obj290 *self) {
     self->unk_240 = self->unk_234;
     gOv015Obj290 = self;
     self->model.trans = self->unk_27c;
@@ -52,7 +52,7 @@ void func_ov015_02211ca0(Ov015Obj290 *self) {
     gOv015Obj290 = NULL;
 }
 
-BOOL func_ov015_02211d14(Ov015Obj290 *self) {
+BOOL Ov015Obj290_StepMove(Ov015Obj290 *self) {
     u8 m[0x24];
     BOOL r;
     u16 a = self->yaw;
@@ -86,7 +86,7 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
     return r;
 }
 
-BOOL func_ov015_02211e88(Ov015Obj290 *self) {
+BOOL Ov015Obj290_StepEffect(Ov015Obj290 *self) {
     Ov015Vec v;
     EffectObj *o;
     v = self->unk_27c;
@@ -103,7 +103,7 @@ BOOL func_ov015_02211e88(Ov015Obj290 *self) {
     return FALSE;
 }
 
-BOOL func_ov015_02211f54(Ov015Obj290 *self) {
+BOOL Ov015Obj290_StepAnim(Ov015Obj290 *self) {
     BOOL r = TRUE;
     Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     if (Model0218fe1c_IsAnimDone(&self->model)) {
@@ -117,7 +117,7 @@ BOOL func_ov015_02211f54(Ov015Obj290 *self) {
 }
 
 void Model0218fe1c_ClearLoop(void *a);
-void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *from) {
+void Ov015Obj290_SetTarget(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *from) {
     Ov015Vec d;
     if (from != NULL) {
         self->unk_270 = *from;

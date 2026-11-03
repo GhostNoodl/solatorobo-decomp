@@ -1,12 +1,12 @@
 #include "nnsys/snd/sndarc_stream.h"
 
-void func_02031df0(StrmPlayer *player, int frames) {
+void StrmPlayer_Stop(StrmPlayer *player, int frames) {
     if (!player->playing) {
-        func_02031e48(player);
+        StrmPlayer_ForceStop(player);
         return;
     }
     if (frames == 0) {
-        func_02031e48(player);
+        StrmPlayer_ForceStop(player);
         return;
     }
     NNSi_SndFaderSet(&player->fader, 0, frames);
@@ -14,7 +14,7 @@ void func_02031df0(StrmPlayer *player, int frames) {
     player->stopReq = TRUE;
 }
 
-void func_02031e48(StrmPlayer *player) {
+void StrmPlayer_ForceStop(StrmPlayer *player) {
     OS_LockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
         OS_LockMutex(&data_0209622c.altThread->mutex);
@@ -25,27 +25,27 @@ void func_02031e48(StrmPlayer *player) {
     if (player->active) {
         player->stopFn(player);
     }
-    func_02031ee0(player);
+    StrmPlayer_Shutdown(player);
     OS_UnlockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
         OS_UnlockMutex(&data_0209622c.altThread->mutex);
     }
 }
 
-void func_02031ee0(StrmPlayer *player) {
+void StrmPlayer_Shutdown(StrmPlayer *player) {
     if (!player->active) {
         return;
     }
-    func_02031f80(player);
+    StrmPlayer_FreeChannel(player);
     player->closeFn(player);
-    func_0203200c(&data_02097cb0, player);
+    Strm_RemovePlayerCommands(&data_02097cb0, player);
     if (data_0209622c.altThread != NULL) {
-        func_0203200c(&data_0209622c.altThread->cmdList, player);
+        Strm_RemovePlayerCommands(&data_0209622c.altThread->cmdList, player);
     }
-    func_02031b58(player);
+    StrmPlayer_Free(player);
 }
 
-BOOL func_02031f48(StrmPlayer *player, int chNum, u8 *chList) {
+BOOL StrmPlayer_AllocChannel(StrmPlayer *player, int chNum, u8 *chList) {
     if (player->chRefCount == 0) {
         if (!NNS_SndStrmAllocChannel(&player->strm, chNum, chList)) {
             return FALSE;
@@ -55,7 +55,7 @@ BOOL func_02031f48(StrmPlayer *player, int chNum, u8 *chList) {
     return TRUE;
 }
 
-void func_02031f80(StrmPlayer *player) {
+void StrmPlayer_FreeChannel(StrmPlayer *player) {
     if (player->chRefCount == 0) {
         return;
     }
@@ -64,15 +64,15 @@ void func_02031f80(StrmPlayer *player) {
     }
 }
 
-void func_02031fa4(StrmThread *thread, u32 prio) {
-    OS_CreateThread(&thread->thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
+void StrmThread_Init(StrmThread *thread, u32 prio) {
+    OS_CreateThread(&thread->thread, StrmThread_Main, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
     NNS_FndInitList(&thread->cmdList, 0);
     OS_InitMutex(&thread->mutex);
     thread->queue.head = thread->queue.tail = NULL;
     OS_WakeupThreadDirect(&thread->thread);
 }
 
-void func_0203200c(NNSFndList *list, StrmPlayer *player) {
+void Strm_RemovePlayerCommands(NNSFndList *list, StrmPlayer *player) {
     u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     StrmCommand *next;
@@ -80,14 +80,14 @@ void func_0203200c(NNSFndList *list, StrmPlayer *player) {
         next = NNS_FndGetNextListObject(list, cmd);
         if (cmd->player == player) {
             NNS_FndRemoveListObject(list, cmd);
-            func_02032110(cmd);
+            Strm_FreeCommand(cmd);
         }
         cmd = next;
     }
     OS_RestoreInterrupts(state);
 }
 
-StrmCommand *func_0203207c(NNSFndList *list) {
+StrmCommand *Strm_PopCommand(NNSFndList *list) {
     u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     if (cmd != NULL) {
@@ -98,7 +98,7 @@ StrmCommand *func_0203207c(NNSFndList *list) {
     return cmd;
 }
 
-StrmCommand *func_020320cc(void) {
+StrmCommand *Strm_AllocCommand(void) {
     u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(&data_02096238, NULL);
     if (cmd != NULL) {
@@ -108,13 +108,13 @@ StrmCommand *func_020320cc(void) {
     return cmd;
 }
 
-void func_02032110(StrmCommand *cmd) {
+void Strm_FreeCommand(StrmCommand *cmd) {
     u32 state = OS_DisableInterrupts();
     NNS_FndAppendListObject(&data_02096238, cmd);
     OS_RestoreInterrupts(state);
 }
 
-void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
+void StrmPlayer_OnHeapDispose(void *data, u32 size, u32 arg0, u32 arg1) {
     StrmPlayer *player = (StrmPlayer *)arg0;
     if (data != player->buffer) {
         return;
@@ -123,7 +123,7 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
     if (data_0209622c.altThread != NULL) {
         OS_LockMutex(&data_0209622c.altThread->mutex);
     }
-    func_02031e48(player);
+    StrmPlayer_ForceStop(player);
     player->buffer = NULL;
     player->bufSize = 0;
     player->chNum = 0;
@@ -137,7 +137,7 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
     }
 }
 
-void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int format, void *arg) {
+void StrmPlayer_OnStrmData(int status, int numBuffers, void **buffers, u32 size, int format, void *arg) {
     StrmPlayer *player = arg;
     StrmCommand *cmd;
     StrmThread *thread;
@@ -153,9 +153,9 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
         }
         NNS_FndRemoveListObject(&data_02097cb0, cmd);
         player->cmdCount--;
-        func_02032110(cmd);
+        Strm_FreeCommand(cmd);
     }
-    cmd = func_020320cc();
+    cmd = Strm_AllocCommand();
     cmd->player = player;
     cmd->unk_0c = status;
     cmd->numBuffers = numBuffers;
@@ -172,7 +172,7 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
     OS_WakeupThread(&thread->queue);
 }
 
-void func_02032310(StrmPlayer *player) {
+void StrmPlayer_NextStream(StrmPlayer *player) {
     StrmCbInfo cur;
     StrmCbNext next;
     NNSSndArcStrmInfo *info;
@@ -192,7 +192,7 @@ void func_02032310(StrmPlayer *player) {
     format = player->header.format;
     rate = player->header.sampleRate;
     player->closeFn(player);
-    func_02032c54(player, info->fileId);
+    StrmPlayer_SetFileFuncs(player, info->fileId);
     if (!player->openFn(player, info->fileId)) {
         return;
     }
@@ -261,7 +261,7 @@ static inline s16 StrmDecodeAdpcm(StrmAdpcmState *st, u32 data) {
     return pred;
 }
 
-void func_0203244c(StrmCommand *cmd) {
+void Strm_ProcessCommand(StrmCommand *cmd) {
     StrmPlayer *player;
     BOOL loop;
     unsigned long offset;
@@ -414,7 +414,7 @@ void func_0203244c(StrmCommand *cmd) {
             offset += outSize;
             remain -= outSize;
             if (player->unk_118_5 && player->callback != NULL) {
-                func_02032310(player);
+                StrmPlayer_NextStream(player);
             }
         }
     }

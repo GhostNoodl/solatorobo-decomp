@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0206d0a8(void *a);
+void StageFlags_ClearEntries_0206d0a8(void *a);
 
 BOOL StageFlags_AddEntry(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
 
@@ -10,9 +10,9 @@ u8 StageFlags_CountEntries(void *a, u16 id);
 
 void func_0206f3f0(u16 id, u8 v);
 
-void func_0206d3ac(void *a, int b, u8 x, u8 y, s32 *org);
+void StageFlags_SetGridBit(void *a, int b, u8 x, u8 y, s32 *org);
 
-void func_0206d390(void *a, u8 b, u8 c);
+void StageFlags_SetCounter(void *a, u8 b, u8 c);
 
 u16 StageFlags_CountItems(void *a);
 
@@ -27,7 +27,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
     u8 r;
     u8 c;
     Ov002Shape *shape;
-    for (func_0206d0a8(gStageFlags), n = self->pieces; n != NULL; n = n->next) {
+    for (StageFlags_ClearEntries_0206d0a8(gStageFlags), n = self->pieces; n != NULL; n = n->next) {
         StageFlags_AddEntry(gStageFlags, n->unk_48, n->unk_54, n->unk_58, n->shape.rot, 0);
     }
     for (i = 0; i < 0x53; i++) {
@@ -50,7 +50,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
             for (c = 0; c < cols; c++) {
                 u16 k = c + r * cols;
                 if (shape->grid[k] == 0 && self->cells[k].unk_2 != 2) {
-                    func_0206d3ac(gStageFlags, 1, c, r, org);
+                    StageFlags_SetGridBit(gStageFlags, 1, c, r, org);
                 }
             }
         }
@@ -64,7 +64,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
             } else if (v > 99) {
                 v = 99;
             }
-            func_0206d390(gStageFlags, j, (s8)v);
+            StageFlags_SetCounter(gStageFlags, j, (s8)v);
         }
     }
     {

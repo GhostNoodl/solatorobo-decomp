@@ -61,7 +61,7 @@ struct ActorMarker2D : ActorMarker {
     /* 0x94 */ struct Model *unk_94;
 };
 
-// Kind 11 (func_ov000_021c14f4, drawn by func_ov000_021c17dc): a 3D model built from the marker's
+// Kind 11 (ActorMarker_UpdateKind0b, drawn by ActorMarker_DrawKind0b): a 3D model built from the marker's
 // own resources.
 struct ActorMarker3D : ActorMarker {
     /* 0x8c */ struct ActorRes *unk_8c; // ActorMarker::res, taken over

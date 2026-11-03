@@ -27,7 +27,7 @@ static inline void ov002_CamInit(Obj021efe6c *c, const VecFx32 *pos) {
     c->unk_bc.z = 0x2b8;
 }
 
-void func_ov002_021dacac(Obj021eff74 *self) {
+void Obj021eff74_Init(Obj021eff74 *self) {
     void *g = gMsgRes;
     UiObj *o;
     VObj *m;

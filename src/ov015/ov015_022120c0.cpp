@@ -11,7 +11,7 @@ extern u8 Ov015Obj290_vtbl[];
 void *Model0218fe1c_FreeAnims(void *a);
 void *ResSet_ReleaseAll(void *a);
 
-void func_ov015_022120c0(Ov015Obj292c *self) {
+void Ov015Obj292c_Init(Ov015Obj292c *self) {
     self->fx = NULL;
     self->marker = NULL;
     self->pos.x = 0;
@@ -26,7 +26,7 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
     self->unk_30 = 0;
 }
 
-void func_ov015_022120fc(Ov015Obj292c *self) {
+void Ov015Obj292c_DtorBase(Ov015Obj292c *self) {
     void *saved;
     ActorMarker *o;
     if (EffectMgr_Contains(gEffectMgr, self->fx)) {
@@ -45,15 +45,15 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
     HEAP_POP(saved);
 }
 
-void func_ov015_02212180(Ov015Obj292c *self) {
+void Ov015Obj292c_Load(Ov015Obj292c *self) {
     ResMgr_Load(data_ov015_022132ac, 7, 0);
 }
 
-int func_ov015_0221219c(Ov015Obj292c *self) {
+int Ov015Obj292c_IsLoaded(Ov015Obj292c *self) {
     return ResMgr_IsLoaded(data_ov015_022132ac, 7);
 }
 
-BOOL func_ov015_022121b4(Ov015Obj292c *self) {
+BOOL Ov015Obj292c_Setup(Ov015Obj292c *self) {
     ActorMarker *q;
     self->fx = Effect3D_Create(data_ov015_022132ac, data_ov015_022132bb, 0, &self->pos);
     self->fx->unk_d4 = 3;
@@ -78,7 +78,7 @@ void func_ov015_02212250(Ov015Obj292c *self, s32 a) {
     }
 }
 
-void func_ov015_02212264(Ov015Obj292c *self) {
+void Ov015Obj292c_Draw(Ov015Obj292c *self) {
     ActorMarker *o;
     if (self->fx != NULL) {
         const MtxFx43 *m = NNS_G3dGlbGetInvV();
@@ -157,7 +157,7 @@ void func_ov015_02212430(Ov015Obj292c *self) {
     }
 }
 
-BOOL func_ov015_022124e4(Ov015Obj290 *self) {
+BOOL Ov015Obj290_IsDone(Ov015Obj290 *self) {
     return self->step == 4 ? TRUE : FALSE;
 }
 

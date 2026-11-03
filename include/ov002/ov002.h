@@ -310,7 +310,7 @@ static inline bool Task_isFlag1Clear(Task *self) {
     return !self->unk_04_1;
 }
 
-void func_ov002_021dab58(Obj021efe7c *a, int b);
+void Obj021efe7c_SetPhase(Obj021efe7c *a, int b);
 BOOL Obj021efe7c_Update(Obj021efe7c *a);
 extern VFunc Ov002TaskVt_021efc24_vtbl[];
 void func_ov002_021d5f60(Task021efc24 *self);
@@ -321,7 +321,7 @@ extern VFunc UiList_vtbl[];
 extern VFunc UiObj_vtbl[];
 
 void *func_0206ec8c(u32 id);
-Param0206ef10 *func_0206ef10(u32 id);
+Param0206ef10 *Param_GetRecord(u32 id);
 void ModelViewer_SetModel(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
 void Obj021c95ac_Init_021c95ac(void *a, u16 id);
 void Ov002Hud_SetInfo(Ov002Hud *self, u16 id);
@@ -364,7 +364,7 @@ void Obj021efe5c_SyncAnmFrame(Obj021efe5c *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
-Ov002Shape *func_02070dcc(int id);
+Ov002Shape *ParamKind_GetShape(int id);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
 
@@ -376,7 +376,7 @@ static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
     u8 *info = Param_GetEntry(self->unk_48);
     Ov002Shape *v;
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
-    v = func_02070dcc(self->unk_4b = info[1]);
+    v = ParamKind_GetShape(self->unk_4b = info[1]);
     MI_CpuCopy8(v, &self->shape, sizeof(self->shape));
     func_ov002_021e38f8(self->unk_5c, v);
 }
@@ -421,7 +421,7 @@ extern VFunc Ov002Vt_021eff50_vtbl[];
 extern VFunc Ov002Vt_021efe4c_vtbl[];
 extern VFunc Ov002Vt_021f0684_vtbl[];
 extern VFunc Ov002Vt_021f00ec_vtbl[];
-extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (func_ov002_021e5b08)
+extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (Ov002Obj021f07d4_Draw)
 void Obj021efef0_Init(Obj021efef0 *self);
 void Obj021efe7c_Release(Obj021efe7c *self);
 void Obj021efef0_Release(Obj021efef0 *self);

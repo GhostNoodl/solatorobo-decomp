@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size);
+extern VramBlock *GfxMgr_AllocPoolBlock(GfxMgr *mgr, VramPool *pool, u32 size);
 extern void func_0203aab0(GfxMgr *mgr, void *arg);
 extern void func_0203acb8(GfxMgr *mgr, void *arg);
 
@@ -12,10 +12,10 @@ VramBlock *GfxMgr_AllocCharBlock(GfxMgr *mgr, int width, int height, BOOL tempor
     VramBlock *block;
     u32 size = (((width + 7) >> 3) * ((height + 7) >> 3)) << 5;
     if (data_020827f8[mgr->unk_004].mode == 4) {
-        block = func_02039844(mgr, &mgr->pools[0], size);
+        block = GfxMgr_AllocPoolBlock(mgr, &mgr->pools[0], size);
         block->kind = 4;
     } else {
-        block = func_02039844(mgr, &mgr->pools[1], size);
+        block = GfxMgr_AllocPoolBlock(mgr, &mgr->pools[1], size);
         block->kind = 3;
     }
     block->temporary = temporary;
@@ -34,7 +34,7 @@ void *GfxMgr_GetFont(GfxMgr *mgr) {
     return &mgr->fonts[mgr->unk_004]->res;
 }
 
-void func_0203a4d4(GfxMgr *mgr, void *arg) {
+void GfxMgr_SetOamCache(GfxMgr *mgr, void *arg) {
     mgr->unk_658 = (u32)arg;
 }
 
@@ -46,7 +46,7 @@ static inline bool GfxSys_IsFlag(GfxSys *sys) {
     return sys->unk_a30_4 ? TRUE : FALSE;
 }
 
-void func_0203a4e4(GfxMgr *mgr, void *arg) {
+void GfxMgr_PutString(GfxMgr *mgr, void *arg) {
     switch (data_020827f8[mgr->unk_004].mode) {
     case 0:
         break;
@@ -82,7 +82,7 @@ extern const NNSG2dCharWidths *NNS_G2dFontGetCharWidthsFromIndex(const NNSG2dFon
 extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
-void func_0203a5a4(GfxMgr *mgr, u16 c) {
+void GfxMgr_PutChar(GfxMgr *mgr, u16 c) {
     u8 type;
     int color;
     int pal;
@@ -194,7 +194,7 @@ void func_0203a5a4(GfxMgr *mgr, u16 c) {
 }
 
 #ifdef NONMATCHING
-// func_0203a984 (0x12c bytes, draws the OBJs of glyph blocks drawn earlier by func_0203a5a4; reached through the
+// func_0203a984 (0x12c bytes, draws the OBJs of glyph blocks drawn earlier by GfxMgr_PutChar; reached through the
 // GfxMgr.cpp tail-call wrapper): 10 / 0 (raw / register-masked). This file's .text ends at 0x0203a984, so it goes
 // here once it matches. Blocker: colouring of codegen temps only (the blocks[i] load and the (addr >> 5) >> shift
 // temp). History: docs/MATCHING.md rounds raC, mainbig5, nmA, mtA (search "0203a984"); docs/UNMATCHED.md.

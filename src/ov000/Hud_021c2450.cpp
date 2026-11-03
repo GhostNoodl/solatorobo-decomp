@@ -48,7 +48,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     self->str = str;
 }
 
-void func_ov000_021c2450(Hud021cca10 *self) {
+void Hud021cca10_Update(Hud021cca10 *self) {
     Model *m;
     Model *m2;
     if (self->built == 0) {

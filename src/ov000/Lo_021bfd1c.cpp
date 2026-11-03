@@ -26,7 +26,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     TexObj_DrawCell(model, anim, part, flag);
 }
 
-void func_ov000_021bfd1c(ActorMarker2D *self) {
+void ActorMarker_DrawKind06(ActorMarker2D *self) {
     GfxSys *g;
     s32 x;
     s32 y;

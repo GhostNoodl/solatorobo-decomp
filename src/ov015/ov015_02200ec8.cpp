@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 Ov015Result_vtbl[];
-void *func_ov015_02207738(Ov015Ship *p);
+void *Ov015Ship_Dtor(Ov015Ship *p);
 extern u8 Ov015Vt_0221294c_vtbl[];
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
@@ -74,7 +74,7 @@ void func_ov015_02200f74(Ov015Game *self) {
 
 void *Ov015Result_DtorDelete(Ov015Result *self) {
     SET_VT(self, Ov015Result_vtbl);
-    func_ov015_0220f4d4(self);
+    Ov015Result_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -86,7 +86,7 @@ void func_ov015_0220101c(Ov015Game *self) {
     Ov015Ship *o = self->ship;
     if (o != NULL) {
         if (o != NULL) {
-            func_ov015_02207738(o);
+            Ov015Ship_Dtor(o);
             Heap_Free(o);
         }
         self->ship = NULL;

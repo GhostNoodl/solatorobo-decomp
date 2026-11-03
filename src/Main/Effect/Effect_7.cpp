@@ -22,7 +22,7 @@ void EffectSetup_Init(EffectSetup *setup, u8 *data, const VecFx32 *pos) {
     setup->chunk24 = NULL;
 }
 
-void func_02068540(EffectSetup *setup) {
+void EffectSetup_DtorBase(EffectSetup *setup) {
 }
 
 EffectObj *func_02068544(EffectSetup *setup) {

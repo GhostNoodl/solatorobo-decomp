@@ -21,7 +21,7 @@ BOOL Obj021efe7c_IsLoaded(Obj021efe7c *self) {
 
 void Obj021efe7c_Start(Obj021efe7c *self) {
     func_ov002_021d95e0(self->board);
-    func_ov002_021dab58(self, self->unk_0c);
+    Obj021efe7c_SetPhase(self, self->unk_0c);
     EffectMgr_SaveList(gEffectMgr);
     *(s32 *)gEffectMgr = 0;
     self->unk_10 = 1;
@@ -36,7 +36,7 @@ BOOL Obj021efe7c_Update(Obj021efe7c *self) {
         o->vfunc_0c();
         self->unk_08->vfunc_10();
         if (self->unk_08->vfunc_18()) {
-            func_ov002_021dab58(self, FIELD(((void *)self->unk_08), 8, int));
+            Obj021efe7c_SetPhase(self, FIELD(((void *)self->unk_08), 8, int));
         }
     }
     if (((void *)self->unk_08) == NULL) {

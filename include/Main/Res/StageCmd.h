@@ -150,7 +150,7 @@ extern StagePlayer *ActorMgr_FindPlayer(void);
 extern void MessageQueue021cb980_Push09_0a(FieldPlayer *player, int a, s32 b);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
 extern void MessageQueue021cb980_Push0b_0c(FieldPlayer *player, int a, s32 b, s32 c, s32 d, s32 e);
-extern void func_ov000_021705dc(FieldActor *actor, s32 a, s32 b);
+extern void ListBuffer021cb940_SetEventCount(FieldActor *actor, s32 a, s32 b);
 extern void MessageQueue021cb980_Push0d_0e(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
 extern bool func_ov000_021705ec(FieldActor *actor);
 extern void func_ov000_0216da78(FieldActorState *st);
@@ -183,7 +183,7 @@ static inline BOOL Field_IsPlayerActing(void) {
 
 static inline void Actor_SetDir(FieldActor *actor, u16 a, u16 b) {
     if (actor != NULL) {
-        func_ov000_021705dc(actor, a, b);
+        ListBuffer021cb940_SetEventCount(actor, a, b);
     }
 }
 

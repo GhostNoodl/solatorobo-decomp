@@ -11,7 +11,7 @@ typedef struct MoAdpcmState {
 extern const s8 data_020826d4[16];
 extern const s16 data_020826e4[89];
 
-void func_020349dc(MoAdpcmState *state, const u8 *header) {
+void MoAdpcm_SetHeader(MoAdpcmState *state, const u8 *header) {
     int index = header[0];
     state->predictor = *(s16 *)(header + 2);
     state->index = index;

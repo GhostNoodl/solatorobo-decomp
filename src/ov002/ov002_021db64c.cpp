@@ -33,7 +33,7 @@ void Model0218fe1c_ClearReverse(void *a);
 
 void *Model0218fe1c_GetAnimCtrl(void *a, int b);
 
-void func_ov002_021db750(Obj021eff50 *self) {
+void Obj021eff50_Init(Obj021eff50 *self) {
     UiObj *o;
     UiObj *o2;
     void *g = gMsgRes;

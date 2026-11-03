@@ -15,7 +15,7 @@ static inline void LoSetPos0214e3b4(void *m, s32 x, s32 y) {
     LFLD(s32, m, 0x100) = y << 12;
 }
 
-void func_ov000_0214e3b4(Lo021caac8 *self, void *arg, s32 x, s32 y, u8 depth, u8 flip) {
+void Lo021caac8_DrawItemText(Lo021caac8 *self, void *arg, s32 x, s32 y, u8 depth, u8 flip) {
     if ((void *)self->unk_b4 == NULL) {
         return;
     }

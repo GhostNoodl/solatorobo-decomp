@@ -4,22 +4,22 @@
 
 extern "C" {
 
-BOOL func_ov002_021ec6a8(void) {
+BOOL Ov002StaffNode_CanLoad(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021ec6b0(void) {
+BOOL Ov002StaffNode_Load(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021ec6b8(void) {
+BOOL Ov002StaffNode_Setup(void) {
     return TRUE;
 }
 
-void func_ov002_021ec6c0(void) {
+void Ov002StaffNode_Start(void) {
 }
 
-void func_ov002_021ec6c4(Ov002StaffNode *self, s32 screen) {
+void Ov002StaffNode_Draw(Ov002StaffNode *self, s32 screen) {
     s32 k = self->screen;
     s32 st;
     if (k != 2 && k != screen) {
@@ -71,7 +71,7 @@ void Ov002StaffNode_Link(Ov002StaffNode *node) {
     }
 }
 
-void func_ov002_021ec7ac(Ov002StaffNode *self) {
+void Ov002StaffNode_Init(Ov002StaffNode *self) {
     self->entry = NULL;
     self->screen = 3;
     self->prev = NULL;
@@ -82,20 +82,20 @@ void func_ov002_021ec7ac(Ov002StaffNode *self) {
     }
 }
 
-void func_ov002_021ec7dc(void) {
+void Ov002StaffNode_Release(void) {
 }
 
-BOOL func_ov002_021ec7e0(Ov002StaffNode *self) {
+BOOL Ov002StaffNode_Run(Ov002StaffNode *self) {
     if (self->entry->kind == 3) {
         data_ov002_021f0fa0.staff->clock.flags.done = 1;
     }
     return FALSE;
 }
 
-void func_ov002_021ec80c(void) {
+void Ov002StaffNode_Render(void) {
 }
 
-void func_ov002_021ec810(Ov002StaffModel *self) {
+void Ov002StaffModel_Init(Ov002StaffModel *self) {
     self->res = NULL;
     self->model = NULL;
     self->x = 0;
@@ -105,7 +105,7 @@ void func_ov002_021ec810(Ov002StaffModel *self) {
     self->maxAlpha = 0x1e;
 }
 
-void func_ov002_021ec838(Ov002StaffModel *self) {
+void Ov002StaffModel_Release(Ov002StaffModel *self) {
     void *saved;
     HEAP_PUSH(saved);
     {
@@ -131,7 +131,7 @@ static inline BOOL func_ov002_021ec8d8_is5(Ov002StaffModel *t) {
 static inline BOOL func_ov002_021ec8d8_flag(Ov002StaffModel *t) {
     return t->clock.flags.b4 == 1 ? TRUE : FALSE;
 }
-BOOL func_ov002_021ec8d8(void) {
+BOOL Ov002StaffModel_CanLoad(void) {
     Ov002StaffModel *t;
     int n = 0;
     for (t = (Ov002StaffModel *)data_ov002_021f0fa0.lists[5]; t != NULL; t = (Ov002StaffModel *)t->link) {
@@ -145,7 +145,7 @@ BOOL func_ov002_021ec8d8(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021ec968(Ov002StaffModel *self) {
+BOOL Ov002StaffModel_Load(Ov002StaffModel *self) {
     switch (self->clock.sub) {
     case 0: {
         Ov002StaffRes *o = (Ov002StaffRes *)Heap_Alloc(0x4c);
@@ -169,11 +169,11 @@ BOOL func_ov002_021ec968(Ov002StaffModel *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov002_021eca14 is 6 / 3 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): Ov002StaffModel_Setup is 6 / 3 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: return TRUE's mov r0, #1 is scheduled into the ldrh stall; the ROM has return TRUE
 // in a block of its own. History: docs/MATCHING.md rounds bgV, bgX, rgB, mtA, cvA (search for the address); the full
 // list is docs/UNMATCHED.md.
-// func_ov002_021eca14 (round bgX): 6 raw / 2 register-masked. Rebuilt from the ROM: no in-tree draft
+// Ov002StaffModel_Setup (round bgX): 6 raw / 2 register-masked. Rebuilt from the ROM: no in-tree draft
 // existed (earlier rounds kept theirs in scratch). It is ec968's sibling: case 0 counts the flagged
 // tasks on data_ov002_021f0fa0.lists[5] against data_ov002_021f0d88's limit and creates the model; case 1
 // waits for it. This file's .text ends at 0x021eca14, so the function belongs here once it matches.
@@ -215,7 +215,7 @@ static inline BOOL func_ov002_021eca14_flag(StaffTask_eca14 *t) {
     return t->flags.b6 == 1 ? TRUE : FALSE;
 }
 
-BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
+BOOL Ov002StaffModel_Setup(StaffTask_eca14 *self) {
     switch (self->state) {
     case 0:
         if (self->param->unk_0e != 1) {

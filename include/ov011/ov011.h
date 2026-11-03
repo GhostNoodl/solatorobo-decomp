@@ -665,7 +665,7 @@ void *Ov011E40_Dtor(Ov011E40 *self);
 void func_ov011_021fff38(Ov011SceneActor *self);
 void func_ov011_0220023c(Ov011SceneActor *self);
 void func_ov011_02200310(Ov011SceneActor *self);
-void func_ov011_0220068c(Ov011SceneActor *self);
+void Ov011SceneActor_DtorBase(Ov011SceneActor *self);
 }
 
 // v * the 3x3 part of m (the rotation of a 4x3 matrix), as MTX_MultVec33 would compute it.

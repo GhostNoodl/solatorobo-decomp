@@ -42,7 +42,7 @@ static inline BOOL ov002_Tag_Crossed(Ov002StaffModel *t, s32 time) {
     return FALSE;
 }
 
-BOOL func_ov002_021ecb90(Ov002StaffModel *self) {
+BOOL Ov002StaffModel_Run(Ov002StaffModel *self) {
     BOOL result = TRUE;
     Ov002StaffModel *p;
 
@@ -137,7 +137,7 @@ static inline bool isMode3(Ov002StaffModel *self) {
     return self->clock.state == 3;
 }
 
-void func_ov002_021eceb8(Ov002StaffModel *self) {
+void Ov002StaffModel_Render(Ov002StaffModel *self) {
     s32 x;
     s32 y;
     s32 z;
@@ -192,22 +192,22 @@ void func_ov002_021eceb8(Ov002StaffModel *self) {
 namespace m_021ecfd8 {
 extern "C" {
 
-void func_ov002_021ecfd8(Ov002StaffPhoto *self) {
+void Ov002StaffPhoto_Init(Ov002StaffPhoto *self) {
     self->photo = NULL;
 }
 
-void func_ov002_021ecfe4(Ov002StaffPhoto *self) {
+void Ov002StaffPhoto_Release(Ov002StaffPhoto *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_WITH(self->photo, func_ov000_0214b724);
     HEAP_POP(saved);
 }
 
-BOOL func_ov002_021ed03c(void) {
+BOOL Ov002StaffPhoto_CanLoad(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021ed044(Ov002StaffPhoto *self) {
+BOOL Ov002StaffPhoto_Load(Ov002StaffPhoto *self) {
     switch (self->clock.sub) {
     case 0: {
         void *p = Heap_Alloc(0x3c);
@@ -229,7 +229,7 @@ BOOL func_ov002_021ed044(Ov002StaffPhoto *self) {
     return FALSE;
 }
 
-BOOL func_ov002_021ed0c0(Ov002StaffPhoto *self) {
+BOOL Ov002StaffPhoto_Setup(Ov002StaffPhoto *self) {
     if (self->clock.sub != 0) {
         return FALSE;
     }
@@ -241,7 +241,7 @@ BOOL func_ov002_021ed0c0(Ov002StaffPhoto *self) {
 static inline BOOL func_ov002_021ed0ec_is3(Ov002StaffPhoto *self) {
     return self->clock.state == 3 ? TRUE : FALSE;
 }
-void func_ov002_021ed0ec(Ov002StaffPhoto *self) {
+void Ov002StaffPhoto_Render(Ov002StaffPhoto *self) {
     if (self->photo == NULL || self->alpha == 0) {
         return;
     }
@@ -262,7 +262,7 @@ void func_ov002_021ed0ec(Ov002StaffPhoto *self) {
     }
 }
 
-void func_ov002_021ed1ac(Ov002StaffText *self) {
+void Ov002StaffText_Init(Ov002StaffText *self) {
     self->line[0].text = 0;
     self->line[1].text = 0;
     self->line[0].x = 0;
@@ -274,7 +274,7 @@ void func_ov002_021ed1ac(Ov002StaffText *self) {
     self->alpha = 0x1f;
 }
 
-void func_ov002_021ed1dc(Ov002StaffText *self) {
+void Ov002StaffText_Release(Ov002StaffText *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->line[0].text);
@@ -328,7 +328,7 @@ static inline void ov002_021ed270_create(Ov002StaffText *self, char *str) {
     }
 }
 
-void func_ov002_021ed270(Ov002StaffText *self) {
+void Ov002StaffText_Start(Ov002StaffText *self) {
     Ov002StaffEntry *info = self->entry;
     switch (info->unk_0c) {
     case 0:
@@ -412,7 +412,7 @@ static inline BOOL ov002_021edab4_flag3(Ov002StaffText *self) {
     return self->clock.flags.done == 1 ? TRUE : FALSE;
 }
 
-BOOL func_ov002_021edab4(Ov002StaffText *self) {
+BOOL Ov002StaffText_Run(Ov002StaffText *self) {
     BOOL r = TRUE;
     s32 dt;
     if (self->line[0].text == NULL) {
@@ -481,7 +481,7 @@ BOOL func_ov002_021edab4(Ov002StaffText *self) {
 namespace m_021edcec {
 extern "C" {
 
-void func_ov002_021edcec(Ov002StaffText *self, int mode) {
+void Ov002StaffText_Render(Ov002StaffText *self, int mode) {
     s32 x;
     s32 y;
     if (self->line[0].text == NULL || self->alpha == 0) {
@@ -519,10 +519,10 @@ void func_ov002_021edcec(Ov002StaffText *self, int mode) {
 namespace m_021ede54 {
 extern "C" {
 
-void func_ov002_021ede54(void) {
+void Ov002Vt_021f0e14_Init(void) {
 }
 
-void func_ov002_021ede58(void) {
+void Ov002Vt_021f0e14_Release(void) {
 }
 
 }
@@ -542,7 +542,7 @@ void SndMgr_StopSeqNo(SndMgr *mgr, int playerNo, int fadeFrames);
 
 void SndMgr_SetStrmVolume_0204a2a8(SndMgr *mgr, int b, u16 c);
 
-BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
+BOOL Ov002Vt_021f0e14_Run(Ov002StaffNode *self) {
     BOOL busy = FALSE;
     Ov002StaffEntry *d = self->entry;
     switch (d->unk_0c) {

@@ -27,11 +27,11 @@ extern u8 Ov015Obj30_vtbl[];
 extern u8 Ov015Obj34_vtbl[];
 void func_ov015_0221102c(void);
 void Ov015Obj30_Init(Ov015Obj30 *self);
-void func_ov015_0220015c(Ov015Obj34 *self);
+void Ov015Obj34_Init(Ov015Obj34 *self);
 void func_ov015_02211828(Ov015Info38 *p);
 void func_ov015_02200f74(Ov015Game *p);
 void Ov015Obj30_Free(Ov015Obj30 *self);
-void func_ov015_02200194(Ov015Obj34 *self);
+void Ov015Obj34_DtorBase(Ov015Obj34 *self);
 u8 Gfx3DState_NextPolyId(void *p);
 void Gfx3D_DrawPrimScaled(s32 a, s32 b, s32 c, s32 d);
 BOOL func_ov015_021faa74(Ov015Main *self);
@@ -61,7 +61,7 @@ static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
             SET_VT(&p->phase1, Ov015Obj30_vtbl);
             Ov015Obj30_Init(&p->phase1);
             SET_VT(&p->phase2, Ov015Obj34_vtbl);
-            func_ov015_0220015c(&p->phase2);
+            Ov015Obj34_Init(&p->phase2);
             func_ov015_02211828(&p->info);
             func_ov015_02200f74(p);
         }
@@ -89,30 +89,30 @@ static inline void Ov015Fade_Update(Ov015Fade *f) {
     }
 }
 
-s32 func_ov015_021fa6a0(void) {
+s32 Ov015Child_Create(void) {
     return 1;
 }
 
-s32 func_ov015_021fa6a8(void) {
+s32 Ov015Child_Load(void) {
     return 1;
 }
 
-s32 func_ov015_021fa6b0(void) {
+s32 Ov015Child_Setup(void) {
     return 1;
 }
 
-s32 func_ov015_021fa6b8(void) {
+s32 Ov015Child_Update(void) {
     return 0;
 }
 
-s32 func_ov015_021fa6c0(void) {
+s32 Ov015Child_GetNext(void) {
     return 3;
 }
 
-void func_ov015_021fa6c8(void) {
+void Ov015Child_Draw(void) {
 }
 
-void func_ov015_021fa6cc(Ov015Child *self) {
+void Ov015Child_DtorBase(Ov015Child *self) {
 }
 
 Ov015Fade *Ov015_GetFade(void) {
@@ -381,7 +381,7 @@ void *Ov015Obj30_Dtor(Ov015Obj30 *self) {
 
 void *Ov015Obj34_Dtor(Ov015Obj34 *self) {
     SET_VT(self, Ov015Obj34_vtbl);
-    func_ov015_02200194(self);
+    Ov015Obj34_DtorBase(self);
     return self;
 }
 
@@ -424,7 +424,7 @@ void func_ov015_021fb088(Ov015Main *self) {
 
 void *Ov015Obj34_DtorDelete(Ov015Obj34 *self) {
     SET_VT(self, Ov015Obj34_vtbl);
-    func_ov015_02200194(self);
+    Ov015Obj34_DtorBase(self);
     Heap_Free(self);
     return self;
 }

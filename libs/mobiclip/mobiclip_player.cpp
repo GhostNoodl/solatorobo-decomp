@@ -5,14 +5,14 @@ extern "C" {
 
 extern void Gfx3D_FreeHi(void *ptr);
 extern void *Gfx3D_AllocHi(u32 size);
-extern void *func_0203465c(void);
+extern void *MoMem_GetVideoCode(void);
 extern void *func_020346d4(void);
 extern void *func_02034740(void);
 extern u32 func_020347ac(void);
 
 #define MOFLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
-BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
+BOOL MoPlayer_Open(MoPlayer *player, MoStream *stream, u32 flags) {
     u32 i;
     s32 k;
     s32 k2;
@@ -52,7 +52,7 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
     dec = (MoVideoDecoder *)Gfx3D_AllocHi(0x454);
     player->decoder = dec;
     MIi_CpuClearFast(0, dec, 0x454);
-    player->decodeFunc = (int (*)(MoVideoDecoder *))func_0203465c();
+    player->decodeFunc = (int (*)(MoVideoDecoder *))MoMem_GetVideoCode();
     MOFLD(void *, player->decoder, 0x3c) = func_020346d4();
     MOFLD(u32, player->decoder, 0x40) = 0x2079bb8;
     MOFLD(u32, player->decoder, 0x44) = func_020347ac() + 0x40;
@@ -145,9 +145,9 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
 }
 
 
-BOOL func_020340d8(MoPlayer *player, int keyFrame);
+BOOL MoPlayer_SeekKeyFrame(MoPlayer *player, int keyFrame);
 
-void func_02033df0(MoPlayer *player) {
+void MoPlayer_Close(MoPlayer *player) {
     u32 i;
     int j;
     if (player->stream != NULL) {
@@ -200,11 +200,11 @@ void func_02033df0(MoPlayer *player) {
     player->keyFrames = NULL;
 }
 
-u32 func_02033f54(MoPlayer *player) {
+u32 MoPlayer_GetSampleRate(MoPlayer *player) {
     return player->unk_20;
 }
 
-u16 func_02033f5c(MoPlayer *player) {
+u16 MoPlayer_GetAudioChannels(MoPlayer *player) {
     return player->audioChannels;
 }
 
@@ -212,15 +212,15 @@ u32 func_02033f64(MoPlayer *player) {
     return player->unk_18;
 }
 
-u32 func_02033f6c(MoPlayer *player) {
+u32 MoPlayer_GetNumFrames(MoPlayer *player) {
     return player->numFrames;
 }
 
-u32 func_02033f74(MoPlayer *player) {
+u32 MoPlayer_GetCurFrame(MoPlayer *player) {
     return player->curFrame;
 }
 
-u32 func_02033f7c(MoPlayer *player) {
+u32 MoPlayer_GetBlockSize(MoPlayer *player) {
     if (player->unk_20 == 0) {
         return 0;
     }
@@ -230,7 +230,7 @@ u32 func_02033f7c(MoPlayer *player) {
     return 0x100;
 }
 
-BOOL func_02033fa0(MoPlayer *player) {
+BOOL MoPlayer_ReadFrame(MoPlayer *player) {
     int prev;
     if (player->curFrame == player->numFrames) {
         return FALSE;
@@ -259,7 +259,7 @@ BOOL func_02033fa0(MoPlayer *player) {
     return TRUE;
 }
 
-BOOL func_020340d8(MoPlayer *player, int keyFrame) {
+BOOL MoPlayer_SeekKeyFrame(MoPlayer *player, int keyFrame) {
     u32 header;
     if (keyFrame < 0 || keyFrame >= player->numKeyFrames) {
         return FALSE;
@@ -278,11 +278,11 @@ BOOL func_020340d8(MoPlayer *player, int keyFrame) {
     return TRUE;
 }
 
-BOOL func_020341ac(MoPlayer *player) {
-    return func_020340d8(player, 0);
+BOOL MoPlayer_Rewind(MoPlayer *player) {
+    return MoPlayer_SeekKeyFrame(player, 0);
 }
 
-BOOL func_020341bc(MoPlayer *player) {
+BOOL MoPlayer_DecodeFrame(MoPlayer *player) {
     int extra;
     int i;
     if (player->shownFrames > player->decodedFrames) {
@@ -314,7 +314,7 @@ BOOL func_020341bc(MoPlayer *player) {
 extern void func_02075810(MoYuvParams *params);
 extern void func_02032f90(void *conv);
 
-BOOL func_02034298(MoPlayer *player, void *dst, u32 stride, int mode) {
+BOOL MoPlayer_ConvertFrame(MoPlayer *player, void *dst, u32 stride, int mode) {
     MoYuvParams params;
     if (player->shownFrames >= player->decodedFrames) {
         return FALSE;
@@ -365,10 +365,10 @@ BOOL func_02034298(MoPlayer *player, void *dst, u32 stride, int mode) {
 extern void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 extern int func_02075d4c(MoAudioDecoder *decoder);
 extern void func_0207670c(MoAudioDecoder *decoder);
-extern void func_020349dc(MoAudioDecoder *decoder, u8 *data);
+extern void MoAdpcm_SetHeader(MoAudioDecoder *decoder, u8 *data);
 extern void func_020349ec(MoAudioDecoder *decoder, u8 *data, u32 size, void *out);
 
-BOOL func_02034408(MoPlayer *player) {
+BOOL MoPlayer_SkipFrame(MoPlayer *player) {
     if (player->shownFrames >= player->decodedFrames) {
         return FALSE;
     }
@@ -379,11 +379,11 @@ BOOL func_02034408(MoPlayer *player) {
     return TRUE;
 }
 
-u32 func_02034448(MoPlayer *player) {
+u32 MoPlayer_GetChunkSamples(MoPlayer *player) {
     return player->chunkSamples[player->chunkIndex];
 }
 
-BOOL func_02034458(MoPlayer *player, void *out) {
+BOOL MoPlayer_DecodeAudio(MoPlayer *player, void *out) {
     u16 codec;
     if (player->audioBlock == player->numAudioBlocks) {
         return FALSE;
@@ -403,7 +403,7 @@ BOOL func_02034458(MoPlayer *player, void *out) {
         player->decoder->data += 0x28;
     } else if (codec == 3) {
         if (player->unk_a4 == 1) {
-            func_020349dc(&player->audioDecoders[player->audioChannel], player->decoder->data);
+            MoAdpcm_SetHeader(&player->audioDecoders[player->audioChannel], player->decoder->data);
             player->decoder->data += 4;
         }
         func_020349ec(&player->audioDecoders[player->audioChannel], player->decoder->data, 0x80, out);

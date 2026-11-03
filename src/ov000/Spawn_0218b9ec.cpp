@@ -9,7 +9,7 @@ extern Group *gGroup;
 GroupNode *func_ov000_0218b9ec(GroupActorDesc *desc, const FieldId *c0, const FieldId *c1, VecFx32 *pos, Rot16 *rot) {
     GroupNode *obj = (GroupNode *)Heap_Alloc(sizeof(GroupNode));
     if (obj != NULL) {
-        obj = func_ov000_0218a9d8(obj);
+        obj = GroupNode_Init(obj);
     }
     if (obj != NULL) {
         Group_Add(gGroup, obj);

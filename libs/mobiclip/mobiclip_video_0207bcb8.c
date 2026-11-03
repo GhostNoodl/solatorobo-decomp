@@ -1,4 +1,4 @@
-// Actimagine Mobiclip video decoder, hand-written ARM assembly. func_0203465c (mobiclip_mem.cpp)
+// Actimagine Mobiclip video decoder, hand-written ARM assembly. MoMem_GetVideoCode (mobiclip_mem.cpp)
 // copies these 0x659c bytes to fast memory (or runs them in place) and the player calls the
 // start as its decode function, so the code is position-independent: no absolute addresses,
 // every table is reached with `add/sub rX, pc, #imm` and most dispatch goes through tables of

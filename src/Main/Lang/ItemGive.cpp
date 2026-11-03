@@ -4,8 +4,8 @@
 extern "C" {
 
 extern u8 *data_0208d268[];
-extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
-extern s32 func_0206d2a4(StageFlags *f, u16 id, u8 n);
+extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
+extern s32 StageFlags_SetItemCount(StageFlags *f, u16 id, u8 n);
 extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void DataRes_InitRef(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
 extern u16 DataRes_ReadRef(DataRes *res, SaveRef *ref, u32 id);
@@ -68,10 +68,10 @@ BOOL Item_Give(u16 id, int n) {
             if (gStageFlags->itemTotal >= 100) {
                 ok = FALSE;
             } else {
-                v = func_0206d2ec(gStageFlags, id, 1);
+                v = StageFlags_AddItem(gStageFlags, id, 1);
             }
         } else {
-            v = func_0206d2ec(gStageFlags, id, -1);
+            v = StageFlags_AddItem(gStageFlags, id, -1);
         }
         if (v == -1) {
             break;
@@ -103,7 +103,7 @@ void func_0206f3f0(u16 id, int n) {
     if (n < 0) {
         n = 0;
     }
-    if (func_0206d2a4(gStageFlags, id, n) == -1) {
+    if (StageFlags_SetItemCount(gStageFlags, id, n) == -1) {
         return;
     }
     if (gStageFlags->items[Item_Idx(id)] + StageFlags_CountEntries(gStageFlags, id) == 0) {

@@ -4,8 +4,8 @@
 extern "C" {
 
 extern u8 *data_0208d268[];
-extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
-extern s32 func_0206d2a4(StageFlags *f, u16 id, u8 n);
+extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
+extern s32 StageFlags_SetItemCount(StageFlags *f, u16 id, u8 n);
 extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void DataRes_InitRef(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
 extern u16 DataRes_ReadRef(DataRes *res, SaveRef *ref, u32 id);

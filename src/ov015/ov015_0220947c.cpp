@@ -46,7 +46,7 @@ static inline BOOL Ov015_IsIdle567(Ov015Fish *self) {
     if (self->shadow.state != 3 && self->shadow.state != 0) r = FALSE;
     return r;
 }
-BOOL func_ov015_0220947c(Ov015Fish *self) {
+BOOL Ov015Fish_IsLoaded(Ov015Fish *self) {
     BOOL r = TRUE;
     if (self->res.unk_00 >= 0) {
         if (ResSet_UpdateLoad(&self->res) == 0) r = FALSE;
@@ -107,7 +107,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     return TRUE;
 }
 
-BOOL func_ov015_02209790(Ov015Fish *self, BOOL b) {
+BOOL Ov015Fish_Update(Ov015Fish *self, BOOL b) {
     Model0218fe1c_UpdateAnim(&self->model, self->animSpeed);
     Model0218fe1c_UpdateAnim(&self->model2, 0);
     if (!b) {
@@ -206,7 +206,7 @@ static inline void Ov015_UpdateMove(Ov015Fish *self) {
     Ov015Shadow_DrawAt(&self->shadow, &v, self->radius, self->unk_88, ang, 0);
     self->shadow.alpha = self->shadowAlpha;
 }
-void func_ov015_02209b8c(Ov015Fish *self) {
+void Ov015Fish_Draw(Ov015Fish *self) {
     switch (self->drawMode) {
     case 0:
         func_ov015_02209c90(self);
@@ -274,13 +274,13 @@ s32 func_ov015_02209fb8(s32 x) {
     return (s32)(((s64)t * 0x3e8000 + 0x800) >> 12);
 }
 
-BOOL func_ov015_02209ff0(Ov015Fish *self, void *a) {
+BOOL Ov015Fish_HitTestWide(Ov015Fish *self, void *a) {
     BOOL r = FALSE;
     if (Hit_DiffInCylinder(a, &self->pos, self->unk_98 + 0x4cd, self->unk_94)) r = TRUE;
     return r;
 }
 
-BOOL func_ov015_0220a028(Ov015Fish *self, void *a) {
+BOOL Ov015Fish_HitTest(Ov015Fish *self, void *a) {
     BOOL r = FALSE;
     if (Hit_DiffInCylinder(a, &self->pos, self->unk_98, self->unk_94)) r = TRUE;
     return r;

@@ -51,7 +51,7 @@ static inline VObj *NewObj2(u32 size, void *vt) {
     return p;
 }
 
-void func_ov000_02170a58(ListBuffer021cb940 *self) {
+void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
     MessageQueue021cb980 *c = (MessageQueue021cb980 *)self->unk_0c; // the owner queue
     switch (self->state) {
     case 0:

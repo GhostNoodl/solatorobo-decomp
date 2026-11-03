@@ -12,7 +12,7 @@ extern void *Ov006Vt_021ebb48_vtbl;
 extern char data_ov006_021ebb88[];
 extern char data_ov006_021ebb78[];
 extern char data_ov006_021ec864[];
-extern ov006_StateFunc data_ov006_021eb6d8[];
+extern ov006_StateFunc ov006_Manager_ModeTable[];
 
 void ov006_Menu_Delete(void);
 int WH_Destroy_02044b20(void);
@@ -155,7 +155,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
             if (data_ov006_021ec888->state == 0) {
                 break;
             }
-            data_ov006_021eb6d8[gOv006Manager->unk14](1, done, done);
+            ov006_Manager_ModeTable[gOv006Manager->unk14](1, done, done);
             self->subState++;
         case 2:
             done = TRUE;
@@ -326,7 +326,7 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
 }
 
 void ov006_Manager_DispatchMenuCb(int a, int b, int c) {
-    data_ov006_021eb6d8[gOv006Manager->unk14](a, b, c);
+    ov006_Manager_ModeTable[gOv006Manager->unk14](a, b, c);
 }
 
 }

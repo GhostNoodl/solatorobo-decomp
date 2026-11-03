@@ -43,7 +43,7 @@ void func_ov000_02182590(void *p);
 void Model0218fe1c_SetAnimDelay(void *model, u16 delay, BOOL force);
 s32 Rand_PlusMinus(s32 max);
 u32 Rand_UpTo(u32 max);
-u8 func_0206d37c(void *flags, u32 i);
+u8 StageFlags_GetCounter(void *flags, u32 i);
 void Actor_SendMsgU8(void *actor, u16 id, u8 value);
 void Target_Set(void *a, void *b);
 u8 *Target_Get(void *p);
@@ -591,7 +591,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                 o->AddPosXYZ(a, b, c);
                 o->SetScaleAll((gActorMgr->frame & 0xff) + 0xf00);
             }
-            n = func_0206d37c(gStageFlags, 2);
+            n = StageFlags_GetCounter(gStageFlags, 2);
             if (self->unk_b22_3) {
                 n += 5;
             }

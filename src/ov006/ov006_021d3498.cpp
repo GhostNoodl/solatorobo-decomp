@@ -152,7 +152,7 @@ void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
 ActorRes *ResSet_ReleaseAll(ActorRes *self);
 Camera *Camera_Ctor(Camera *cam);
-void func_0204b420(Camera *cam);
+void Camera_Dtor(Camera *cam);
 Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
@@ -242,7 +242,7 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_DELETE_OBJECT(self->unk138);
     OV006_DELETE_OBJECT(self->unk13C);
     ResMgr_ReleaseArchive("ac/c1dum1", "c1dum1", 6);
-    func_0204b420(&self->cam);
+    Camera_Dtor(&self->cam);
     OV006_TASKBASE_DTOR(self);
 }
 
@@ -342,7 +342,7 @@ void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
 ActorRes *ResSet_ReleaseAll(ActorRes *self);
 Camera *Camera_Ctor(Camera *cam);
-void func_0204b420(Camera *cam);
+void Camera_Dtor(Camera *cam);
 Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);

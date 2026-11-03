@@ -96,8 +96,8 @@ typedef struct RoboDef {
     const char *unk_1c; // the anmName ov002 hands ModelViewer_SetModel with the first pair
 } RoboDef;
 
-// A 0x2c-byte parameter record returned by func_0206ef10 (Main/Lang/ParamTbl.cpp). The robot keeps the one
-// of its kind (func_0206ef10(kind | 0x8000), Robo021ca458_Init / Robo021ca458_State1f) in unk_ba4; the
+// A 0x2c-byte parameter record returned by Param_GetRecord (Main/Lang/ParamTbl.cpp). The robot keeps the one
+// of its kind (Param_GetRecord(kind | 0x8000), Robo021ca458_Init / Robo021ca458_State1f) in unk_ba4; the
 // bits at 0x06 enable its moves.
 typedef struct Param0206ef10 {
     s8 unk_00[0x4]; // copied by Obj021c95ac_Init_021c95ac
@@ -403,7 +403,7 @@ struct Lo021caac8 : public UiList021cb4a8 {
 
 // Bar display base (vtable Ov000Vt_021cac0c_vtbl, 0x9c bytes; slot 0x14 Ov000Vt_021cac0c_Init clears
 // it). Subclass vtables Lo021cb6f0_vtbl, 021cb744, 021cb798, 021cb7ec, 021cb840, 021cb894
-// (all built by func_ov000_02170a58) and 021cca88 (ListRowGauge_Update) keep its slots 0x08..0x10
+// (all built by ListBuffer021cb940_Update) and 021cca88 (ListRowGauge_Update) keep its slots 0x08..0x10
 // and 0x40..0x44. Methods in Obj_0215fe60.cpp, Lo_021601c4.cpp, Obj_02160344.c, Obj_0215fdfc.c,
 // Cam_02160414.cpp, ov000_02160534.cpp, Lo_021609ec.cpp, Lo_02160c7c.cpp.
 struct ObjBase021cac0c_021cb6f0 : public VObj {
@@ -615,8 +615,8 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
 };
 
 // Vtable Lo021cca40_vtbl (0x48 bytes, init Lo021cca40_Init; ov015 builds them): a list row with
-// a name, a count and a value. Slot 0x08 (func_ov000_021c5bd4) makes the text and the digit model once,
-// slot 0x0c (func_ov000_021c5d9c) draws the name and the two numbers.
+// a name, a count and a value. Slot 0x08 (Lo021cca40_Update) makes the text and the digit model once,
+// slot 0x0c (Lo021cca40_Draw) draws the name and the two numbers.
 struct Lo021cca40 : public ListRow {
     TextWin *text;  // 0x30 the name (unk_38, or a default string)
     Model *unk_34;  // the digit model (parts 6 and 7)

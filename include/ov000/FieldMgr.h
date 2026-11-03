@@ -186,7 +186,7 @@ typedef struct FieldProp {
 struct FieldMgr;
 typedef void (FieldMgr::*FieldMgrFn)();
 
-// The field manager (0x294 bytes, ctor func_ov000_021b5054, made by func_ov000_021b4eec, deleted by
+// The field manager (0x294 bytes, ctor FieldMgr_Init, made by func_ov000_021b4eec, deleted by
 // func_ov000_021b4f28): gFieldMgr. FieldMgr_UpdateLoad loads the field's blocks and props,
 // FieldMgr_Update updates them and tests the exits, FieldMgr_DrawProps draws,
 // func_ov000_021b53f4 unloads, func_ov000_021b628c places the player at the exit it arrives at.
@@ -219,7 +219,7 @@ extern FieldMgr *gFieldMgr;
 
 void func_ov000_021b4eec(void);
 void func_ov000_021b4f28(void);
-FieldMgr *func_ov000_021b5054(FieldMgr *self);
+FieldMgr *FieldMgr_Init(FieldMgr *self);
 void FieldMgr_Update(FieldMgr *self);
 void FieldMgr_DrawProps(FieldMgr *self);
 void func_ov000_021b53f4(FieldMgr *self);
@@ -230,8 +230,8 @@ void func_ov000_021b65ec(FieldMgr *self);
 FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos);
 void func_ov000_021b6994(FieldMgr *self, u8 all);
 void FieldMgr_SetIdVec(FieldMgr *self, u16 id, const VecFx32 *v);
-void func_ov000_021b6be4(FieldMgr *self);
-void func_ov000_021b6c60(FieldMgr *self);
+void FieldMgr_StepCameraAnim(FieldMgr *self);
+void FieldMgr_StepTouchArea(FieldMgr *self);
 
 #ifdef __cplusplus
 }

@@ -14,7 +14,7 @@ extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
 void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
 
-void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos) {
+void LoBase021cafc0_021cb0b8_DrawItems(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos) {
     GfxSys *g;
     UiListItem *node;
     s32 i;

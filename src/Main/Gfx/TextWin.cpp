@@ -2788,7 +2788,7 @@ typedef struct TextWinFont {
 } TextWinFont;
 
 extern GfxCell *GfxMgr_NextCell(GfxMgr *mgr);
-extern void func_0203a4d4(GfxMgr *mgr, void *arg);
+extern void GfxMgr_SetOamCache(GfxMgr *mgr, void *arg);
 extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern int NNS_G2dCharCanvasDrawChar(const void *canvas, const void *font, int x, int y, int color, u16 c);
@@ -2812,7 +2812,7 @@ void func_0204e358(TextWin *win) {
     }
     win->vram->unk_10_31 = win->flag5;
     if (win->lines != NULL) {
-        func_0203a4d4(gGfxMgr, win->lines);
+        GfxMgr_SetOamCache(gGfxMgr, win->lines);
     }
     func_0203a0cc(gGfxMgr, win->vram, cell, win->width, win->height, hi);
     if (!win->vram->temporary) {
@@ -4023,7 +4023,7 @@ void TextWinEx_Render(TextWinEx *win) {
 }
 
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
-extern void func_0203a5a4(GfxMgr *mgr, u16 c);
+extern void GfxMgr_PutChar(GfxMgr *mgr, u16 c);
 BOOL TextWin_ParseTag(TextWin *win, char **pp);
 
 s32 func_0204f804(TextWinEx *win) {
@@ -4122,7 +4122,7 @@ s32 func_0204f804(TextWinEx *win) {
             func_0203a4dc(gGfxMgr, win->blocks[win->numBlocks]);
             TextWin_SetOrigin(win->cursorX, win->cursorY);
             gGfxMgr->unk_008 = color;
-            func_0203a5a4(gGfxMgr, c);
+            GfxMgr_PutChar(gGfxMgr, c);
             n++;
             if (win->flag23 == 1 && (c < 0x80 || c > 0xaf)) {
                 SndMgr_PlayVolume(gSndMgr, 0x23, 0xe, -1, -1);

@@ -14,7 +14,7 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_021beaec(Marker021beaec *self) {
+void ActorMarker_DrawKind02(Marker021beaec *self) {
     s32 x;
     s32 y;
     s32 a;

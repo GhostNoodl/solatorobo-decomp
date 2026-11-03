@@ -92,7 +92,7 @@ void *func_0206eed0(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
-void *func_0206ef10(u32 id) {
+void *Param_GetRecord(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x2c;
 }
 
@@ -122,7 +122,7 @@ typedef struct ParamKind {
     /* 0x4 */ u16 unk_4_8 : 8;
 } ParamKind;
 
-ParamKind *func_02070dcc(int kind);
+ParamKind *ParamKind_GetShape(int kind);
 
 s32 func_0206f080(u32 id) {
     s32 ret = 0xffff;
@@ -132,7 +132,7 @@ s32 func_0206f080(u32 id) {
         ret = 0x25;
         break;
     case 1:
-        ret = func_02070dcc(((ParamItem *)data_0208d268[(u16)(Param_Cat(id) - 1)])[Param_Idx(id)].kind)->value;
+        ret = ParamKind_GetShape(((ParamItem *)data_0208d268[(u16)(Param_Cat(id) - 1)])[Param_Idx(id)].kind)->value;
         break;
     }
     return ret;

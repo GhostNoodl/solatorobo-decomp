@@ -14,7 +14,7 @@ void *Heap_GetCurrent(void);
 void Heap_SetCurrentHi(void);
 void Heap_SetCurrent(void *heap);
 
-void func_ov002_021df7f0(Obj021eff30 *self, Obj021eff50 *a) {
+void Obj021eff30_Update(Obj021eff30 *self, Obj021eff50 *a) {
     self->owner = a;
     Obj021efe5c_SyncAnmFrame(self->unk_0c);
     self->unk_10->vfunc_0c();

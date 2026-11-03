@@ -23,7 +23,7 @@ static inline void updateModel(Obj021efe8c *m) {
     }
 }
 
-void func_ov002_021dc58c(Obj021eff10 *self, Obj021eff50 *ev) {
+void Obj021eff10_Draw(Obj021eff10 *self, Obj021eff50 *ev) {
     if (self->unk_10 != NULL) {
         TexObj_SetOamFuncArg(self->unk_10, 6, ev->board->pieces);
         Model_PlayPart(self->unk_10, 6);

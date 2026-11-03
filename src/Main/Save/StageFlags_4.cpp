@@ -83,7 +83,7 @@ u8 func_0206d204(StageFlags *f, BOOL consume) {
     return total;
 }
 
-s32 func_0206d2a4(StageFlags *f, u16 id, u8 n) {
+s32 StageFlags_SetItemCount(StageFlags *f, u16 id, u8 n) {
     if (*Param_GetEntry(id) == 0x80) {
         return -1;
     }
@@ -91,7 +91,7 @@ s32 func_0206d2a4(StageFlags *f, u16 id, u8 n) {
     return n;
 }
 
-s32 func_0206d2ec(StageFlags *f, u16 id, u32 n) {
+s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n) {
     u16 idx;
     s32 v;
     if (*Param_GetEntry(id) == 0x80) {
@@ -113,14 +113,14 @@ s32 func_0206d2ec(StageFlags *f, u16 id, u32 n) {
     return v;
 }
 
-u8 func_0206d37c(StageFlags *f, u32 i) {
+u8 StageFlags_GetCounter(StageFlags *f, u32 i) {
     if (i >= 5) {
         return 0;
     }
     return f->unk_12c[i];
 }
 
-void func_0206d390(StageFlags *f, u32 i, u32 v) {
+void StageFlags_SetCounter(StageFlags *f, u32 i, u32 v) {
     if (i >= 5) {
         return;
     }
@@ -130,7 +130,7 @@ void func_0206d390(StageFlags *f, u32 i, u32 v) {
     f->unk_12c[i] = v;
 }
 
-void func_0206d3ac(StageFlags *f, BOOL on, s32 bit, s32 idx, const s32 *ofs) {
+void StageFlags_SetGridBit(StageFlags *f, BOOL on, s32 bit, s32 idx, const s32 *ofs) {
     u8 *bits = f->bits;
     s32 y = idx + (3 - ofs[1]);
     s32 x = bit + (3 - ofs[0]);

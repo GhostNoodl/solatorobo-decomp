@@ -79,7 +79,7 @@ int ov006_ListWin_CalcSize(ov006_ListWin *self) {
     return ov006_Window_CalcSize(self);
 }
 
-int func_ov006_021e3af8(ov006_ListWin *self) {
+int ov006_ListWin_GetTextX(ov006_ListWin *self) {
     return self->vfunc_30() + self->unk_c0 + 0x12;
 }
 
@@ -87,7 +87,7 @@ int func_ov006_021e3b1c(void) {
     return 0;
 }
 
-int func_ov006_021e3b24(ov006_ListWin *self) {
+int ov006_ListWin_GetIconWidth(ov006_ListWin *self) {
     return self->unk_b8 != NULL ? 0x12 : 0;
 }
 
