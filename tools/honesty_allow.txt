@@ -69,7 +69,7 @@ paramlocal	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: locals cur/node as fak
 arity	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: see the paramlocal line
 paramlocal	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: local fn as a fake parameter (TextWin.cpp has .data, mid-file)
 arity	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: see the paramlocal line
-paramlocal	src/ov000/Menu_021763c8.cpp	Task021cbe60_Start	kept: local g as a fake parameter (file has .data/.bss, mid-file)
+paramlocal	src/ov000/Menu_021763c8.cpp	SellMenu_Start	kept: local g as a fake parameter (file has .data/.bss, mid-file)
 arity	src/	*	hygiene: a caller-side prototype disagrees with the definition (`()` declarations for function addresses, or a caller that passes an argument the callee ignores); codegen-neutral for the callee
 unusedparam	src/	*	legit: callback, vtable-slot, state-table and command-table signatures, and real parameters the callee ignores (the scanner's arity lines list the definitions that callers do not declare)
 
