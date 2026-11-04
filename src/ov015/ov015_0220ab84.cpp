@@ -115,6 +115,52 @@ BOOL func_ov015_0220ae90(Ov015FishState2c *self) {
     p->info.unk_1c = self->unk_0c;
     return self->unk_0c <= 0;
 }
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+BOOL func_ov015_0220ae90(Ov015FishState2c *self) {
+    Ov015Fish *p = self->fish;
+    s32 acc = p->info.unk_12;
+    s32 dec = p->info.unk_20;
+    Ov015Stat *st = &data_ov015_0221332c;
+    // FAKEMATCH: pointer-bit test (never true); the second definition of dec swaps acc and st into the ROM's
+    // lr/r4.
+    if ((u32)self & 3) {
+        dec = p->info.unk_20;
+    }
+    s32 lim;
+    s32 sp;
+    s32 v;
+    self->unk_10 = self->unk_0c;
+    if (st->unk_1c != 0 && st->unk_28 != 3) {
+        self->unk_0c -= dec;
+        self->unk_0a = 10;
+        self->unk_1c = 6;
+    } else {
+        if (self->unk_0a <= 0) {
+            self->unk_0c += acc << 4;
+        } else {
+            self->unk_0a--;
+        }
+        self->unk_1c--;
+        if (self->unk_1c <= 0) {
+            self->unk_1c = 0;
+        }
+    }
+    v = p->info.unk_10 << 12;
+    sp = p->info.unk_28;
+    if (sp < 0xe10000) {
+        lim = FX_Mul(v, 0x1000);
+    } else if (sp < 0x1c20000) {
+        lim = FX_Mul(v, 0xccd);
+    } else {
+        lim = FX_Mul(v, 0xb33);
+    }
+    if (self->unk_0c > lim) {
+        self->unk_0c = lim;
+    }
+    p->info.unk_1c = self->unk_0c;
+    return self->unk_0c <= 0;
+}
 #endif
 
 }

@@ -9544,3 +9544,92 @@ Readability only; every function stays byte-identical, and only symbol names cha
 - **Data:** `signal_funcs` (MSL `signal.c`'s handler array).
 
 **Left unnamed:** the remaining SDK statics, the model-flag setters in `TextWin`/`SlidePanel` (bits of `Model::flags` whose meaning is not known), the `StageVars` setters of 0x20..0x32 and 0x42, the player-flag pairs `func_ov000_021b12c0`..`021b1a54` (on/off pairs with no clear meaning), MSL `raise` (`func_020077f4`; the name is taken by a bitfield), the size-only `Tbl` element getters, and most one-caller actor-state helpers.
+## Round fkA (labelled fakematches, experimental): 20 of 53 unmatched functions fakematched, 8215 -> 8235
+
+An experiment the owner is considering, on a side branch: how many of the unmatched functions match if
+clearly labelled tricks are allowed, the way SM64 and OoT accept a few "fakematches". The scheme, the list and the
+tool support are in `docs/FAKEMATCHES.md`. In short, each fakematch is one `#ifdef NONMATCHING` (the honest draft,
+unchanged) / `#else` (the fakematch, which the default build compiles) / `#endif` block, the trick carries a
+`// FAKEMATCH: <what and why>` comment, the function's `delinks.txt` range or entry is restored (the reverse of
+round auA's cut, as round mtA did for its matches) and its row moved from `docs/UNMATCHED.md` to
+`docs/FAKEMATCHES.md`, which keeps the honest draft's score. Gate: 0 FAILED, 19/19 ROM checks and `check symbols`
+OK, `ninja report` **8235** of 8287 matched (8215 at start, after round dxA; 8135 code functions instead of 8115),
+code **98.43%** (97.49%; +20,280 bytes), `tools/check_drafts.py --score`
+exits 0 (it now also scores the 20 honest drafts), `tools/honesty_scan.py` exits 0 and reports
+`fakematch: 43 labelled hits in 20 functions` (no new allowlist entry).
+
+### Tool changes
+
+- `tools/honesty_scan.py` reads the `docs/FAKEMATCHES.md` table. A hit is a fakematch hit (hidden, counted in its
+  own column of `--summary` and on stderr, shown with `--fake`) only when its file and function are a row, its
+  category is in the row's "Scan categories" (plus `comment`), and the function carries a `FAKEMATCH:` comment.
+  Every other hit is as before, so an unlabelled trick still fails. A new failing category `fakelist` reports a
+  `FAKEMATCH:` comment in a function that is not in the table and a row without its comment.
+- `tools/check_drafts.py --score` reads the table too and scores each row's honest draft against its "Honest draft"
+  column, although the built object also defines the function.
+
+### Fakematched (20): the 20 remaining round auA demotions
+
+All 20 are the trick forms round auA demoted (the source before commit `6be13037`, with the later renames of rounds
+nmK/nmL applied: `Param_GetRecord`, `Obj021efef0_Enter`, `Obj021eff30_Enter`, `ResMgr_FindArcType2`,
+`LoBase021ccb54_021ccbe0_CtorBase`, `gOv006Menu`). Every one matched again at once. Where a C++ prototype with the
+honest signature sat before the block, it moved into the `NONMATCHING` branch (a different parameter list is an
+overload error under `extern "C"`); `getMdlRot_`'s file prototype and `SndMgr_LoadStep.cpp`'s header rename got
+their own `#ifdef NONMATCHING` / `#else` pairs. Minimum trickery: each function with several fake parameters was
+retried with every subset of them turned back into locals (scratch `minp.py`). Two need fewer than auA's form:
+`func_ov000_021c194c` needs only `p` (`flag` is a local again) and `Ov013Boss_StateAttack2` only `prev` and `cur`
+(`pos` is a local again). The others need every one (for example `Obj021eff30_Enter`: 51-114 with any of its four a
+local; `Ov000Vt_021cca88_DrawFrame`: 7-62 with any of `w`, `i`, `step` a local, 9 with `alpha` its own local).
+`Ov013ActVt_0220bdd8_Update` needs both its tricks (2 without the `volatile`, 21 without the fake parameter).
+
+| Trick | Functions |
+|---|---|
+| fake parameters (locals declared as trailing parameters, or an unused real parameter reused as a local) | 13 |
+| never-true pointer-bit test (`if ((u32)self & 3) { x = <same value>; }`) | 5 |
+| a fake parameter and `volatile` on an ordinary pointer local (`Ov013ActVt_0220bdd8_Update`) | 1 |
+| permuter reference alias (`ov006_Slot *&slotRef = slot;`) | 1 |
+
+### Still unmatched with tricks (33)
+
+The other 33 rows of `docs/UNMATCHED.md` (none of them had a trick form that matched) were tried with:
+
+- a systematic one-trick sweep over each honest draft (scratch `sweep.py`): every top-level scalar or pointer local
+  as a fake trailing parameter, every pair of them, a never-true pointer-bit redefinition after every assignment of
+  a local, and `volatile` on every local;
+- a random permuter run per function (scratch `fkperm.py`: `tools/permuter/cxxperm.py` plus two rewrites, `ptrbit`
+  and `vol`, next to its own `param`, `arr1`, `dummy`, `comma` and the rest), 480-880 s each (about 2,000-7,000
+  compiles), and seeded runs
+  from the best sweep results;
+- hand variants for the smallest ones (`func_ov000_0216715c`, `Ov002StaffModel_Setup`, `Ov009ActVt_02216dcc_Update`,
+  `Ov011Ctl_Update`, `CARDi_ReadRomWithCPU`, `HandleUnexpected`).
+
+None reached 0. The best trick forms, for a later round:
+
+| Function | Honest | Best with tricks (`match.py`) | Trick, and what is left |
+|---|---|---|---|
+| `Ov002StaffModel_Setup` (`021eca14`) | 6 / 3 | 3 raw | a pointer-bit redefinition of `v` moves `return TRUE`'s `mov r0, #1` after the stores; the `0x1f` constant and the `param` pointer still swap `r0`/`r1` |
+| `func_ov000_021b9b14` | 12 / 4 | 5 raw | a pointer-bit redefinition of `al`; the `ldr` of `sprA`'s attribute word is scheduled after the `and` |
+| `func_ov000_021512b4` | 23 / 0 | 11 / 0 | `h` as a fake parameter (the old permuter draft); then `bx` and `y` swap `r5`/`r7`, and no second trick moves them |
+| `Ov006Racer_ReadKeys` (`021e7004`) | 22 / 13 | 20 raw | a pointer-bit redefinition of `t` (as the older junk-store drafts) |
+
+The rest are where the honest drafts are: register colouring of codegen temps (`func_0203a984`,
+`GameSave_Configure`, `MainVt_0208c994_Configure`, `func_ov000_0215e6f0`, `func_ov000_02166180`,
+`func_ov000_0216715c`, `Lo021caac8_AddItem`, `Ov011SceneActor_Update`, `CARDi_ReadRomWithCPU`, `HandleUnexpected`),
+hoisted constants (`TexObj_SetRes`, `SceneCmd_Run29`, `Ov011Ctl_Update`, `Ov011Scene_Update`: the
+`Ov011Ent_Remove` zero; a redefinition, a `volatile` or a local copy of the zero gives 26-240), store/load order
+with no memory edge (`Ov009ActVt_02216dcc_Update`: every `volatile` form of the `pl->id` read or the `unk_93`
+store stays at 7 or worse), stack frames (`Ov009ActVt_02216bc8_StateAttack`, the unwinder's `NextAction` and
+`UnwindStack`) and the larger multi-blocker drafts (`func_0203b4ac`, `func_02043100`, `func_02048e74`,
+`SndMgr_PlaySeEx`, `func_02053254`, `EffectPtclCmd_TexImage`, `func_ov000_021652e4`, `func_ov000_0216c310`,
+`func_ov003_021cd91c`, `Ov009ActVt_02217390_StateDie`, `Ov010_PickRingPoint`). `__sinit_ov002_021ef1f0` was not
+touched.
+
+Not in scope: the tricks round auA kept with a comment because they cannot be demoted (`GfxSys_EndFrame`,
+`GfxSys_AllocVram`, `func_02051a34`, `Task021cbe60_Start`, `func_ov000_02181624`'s `asm`, `func_ov007_021ce038`,
+`Ov009ActVt_02217640_Update`, `Ov013Act_021fea8c_StateAttack`, `Ov014Act_02201b94_StateDie`, `func_ov015_022078bc`,
+`__two_exp`). They are fakematches in all but name and were already counted before this round; they stay allowlisted.
+
+Scratch is in the session scratchpad `fk/`: `restore.py` (puts the pre-auA function into the `#else` branch),
+`minp.py FILE FUNC MOD ADDR P1,P2` (fake-parameter subsets), `vt.py` / `vth.py FILE FUNC MOD ADDR VARIANTS.py`
+(variants of the fakematch / the honest draft), `sweep.py` (the one-trick sweep), `fkperm.py`, `perm.sh`,
+`sperm.sh`, `seed.py`, `gen_fm.py` and `rows.py` (writes `docs/FAKEMATCHES.md`).

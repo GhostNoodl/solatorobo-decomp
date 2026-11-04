@@ -290,14 +290,75 @@ static inline void Ov011_Attach(Ov011PNode *p, Actor *owner, Actor *a) {
     a->pos.z = r.z;
 }
 
-void Ov011Mgr2_State02(Ov011Mgr2 *self);
 
 #ifdef NONMATCHING
+void Ov011Mgr2_State02(Ov011Mgr2 *self);
 // Status (round auA): demoted in the honesty audit. The match declared the local owner as an unused parameter (the
 // locals-as-parameters register lever); as a local at every position it differs. The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov011Mgr2_State02(Ov011Mgr2 *self) {
     Actor *owner;
+    BOOL any;
+    BOOL ok;
+    Ov011Node *head;
+    Ov011Node *n;
+    head = self->list->head;
+    owner = self->list->actor;
+    switch (self->state) {
+    case 0: {
+        any = FALSE;
+        for (n = head; n != NULL; n = n->next) {
+            if (Ov011Npc_IsTracking(Ov011_FindNpc(n->id))) {
+                any = TRUE;
+            }
+        }
+        if (!any) {
+            Ov011Mgr2_Reset(self);
+            self->b1 = 0;
+        }
+        {
+            VecFx32 a = data_ov011_0220729c;
+            VecFx32 b = data_ov011_022072a8;
+            Ov011Mov_Stop_02202fbc(&self->mov);
+            Ov011Mov_Start(&self->mov, &a, &b, 0x500, 0x80);
+        }
+        if (self->ent->active) {
+            Ov011Ent_Lerp2X(self->ent, 0x2d);
+        }
+        Ov011_SendB(owner->id, 2, 0x1000, 0x1000);
+        self->state = 1;
+    }
+    case 1: {
+        ok = TRUE;
+        for (n = head; n != NULL; n = n->next) {
+            Ov011Npc *a = Ov011_FindNpc(n->id);
+            if (Ov011Npc_IsTracking(a)) {
+                s32 y;
+                Ov011Ent *e;
+                if (Ov011Mov_GetPos(&self->mov)->y > 0x6800) {
+                    y = 0x6800;
+                } else {
+                    y = Ov011Mov_GetPos(&self->mov)->y;
+                    ok = FALSE;
+                }
+                Ov011Ent_SetY(self->ent, y);
+                e = self->ent;
+                if (Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)) != NULL) {
+                    Ov011_Attach(Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)), owner, a);
+                }
+            }
+        }
+        if (ok && Ov011Ent_AllDone(self->ent)) {
+            self->flags |= 8;
+        }
+        break;
+    }
+    }
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: owner is a local declared as a fake second parameter (callers pass only self).
+void Ov011Mgr2_State02(Ov011Mgr2 *self, Actor *owner) {
     BOOL any;
     BOOL ok;
     Ov011Node *head;

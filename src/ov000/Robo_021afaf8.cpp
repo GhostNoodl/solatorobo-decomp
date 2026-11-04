@@ -113,9 +113,9 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
     }
 }
 
-void Robo021ca458_State1f(VObj *self_);
 
 #ifdef NONMATCHING
+void Robo021ca458_State1f(VObj *self_);
 // Status (round auA): demoted in the honesty audit. The match declared the locals anm and def as unused parameters
 // assigned NULL in the body; as locals (initialised or not, at every position) the registers differ. This file is the
 // function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
@@ -311,6 +311,225 @@ void Robo021ca458_State1f(VObj *self_) {
             ResSet_SetName0((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
             ResSet_SetName1((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
             ResSet_SetName3((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
+            if (def->unk_18 != 0) {
+                ResSet_SetName1((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
+            }
+            self->unk_b22_11 = 1;
+            self->unk_b22_12 = 1;
+            self->fsm->st++;
+        } else {
+            self->unk_b24_19 = 1;
+            self->unk_b22_9 = 0;
+            History_SetState(((u8 *)self->fsm), 1, 0);
+        }
+        break;
+    }
+    case 1:
+        if (!self_->vfunc_0c()) {
+            return;
+        }
+        self->unk_b22_13 = 0;
+        self->unk_b22_9 = 0;
+        History_SetState(((u8 *)self->fsm), 1, 0);
+        return;
+        break;
+    }
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: anm and def are locals declared as fake parameters and set to NULL in the body (the dispatcher
+// passes only self); as parameters they get the ROM's registers.
+void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
+    Robo021ca458 *self = (Robo021ca458 *)self_;
+    BOOL big;
+    anm = NULL;
+    s32 ofs;
+    def = NULL;
+    StageFlags *sv;
+    u32 mode;
+    u32 lock;
+    u32 id;
+    VecFx32 p_0;
+    VecFx32 v;
+    Pose_021afaf8 st;
+
+    self->unk_44->unk_22_1 = 0;
+    switch (self->fsm->st) {
+    case 0: {
+        self->unk_b22_9 = 2;
+        self->unk_b2c = 0;
+        self->unk_93_5 = 0;
+        sv = gStageFlags;
+        big = FALSE;
+        ofs = 0;
+        mode = self->unk_b22_6;
+        lock = sv->bits18.mode;
+        id = sv->bits18.unk_3;
+        switch (mode) {
+        case 0:
+            if (lock != 0) {
+                sv->bits18.mode = 0;
+            }
+            def = &data_ov000_021ca398[self->unk_b22_6];
+            ofs = 0x1000;
+            break;
+        case 1:
+            if (lock != 0) {
+                sv->bits18.mode = 0;
+            }
+            def = &data_ov000_021ca398[self->unk_b22_6];
+            self->unk_9ac = self->unk_9ae = 0x1770;
+            big = TRUE;
+            break;
+        case 2:
+            if (lock != 1) {
+                sv->bits18.mode = 1;
+            }
+            anm = Param_GetRecord(id | 0x8000);
+            if (anm != NULL) {
+                def = &anm->def;
+            }
+            ofs = 0x1000;
+            break;
+        case 3:
+            if (lock != 1) {
+                sv->bits18.mode = 1;
+            }
+            anm = Param_GetRecord(id | 0x8000);
+            if (anm != NULL) {
+                def = &anm->def;
+            }
+            big = TRUE;
+            if (self->unk_b22_0 != 0) {
+                ofs = 0x1000;
+            }
+            self->unk_9ac = self->unk_9ae = 0x2328;
+            break;
+        case 4:
+            if (self->unk_b22_3) {
+                break;
+            }
+            self->unk_b22_3 = 1;
+            def = &data_ov000_021ca248[lock];
+            if (GIdle_021afaf8() && !self->unk_b22_13) {
+                p_0.x = self->pos.x;
+                p_0.y = self->pos.y;
+                p_0.z = self->pos.z;
+                p_0.y += 0x1800;
+                Effect_SpawnId(0x5e0, &p_0);
+                Effect_SpawnId(0x384, &p_0);
+            }
+            break;
+        case 5:
+            if (lock == 2) {
+                break;
+            }
+            sv->bits18.mode = 2;
+            def = &data_ov000_021ca398[self->unk_b22_6];
+            self->unk_af0.x = self->pos.x - NNS_G3dGlb.camTarget.x;
+            self->unk_af0.y = self->pos.y - NNS_G3dGlb.camTarget.y;
+            self->unk_af0.z = self->pos.z - NNS_G3dGlb.camTarget.z;
+            break;
+        }
+        self->unk_ba4 = anm;
+        self->unk_ba0 = (u8 *) def;
+        if (self->unk_b22_3 && self->unk_b22_6 != 4) {
+            ofs = self->unk_b22_4 ? 0 : 0x1800;
+            self->unk_b22_3 = 0;
+            self->unk_b22_4 = 0;
+        }
+        if (!big && self->unk_b22_0 != 0) {
+            self->unk_b22_0 = 0;
+            gSceneCmd->cam.base.wallClip = 0;
+            self->hit1.unk_4c = 0xa000;
+            self->unk_3c->unk_0c = 0xa000;
+            FreeModels_021afaf8(self);
+            ofs = 0;
+        } else if (big) {
+            const char *s1;
+            const char *s2;
+            u8 *r;
+            self->unk_b22_0 = 1;
+            gSceneCmd->cam.base.wallClip = 1;
+            self->hit1.unk_4c = 0x14000;
+            self->unk_3c->unk_0c = 0x14000;
+            FreeModels_021afaf8(self);
+            {
+                void *p_1 = Heap_Alloc(0x138);
+                if (p_1 != NULL) {
+                    p_1 = ResSet_Init(p_1);
+                }
+                self->unk_99c = p_1;
+            }
+            s1 = K021afaf8::data_ov000_021cc729;
+            s2 = K021afaf8::data_ov000_021cc733;
+            if (self->unk_b22_6 == 3) {
+                s1 = K021afaf8::data_ov000_021cc73d;
+                s2 = K021afaf8::data_ov000_021cc747;
+            }
+            r = (u8 *)self->unk_99c;
+            STD_CopyString((char *)r + 0x10, s1);
+            STD_CopyString((char *)r + 0x30, s2);
+            LFLD(C_021afaf8, r, 3).b1 = 1;
+            r = (u8 *)self->unk_99c;
+            STD_CopyString((char *)r + 0x4c, s1);
+            STD_CopyString((char *)r + 0x6c, s2);
+            LFLD(C_021afaf8, r, 3).b2 = 1;
+            LFLD(u16, self->unk_99c, 0) = 0;
+            self->unk_9a6 = 0;
+            self->unk_9a8 = 0;
+            self->unk_9aa = 0;
+            self->unk_b31 = 0;
+            self->unk_b30 = 0;
+        }
+        if (def != NULL) {
+            {
+                Actor *a = FindActor_021afaf8(self->unk_b1c);
+                if (a != NULL) {
+                    st.pos.x = self->pos.x;
+                    st.pos.y = self->pos.y;
+                    st.pos.z = self->pos.z;
+                    st.pos.y += self->centerY;
+                    st.rx = a->rot_x;
+                    st.ry = a->rot_y;
+                    st.rz = a->rot_z;
+                    st.unk = 0;
+                    Actor_SendMsg(a, self->id, 7, 1, 0x18, &st);
+                    Actor_SendMsgU8(a, self->id, 0xa);
+                    if (a->targetObj != NULL) {
+                        a->targetObj->unk_18_0 = 0;
+                    }
+                }
+            }
+            self->unk_b1c = 0xffff;
+            self->unk_b1e = 0xffff;
+            self->unk_b24_5 = 0;
+            self->unk_b24_7 = self->unk_b24_9;
+            self->target = 0xffff;
+            if (ofs != 0 && !self->unk_b22_13) {
+                if (self->unk_b24_1 || (!(gStageFlags->bits18.flag9 ? TRUE : FALSE) && SameRoom_021afaf8(self))) {
+                    if (!self->unk_b24_1) {
+                        ofs = 0xccd;
+                    }
+                    v = self->unk_75c;
+                    v.y += ofs;
+                    Effect_SpawnId(0x5dc, &v);
+                    Effect_SpawnId(0x384, &v);
+                }
+            }
+            self->mdl1.visible = 0;
+            Model0218fe1c_StopAnim((u8 *)self + 0x368);
+            if ((u8 *)self->unk_998 != NULL) {
+                LFLD(H_021afaf8, self->unk_998, 0xc2).b0 = 0;
+            }
+            self->mdl0.visible = 0;
+            {
+                NNSG3dResFileHeader **res = (NNSG3dResFileHeader **)self->mdl0.res->mdl_handle;
+                NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
+            }
+            ResSet_SetName0((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
+            ResSet_SetName1((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
+            func_ov000_0218ef10((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
             if (def->unk_18 != 0) {
                 ResSet_SetName1((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
             }

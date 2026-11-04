@@ -87,9 +87,9 @@ static inline void ov002_CamMove(Obj021efe6c *c, const VecFx32 *pos, s32 tx, s32
 
 static inline void *GetMgr021ddf18(void) { return gMsgRes; }
 
-void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner);
 
 #ifdef NONMATCHING
+void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner);
 // Status (round auA): demoted in the honesty audit. The match declared the locals h and cam as unused parameters
 // (round jkE: as locals the registers rotate, 124-127 diffs). This file is the function's whole .text, so it has no
 // delinks entry. The score is in docs/UNMATCHED.md;
@@ -97,6 +97,93 @@ void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner);
 void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner) {
     s32 h;
     Obj021efe6c *cam;
+    s32 w;
+    void *g;
+    UiObj *p;
+    Obj021efe8c *c;
+    self->owner = owner;
+    cam = owner->board;
+    g = GetMgr021ddf18();
+    p = (UiObj *)Heap_Alloc(0xf4);
+    if (p != NULL) {
+        *(VFunc **)p = UiObj_vtbl;
+        p->vfunc_28();
+        *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
+        LoBase021ccb54_021ccbe0_CtorBase(p);
+        *(VFunc **)p = Ov002Vt_021f0044_vtbl;
+    }
+    self->unk_08 = (Ov002RowList *)p;
+    p->rows = 5;
+    self->unk_08->width = 0x69;
+    {
+        LoBase021ccb54_021ccbe0 *s = self->unk_08;
+        s->posX = 0x96;
+        s->posY = 0x19;
+        s->posZ = -0x199a;
+    }
+    self->unk_08->flags &= ~0x20000;
+    self->unk_08->flags &= ~0x40000;
+    ov002_AddItem(self->unk_08, 0, MsgRes_GetString(g, 0x48), MsgRes_GetString(g, 0x160));
+    ov002_AddItem(self->unk_08, 1, MsgRes_GetString(g, 0x49), MsgRes_GetString(g, 0x161));
+    ov002_AddItem(self->unk_08, 2, MsgRes_GetString(g, 0x4a), MsgRes_GetString(g, 0x162));
+    ov002_AddItem(self->unk_08, 3, MsgRes_GetString(g, 0x4b), MsgRes_GetString(g, 0x163));
+    ov002_AddItem(self->unk_08, 4, MsgRes_GetString(g, 0x4c), MsgRes_GetString(g, 0x164));
+    self->unk_08->vfunc_08();
+    {
+        LoBase021ccb54_021ccbe0 *s = self->unk_08;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
+    }
+    self->unk_08->slideMode = 1;
+    self->unk_08->owner = (u8 *)self + 0x20;
+    self->unk_08->onDecide = (void *)func_ov002_021ddcbc;
+    self->unk_08->onCursor = (void *)func_ov002_021ddd30;
+    self->unk_08->flags |= 2;
+    self->unk_08->flags &= ~4;
+    self->unk_08->flags |= 0x10;
+
+    c = ov002_NewCursor();
+    self->unk_10 = c;
+    {
+        Ov002Shape *map = owner->board->field->map;
+        h = map->oy;
+        w = map->ox;
+    }
+    c->unk_7c = w;
+    c->unk_80 = h;
+    self->unk_10->mode = 0;
+    ov002_Cursor_SetMode(self->unk_10);
+
+    c = ov002_NewCursor();
+    self->unk_14 = c;
+    c->unk_7c = w;
+    c->unk_80 = h;
+    self->unk_14->mode = 1;
+    ov002_Cursor_SetMode(self->unk_14);
+    self->unk_14->unk_84 = 0x11f;
+
+    self->unk_2c = owner->unk_28;
+    self->unk_30 = owner->unk_2c;
+    cam->unk_74 = 5;
+    cam->unk_75 = 1;
+    ov002_CamMove(owner->board, (const VecFx32 *)(data_ov002_021eef74 + 0x28), 0x99a, 0, 0x148);
+    {
+        u16 id = self->unk_18;
+        if (id == 0xffff) {
+            self->unk_1c = 0;
+        } else {
+            self->unk_28 = *Param_GetEntry(id);
+            self->unk_1c = 10;
+        }
+    }
+    self->owner = NULL;
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: h and cam are locals declared as fake trailing parameters (the dispatcher passes self and owner);
+// both are needed for the ROM's register rotation.
+void Obj021efef0_Enter(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe6c *cam) {
     s32 w;
     void *g;
     UiObj *p;

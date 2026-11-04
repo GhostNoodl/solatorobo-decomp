@@ -70,9 +70,9 @@ static inline s32 Ratio021c7038(s32 n, s32 d) {
 
 #define FLAGS(g) (*(Flags021c7038 *)&(g)->unk_0c)
 
-void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 c, s32 scale);
 
 #ifdef NONMATCHING
+void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 c, s32 scale);
 // Status (round auA): demoted in the honesty audit. The match declared the locals h, w, i and step as unused
 // parameters past the slot's five (self, a, pos, c, scale) and reused a as the alpha local (round ovhimid6); with
 // real locals at every position the registers differ. This file is the function's whole .text, so it has no delinks
@@ -124,6 +124,56 @@ void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 c,
         alpha = LO_FX_MUL(LO_FX_MUL(self->unk_48, scale), 0x10000) >> 12;
         if (alpha != 0) {
             G3_Cmd1_021c7038(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x8d0 | (alpha << 16));
+            self->vfunc_44(pos->x, pos->y, z + 0x50, w, h, 4);
+        }
+    }
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: the slot's fourth parameter c (unused) is reused as the local h, w, i and step are locals declared
+// as fake parameters past the slot's five, and the parameter a is reused as the alpha local (round ovhimid6);
+// this gives the ROM's registers and stack slots. Every one of the four is needed (round fkA subset test).
+void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 scale, s32 w, s32 i, s32 step) {
+    GfxSys *g = gGfxSys;
+    u32 attr;
+    s32 z;
+
+    s32 id = Gfx3DState_NextPolyIdB(g->unk_8b0);
+    G3_Cmd1_021c7038(0x2a, 0x20000000);
+    attr = 0x1f08d0 | (id << 24);
+    G3_Cmd1_021c7038(0x29, attr);
+    w = self->unk_50 << 12;
+    h = self->unk_54 << 12;
+    z = pos->z;
+    self->vfunc_44(pos->x, pos->y, z, w, h, 1);
+    self->vfunc_44(pos->x - 0x1000, pos->y - 0x1000, z, w + 0x2000, h + 0x2000, 0);
+    if (FLAGS(self).b5) {
+        self->vfunc_40(pos->x - 0x2000, pos->y, z, h, 0);
+        self->vfunc_40(pos->x + w + 0x1000, pos->y, z, h, 0);
+    }
+    z = pos->z;
+    if (FLAGS(self).b8 && self->unk_5c < self->unk_68) {
+        G3_Cmd1_021c7038(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x8d0 | ((LO_FX_MUL(scale, 0x14000) >> 12) << 16));
+        self->vfunc_44(pos->x, pos->y, z + 0x20, (LO_FX_MUL(w, Ratio021c7038(self->unk_68, self->unk_60)) + 0x800) & 0x7ffff000, h, 3);
+    }
+    z = pos->z;
+    if (self->unk_5c > 0) {
+        G3_Cmd1_021c7038(0x29, attr);
+        self->vfunc_48(pos->x, pos->y, z + 0x30, (LO_FX_MUL(w, Ratio021c7038(self->unk_5c, self->unk_60)) + 0x800) & 0x7ffff000, h, 2);
+    }
+    z = pos->z;
+    if (self->unk_58 > 1) {
+        G3_Cmd1_021c7038(0x29, attr);
+        step = FX_Div(w, self->unk_58 << 12);
+        for (i = 1; i < self->unk_58; i++) {
+            self->vfunc_40(pos->x + step * i, pos->y, z + 0x40, h, 0);
+        }
+    }
+    z = pos->z;
+    if (FLAGS(self).b4) {
+        a = LO_FX_MUL(LO_FX_MUL(self->unk_48, scale), 0x10000) >> 12;
+        if (a != 0) {
+            G3_Cmd1_021c7038(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x8d0 | (a << 16));
             self->vfunc_44(pos->x, pos->y, z + 0x50, w, h, 4);
         }
     }

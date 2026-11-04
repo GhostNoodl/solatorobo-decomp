@@ -94,9 +94,9 @@ static inline s32 Ov013_Sqrt2(s64 sq) {
     return (s32)(OV013_SQRT_RESULT + 1) >> 1;
 }
 
-void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self);
 
 #ifdef NONMATCHING
+void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self);
 // Status (round auA): demoted in the honesty audit. The match wrote the local b as an unused trailing parameter and
 // declared t `volatile` (register-allocation and scheduling levers). The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
@@ -107,6 +107,80 @@ void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self) {
     s32 m;
     Ov003Actor *a;
     Ov003Actor *t;
+    if (!Ov013_GameIdle()) {
+        return;
+    }
+    if (self->fsm->current != 1) {
+        return;
+    }
+    if (self->unk_b6 != 0) {
+        self->unk_b6--;
+    }
+    if (self->unk_b6 != 0) {
+        return;
+    }
+    a = ActorMgr_GetGroup(gActorMgr, 0x5000);
+    b = ActorMgr_GetGroup(gActorMgr, 0x4000);
+    ok = TRUE;
+    if (a != NULL) {
+        n = Rand_UpTo(9);
+        m = 4;
+        if (self->hp[0] < (self->hp[1] >> 1)) {
+            m = 5;
+        }
+        if (ActorGroup_CountKind(a, 0x540c) >= 2 || History_HasState(self->fsm, 0x10, m, 1) || n == 0) {
+            ok = FALSE;
+        }
+    }
+    if (ok) {
+        self->fsm->flags |= 0x10000;
+    } else {
+        ok = TRUE;
+        n = (u16)(self->hp[0] * 100 / self->hp[1]);
+        m = 0;
+        t = Actor_GetTarget(self);
+        if (t != NULL) {
+            s32 dz = self->pos.z - t->pos.z;
+            s32 dx = self->pos.x - t->pos.x;
+            s64 sq = (s64)dx * dx;
+            sq += (s64)dz * dz;
+            m = Ov013_Sqrt2(sq);
+            if (m < 0xd000) {
+                ok = FALSE;
+            }
+        }
+        if (ok && b != NULL) {
+            s32 th = 0x1e;
+            if (m > 0x11000) {
+                th += 10;
+            }
+            if ((u32)n > 0x50) {
+                th -= 0xf;
+            }
+            m = th;
+            n = Rand_UpTo(n);
+            if (ActorGroup_CountKind(b, 0x4813) >= 2 || n > m || History_HasState(self->fsm, 0xe, 2, 1)) {
+                ok = FALSE;
+            }
+        }
+        if (ok) {
+            self->fsm->flags |= 0x4000;
+        } else {
+            self->fsm->flags |= 0x8000;
+        }
+    }
+    self->unk_b6 = 0x5a;
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: b is a local declared as a fake second parameter (callers pass only self); see also t below.
+void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
+    BOOL ok;
+    s32 n;
+    s32 m;
+    Ov003Actor *a;
+    // FAKEMATCH: volatile on an ordinary pointer local; it keeps the t->pos loads in the ROM's order.
+    volatile Ov003Actor *t;
     if (!Ov013_GameIdle()) {
         return;
     }

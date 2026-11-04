@@ -5,7 +5,12 @@
 void NNSi_G3dAnmCalcNsBca (NNSG3dJntAnmResult * pResult, const NNSG3dAnmObj * pAnmObj, u32 dataIdx);
 void getMdlTrans_ (NNSG3dJntAnmResult * pResult);
 void getMdlScale_ (NNSG3dJntAnmResult * pResult);
+#ifdef NONMATCHING
 void getMdlRot_ (NNSG3dJntAnmResult * pResult);
+#else
+// FAKEMATCH (round fkA): see the definition; A, B and pNd are fake trailing parameters.
+void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNodeData * pNd);
+#endif
 void getJntSRTAnmResult_(const NNSG3dResJntAnm * pJntAnm, u32 dataIdx, fx32 Frame, NNSG3dJntAnmResult * pResult);
 void getTransData_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);
 void getTransDataEx_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);
@@ -124,8 +129,6 @@ void getMdlScale_ (NNSG3dJntAnmResult * pResult)
     (*NNS_G3dRS->funcJntScale)(pResult, (const fx32 *)p, NNS_G3dRS->c, pNd->flag);
 }
 
-void getMdlRot_ (NNSG3dJntAnmResult * pResult);
-
 #ifdef NONMATCHING
 // Status (round auA): demoted in the honesty audit. The match declared the SDK locals A, B and pNd as trailing
 // parameters (callers pass only pResult) and went through a non-const temporary; with them as locals the registers
@@ -141,6 +144,53 @@ void getMdlRot_ (NNSG3dJntAnmResult * pResult)
 
     idxNode = *(NNS_G3dRS->c + 1);
     pNd = NNS_G3dGetNodeDataByIdx(NNS_G3dRS->pResNodeInfo, idxNode);
+    p = (const u8 *)pNd + sizeof(*pNd);
+
+    if (!(pNd->flag & NNS_G3D_SRTFLAG_TRANS_ZERO)) {
+        p += 3 * sizeof(fx32);
+    }
+
+    if (!(pNd->flag & NNS_G3D_SRTFLAG_ROT_ZERO)) {
+        if (pNd->flag & NNS_G3D_SRTFLAG_PIVOT_EXIST) {
+            idxPivot = (u32)((pNd->flag & NNS_G3D_SRTFLAG_IDXPIVOT_MASK) >> NNS_G3D_SRTFLAG_IDXPIVOT_SHIFT);
+            A = *(fx16 *)(p + 0);
+            B = *(fx16 *)(p + 2);
+            MI_Zero36B(&pResult->rot);
+            pResult->rot.a[idxPivot] = (pNd->flag & NNS_G3D_SRTFLAG_PIVOT_MINUS) ? -FX32_ONE : FX32_ONE;
+            pResult->rot.a[data_02075728[idxPivot][0]] = A;
+            pResult->rot.a[data_02075728[idxPivot][1]] = B;
+            pResult->rot.a[data_02075728[idxPivot][2]] = (pNd->flag & NNS_G3D_SRTFLAG_SIGN_REVC) ? -B : B;
+            pResult->rot.a[data_02075728[idxPivot][3]] = (pNd->flag & NNS_G3D_SRTFLAG_SIGN_REVD) ? -A : A;
+        } else {
+            pResult->rot._00 = pNd->_00;
+            pResult->rot._01 = *(fx16 *)(p + 0);
+            pResult->rot._02 = *(fx16 *)(p + 2);
+            pResult->rot._10 = *(fx16 *)(p + 4);
+            pResult->rot._11 = *(fx16 *)(p + 6);
+            pResult->rot._12 = *(fx16 *)(p + 8);
+            pResult->rot._20 = *(fx16 *)(p + 10);
+            pResult->rot._21 = *(fx16 *)(p + 12);
+            pResult->rot._22 = *(fx16 *)(p + 14);
+        }
+    } else {
+        pResult->flag |= NNS_G3D_JNTANM_RESULTFLAG_ROT_ZERO;
+    }
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: A, B and pNd are SDK locals declared as fake trailing parameters (callers pass only pResult), and
+// pNd is set through the non-const temporary nd; all three and the temporary are needed for the ROM's registers.
+void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNodeData * pNd)
+{
+    u32 idxNode;
+    u32 idxPivot;
+    const u8 * p;
+
+    idxNode = *(NNS_G3dRS->c + 1);
+    {
+        NNSG3dResNodeData * nd = NNS_G3dGetNodeDataByIdx(NNS_G3dRS->pResNodeInfo, idxNode);
+        pNd = nd;
+    }
     p = (const u8 *)pNd + sizeof(*pNd);
 
     if (!(pNd->flag & NNS_G3D_SRTFLAG_TRANS_ZERO)) {

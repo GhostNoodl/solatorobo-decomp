@@ -34,6 +34,15 @@ Categories (--cat):
 
 --summary prints the hit count per category, --tsv prints tab-separated rows. The exit status is 1 when there is a
 hit that is not in tools/honesty_allow.txt (0 otherwise), so the scanner can run in a check.
+
+Labelled fakematches (round fkA, experimental): docs/FAKEMATCHES.md lists functions that match only through a trick.
+A hit is a fakematch hit, not a failure, when (1) its file and function are a row of that table, (2) its category is
+one of the row's categories (the "Scan categories" column; `comment` is always accepted, since the label itself
+says "fake"), and (3) the function carries a `// FAKEMATCH:` comment (in its body or in the comments between the
+previous function or preprocessor line and its head). Fakematch hits are hidden like allowed ones (--fake shows
+them), counted separately in --summary and on stderr, and never change the exit status. Unlabelled tricks still
+fail. Two consistency checks report as category `fakelist` and fail: a `FAKEMATCH:` comment in live code of a
+function that is not in the table, and a table row whose function has no `FAKEMATCH:` comment in its file.
 """
 
 import argparse
@@ -49,7 +58,7 @@ PRAGMA_OK = re.compile(
     r"#\s*pragma\s+(force_active|thumb|dont_reuse_strings|pool_strings|optimization_level|push|pop|section|"
     r"define_section|unused|unsigned_char|exceptions|ipa|once|optimize_for_size|opt_propagation)\b")
 
-CATS = ["ptrbit", "volatile", "asm", "empty", "emptyloop", "deadstore", "unusedlocal", "unusedparam", "paramlocal", "arity", "onceloop", "oob", "selfassign", "pragma",
+CATS = ["fakelist", "ptrbit", "volatile", "asm", "empty", "emptyloop", "deadstore", "unusedlocal", "unusedparam", "paramlocal", "arity", "onceloop", "oob", "selfassign", "pragma",
         "noise", "comment"]
 
 # Triaged hits (round auA, docs/MATCHING.md), read from tools/honesty_allow.txt: tab-separated
@@ -70,6 +79,23 @@ def load_allow():
         if len(parts) < 4:
             continue
         ALLOW.append(tuple(parts[:4]))
+
+
+FAKE = {}  # (file, function) -> set of accepted categories
+FAKE_SEEN = set()  # (file, function) rows whose FAKEMATCH comment was found
+_fake_path = os.path.join(ROOT, "docs", "FAKEMATCHES.md")
+
+
+def load_fake():
+    """Rows of the docs/FAKEMATCHES.md table: | Address | Module | Function | File | Scan categories | ... |"""
+    if not os.path.exists(_fake_path):
+        return
+    for ln in open(_fake_path, encoding="utf-8"):
+        cells = [c.strip().strip("`") for c in ln.strip().strip("|").split("|")]
+        if len(cells) < 5 or not re.fullmatch(r"[0-9a-f]{8}", cells[0]):
+            continue
+        cats = {c.strip().strip("`") for c in cells[4].split(",") if c.strip()}
+        FAKE[(cells[3], cells[2])] = cats | {"comment"}
 
 
 def allowed(cat, path, func, text):
@@ -383,13 +409,43 @@ def scan_file(path, args, results):
                 return name
         return "-"
 
+    # Fakematch labels (round fkA): a live `FAKEMATCH:` comment belongs to the function whose body holds it, or to
+    # the next function when it sits in the comment run between the previous function / preprocessor line and
+    # that function's head.
+    marked = set()
+    heads = sorted((hs, b1, name) for name, _, b0, b1, hs in funcs)
+    for coff, ctext in comments:
+        if "FAKEMATCH:" not in ctext or not live(coff):
+            continue
+        owner = None
+        for hs, b1, name in heads:
+            if coff <= b1:
+                if coff >= hs:
+                    owner = name
+                else:
+                    gap = code[coff:hs]
+                    if not re.search(r"^[ \t]*#|[;}]", gap, re.M):
+                        owner = name
+                break
+        if owner is None:
+            continue
+        marked.add(owner)
+        if (rel, owner) in FAKE:
+            FAKE_SEEN.add((rel, owner))
+        else:
+            results.append(("fakelist", rel, line_of(coff), owner,
+                            "FAKEMATCH comment in a function that is not in docs/FAKEMATCHES.md", False))
+
     def add(cat, off, text=None, func=None):
         if not live(off):
             return
         ln = line_of(off)
         t = (text if text is not None else _lines[ln - 1].strip())[:160]
         f = func or func_at(off)
-        results.append((cat, rel, ln, f, t, allowed(cat, rel, f, t)))
+        al = allowed(cat, rel, f, t)
+        if not al and f in marked and cat in FAKE.get((rel, f), ()):
+            al = "fake"
+        results.append((cat, rel, ln, f, t, al))
 
     # pragma (file level)
     for m in re.finditer(r"^[ \t]*#\s*pragma\b.*$", code, re.M):
@@ -729,10 +785,12 @@ def main():
     ap.add_argument("--cat", default="")
     ap.add_argument("--all", action="store_true", help="also show hits listed in tools/honesty_allow.txt")
     ap.add_argument("--drafts", action="store_true", help="also scan NONMATCHING / #if 0 blocks")
+    ap.add_argument("--fake", action="store_true", help="also show labelled fakematch hits (docs/FAKEMATCHES.md)")
     ap.add_argument("--summary", action="store_true")
     ap.add_argument("--tsv", action="store_true")
     args = ap.parse_args()
     load_allow()
+    load_fake()
     paths = args.paths or [os.path.join(ROOT, d) for d in ("src", "libs", "include")]
     files = []
     for p in paths:
@@ -760,22 +818,38 @@ def main():
         if key in seen or r[0] not in cats:
             continue
         seen.add(key)
+        if r[5] == "fake" and (args.fake or args.all):
+            shown.append(r)
+            continue
         if r[5] and not args.all:
             continue
         shown.append(r)
+    if not args.paths:
+        for (rel, fn) in sorted(set(FAKE) - FAKE_SEEN):
+            r = ("fakelist", rel, 0, fn, "docs/FAKEMATCHES.md row without a FAKEMATCH comment in its file", False)
+            results.append(r)
+            if "fakelist" in cats:
+                shown.append(r)
+    fake_hits = [r for r in results if r[5] == "fake" and r[0] in cats]
+    fake_funcs = {(r[1], r[3]) for r in fake_hits}
     if args.summary:
         c = Counter(r[0] for r in shown)
-        a = Counter(r[0] for r in results if r[0] in cats and r[5])
+        c = Counter(r[0] for r in shown if r[5] != "fake")
+        a = Counter(r[0] for r in results if r[0] in cats and r[5] and r[5] != "fake")
+        fk = Counter(r[0] for r in fake_hits)
         for cat in CATS:
             if cat in cats:
-                print("%-12s %5d shown  %5d allowed" % (cat, c.get(cat, 0), a.get(cat, 0)))
+                print("%-12s %5d shown  %5d allowed  %5d fakematch" % (cat, c.get(cat, 0), a.get(cat, 0), fk.get(cat, 0)))
     else:
         for cat, rel, ln, f, t, al in shown:
             t = " ".join(t.split())
             if args.tsv:
-                print("\t".join([cat, "%s:%d" % (rel, ln), f, t, "allowed" if al else ""]))
+                print("\t".join([cat, "%s:%d" % (rel, ln), f, t, "fakematch" if al == "fake" else "allowed" if al else ""]))
             else:
-                print("%-11s %s:%d  %s  %s%s" % (cat, rel, ln, f, t, "  [allowed]" if al else ""))
+                print("%-11s %s:%d  %s  %s%s" % (cat, rel, ln, f, t, "  [fakematch]" if al == "fake" else "  [allowed]" if al else ""))
+    if FAKE:
+        print("fakematch: %d labelled hits in %d functions (docs/FAKEMATCHES.md, not failures; --fake shows them)"
+              % (len(fake_hits), len(fake_funcs)), file=sys.stderr)
     return 1 if any(not r[5] for r in shown) else 0
 
 

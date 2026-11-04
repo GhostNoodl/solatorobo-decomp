@@ -18,6 +18,10 @@
 # relocations ignored), raw and with every register name masked, and compares them with the "Raw / masked" column of
 # docs/UNMATCHED.md. A draft that scores worse than its entry is a regression. The ROM code is read from
 # extract/<version> at run time; nothing derived from it is written anywhere.
+#
+# Fakematches (round fkA, experimental): a function listed in docs/FAKEMATCHES.md is matched in the default build by
+# a labelled trick (the `#else` branch) and keeps its honest draft in the NONMATCHING branch. That draft is scored too,
+# against the table's "Honest draft" column, although the built object also defines the function.
 
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -184,6 +188,25 @@ def read_unmatched() -> dict[int, dict]:
     return entries
 
 
+def read_fakematches() -> dict[int, dict]:
+    """Address -> {module, file, raw, masked, name} from the table in docs/FAKEMATCHES.md (round fkA): functions the
+    default build matches with a labelled trick. Their honest draft (the NONMATCHING branch) is scored like an
+    UNMATCHED.md row, although the built object also defines the function."""
+    entries = {}
+    path = root_path / "docs" / "FAKEMATCHES.md"
+    if not path.exists():
+        return entries
+    for line in path.read_text().splitlines():
+        cells = [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+        if len(cells) < 6 or not re.fullmatch(r"[0-9a-f]{8}", cells[0]):
+            continue
+        m = re.match(r"(\d+)\s*/\s*(\d+)", cells[5])
+        if m:
+            entries[int(cells[0], 16)] = {"module": cells[1], "name": cells[2], "file": cells[3],
+                                          "raw": int(m.group(1)), "masked": int(m.group(2))}
+    return entries
+
+
 def module_for(path: Path) -> str:
     first = path.relative_to(root_path).parts[1]
     return first if re.fullmatch(r"ov\d{3}", first) else "main"
@@ -202,6 +225,9 @@ def main():
     files = find_draft_files(paths)
     rom = Rom(args.version) if args.score else None
     unmatched = read_unmatched() if args.score else {}
+    fakes = read_fakematches() if args.score else {}
+    unmatched.update(fakes)
+    fake_names = {(e["file"], e["name"]) for e in fakes.values()}
     temp_root = Path(tempfile.mkdtemp(prefix="check_drafts_"))
 
     def check(source: Path):
@@ -212,7 +238,8 @@ def main():
                 return source, obj is not None, output, []
             built = root_path / "build" / args.version / source.relative_to(root_path).with_suffix(".o")
             known = set(functions(built)) if built.exists() else set()
-            drafts = {name: f for name, f in functions(obj).items() if name not in known}
+            rel = source.relative_to(root_path).as_posix()
+            drafts = {name: f for name, f in functions(obj).items() if name not in known or (rel, name) in fake_names}
             return source, True, output, sorted(drafts.items())
         finally:
             shutil.rmtree(out_dir, ignore_errors=True)

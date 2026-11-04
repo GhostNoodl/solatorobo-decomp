@@ -74,9 +74,9 @@ static inline void ov002_Board_Add(Obj021efe6c *self, Obj021efeb8 *node) {
 }
 
 // Each new piece reuses `a` (the first loop's cursor), so it is a split web of `a`.
-void func_ov002_021dd9dc(Obj021eff10 *self);
 
 #ifdef NONMATCHING
+void func_ov002_021dd9dc(Obj021eff10 *self);
 // Status (round auA): demoted in the honesty audit. The match declared the local w as an unused second parameter
 // (callers pass only self) so it numbers below every compiler temp; as a local the registers differ. This file is the
 // function's whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
@@ -84,6 +84,65 @@ void func_ov002_021dd9dc(Obj021eff10 *self);
 void func_ov002_021dd9dc(Obj021eff10 *self) {
     Ent021dd9dc *e;
     Obj021efe6c *w = self->owner->board;
+    Obj021efe9c *a;
+    Obj021efe9c *next;
+    a = (Obj021efe9c *)w->pieces;
+    if (a != NULL) {
+        do {
+            next = (Obj021efe9c *)a->next;
+            if (a->unk_4a == 1) {
+                Obj021efe6c_RemovePiece(w, a, 1);
+            }
+            a = next;
+        } while (a != NULL);
+    }
+    e = (Ent021dd9dc *)((u8 *)gStageFlags + 0x8e);
+    if (e->id != 0xffff) {
+        do {
+            u16 id = e->id | 0x2000;
+            if (Param_GetEntry(id)[0] != 0x80) {
+            a = (Obj021efe9c *)Heap_Alloc(sizeof(Obj021efe9c));
+            if (a != NULL) {
+                *(VFunc **)a = Ov002Vt_021efeb8_vtbl;
+                Obj021efeb8_Init(a);
+                *(VFunc **)a = Ov002Vt_021efe9c_vtbl;
+                Obj021efe9c_Init(a);
+            }
+            a->unk_48 = id;
+            a->vfunc_08();
+            if (a->unk_ac != 2) {
+                a->unk_ac = 2;
+                a->unk_a4 = 0;
+                a->unk_a8 = 5;
+            }
+            {
+                Ov002Shape *d = w->field->map;
+                s32 n0 = d->ox;
+                s32 n1 = d->oy;
+                a->unk_64 = n0;
+                a->unk_68 = n1;
+            }
+            {
+                s32 x = e->x;
+                s32 y = e->y;
+                a->unk_54 = x;
+                a->unk_58 = y;
+            }
+            Ov002_CellToPos(&a->trans.x, &a->unk_54, &a->unk_64);
+            ov002_Piece_SetRot(a, (u8)e->rot);
+            ov002_Board_Add(w, a);
+            }
+        } while ((++e)->id != 0xffff);
+    }
+    MI_CpuCopy8((u8 *)gStageFlags + 0x2a, w->unk_08, sizeof(w->unk_08));
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: w is a local declared as a fake second parameter (the dispatcher passes only self), so it numbers
+// below the temps.
+void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
+    Ent021dd9dc *e;
+    w = self->owner->board;
     Obj021efe9c *a;
     Obj021efe9c *next;
     a = (Obj021efe9c *)w->pieces;

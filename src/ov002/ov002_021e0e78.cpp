@@ -77,6 +77,43 @@ void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
     model->unk_110 = (y - 0x88) << 12;
     Model_PlayPart(model, 0);
 }
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
+    s32 x;
+    s32 y;
+    if (self->shownId == 0xffff) {
+        return;
+    }
+    x = self->pos.x >> 12;
+    y = self->pos.y >> 12;
+    if (self->delay == 0) {
+        int i;
+        Ov002Text2 *o;
+        s32 by;
+        // FAKEMATCH: pointer-bit test. self is never misaligned, so the block never runs; the second definition
+        // of i keeps the source's i = 0 / by order in the loop preheader.
+        i = 0;
+        if ((u32)self & 3) {
+            i = 0;
+        }
+        by = y + 0x14;
+        do {
+            o = self->lines[i];
+            o->vfunc_20(i < 2 ? x + 0x12 : x + 0x8a, by + (i % 2) * 16);
+            o->vfunc_90();
+        } while (++i < 4);
+        o = self->unk_04;
+        o->vfunc_20(x + 0x8c + (0x4c - o->width) / 2, y + 4);
+        self->unk_04->vfunc_90();
+    }
+    if (model == NULL) {
+        return;
+    }
+    model->unk_10c = x << 12;
+    model->unk_110 = (y - 0x88) << 12;
+    Model_PlayPart(model, 0);
+}
 #endif
 
 }

@@ -288,6 +288,59 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
     }
     Ov003Sub44_Clear(self->unk_44);
 }
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
+    s32 sfxOn;
+    if (self->hasModel) {
+        EffectObj *fx;
+        Ov003PartSrc *src;
+        Ov003Part *p;
+        ActorSub48 *c;
+        self->hasModel = 0;
+        fx = Effect_SpawnId(0x1f4, &self->pos);
+        fx->SetScaleXYZ(0x1800, 0x1800, 0x1800);
+        fx->AddPosXYZ(0, 0xccd, 0);
+        Effect_SpawnId(0x44c, &self->pos)->AddPosXYZ(0, 0x2000, 0);
+        SndMgr_PlayStrm(gSndMgr, Rand_UpTo(1) + 0x7c);
+        src = Tbl_Elem_020704b4(self->kind);
+        p = (Ov003Part *)self->targetObj;
+        Ov003PartA_Assign(&p->a, &src->a);
+        Ov003PartB_Assign(&p->b, &src->b);
+        self->targetObj->unk_18_1 = 1;
+        p = (Ov003Part *)self->targetObj;
+        self->target = p->unk_1c;
+        p->unk_1c = 0xffff;
+        self->speed = 0x66;
+        self->velY = 0x400;
+        self->friction = 0;
+        self->gravity = 0x52;
+        c = self->hit;
+        c->unk_50 = 0;
+        c->unk_54 = 0;
+        c->unk_58 = 0;
+        History_SetState(self->fsm, 4, 1);
+        c = self->hit;
+        c->unk_9a_0 = 1;
+        c->unk_9a_3 = 1;
+        HitSphere_Link(c);
+        self->hit->unk_9a |= 0x12;
+        self->hit->radius = self->radius;
+        func_020627b4();
+        Shared_SetEventActor(self->kind, self->id);
+        func_020627dc(0x8001);
+        sfxOn = 1;
+        // FAKEMATCH: pointer-bit test (never true); the second definition of sfxOn stops its copy propagation, so
+        // the shared constant 1 is made after the 0x52 store constant as in the ROM.
+        if ((u32)self & 3) {
+            sfxOn = 1;
+        }
+        gSceneCmd->stageFlags = sfxOn;
+    } else {
+        History_SetState(self->fsm, 4, 0);
+    }
+    Ov003Sub44_Clear(self->unk_44);
+}
 #endif
 
 void Ov003ActExSway_State0a(Ov003ActExSway *self) {

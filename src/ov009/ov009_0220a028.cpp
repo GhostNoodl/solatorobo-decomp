@@ -71,15 +71,133 @@ static inline BOOL Ov009_Skip(u8 st, u32 f) {
     return flag;
 }
 
-void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self);
 
 #ifdef NONMATCHING
+void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self);
 // Status (round auA): demoted in the honesty audit. The match declared the local st as an unused trailing u8
 // parameter (the locals-as-parameters register lever); as a local at every position it differs. The score is in
 // docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self) {
     u8 st;
+    VecFx32 v;
+    Ov009RotS r;
+    ActorSub40 *s;
+    s32 z;
+    s32 y;
+    if (!Ov009_GameIdle() || (st = (s = self->fsm)->current) == 0x20) {
+        return;
+    }
+    u32 f = self->hit->unk_50;
+    BOOL flag = Ov009_Skip(st, f);
+    if (flag) {
+        s->flags |= 0x200000;
+        SndMgr_PlayVolume(gSndMgr, 0x6c, -1, -1, -1);
+        return;
+    }
+    Ov003Actor *pl = Actor_GetTarget(self);
+    if (pl == NULL) {
+        return;
+    }
+    {
+        ActorSub44 *s44 = self->unk_44;
+        s44->unk_22_0 = 0;
+        s44->unk_22_1 = 0;
+    }
+    v = self->unk_b8;
+    switch (self->unk_1a) {
+    case 0:
+        switch (self->unk_b4) {
+        case 0:
+            Ov009_CountDown(self);
+            break;
+        case 1:
+            if ((f & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->radius + 0xc00)) {
+                {
+                    s32 z = Rand_PlusMinus(0x800) + 0x2400;
+                    v.x = 0;
+                    v.y = 0;
+                    v.z = z;
+                }
+                Vec_RotateY(&v, &v, (u16)(self->unk_f4 - 0x4000));
+                VEC_Add(&v, &self->unk_f8, &v);
+                self->unk_b8 = v;
+                self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
+                self->unk_b4 = 10;
+            } else {
+                self->fsm->flags |= 4;
+            }
+            break;
+        case 10:
+            Ov009_CountDown(self);
+            break;
+        case 11:
+            if ((f & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->radius + 0xc00)) {
+                {
+                    s32 z = Rand_PlusMinus(0x800) + 0x2400;
+                    v.x = 0;
+                    v.y = 0;
+                    v.z = z;
+                }
+                Vec_RotateY(&v, &v, (u16)(self->unk_f4 + 0x4000));
+                VEC_Add(&v, &self->unk_f8, &v);
+                self->unk_b8 = v;
+                self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
+                self->unk_b4 = 0;
+            } else {
+                self->fsm->flags |= 4;
+            }
+            break;
+        }
+        if ((u8)(st + 0xff) > 1) {
+            return;
+        }
+        {
+            u16 ry = self->unk_f4;
+            r.x = 0x4000;
+            r.y = ry;
+            r.z = 0;
+        }
+        if (!Hit_PointInRotCylinder(&pl->pos, &self->pos, &r, pl->radius + 0x1800, 0x6000)) {
+            return;
+        }
+        self->fsm->flags |= 0x8000;
+        break;
+    case 1:
+        if (st != 1) {
+            return;
+        }
+        if (self->unk_b6 != 0) {
+            self->unk_b6--;
+        }
+        if (self->unk_b6 != 0) {
+            return;
+        }
+        {
+            s32 t = self->pos.z;
+            z = t;
+            y = self->pos.y;
+            s32 px = pl->pos.x;
+            v.x = px + Rand_PlusMinus(0x3000);
+            v.y = y;
+            v.z = z;
+            if (v.x < -0xa000) {
+                v.x = -0xa000;
+            }
+            if (v.x > 0xa800) {
+                v.x = 0xa800;
+            }
+            self->pos = v;
+        }
+        self->unk_b6 = Rand_UpTo(0x1e) + 0x3c;
+        History_SetState(self->fsm, 0x20, 0);
+        break;
+    }
+}
+#else
+// Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
+// FAKEMATCH: st is a local declared as a fake trailing u8 parameter (the dispatcher passes only self).
+void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
     VecFx32 v;
     Ov009RotS r;
     ActorSub40 *s;
