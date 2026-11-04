@@ -57,7 +57,7 @@ static inline BOOL Ready021c194c(ActorRes *o) {
 
 
 #ifdef NONMATCHING
-void func_ov000_021c194c(Obj021c2114 *self);
+void Obj021c2114_Update(Obj021c2114 *self);
 // Status (round auA): demoted in the honesty audit. The match declared the locals flag and p as two unused trailing
 // parameters (callers pass only self); as locals at every position the registers differ. This file is the function's
 // whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
@@ -226,7 +226,7 @@ void Obj021c2114_Update(Obj021c2114 *self) {
 // Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
 // FAKEMATCH: p is a local declared as a fake trailing parameter (callers pass only self); it gives the
 // ROM's registers (flag, the other auA fake parameter, is not needed and is a local again).
-void func_ov000_021c194c(Obj021c2114 *self, ActorRes *p) {
+void Obj021c2114_Update(Obj021c2114 *self, ActorRes *p) {
     BOOL flag;
     MtxFx33 m_0;
     VecFx32 d4;

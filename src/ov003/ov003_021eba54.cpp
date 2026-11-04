@@ -328,7 +328,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         self->hit->radius = self->radius;
         func_020627b4();
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(0x8001);
+        StageVars_SetEventScript(0x8001);
         sfxOn = 1;
         // FAKEMATCH: pointer-bit test (never true); the second definition of sfxOn stops its copy propagation, so
         // the shared constant 1 is made after the 0x52 store constant as in the ROM.

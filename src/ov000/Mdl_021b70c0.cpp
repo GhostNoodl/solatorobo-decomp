@@ -27,7 +27,7 @@ if (res->anm[i] != NULL) {                                   \
 // needMat and nsub are u8 for the prologue order of the two stack-argument copies.
 
 #ifdef NONMATCHING
-void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub);
+void FieldPropModel_Setup(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub);
 // Status (round auA): demoted in the honesty audit. The match declared the local tex as a seventh parameter (callers
 // pass six) to fix the register order of mdl and tex; as a local the registers differ. This file is the function's
 // whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
@@ -115,7 +115,7 @@ void FieldPropModel_Setup(FieldPropModel *self, FieldPropLoader *res, u8 *list, 
 // Round fkA fakematch (docs/FAKEMATCHES.md). The honest draft is the NONMATCHING branch above.
 // FAKEMATCH: tex is a local declared as a fake seventh parameter (callers pass six); it fixes the r7/r8
 // order of mdl and tex.
-void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub, NNSG3dResTex *tex) {
+void FieldPropModel_Setup(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub, NNSG3dResTex *tex) {
     NNSG3dResMdlSet *set;
     NNSG3dResMdl *mdl;
     BOOL needJnt;

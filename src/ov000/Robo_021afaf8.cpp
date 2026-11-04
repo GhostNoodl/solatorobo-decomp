@@ -529,7 +529,7 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
             }
             ResSet_SetName0((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
             ResSet_SetName1((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
-            func_ov000_0218ef10((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
+            ResSet_SetName3((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
             if (def->unk_18 != 0) {
                 ResSet_SetName1((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
             }
