@@ -81,7 +81,7 @@ extern void *gMsgRes;
 Ov003PkOwner *Target_Get(Ov003PkItem *item);
 BOOL Hit_ApplyInArea(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void func_02040a98(void *buf, u32 n);
+void Str_FormatInt(void *buf, u32 n);
 s32 SndMgr_PlayPan(SndMgr *a, s32 b, s32 c);
 void Ov003_AddExp(u16 id);
 u32 DataRes_GetCount(Ov003DataRes *res, u32 idx);
@@ -175,7 +175,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         u16 amt = item->amount;
         char buf[0x20];
         Actor_SendMsg(owner, self->unk_0c, 10, TRUE, 2, &amt);
-        func_02040a98(buf, item->amount);
+        Str_FormatInt(buf, item->amount);
         Ov003Log_PushEmpty(6);
         break;
     }
@@ -193,7 +193,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         } else {
             gStageFlags->money += item->amount;
         }
-        func_02040a98(buf, item->amount);
+        Str_FormatInt(buf, item->amount);
         Ov003Log_Push(2, buf);
         SndMgr_PlayVolume(gSndMgr, 0x31, -1, -1, -1);
         break;
@@ -208,7 +208,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (g->unk_24 > 9999) {
             g->unk_24 = 9999;
         }
-        func_02040a98(buf, item->amount);
+        Str_FormatInt(buf, item->amount);
         Ov003Log_Push(3, buf);
         SndMgr_PlayPan(gSndMgr, 0x21, 2);
         break;
@@ -225,7 +225,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
             t = 9999;
         }
         gStageFlags->unk_614 = t;
-        func_02040a98(buf, n);
+        Str_FormatInt(buf, n);
         Ov003Log_Push(4, buf);
         SndMgr_PlayPan(gSndMgr, 0x89, 5);
         {

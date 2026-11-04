@@ -13,7 +13,7 @@ extern "C" {
 void Gfx3D_SendDL(void *p, s32 a);
 void func_ov000_021bbf78(Obj021bbbdc *self);
 
-void func_ov000_021bbbdc(Obj021bbbdc *self) {
+void MissionInfo_Draw(Obj021bbbdc *self) {
     switch (self->unk_50) {
     case 6:
     case 11:

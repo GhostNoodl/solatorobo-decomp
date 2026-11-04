@@ -39,7 +39,7 @@ static inline void ov002_bindPal(Model0218fe1c *anim, void *pal) {
     NNS_G3dBindMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? res->unk_00 : NULL)), (NNSG3dResTex *)pal);
 }
 
-void func_ov002_021d7058(Obj021efe4c *self) {
+void Obj021efe4c_SetupBoxModels(Obj021efe4c *self) {
     void *pal;
     void *src = ((void *)self->unk_04->unk_fc);
     Ov002SndCue *k;
@@ -83,7 +83,7 @@ void func_ov002_021d7058(Obj021efe4c *self) {
     }
     self->cue = k;
     self->unk_5d = 0;
-    func_ov002_021d7238(self);
+    Obj021efe4c_UpdateBoxMesh(self);
     self->visible = 1;
 }
 

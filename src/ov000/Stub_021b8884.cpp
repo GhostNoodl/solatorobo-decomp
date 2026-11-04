@@ -35,7 +35,7 @@ Obj0206e7d0 *Lang_GetGroup(u8 a);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 
-void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
+void PlaceNameCard_Init(Obj021b8884 *self, u16 a) {
     self->unk_00 = 0;
     Tbl_Format_02070874(self->unk_04, data_ov000_021cc87b, Lang_GetGroup(a)->unk_04);
     self->unk_2c = a;
@@ -45,7 +45,7 @@ void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
     GfxSys_StartFadeOut(0, 1, 2);
 }
 
-void func_ov000_021b88d8(Obj021b88d8 *self) {
+void PlaceNameCard_Dtor(Obj021b88d8 *self) {
     void *saved;
     Model *p;
 

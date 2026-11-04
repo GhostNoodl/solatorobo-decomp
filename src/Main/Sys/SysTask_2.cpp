@@ -100,7 +100,7 @@ extern u32 ResHandle_vtbl[];
 extern void *ResSet_Init(void *p);
 extern BOOL ResSet_UpdateLoad(void *p);
 
-BOOL func_02063484(Unk0214a418 *self) {
+BOOL Unk0214a418_LoadTitleWipe(Unk0214a418 *self) {
     char buf[0x20];
     BOOL cont;
     BOOL done;

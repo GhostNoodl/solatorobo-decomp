@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void func_ov002_021dc730(Obj021eff10 *self);
-void func_ov002_021dc83c(Obj021eff10 *self);
-void func_ov002_021dcf00(Obj021eff10 *self);
-void func_ov002_021dd130(Obj021eff10 *self);
-void func_ov002_021dd29c(Obj021eff10 *self);
-void func_ov002_021dd434(Obj021eff10 *self);
+void Obj021eff10_Step00(Obj021eff10 *self);
+void Obj021eff10_Step10(Obj021eff10 *self);
+void Obj021eff10_Step20(Obj021eff10 *self);
+void Obj021eff10_Step30(Obj021eff10 *self);
+void Obj021eff10_Step40(Obj021eff10 *self);
+void Obj021eff10_Step50(Obj021eff10 *self);
 void func_ov002_021dd9dc(Obj021eff10 *self);
 
 static inline void ov002_Anim_Tick(Ov002Mdl021efe3c *mdl) {
@@ -41,22 +41,22 @@ void Obj021eff10_Update(Obj021eff10 *self, Obj021eff50 *other) {
     }
     switch (self->unk_18 / 10 * 10) {
     case 0:
-        func_ov002_021dc730(self);
+        Obj021eff10_Step00(self);
         break;
     case 10:
-        func_ov002_021dc83c(self);
+        Obj021eff10_Step10(self);
         break;
     case 20:
-        func_ov002_021dcf00(self);
+        Obj021eff10_Step20(self);
         break;
     case 30:
-        func_ov002_021dd130(self);
+        Obj021eff10_Step30(self);
         break;
     case 40:
-        func_ov002_021dd29c(self);
+        Obj021eff10_Step40(self);
         break;
     case 50:
-        func_ov002_021dd434(self);
+        Obj021eff10_Step50(self);
         break;
     case 60:
         if (ov002_Msg_IsDone(self->unk_0c)) {

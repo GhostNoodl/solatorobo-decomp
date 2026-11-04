@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void Task021ef89c_PostUpdate(void) {
+void TheaterMenu_PostUpdate(void) {
 }
 
-void Task021ef89c_Draw(Task021ef89c *self) {
+void TheaterMenu_Draw(Task021ef89c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }
@@ -14,7 +14,7 @@ void Task021ef89c_Draw(Task021ef89c *self) {
     }
 }
 
-Task021ef71c *Task021ef71c_New(void) {
+Task021ef71c *TheaterPlayer_New(void) {
     Task021ef71c *p = (Task021ef71c *)Heap_Alloc(0x70);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -45,7 +45,7 @@ Task021ef71c *Ov002TaskVt_021ef71c_DtorDelete(Task021ef71c *self) {
     return self;
 }
 
-void Task021ef71c_Start(Task021ef71c *self) {
+void TheaterPlayer_Start(Task021ef71c *self) {
     TaskList_Insert(self);
 }
 

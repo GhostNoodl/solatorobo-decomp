@@ -29,7 +29,7 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self);
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self);
 Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self);
 s32 func_ov015_02209fb8(s32 x);
-void func_ov015_022029d4(Ov015List *self, Ov015Fish *fish);
+void Ov015List_Remove(Ov015List *self, Ov015Fish *fish);
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const void *v);
 void Ov015Fish_GetFrontPos(Ov015Fish *self, void *out);
 
@@ -37,7 +37,7 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov015List *a3, Ov015Info38 *a4) {
+BOOL Ov015Obj30_Run(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov015List *a3, Ov015Info38 *a4) {
     BOOL ret = TRUE;
     self->info = a4;
     self->ship = a1;
@@ -117,7 +117,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
                 obj = n->fish;
                 n = n->next;
                 if (obj != self->fish) {
-                    func_ov015_022029d4(self->fishList, obj);
+                    Ov015List_Remove(self->fishList, obj);
                     HEAP_PUSH(saved);
                     if (obj != NULL) {
                         if (obj != NULL) {

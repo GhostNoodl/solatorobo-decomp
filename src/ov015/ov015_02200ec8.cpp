@@ -44,7 +44,7 @@ s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
     return base;
 }
 
-void func_ov015_02200f74(Ov015Game *self) {
+void Ov015Game_Reset(Ov015Game *self) {
     self->unk_08 = 2;
     self->step = 0;
     self->unk_10 = 0;
@@ -79,7 +79,7 @@ void *Ov015Result_DtorDelete(Ov015Result *self) {
     return self;
 }
 
-void func_ov015_0220101c(Ov015Game *self) {
+void Ov015Game_FreeAll(Ov015Game *self) {
     void *saved;
     HEAP_PUSH(saved);
     {

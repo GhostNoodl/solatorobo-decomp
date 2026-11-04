@@ -74,7 +74,7 @@ extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, const u8 *data);
 extern void EffectEmitterSub_DtorBase(EffectEmitterSub *sub);
 
 void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id);
-void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name);
+void EffectSetup_SetEmitterByName(EffectSetup *setup, EffectEmitter *em, const char *name);
 void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id);
 void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids);
 
@@ -126,7 +126,7 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
         em->def = def;
         em->unk_28 = def->unk_38;
         em->loopCount = def->loopCount;
-        func_020689ec(setup, em, def->emitName);
+        EffectSetup_SetEmitterByName(setup, em, def->emitName);
         func_02068ab8(setup, em, def->paramId);
         parts = (EffectPartSet *)Heap_Alloc(0x12c);
         if (parts != NULL) {
@@ -154,7 +154,7 @@ static inline void EffectEmitter_SetData(EffectEmitter *em, u8 *data, s32 count)
     em->emitCount = count;
 }
 
-void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name) {
+void EffectSetup_SetEmitterByName(EffectSetup *setup, EffectEmitter *em, const char *name) {
     u32 count;
     u32 size;
     u8 *p;

@@ -141,7 +141,7 @@ void *ResMgr_GetArchiveList(void *a, void *b, u16 c);
 void TaskList_Insert(void *self);
 extern u8 gTaskSwitchPending;
 void GfxSys_StartFadeIn(s32 a, int b, int c);
-void func_ov002_021ce7b8(Task021ef4b0 *self);
+void CabinMenu_BuildMenu(Task021ef4b0 *self);
 
 static inline void func_ov002_setCurrent021ccd40(void *p) {
     if (gFinishingTask != NULL) {
@@ -220,11 +220,11 @@ typedef void (*Callback)(void *);
 extern VFunc Ov002TaskVt_021efa1c_vtbl[];
 extern VFunc Ov002TaskVt_021ef89c_vtbl[];
 
-s16 *func_0206ee90(u32 id);
+s16 *Param_GetMovieInfo(u32 id);
 extern s32 data_ov002_021f0f84[];
 extern VFunc Ov002TaskVt_021ef71c_vtbl[];
 void Ov002Stage_Delete_021e916c(void);
-void func_ov002_021d0b98(Task021ef89c *self);
+void TheaterMenu_BuildList(Task021ef89c *self);
 
 typedef struct Info0206ee90 {
     u16 unk_00 : 15;
@@ -236,7 +236,7 @@ void *DataRes_GetTable(void *a, int idx);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
 void Ov002Stage_DrawCur(void);
-void func_ov002_021e8f04(s32 id);
+void Ov002Stage_CreateSlide(s32 id);
 bool Ov002Stage_UpdateCur(void);
 extern VFunc Ov002TaskVt_021ef69c_vtbl[];
 void Obj021c64b4_SetText(TextList *self, void *text);
@@ -280,10 +280,10 @@ extern VFunc Ov002TaskVt_021ef81c_vtbl[];
 void MenuScript_Open(void);
 u32 MenuScript_IsLoaded(void);
 u32 func_ov000_02180838(void *a);
-void Task021ef81c_FreeWindows(Task021ef81c *self);
+void ComposeMenu_FreeWindows(Task021ef81c *self);
 
 Ov002StrTable *Ov002Vt_021f00ec_Dtor(Ov002StrTable *self);
-void Task021ef99c_FreeWindows(Task021ef99c *self);
+void LibraryMenu_FreeWindows(Task021ef99c *self);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc Ov002Vt_021ef684_vtbl[];
 void ListRow_Unlink(void *self);
@@ -313,14 +313,14 @@ static inline bool Task_isFlag1Clear(Task *self) {
 void Obj021efe7c_SetPhase(Obj021efe7c *a, int b);
 BOOL Obj021efe7c_Update(Obj021efe7c *a);
 extern VFunc Ov002TaskVt_021efc24_vtbl[];
-void func_ov002_021d5f60(Task021efc24 *self);
+void RobotTypeMenu_ApplyType(Task021efc24 *self);
 void *Task_FindById(int id);
 extern VFunc Ov002Vt_021efb04_vtbl[];
 void MsgBox_Release(void *self);
 extern VFunc UiList_vtbl[];
 extern VFunc UiObj_vtbl[];
 
-void *func_0206ec8c(u32 id);
+void *Param_GetDesc(u32 id);
 Param0206ef10 *Param_GetRecord(u32 id);
 void ModelViewer_SetModel(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
 void Obj021c95ac_Init_021c95ac(void *a, u16 id);
@@ -370,7 +370,7 @@ extern char data_ov002_021efddd[];
 
 u8 *Param_GetEntry(u16 id);
 BOOL func_ov002_021e38f8(s32 *out, Ov002Shape *shape);
-void func_ov002_021d8148(Obj021efe9c *self);
+void Obj021efe9c_LoadPartModel(Obj021efe9c *self);
 
 static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
     u8 *info = Param_GetEntry(self->unk_48);
@@ -429,8 +429,8 @@ void Obj021eff10_Release(Obj021eff10 *self);
 void Obj021eff50_Release(Obj021eff50 *self);
 void Obj021efe4c_Release(Obj021efe4c *self);
 void Obj021efe4c_Init(Obj021efe4c *self);
-void func_ov002_021d7058(Obj021efe4c *self);
-void func_ov002_021d7238(Obj021efe4c *self);
+void Obj021efe4c_SetupBoxModels(Obj021efe4c *self);
+void Obj021efe4c_UpdateBoxMesh(Obj021efe4c *self);
 void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range);
 void Obj021efe6c_Init(Obj021efe6c *self);
 void func_ov002_021d98ac(Obj021efe6c *self);
@@ -584,13 +584,13 @@ static inline void func_ov002_021e4d4c_inline(Ov002Obj *self) {
 
 void Ov002Snd021f0cf8_Next(Ov002Snd021f0cf8 *self);
 
-BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev);
+BOOL RobotTypeMenu_ConfirmOnDecide(UiList *self, UiListItem *ev);
 typedef BOOL (*EvCallback)(void *, void *);
-void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
+void UiObj_OpenChoice(void *self, u16 a, int b, EvCallback cb);
 u8 LangData_GetLang(void);
-void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode);
+void Ov002_MakeLangFileName(void *dst, u32 size, const void *a, const void *b, int mode);
 // The resource-name table data_ov002_021ef5ac (defined in ov002_021ef150.cpp). Not const:
-// Task021ef99c_Start reloads it after every call in its loop.
+// LibraryMenu_Start reloads it after every call in its loop.
 typedef struct Ov002ResNames {
     const char *hdExt;
     const char *bmExt;

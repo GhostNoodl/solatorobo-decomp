@@ -11,7 +11,7 @@ extern u8 data_ov000_021cc9d3[];
 extern u8 data_ov000_021cc9dc[];
 void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
 
-void func_ov000_021c2f10(ListRow021cca70 *self) {
+void ListRow021cca70_Init(ListRow021cca70 *self) {
     self->width = 0xc8;
     self->height = 0x8c;
     self->arc = 0;

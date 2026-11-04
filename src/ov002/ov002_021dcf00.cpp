@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
+void Obj021eff10_ShowCellInfo(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
     Obj021eff50 *t = self->owner;
@@ -44,7 +44,7 @@ static inline u16 sumItems(Obj021efe6c *w) {
     return sum;
 }
 
-void func_ov002_021dcf00(Obj021eff10 *self) {
+void Obj021eff10_Step20(Obj021eff10 *self) {
     s32 px;
     u16 trig;
     s32 py;
@@ -90,7 +90,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
             tz += 0x1ec;
         }
         ov002_CamMove(w, px, py, pz, 0, 0, tz);
-        func_ov002_021dd7f0(self, (Vec2 *)((u8 *)self + 0x24), (Vec2 *)((u8 *)self + 0x24), 1);
+        Obj021eff10_ShowCellInfo(self, (Vec2 *)((u8 *)self + 0x24), (Vec2 *)((u8 *)self + 0x24), 1);
         self->unk_18 = 10;
         SndMgr_PlayVolume(gSndMgr, 0xf, -1, -1, -1);
     }

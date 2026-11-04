@@ -66,11 +66,11 @@ Task021ef4b0 *Ov002TaskVt_021ef4b0_DtorDelete(Task021ef4b0 *self) {
     return self;
 }
 
-BOOL Task021ef4b0_IsLoaded(void) {
+BOOL CabinMenu_IsLoaded(void) {
     return TRUE;
 }
 
-void Task021ef4b0_Load(void) {
+void CabinMenu_Load(void) {
 }
 
 Task021ef4b0 *Ov002TaskVt_021ef4b0_Dtor(Task021ef4b0 *self) {
@@ -131,7 +131,7 @@ Task021ef530 *Ov002TaskVt_021ef530_DtorDelete(Task021ef530 *self) {
     return self;
 }
 
-BOOL Task021ef530_TryReleaseCurrent(Task021ef530 *self) {
+BOOL AsmodeusMenu_TryReleaseCurrent(Task021ef530 *self) {
     if (self->vfunc_54() != 0) {
         func_ov002_setCurrent021ccd40(NULL);
     }
@@ -182,7 +182,7 @@ void *Ov002Vt_021ef410_Dtor(void *self) {
     return self;
 }
 
-Task021ef79c *Task021ef79c_New(void) {
+Task021ef79c *AudioMenu_New(void) {
     Task021ef79c *p = (Task021ef79c *)Heap_Alloc(0x48);
     if (p != NULL) {
         TaskBase_ctor(p);

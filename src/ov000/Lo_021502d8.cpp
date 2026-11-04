@@ -13,7 +13,7 @@ extern void *gDataRes;
 extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
 void TextWin_Init(void *p);
@@ -44,7 +44,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-BOOL Lo021ca9c4_IsLoaded(Lo021ca9c4 *self) {
+BOOL QuestWin_IsLoaded(Lo021ca9c4 *self) {
     BOOL r = TRUE;
     if (self->unk_42 == 0xffff) {
         if (!LoIsLoaded24()) {
@@ -77,10 +77,10 @@ void *ResList_FindType2(void *a, void *b);
 void *ResMgr_GetArcList(void *a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_RenderToVram(void *p);
-s32 func_02061e7c(u16 a);
+s32 StageTbl_GetQuestName(u16 a);
 void *MsgRes_GetLines(void *a, u16 id, void *out, s32 n);
 void Text_ScanTags(void *a, void *b, void *c, void *fn);
-void func_02040a98(char *buf, s32 n);
+void Str_FormatInt(char *buf, s32 n);
 SceneScript *SceneStage_GetScript(SceneStage *self, u16 index);
 s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
 void func_ov000_0215158c(void *self);
@@ -90,7 +90,7 @@ static inline void LoTextInit(TextWin *t) {
     gGfxMgr->unk_004 = t->font;
 }
 
-void Lo021ca9c4_Start(Lo021ca9c4 *self) {
+void QuestWin_Start(Lo021ca9c4 *self) {
     Model *m;
     const char *arc;
     const char *name;
@@ -221,7 +221,7 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     }
 
     self->text[0].font = 8;
-    self->text[0].str = func_02061e7c(self->unk_54->id);
+    self->text[0].str = StageTbl_GetQuestName(self->unk_54->id);
     LoTextInit(&self->text[0]);
     self->text[0].color0 = 0x7fff;
     self->text[0].color1 = 0x67f;
@@ -252,7 +252,7 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     TextWin_RenderToVram(&self->text[2]);
 
     if (self->unk_54->vals[1] != 0) {
-        func_02040a98(buf, self->unk_54->vals[1]);
+        Str_FormatInt(buf, self->unk_54->vals[1]);
         STD_ConcatenateString(buf, data_ov000_021ca93e);
         STD_ConcatenateString(buf, (const char *)MsgRes_GetString(g, 0x3e));
     } else {
@@ -282,7 +282,7 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
         if (n == 0) {
             n = 1;
         }
-        func_02040a98(buf, n);
+        Str_FormatInt(buf, n);
     }
     self->text[5].font = 8;
     self->text[5].strPtr = buf;

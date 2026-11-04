@@ -58,7 +58,7 @@ struct Obj021b8994 {
     Model *unk_30;
 };
 
-BOOL func_ov000_021b8994(Obj021b8994 *self) {
+BOOL PlaceNameCard_Update(Obj021b8994 *self) {
     switch (self->unk_28) {
     case 1: {
         char buf[0x20];

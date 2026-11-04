@@ -15,7 +15,7 @@ u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *ent
 u32 DataRes_GetCount(DataRes *res, u32 idx);
 SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
 
-void func_ov000_021c308c(ListRow021cca70 *self, u32 id) {
+void ListRow021cca70_SetPhotoItem(ListRow021cca70 *self, u32 id) {
     Info021c308c *info = func_0206eed0(id);
     ListRowItem *sub;
     s32 i;

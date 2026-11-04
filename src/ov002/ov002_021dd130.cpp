@@ -12,9 +12,9 @@ void Lo021cae48_SetValue(Lo021cae48 *self, s32 value, BOOL both);
 void *func_ov002_021e3874(s32 *v, int a, int b);
 
 
-void func_ov002_021dd7f0(Obj021eff10 *self, void *a, void *b, int c);
+void Obj021eff10_ShowCellInfo(Obj021eff10 *self, void *a, void *b, int c);
 
-void func_ov002_021dd130(Obj021eff10 *self) {
+void Obj021eff10_Step30(Obj021eff10 *self) {
     s32 out[3];
     s32 a[2];
     s32 b[2];
@@ -42,7 +42,7 @@ void func_ov002_021dd130(Obj021eff10 *self) {
         out[1] = 0x266;
         func_ov002_021e3874(out, 0x80, 1);
         Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
-        func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
+        Obj021eff10_ShowCellInfo(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
     } else {
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
@@ -57,7 +57,7 @@ static inline bool ov002_flag1(UiObj *p) {
 
 s32 SndMgr_PlayPan(void *a, int b, int c);
 
-void func_ov002_021dd29c(Obj021eff10 *self) {
+void Obj021eff10_Step40(Obj021eff10 *self) {
     switch (self->unk_18) {
     case 0x28: {
         BOOL t = ov002_flag1(self->unk_0c);
@@ -93,7 +93,7 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
         q = self->owner->board;
         q->unk_08[(u16)(o->unk_48 & 0xfff)]++;
         Obj021efe6c_RemovePiece(q, o, 1);
-        func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
+        Obj021eff10_ShowCellInfo(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
         self->unk_18++;
         break;
     }
@@ -110,7 +110,7 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
 
 extern u8 data_ov002_021efe30[];
 
-void func_ov002_021dd434(Obj021eff10 *self) {
+void Obj021eff10_Step50(Obj021eff10 *self) {
     Obj021efe6c *w = self->owner->board;
     Obj021efe9c *o;
     switch (self->unk_18) {
@@ -171,7 +171,7 @@ void func_ov002_021dd434(Obj021eff10 *self) {
         if (!st) {
             return;
         }
-        func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
+        Obj021eff10_ShowCellInfo(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
         self->unk_18 = 10;
         break;
     }

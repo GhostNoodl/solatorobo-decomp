@@ -36,11 +36,11 @@ class Task021ef4b0 : public Task {
 public:
     UiList *unk_3c;
     Lo021cadcc *unk_40;
-    u32 unk_44; // current list item id (Task021ef4b0_UpdateActive)
+    u32 unk_44; // current list item id (CabinMenu_UpdateActive)
     union {
         u32 unk_48;
         struct {
-            u32 unk_48_0 : 1; // set by func_ov002_021ce7b8, each enables one list entry
+            u32 unk_48_0 : 1; // set by CabinMenu_BuildMenu, each enables one list entry
             u32 unk_48_1 : 1;
             u32 unk_48_2 : 1;
             u32 unk_48_3 : 1;
@@ -53,7 +53,7 @@ public:
 };
 SIZE_ASSERT(Task021ef4b0, 0x4c);
 
-// Vtable Ov002TaskVt_021ef530_vtbl, 0x50 bytes (Task021ef530_New); its own Init (0x58) and Release (0x5c).
+// Vtable Ov002TaskVt_021ef530_vtbl, 0x50 bytes (AsmodeusMenu_New); its own Init (0x58) and Release (0x5c).
 class Task021ef530 : public Task {
 public:
     Model *unk_3c;
@@ -79,7 +79,7 @@ class Task021ef69c : public Task {
 public:
     TextList *unk_3c;
     Lo021cb5a8 *unk_40;
-    ListRow021cca70 *unk_44; // the decided row while it is raised (Task021ef69c_List3cOnDecide)
+    ListRow021cca70 *unk_44; // the decided row while it is raised (AlbumMenu_List3cOnDecide)
     Model *unk_48; // number drawing (func_ov002_021d1f70)
     Model *unk_4c;
     s32 unk_50;
@@ -122,7 +122,7 @@ public:
     Lo021cadcc *unk_40;
     Lo021cae48 *unk_44;
     Lo021cb5a8 *unk_48;
-    u8 unk_4c; // set while unk_40 shows the row's message (Task021ef81c_List3cOnCursor)
+    u8 unk_4c; // set while unk_40 shows the row's message (ComposeMenu_List3cOnCursor)
     u8 unk_4d[0x3];
 };
 SIZE_ASSERT(Task021ef81c, 0x50);
@@ -226,7 +226,7 @@ public:
     Lo021cadcc *unk_54;
     VObj *unk_58;
     VObj *unk_5c;
-    s16 unk_60[5]; // per-stat values; func_ov002_021d5f60 stores unk_60[i] + unk_6a[i], clamped to 0..99
+    s16 unk_60[5]; // per-stat values; RobotTypeMenu_ApplyType stores unk_60[i] + unk_6a[i], clamped to 0..99
     s16 unk_6a[5];
     u16 unk_74;    // id of the current list item
     u8 unk_76[0x2];

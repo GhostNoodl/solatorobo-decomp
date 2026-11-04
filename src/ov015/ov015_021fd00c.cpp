@@ -6,7 +6,7 @@
 
 extern "C" {
 
-void func_ov015_021fb240(Ov015Vec *dst, const Ov015Vec *src);
+void Ov015Vec_Copy(Ov015Vec *dst, const Ov015Vec *src);
 void Ov015CamPair_Mode1(Ov015CamPair *self);
 void Ov015CamPair_Mode0(Ov015CamPair *self);
 void Ov015CamPair_Mode2(Ov015CamPair *self);
@@ -29,7 +29,7 @@ void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v) {
         }
     }
     self->mode = mode;
-    func_ov015_021fb240((Ov015Vec *)&self->target, v);
+    Ov015Vec_Copy((Ov015Vec *)&self->target, v);
     switch (mode) {
     case 1:
         Ov015CamPair_Mode1(self);

@@ -31,11 +31,11 @@ BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL ListBuffer021cb940_OpenDialog(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
-void func_ov000_021b87d8(void *p, u16 a);
-void func_ov000_021b8884(void *p, u16 a);
-void func_ov000_021bacb8(void *p, u16 a);
-void func_ov000_021bbc68(void *p, u8 a, u8 b, u8 c);
-void func_ov000_021b8e80(void *p, s32 a, u16 b);
+void ImageCard_Init(void *p, u16 a);
+void PlaceNameCard_Init(void *p, u16 a);
+void SceneCondCard_Init(void *p, u16 a);
+void MissionInfo_Init(void *p, u8 a, u8 b, u8 c);
+void MissionCard_Init(void *p, s32 a, u16 b);
 void Obj021bb810_Init_021bb810(void *p, s32 a);
 void func_ov000_021bb2b0(void *p, u16 a, s32 b, BOOL c);
 
@@ -141,7 +141,7 @@ static inline BOOL Task_Start34(ListBuffer021cb940 *t, u32 b) {
     }
     p = Heap_Alloc(0x5c);
     if (p != NULL) {
-        func_ov000_021b87d8(p, b);
+        ImageCard_Init(p, b);
     }
     t->unk_34 = p;
     return TRUE;
@@ -223,7 +223,7 @@ static inline BOOL Task_Start38(ListBuffer021cb940 *t, u32 b) {
     }
     p = Heap_Alloc(0x34);
     if (p != NULL) {
-        func_ov000_021b8884(p, b);
+        PlaceNameCard_Init(p, b);
     }
     t->unk_38 = p;
     t->state = 7;
@@ -237,7 +237,7 @@ static inline BOOL Task_Start40(ListBuffer021cb940 *t, u32 b) {
     }
     p = Heap_Alloc(0x30);
     if (p != NULL) {
-        func_ov000_021bacb8(p, b);
+        SceneCondCard_Init(p, b);
     }
     t->unk_40 = p;
     t->state = 8;
@@ -259,7 +259,7 @@ static inline BOOL Task_Start44(ListBuffer021cb940 *t, u32 b) {
     if (p != NULL) {
         LFLD(void *, p, 4) = ResHandle_vtbl;
         ((VObj *)((u8 *)p + 4))->vfunc_08();
-        func_ov000_021bbc68(p, x2, x1, x0);
+        MissionInfo_Init(p, x2, x1, x0);
     }
     t->unk_44 = p;
     t->state = 9;
@@ -273,7 +273,7 @@ static inline BOOL Task_Start3c(ListBuffer021cb940 *t, s32 b, u32 c) {
     }
     p = Heap_Alloc(0x3c);
     if (p != NULL) {
-        func_ov000_021b8e80(p, b, c);
+        MissionCard_Init(p, b, c);
     }
     t->unk_3c = p;
     if (t->state != 4) {

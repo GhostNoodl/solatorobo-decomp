@@ -11,7 +11,7 @@ BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
     return TRUE;
 }
 
-void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
+void Ov015FishState1c_StepSurface(Ov015FishState1c *self, Ov015Fish *p) {
     Ov015Vec pos(*(Ov015Vec *)&p->pos);
     if (pos.y >= 0) {
         pos.y = 0;

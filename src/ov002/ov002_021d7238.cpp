@@ -17,7 +17,7 @@ static inline int func_ov002_021d7238_find(u8 *res, const char *name) {
     return NNS_G3dGetResDictIdxByName((NNSG3dResDict *)(dict + 4), (NNSG3dResName *)name);
 }
 
-void func_ov002_021d7238(Obj021efe4c *self) {
+void Obj021efe4c_UpdateBoxMesh(Obj021efe4c *self) {
     u8 *res;
     char name[0x10];
     int idx;

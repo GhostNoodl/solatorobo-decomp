@@ -8,7 +8,7 @@ struct Ov015Blk0afcc { s32 w[3]; };
 extern const Ov015Blk0afcc data_ov015_02212650;
 
 #define Ov015_Dot0afcc(a, b) ((s32)(((s64)(a)->x * (b)->x + (s64)(a)->y * (b)->y + (s64)(a)->z * (b)->z + 0x800) >> 12))
-void func_ov015_0220afcc(Ov015FishState2c *self) {
+void Ov015FishState2c_UpdateWake(Ov015FishState2c *self) {
     Ov015Vec v;
     Ov015Vec dir;
     Ov015Vec base;
@@ -65,7 +65,7 @@ static inline void Ov015_Spark(Ov015Vec *a, Ov015Vec *s) {
     e->SetRotXYZ(0, 0, rr);
 }
 
-void func_ov015_0220b1b8(Ov015FishState2c *self) {
+void Ov015FishState2c_UpdateSwim(Ov015FishState2c *self) {
     s32 r;
     s32 lim;
     s32 v;

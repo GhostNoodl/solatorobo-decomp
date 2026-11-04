@@ -4,7 +4,7 @@ namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 
 extern "C" {
 
-void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b);
+void Ov015Obj34_HandleInput(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b);
 void Ov015Fish_GetFrontPos(Ov015Fish *b, Ov015Vec *out);
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 void Ov015Ship_Update(Ov015Ship *p);
@@ -28,7 +28,7 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         g->unk_30 = TRUE;
     }
     if (!ok) return ok;
-    func_ov015_0220064c(self, a, b);
+    Ov015Obj34_HandleInput(self, a, b);
     m = g->unk_14;
     n = g->unk_10;
     if ((m == 3 && n == 2) || (m == 2 && n == 3) || (m == 4 && n == 4) || (m != 1 && m != 0 && n == 1)) {
@@ -99,7 +99,7 @@ static inline s32 Ov015B_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
+void Ov015Obj34_HandleInput(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
     Pad *pad = gPad;
     u16 trg = pad->trig;
     u16 cont = pad->cur;

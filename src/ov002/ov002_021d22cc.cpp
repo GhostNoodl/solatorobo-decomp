@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Task021ef99c *Task021ef99c_New(void) {
+Task021ef99c *LibraryMenu_New(void) {
     Task021ef99c *p = (Task021ef99c *)Heap_Alloc(0x118);
     if (p != NULL) {
         int i;
@@ -23,7 +23,7 @@ Task021ef99c *Task021ef99c_New(void) {
     return p;
 }
 
-BOOL func_ov002_021d2390(UiObj *self, ListRow *arg) {
+BOOL LibraryMenu_List3cOnCursor(UiObj *self, ListRow *arg) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (arg != NULL) {
         u16 i = arg->index;

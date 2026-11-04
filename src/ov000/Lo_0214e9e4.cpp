@@ -32,7 +32,7 @@ void UiList_SetIconModel(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
 u32 DataRes_GetCount(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
-s32 func_02061e7c(u16 a);
+s32 StageTbl_GetQuestName(u16 a);
 void func_ov000_0214fcfc(void *self, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, const void *mtx);
 BOOL func_ov000_0214ffac(void *self, void *msg);
 BOOL func_ov000_02150104(void *self, void *p);
@@ -181,7 +181,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         k = func_ov000_0214bcc4(id, i);
         if (k != 0xffff) {
             t = LFLD(VObj *, Task_FindById(0xe), 0x50);
-            t->vfunc_74(func_02061e7c(k), k, 0xffff, 0xffff);
+            t->vfunc_74(StageTbl_GetQuestName(k), k, 0xffff, 0xffff);
         }
     }
     self->unk_64 = data_02fe1534.unk_68;

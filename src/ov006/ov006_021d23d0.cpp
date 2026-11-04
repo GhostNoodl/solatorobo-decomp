@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void ov006_TaskD1F_Load(void) {
+void ov006_CraftSelect_Load(void) {
 }
 
-BOOL ov006_TaskD1F_IsLoaded(void) {
+BOOL ov006_CraftSelect_IsLoaded(void) {
     return TRUE;
 }
 

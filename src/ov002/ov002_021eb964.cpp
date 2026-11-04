@@ -16,7 +16,7 @@ extern char data_ov002_021f0d6e[];
 extern char data_ov002_021f0d75[];
 extern char data_ov002_021f0d7d[];
 
-void func_ov002_021eb964(Ov002StageFile *self) {
+void Ov002StageFile_FindChunks(Ov002StageFile *self) {
     s32 texSize;
     s32 sneSize;
     char *p = ((char *)self->data) + 0x10;

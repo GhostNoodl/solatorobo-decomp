@@ -14,7 +14,7 @@ void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Robo021ca458_RestoreHp(void *p);
-char *func_02061f08(u16 id);
+char *StageTbl_GetQuestOpt(u16 id);
 int func_02060898(u16 a, s32 b, s32 c);
 void SceneCmd_Push07(void *p, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
@@ -45,15 +45,15 @@ static inline BOOL Check02151664(Lo021ca9c4 *self) {
     if (ActorMgr_FindPlayer()->unk_b24_1) {
         return TRUE;
     }
-    s = func_02061f08(LFLD(u16, self->unk_54, 6));
+    s = StageTbl_GetQuestOpt(LFLD(u16, self->unk_54, 6));
     if (s == NULL) {
         return FALSE;
     }
     return STD_SearchString(s, data_ov000_021ca940) != NULL ? TRUE : FALSE;
 }
 
-// onDecide of the list (Lo021ca9c4_UpdateActive).
-BOOL func_ov000_02151664(UiList *p, UiListItem *msg) {
+// onDecide of the list (QuestWin_UpdateActive).
+BOOL QuestWin_AcceptOnDecide(UiList *p, UiListItem *msg) {
     Lo021ca9c4 *o = (Lo021ca9c4 *)p->owner;
     if (msg == NULL) {
         Beep02151664();

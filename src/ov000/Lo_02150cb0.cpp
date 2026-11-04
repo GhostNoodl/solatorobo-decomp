@@ -6,7 +6,7 @@
 
 extern "C" {
 
-void Lo021ca9c4_Release(Lo021ca9c4 *self) {
+void QuestWin_Release(Lo021ca9c4 *self) {
     self->text[0].unk_vf08();
     self->text[1].unk_vf08();
     self->text[2].unk_vf08();

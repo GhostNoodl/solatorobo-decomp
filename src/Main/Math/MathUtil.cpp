@@ -248,7 +248,7 @@ void Str_Utf16ToUtf8(char *dst, int *dstLen, const u8 *src, int *srcLen) {
 extern int sprintf(void *a, void *b, void *c);
 extern u8 data_0208b3cc[];
 
-void func_02040a98(void *a, void *b) {
+void Str_FormatInt(void *a, void *b) {
     sprintf(a, data_0208b3cc, b);
 }
 

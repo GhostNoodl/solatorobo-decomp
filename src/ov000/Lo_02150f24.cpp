@@ -7,10 +7,10 @@ extern "C" {
 BOOL Model_IsReady(void *a, s32 b);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *gSndMgr;
-void func_ov000_02152294(UiList *self, s32 a, s32 b, void *cb);
-BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
+void UiObj_OpenChoice(UiList *self, s32 a, s32 b, void *cb);
+BOOL QuestWin_AcceptOnDecide(UiList *p, UiListItem *msg);
 
-void Lo021ca9c4_UpdateActive(Lo021ca9c4 *self) {
+void QuestWin_UpdateActive(Lo021ca9c4 *self) {
     u16 k;
     Lo021caac8 *p;
     if (self->unk_58) {
@@ -29,7 +29,7 @@ void Lo021ca9c4_UpdateActive(Lo021ca9c4 *self) {
         if (self->unk_42 == 0xffff) {
             return;
         }
-        func_ov000_02152294(p, 0x8e, 0x18, (void *)func_ov000_02151664);
+        UiObj_OpenChoice(p, 0x8e, 0x18, (void *)QuestWin_AcceptOnDecide);
         return;
     }
     if (!(k & 2)) {

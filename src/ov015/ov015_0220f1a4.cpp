@@ -243,9 +243,9 @@ void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
 
 extern Ov015Globals gOv015Globals;
 void Ov015Fade_Reset(Ov015Fade *self);
-void func_ov015_0220f878(Ov015Result *self);
-void func_ov015_0220fb78(Ov015Result *self);
-void func_ov015_0220e634(Ov015ResultPanel *a, s32 b);
+void Ov015Result_StartCatchScene(Ov015Result *self);
+void Ov015Result_StartEscapeScene(Ov015Result *self);
+void Ov015ResultPanel_Build(Ov015ResultPanel *a, s32 b);
 static inline void Ov015_SetStageSkip(s32 v) {
     Ov002Stage *g = gOv002Stage;
     g->unk_14 = v;
@@ -262,12 +262,12 @@ BOOL Ov015Result_Update(Ov015Result *self) {
         self->mode = gOv015Globals.mainSeq->unk_08;
         switch (self->mode) {
         case 1:
-            func_ov015_0220f878(self);
+            Ov015Result_StartCatchScene(self);
             Ov015_SetStageSkip(0x51000);
             self->unk_0c = 0x50000;
             break;
         case 0:
-            func_ov015_0220fb78(self);
+            Ov015Result_StartEscapeScene(self);
             Ov015_SetStageSkip(0x14a000);
             self->unk_0c = 0x79000;
             break;
@@ -286,7 +286,7 @@ BOOL Ov015Result_Update(Ov015Result *self) {
                 break;
             }
         }
-        func_ov015_0220e634(self->panel, self->mode);
+        Ov015ResultPanel_Build(self->panel, self->mode);
         gOv002Stage->unk_128 = 0;
         self->state = 0x14;
     case 0x14: {

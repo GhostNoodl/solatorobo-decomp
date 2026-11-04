@@ -19,14 +19,14 @@
 #ifdef __cplusplus
 
 // ov002's row list (vtable Ov002Vt_021f0044_vtbl over ov000's LoBase021ccb54_021ccbe0, the same 0xf4
-// bytes). onDecide is func_ov002_021d2410 and onCursor func_ov002_021d2390 for the level list.
+// bytes). onDecide is LibraryMenu_List3cOnDecide and onCursor LibraryMenu_List3cOnCursor for the level list.
 struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
 };
 SIZE_ASSERT(Ov002RowList, 0xf4);
 
-// The text lists of Task021ef69c_Start and Task021ef91c_Start are ov000's TextList
-// (ov000/TextList.h): onDecide gets the chosen row (Task021ef69c_List3cOnDecide), onCursor the row under
-// the cursor (Task021ef69c_List3cOnCursor).
+// The text lists of AlbumMenu_Start and LibraryViewer_Start are ov000's TextList
+// (ov000/TextList.h): onDecide gets the chosen row (AlbumMenu_List3cOnDecide), onCursor the row under
+// the cursor (AlbumMenu_List3cOnCursor).
 
 // Animated model (0x70, vtable Ov002Vt_021efe3c_vtbl; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
 // Ov002Mdl021efe3c_Load loads model file `name` and animation file `anmName` from archive `arc`;
@@ -150,7 +150,7 @@ typedef struct Ov002SndCue {
 } Ov002SndCue;
 
 // Vtable Ov002Vt_021efe4c_vtbl, 0x70 bytes (ctor Obj021efe4c_Init, dtor Obj021efe4c_Release): the
-// board's field. func_ov002_021d7238 sets map to the shape of field id unk_68. func_ov002_021d7058
+// board's field. Obj021efe4c_UpdateBoxMesh sets map to the shape of field id unk_68. Obj021efe4c_SetupBoxModels
 // builds the two models unk_08/unk_10 from the resource blocks unk_0c/unk_14; Obj021efe7c_Draw
 // copies trans, rot and scale into both before drawing them while visible is set.
 struct Obj021efe4c : public VObj {

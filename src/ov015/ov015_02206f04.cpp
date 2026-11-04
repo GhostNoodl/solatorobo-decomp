@@ -3,18 +3,18 @@
 extern "C" {
 
 extern u8 Ov015Scene2a88_vtbl[];
-extern u8 Ov015Scene2a08_vtbl[];
+extern u8 Ov015FishingMenu_vtbl[];
 void *GfxCamPos_Init(void *p);
 void GfxCamParam_Init(void *p);
-extern u8 Ov015Scene2c08_vtbl[];
-extern u8 Ov015Scene2b88_vtbl[];
-extern u8 Ov015Scene2b08_vtbl[];
+extern u8 Ov015HarpoonSelect_vtbl[];
+extern u8 Ov015SpotSelect_vtbl[];
+extern u8 Ov015PointShop_vtbl[];
 extern u8 Ov015SceneSeq_vtbl[];
 extern u8 Ov015Child_vtbl[];
 void TaskHost_Destroy(void);
-void Ov015Scene2b08_DtorBase(Ov015Scene2b08 *self);
-void Ov015Scene2c08_DtorBase(Ov015Scene2c08 *self);
-void Ov015Scene2a08_DtorBase(Ov015Scene2a08 *self);
+void Ov015PointShop_DtorBase(Ov015Scene2b08 *self);
+void Ov015HarpoonSelect_DtorBase(Ov015Scene2c08 *self);
+void Ov015FishingMenu_DtorBase(Ov015Scene2a08 *self);
 extern u8 Ov015MsgBox_vtbl[];
 void MsgBox_Release(void *p);
 void *ResSet_Init(void *p);
@@ -44,11 +44,11 @@ void *Ov015Scene2a88_New(void) {
     return p;
 }
 
-void *Ov015Scene2a08_New(void) {
+void *Ov015FishingMenu_New(void) {
     Ov015Scene2a08 *p = (Ov015Scene2a08 *)Heap_Alloc(0xb0);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, Ov015Scene2a08_vtbl);
+        SET_VT(p, Ov015FishingMenu_vtbl);
         GfxCamPos_Init(&p->camView.eye);
         GfxCamParam_Init(&p->camView.fovSin);
         p->ship = 0;
@@ -70,11 +70,11 @@ void *Ov015Scene2a08_New(void) {
     return p;
 }
 
-void *Ov015Scene2c08_New(void) {
+void *Ov015HarpoonSelect_New(void) {
     Ov015Scene2c08 *p = (Ov015Scene2c08 *)Heap_Alloc(0x6c);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, Ov015Scene2c08_vtbl);
+        SET_VT(p, Ov015HarpoonSelect_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -93,11 +93,11 @@ void *Ov015Scene2c08_New(void) {
     return p;
 }
 
-void *Ov015Scene2b88_New(void) {
+void *Ov015SpotSelect_New(void) {
     Ov015Scene2b88 *p = (Ov015Scene2b88 *)Heap_Alloc(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, Ov015Scene2b88_vtbl);
+        SET_VT(p, Ov015SpotSelect_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -110,11 +110,11 @@ void *Ov015Scene2b88_New(void) {
     return p;
 }
 
-void *Ov015Scene2b08_New(void) {
+void *Ov015PointShop_New(void) {
     Ov015Scene2b08 *p = (Ov015Scene2b08 *)Heap_Alloc(0x164);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, Ov015Scene2b08_vtbl);
+        SET_VT(p, Ov015PointShop_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -224,49 +224,49 @@ s32 Ov015Task_IsReady(void) {
     return 1;
 }
 
-void *Ov015Scene2b08_DtorDelete(Ov015Scene2b08 *self) {
-    SET_VT(self, Ov015Scene2b08_vtbl);
-    Ov015Scene2b08_DtorBase(self);
+void *Ov015PointShop_DtorDelete(Ov015Scene2b08 *self) {
+    SET_VT(self, Ov015PointShop_vtbl);
+    Ov015PointShop_DtorBase(self);
     Ov015TaskBase_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov015Scene2b08_Dtor(Ov015Scene2b08 *self) {
-    SET_VT(self, Ov015Scene2b08_vtbl);
-    Ov015Scene2b08_DtorBase(self);
+void *Ov015PointShop_Dtor(Ov015Scene2b08 *self) {
+    SET_VT(self, Ov015PointShop_vtbl);
+    Ov015PointShop_DtorBase(self);
     Ov015TaskBase_Dtor(self);
 
     return self;
 }
 
-void *Ov015Scene2c08_DtorDelete(Ov015Scene2c08 *self) {
-    SET_VT(self, Ov015Scene2c08_vtbl);
-    Ov015Scene2c08_DtorBase(self);
-    Ov015TaskBase_Dtor(self);
-    Heap_Free(self);
-    return self;
-}
-
-void *Ov015Scene2c08_Dtor(Ov015Scene2c08 *self) {
-    SET_VT(self, Ov015Scene2c08_vtbl);
-    Ov015Scene2c08_DtorBase(self);
-    Ov015TaskBase_Dtor(self);
-
-    return self;
-}
-
-void *Ov015Scene2a08_DtorDelete(Ov015Scene2a08 *self) {
-    SET_VT(self, Ov015Scene2a08_vtbl);
-    Ov015Scene2a08_DtorBase(self);
+void *Ov015HarpoonSelect_DtorDelete(Ov015Scene2c08 *self) {
+    SET_VT(self, Ov015HarpoonSelect_vtbl);
+    Ov015HarpoonSelect_DtorBase(self);
     Ov015TaskBase_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov015Scene2a08_Dtor(Ov015Scene2a08 *self) {
-    SET_VT(self, Ov015Scene2a08_vtbl);
-    Ov015Scene2a08_DtorBase(self);
+void *Ov015HarpoonSelect_Dtor(Ov015Scene2c08 *self) {
+    SET_VT(self, Ov015HarpoonSelect_vtbl);
+    Ov015HarpoonSelect_DtorBase(self);
+    Ov015TaskBase_Dtor(self);
+
+    return self;
+}
+
+void *Ov015FishingMenu_DtorDelete(Ov015Scene2a08 *self) {
+    SET_VT(self, Ov015FishingMenu_vtbl);
+    Ov015FishingMenu_DtorBase(self);
+    Ov015TaskBase_Dtor(self);
+    Heap_Free(self);
+    return self;
+}
+
+void *Ov015FishingMenu_Dtor(Ov015Scene2a08 *self) {
+    SET_VT(self, Ov015FishingMenu_vtbl);
+    Ov015FishingMenu_DtorBase(self);
     Ov015TaskBase_Dtor(self);
 
     return self;

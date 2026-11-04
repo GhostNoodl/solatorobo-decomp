@@ -8,7 +8,7 @@
 // The 2D marker shown over an actor (Actor::unk_5c) or the robot (Robo021ca458::unk_9b0 / unk_9b4).
 // It is allocated with 0xa8 bytes and set up by ActorMarker_Init; ActorMarker_Release releases it
 // before the free. ActorMarker_SetKind requests a kind; ActorMarker_Update loads the kind's models
-// (func_ov000_021bd8ac), waits for them and the fade out of the old kind, then installs the kind's
+// (ActorMarker_LoadIcons), waits for them and the fade out of the old kind, then installs the kind's
 // update / draw pair from the table ActorMarker_KindTable. Each kind keeps its own fields after the
 // common block, from 0x8c (see the kind's source file).
 
@@ -41,7 +41,7 @@ struct ActorMarker {
         };
     };
     /* 0x04 */ struct ActorRes *res; // kind 11's resources (0x138, ResSet_Init)
-    /* 0x08 */ struct Model *mdl[8]; // 4..7: loaded by func_ov000_021bd8ac, handed to the kind
+    /* 0x08 */ struct Model *mdl[8]; // 4..7: loaded by ActorMarker_LoadIcons, handed to the kind
     /* 0x28 */ s32 unk_28[6];
     /* 0x40 */ s32 step; // kind change: 7 load, 8 wait models, 9 wait fade out, 10 done
     /* 0x44 */ s32 kind;
@@ -82,7 +82,7 @@ void ActorMarker_UpdateScreenPos(ActorMarker *self, VecFx32 *pos);
 void ActorMarker_Update(ActorMarker *self);
 void ActorMarker_Draw(ActorMarker *self);
 void ActorMarker_FreeRes(ActorMarker *self);
-BOOL func_ov000_021bd8ac(ActorMarker *self);
+BOOL ActorMarker_LoadIcons(ActorMarker *self);
 
 #ifdef __cplusplus
 }

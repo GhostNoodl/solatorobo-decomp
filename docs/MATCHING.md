@@ -9368,3 +9368,31 @@ Result: none of the three functions matches honestly, so both files are whole-fi
 
 Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` **8108** matched (8111 before; these three
 functions were counted as matches). `tools/check_drafts.py --score` and `tools/honesty_scan.py` exit 0.
+
+## Round nmM (names from game text): no new match
+
+Readability only; every function stays byte-identical, and only symbol names change. Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, `ninja report` at 8115 matched (same as main), `check_drafts.py --score` and `honesty_scan.py` exit 0. There are 469 pairs in `renames_final.txt` (`old new`, one pair per line, applied in any order): 112 `func_*`, and 357 existing class-prefixed names (341 functions, 16 vtables) given the role the text shows. No new name was in use before (no swaps or cycles), every new name is fresh against all symbols.txt files, every identifier in src/include/libs and `tools/honesty_allow.txt`, and `__sinit_ov002_021ef1f0` is untouched.
+
+**New evidence rule (approved by the repo owner for this round on).** The game's own text may be used as naming evidence: string tables, the message files, menu labels, asset and file names, and string-keyed lookups, read locally from `extract/usa` or the ROM. The text itself never goes into the repo: no pasted strings, dialogue or dumps in committed files or comments, and no long verbatim text as identifiers. Short descriptive identifiers inspired by the text (`StoreMenu_BuyItem`, `PlaceNameCard_Update`) are fine.
+
+**How the text was read.** `tools/strrefs.py <module> --pools` lists the strings each function loads (file paths, chunk tags, table keys). The message files are LZ11-compressed members of `.ccb` archives (a `CCB ` header, a u16 count, then 0x20-byte entries: a 0x18-byte name, the packed size `<<8`, and the LZ header); a `TMES` member holds `entries`/`strings` exactly as `MsgRes_Bind` reads them. `gMsgRes` is the common message file (`MsgRes_Create`'s path), so every `MsgRes_GetString(gMsgRes, id)` and every helper that forwards an id (`ov002_ShowMsg`, `UiObj_OpenChoice`, the shop `ShowMsg` inlines) can be read. Collecting the message ids per `self` type gives each menu task its screen title and options, which names the class.
+
+**Counts by module:**
+
+| main | ov000 | ov002 | ov006 | ov007 | ov008 | ov015 |
+|---|---|---|---|---|---|---|
+| 18 | 132 | 128 | 78 | 10 | 16 | 87 |
+
+**Class prefixes renamed from their menu text** (every symbol `<Old>_*` became `<New>_*`; struct type names in src are unchanged, so a function may still take e.g. `Task021ef4b0 *self`):
+- ov002 ship menus: `Task021ef530` `AsmodeusMenu` (the ship's top menu), `Task021ef4b0` `CabinMenu`, `Task021ef69c` `AlbumMenu`, `Task021ef79c` `AudioMenu`, `Task021ef81c` `ComposeMenu`, `Task021efa1c` `MusicPlayer`, `Task021ef89c` `TheaterMenu`, `Task021ef71c` `TheaterPlayer` (plays the chosen movie or slide), `Task021ef99c` `LibraryMenu`, `Task021ef91c` `LibraryViewer` (task 0x19, opened by the library list with the page's file names), `Task021efc24` `RobotTypeMenu`, `Obj021eff74` `CustomizeMenu`.
+- ov000 field menus: `Task021cbbe0` `PauseMenu`, `Task021cbd60` `ObjectiveMenu`, `Task021cbde0` `HelpMenu`, `Task021cbee0` `StoreMenu`, `Task021cbe60` `SellMenu`, `Task021cbf60` `DiscardMenu`, `Lo021ca9c4` `QuestWin`.
+- ov015 fishing: `Ov015Scene2a08` `Ov015FishingMenu`, `Ov015Scene2c08` `Ov015HarpoonSelect`, `Ov015Scene2b88` `Ov015SpotSelect`, `Ov015Scene2b08` `Ov015PointShop`.
+- ov006 race: `ov006_TaskCE` `ov006_ModeMenu`, `ov006_TaskD0` `ov006_GroupSelect`, `ov006_TaskD0C` `ov006_EntryWait`, `ov006_TaskD1F` `ov006_CraftSelect`, `ov006_TaskD37` `ov006_CourseSelect`, `ov006_Task021ec040` `ov006_Winnings`; ov007 `Ov007Scene` `Ov007Title`; ov008 `Ov008Mgr` `Ov008WorldMap`.
+
+**Functions named:**
+- **String-keyed lookups:** the eight `gStageDataRes` chunk getters are `StageTbl_Get<Chunk>` after the key each compares (`SceneCond`, `MissionName`, `QuestName`, `QuestOpt`, `Image`, `KeyItemName`, `SavePos`, `HelpName`); `Quest_GetOptFlags` turns a quest's option string into flag bits. `Param_BindTables` and `LangRes2_BindTables` look up their named sub-tables after a load; `Param_GetDesc` returns an entry's second string, `Param_GetBgmInfo`/`GetMovieInfo`/`GetExchangeItem` are the record getters only the music, theater and point-shop code use.
+- **Field overlay cards** (the `ListBuffer021cb940` slots, each with `Init`/`Update`/`Draw`/`Dtor` from the call sites): `ImageCard` (loads the `ImageTbl` picture), `PlaceNameCard` (the localized place-name cell), `MissionCard` (mission or quest title), `SceneCondCard` (the `SceneCondTbl` banner), `MissionInfo` (the mission panel with its back button).
+- **Menu helpers**, from the message ids they show: `StoreMenu_BuyItem`/`PayPrice`/`ConfirmOnDecide`, `SceneCmd_RunShopPrompt` (the buy/sell prompt that opens task 4 or 10), `QuestWin_AcceptOnDecide`, `UiObj_OpenChoice` (the yes/no child dialog), `CabinMenu_BuildMenu`/`Rebuild`/`SetItemHelp`, `TheaterMenu_BuildList`, `TheaterPlayer_PlayMovie`/`PlaySlide`, `ComposeMenu_ConfirmOnDecide`, `RobotTypeMenu_ConfirmOnDecide`/`ApplyType`, `Obj021eff10_ShowCellInfo` (the parts board's cell description) and the board steps `Obj021eff10_Step00..50`, `Obj021eff30_Step01/10`, `Ov015PointShop_BuyItem`, `Ov015SpotSelect_ConfirmSpot`, `Ov015ResultPanel_Build`.
+- **Asset names:** `Ov015Fish_LoadModels`/`SetupModels`, `Ov015Hud_Setup`/`Update` and its OAM callbacks, `Ov015Result_StartCatchScene`/`StartEscapeScene` (the fish's jump and escape animations), the fish splash helpers (`Ov015FishState*_Step*`, `UpdateWake`), `ActorMarker_LoadIcons`, `Obj021efe4c_SetupBoxModels` (the tool box's lid animation), the slide loaders (`Ov002Stage_CreateSlide`/`SelectSlide`, `Ov002_MakeSlideName`/`MakeSlideFileName`, `Ov002StageFile_FindChunks`/`BuildScene`), `Ov002_MakeLangFileName`, `Ov008Caption_Update`, `Unk0214a418_LoadTitleWipe`, `Effect_SpawnRingBurst`, `EffectSetup_SetEmitterByName`.
+
+**Left unnamed:** the animation-name helpers inside actor states (the names give the animation, not the role), the `LangData` path builders (`func_0206dde4` and siblings), the remaining Param getters whose category is not certain, and the lang/font/name-table data ranges another round is extracting.

@@ -7,7 +7,7 @@ void GfxSys_StartFadeOut(int a, int b, int c);
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, int id);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_ov015_02203ee0(Ov015Scene2a08 *self);
+void Ov015FishingMenu_UpdateShipView(Ov015Scene2a08 *self);
 void Ov015Ship_Update(Ov015Ship *p);
 BOOL MsgBox_Update(void *p);
 extern Ov015Vec data_ov015_02212614;
@@ -15,7 +15,7 @@ extern Ov015Vec data_ov015_02212620;
 void MsgBox_Render(void *p);
 void Ov015Shadow_DrawAt(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 void Ov015Ship_Draw(Ov015Ship *p);
-void *func_0206ec8c(u16 id);
+void *Param_GetDesc(u16 id);
 
 static inline UiListItem *Ov015_ListNth2(UiList *o) {
     UiListItem *p = o->topItem;
@@ -28,7 +28,7 @@ static inline UiListItem *Ov015_ListNth2(UiList *o) {
     return p;
 
 }
-void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_UpdateActive(Ov015Scene2a08 *self) {
     u16 keys;
     if (self->unk_8c != NULL) return;
     keys = gPad->trig;
@@ -84,7 +84,7 @@ static inline UiListItem *Ov015_ListNth3(UiList *o) {
     }
     return p;
 }
-void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_PreUpdate(Ov015Scene2a08 *self) {
     Ov015Vec out;
     Ov015Vec v;
     s32 k;
@@ -96,7 +96,7 @@ void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
         SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 13:
-        func_ov015_02203ee0(self);
+        Ov015FishingMenu_UpdateShipView(self);
         break;
     }
     k = FX_Mul(0x1000 - self->unk_80->openRatio, 0x3000);
@@ -155,7 +155,7 @@ void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
     self->unk_88->vfunc_1c();
 }
 
-void Ov015Scene2a08_PostUpdate(void) {
+void Ov015FishingMenu_PostUpdate(void) {
 }
 
 static inline void Ov015_02203d64_Cam(Ov015Scene2a08 *self) {
@@ -171,7 +171,7 @@ static inline void Ov015_02203d64_Cam(Ov015Scene2a08 *self) {
         self->camView.projDirty = 0;
     }
 }
-void Ov015Scene2a08_Draw(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_Draw(Ov015Scene2a08 *self) {
     Ov015Ship *o;
     if (self->fadeRatio == NULL) return;
     Task_Draw(self);
@@ -188,7 +188,7 @@ void Ov015Scene2a08_Draw(Ov015Scene2a08 *self) {
     if (self->unk_8c != NULL) MsgBox_Render(self->unk_8c);
 }
 
-void func_ov015_02203ee0(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_UpdateShipView(Ov015Scene2a08 *self) {
     Ov015Ship *o = self->ship;
     u16 pad;
     if (o == NULL) {
@@ -223,12 +223,12 @@ void func_ov015_02203ee0(Ov015Scene2a08 *self) {
     }
 }
 
-BOOL Ov015Scene2c08_List3cOnCursor(UiList *self, UiListItem *ev) {
+BOOL Ov015HarpoonSelect_List3cOnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2c08 *o;
     u16 id;
     id = ev->id;
     o = (Ov015Scene2c08 *)self->owner;
-    void *m = func_0206ec8c(id);
+    void *m = Param_GetDesc(id);
     if (o->unk_40 != NULL) {
         Obj0215bb14_SetText(o->unk_40, m);
         o->unk_40->vfunc_70();
@@ -237,7 +237,7 @@ BOOL Ov015Scene2c08_List3cOnCursor(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL Ov015Scene2c08_List3cOnDecide(UiList *self, UiListItem *item) {
+BOOL Ov015HarpoonSelect_List3cOnDecide(UiList *self, UiListItem *item) {
     BOOL r = TRUE;
     Ov015Scene2c08 *o = (Ov015Scene2c08 *)self->owner;
     if (item != NULL) {
@@ -260,7 +260,7 @@ BOOL Ov015Scene2c08_List3cOnDecide(UiList *self, UiListItem *item) {
     return r;
 }
 
-void Ov015Scene2c08_DtorBase(Ov015Scene2c08 *self) {
+void Ov015HarpoonSelect_DtorBase(Ov015Scene2c08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);
@@ -282,10 +282,10 @@ void Ov015Scene2c08_DtorBase(Ov015Scene2c08 *self) {
     HEAP_POP(saved);
 }
 
-void Ov015Scene2c08_Load(void) {
+void Ov015HarpoonSelect_Load(void) {
 }
 
-s32 Ov015Scene2c08_IsLoaded(void) {
+s32 Ov015HarpoonSelect_IsLoaded(void) {
     return 1;
 }
 
@@ -318,7 +318,7 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideZ = z;
 }
 
-void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
+void Ov015HarpoonSelect_Start(Ov015Scene2c08 *self) {
     VObj *p;
     void *res;
     s32 i;
@@ -378,8 +378,8 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
         UiList *o = self->unk_3c;
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
-    self->unk_3c->onDecide = Ov015Scene2c08_List3cOnDecide;
-    self->unk_3c->onCursor = Ov015Scene2c08_List3cOnCursor;
+    self->unk_3c->onDecide = Ov015HarpoonSelect_List3cOnDecide;
+    self->unk_3c->onCursor = Ov015HarpoonSelect_List3cOnCursor;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);
@@ -396,7 +396,7 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     Ov015_SetUiSlide(self->unk_40, -0x100, 0, -0xccd);
     self->unk_40->slideMode = 1;
     {
-        void *s = func_0206ec8c(self->unk_3c->items->id);
+        void *s = Param_GetDesc(self->unk_3c->items->id);
         if (self->unk_40 != NULL) {
             Obj0215bb14_SetText(self->unk_40, s);
             self->unk_40->vfunc_70();

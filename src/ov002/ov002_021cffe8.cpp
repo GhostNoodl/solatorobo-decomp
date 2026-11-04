@@ -3,7 +3,7 @@
 extern "C" {
 
 
-void Task021ef79c_UpdateActive(Task021ef79c *self) {
+void AudioMenu_UpdateActive(Task021ef79c *self) {
     u16 keys;
     u16 id;
     UiListItem *item;

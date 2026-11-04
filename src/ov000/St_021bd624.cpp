@@ -26,7 +26,7 @@ static inline s32 Norm021bd624(s32 k) {
 void ActorMarker_Update(ActorMarker *self) {
     switch (self->step) {
     case 7:
-        if (!func_ov000_021bd8ac(self)) {
+        if (!ActorMarker_LoadIcons(self)) {
             break;
         }
         self->step = 8;

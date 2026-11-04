@@ -30,13 +30,13 @@ extern void *UiObj_vtbl;
 extern void *UiList_vtbl;
 extern void *Ov000Vt_021cb1b0_vtbl;
 extern void *Ov000Vt_021cb0b8_vtbl;
-void Ov008Mgr_LoadRes(Ov008Mgr *m);
-BOOL Ov008Mgr_IsResReady(Ov008Mgr *m);
-void Ov008Mgr_Setup(Ov008Mgr *m);
-void Ov008Mgr_BuildMenu(Ov008Mgr *m);
-void Ov008Mgr_UpdateCaption(Ov008Mgr *m);
-void func_ov008_021cce38(Ov008Caption *p);
-BOOL Ov008Mgr_DialogOnDecide(Ov008Menu *self, Ov008Sel *sel);
+void Ov008WorldMap_LoadRes(Ov008Mgr *m);
+BOOL Ov008WorldMap_IsResReady(Ov008Mgr *m);
+void Ov008WorldMap_Setup(Ov008Mgr *m);
+void Ov008WorldMap_BuildMenu(Ov008Mgr *m);
+void Ov008WorldMap_UpdateCaption(Ov008Mgr *m);
+void Ov008Caption_Update(Ov008Caption *p);
+BOOL Ov008WorldMap_DialogOnDecide(Ov008Menu *self, Ov008Sel *sel);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
@@ -73,7 +73,7 @@ static inline BOOL Ov008_Has200(Ov008Talk *p) {
 
 extern "C" {
 
-s32 Ov008Mgr_Update(Ov008Mgr *m) {
+s32 Ov008WorldMap_Update(Ov008Mgr *m) {
     s32 n;
     Ov008Dialog *w;
     s32 id;
@@ -82,10 +82,10 @@ s32 Ov008Mgr_Update(Ov008Mgr *m) {
     case 0:
         return 0;
     case 1:
-        Ov008Mgr_LoadRes(m);
+        Ov008WorldMap_LoadRes(m);
         m->state = 2;
     case 2:
-        if (!Ov008Mgr_IsResReady(m)) {
+        if (!Ov008WorldMap_IsResReady(m)) {
             break;
         }
         m->state = 3;
@@ -99,9 +99,9 @@ s32 Ov008Mgr_Update(Ov008Mgr *m) {
         m->state = 4;
     case 4:
         GfxSys_StartFadeIn(0x8000, 0, -1);
-        Ov008Mgr_Setup(m);
+        Ov008WorldMap_Setup(m);
     case 6:
-        Ov008Mgr_BuildMenu(m);
+        Ov008WorldMap_BuildMenu(m);
         m->state = 10;
     case 10:
         if (m->flags.b0) {
@@ -173,7 +173,7 @@ s32 Ov008Mgr_Update(Ov008Mgr *m) {
             m->dialog->owner = m;
             Ov008Menu_SetPos(m->dialog, 0, 0, 0);
             m->dialog->flags |= 0x80000;
-            m->dialog->onDecide = (Ov008Cb)Ov008Mgr_DialogOnDecide;
+            m->dialog->onDecide = (Ov008Cb)Ov008WorldMap_DialogOnDecide;
             m->dialog->v08();
             m->state = 12;
         }
@@ -263,13 +263,13 @@ s32 Ov008Mgr_Update(Ov008Mgr *m) {
     if (m->unk_e8 != NULL) {
         TexObj_TickAnim(m->unk_e8, 0);
     }
-    Ov008Mgr_UpdateCaption(m);
+    Ov008WorldMap_UpdateCaption(m);
     if (m->state >= 5) {
         Model0218fe1c_UpdateAnim(m->unk_c8, 0x1000);
         Model0218fe1c_UpdateAnim(m->unk_d0, 0x1000);
     }
     if (m->caption != NULL) {
-        func_ov008_021cce38(m->caption);
+        Ov008Caption_Update(m->caption);
     }
     return 1;
 }

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void Task021efc24_Draw(Task021efc24 *self) {
+void RobotTypeMenu_Draw(Task021efc24 *self) {
     if (!self->vfunc_28()) {
         return;
     }

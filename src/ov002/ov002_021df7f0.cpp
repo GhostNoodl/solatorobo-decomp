@@ -8,8 +8,8 @@ s32 Ov002_FxMul(s32 a, s32 b);
 void Ov002_QuarterRotMtx33(s32 *m, int rot);
 void *func_ov002_021e3874(void *v, u8 a, u8 b);
 void Ov002_PlaySe(int se);
-void func_ov002_021e00bc(Obj021eff30 *self);
-void func_ov002_021dfcc0(Obj021eff30 *self);
+void Obj021eff30_Step10(Obj021eff30 *self);
+void Obj021eff30_Step01(Obj021eff30 *self);
 void *Heap_GetCurrent(void);
 void Heap_SetCurrentHi(void);
 void Heap_SetCurrent(void *heap);
@@ -28,10 +28,10 @@ void Obj021eff30_Update(Obj021eff30 *self, Obj021eff50 *a) {
             break;
         }
     case 1:
-        func_ov002_021dfcc0(self);
+        Obj021eff30_Step01(self);
         break;
     case 10:
-        func_ov002_021e00bc(self);
+        Obj021eff30_Step10(self);
         break;
     case 20:
         if (func_ov002_021dc834(self->unk_10) == 2) {

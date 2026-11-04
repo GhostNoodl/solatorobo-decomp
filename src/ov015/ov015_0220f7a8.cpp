@@ -61,25 +61,25 @@ extern const Ov015ResNamePair data_ov015_02213088;
 extern const Ov015ResNameOne data_ov015_02212fb8;
 extern const Ov015ResNameOne data_ov015_02212fdc;
 extern char data_ov015_0221311c[];
-void func_ov015_0220f878(Ov015Result *self) {
+void Ov015Result_StartCatchScene(Ov015Result *self) {
     Ov015StageMdl *o;
     u16 id;
     char *name;
     switch (*(u16 *)func_02070744(gOv015Shared->catchId)) {
     case 0:
-        func_ov002_021e9e40(3);
+        Ov002Stage_SelectSlide(3);
         break;
     case 1:
-        func_ov002_021e9e40(4);
+        Ov002Stage_SelectSlide(4);
         break;
     case 2:
     case 3:
-        func_ov002_021e9e40(5);
+        Ov002Stage_SelectSlide(5);
         break;
     }
     o = (Ov015StageMdl *)Heap_Alloc(sizeof(Ov015StageMdl));
     if (o != NULL) {
-        o = (Ov015StageMdl *)func_ov015_0220dde8(o);
+        o = (Ov015StageMdl *)Ov015StageMdl_Ctor(o);
     }
     o->unk_18 = 0;
     o->unk_1c = 0x96000;
@@ -145,15 +145,15 @@ struct Ov015ItemBits {
     u16 kind : 3;
     u16 hi : 8;
 };
-void func_ov015_0220fb78(Ov015Result *self) {
+void Ov015Result_StartEscapeScene(Ov015Result *self) {
     Ov015StageMdl *o;
     Ov002Obj021f075c *t;
     u16 id;
     char *name;
-    func_ov002_021e9e40(6);
+    Ov002Stage_SelectSlide(6);
     o = (Ov015StageMdl *)Heap_Alloc(sizeof(Ov015StageMdl));
     if (o != NULL) {
-        o = (Ov015StageMdl *)func_ov015_0220dde8(o);
+        o = (Ov015StageMdl *)Ov015StageMdl_Ctor(o);
     }
     o->unk_18 = 0;
     o->unk_1c = 0x168000;

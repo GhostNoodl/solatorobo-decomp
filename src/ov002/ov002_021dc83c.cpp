@@ -4,7 +4,7 @@ extern "C" {
 
 s32 SndMgr_PlayPan(void *a, int b, int c);
 void *func_ov002_021dd6a4(Obj021eff10 *self, char *text, u16 msgId);
-void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
+void Obj021eff10_ShowCellInfo(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
     s32 y = pos->y;
@@ -36,7 +36,7 @@ static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx,
     c->unk_bc.z = tz;
 }
 
-void func_ov002_021dc83c(Obj021eff10 *self) {
+void Obj021eff10_Step10(Obj021eff10 *self) {
     u16 trig = gPad->trig;
     Obj021efe6c *w = self->owner->board;
     void *msg = gMsgRes;
@@ -156,7 +156,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             SndMgr_PlayVolume(gSndMgr, 0x22, -1, -1, -1);
             old.x = self->unk_24;
             old.y = self->unk_28;
-            func_ov002_021dd7f0(self, &np, &old, 0);
+            Obj021eff10_ShowCellInfo(self, &np, &old, 0);
             c = self->owner->board;
             d = (u8)np.y - self->owner->board->field->map->oy;
             px = *(s32 *)(data_ov002_021eef74 + 0x58);

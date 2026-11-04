@@ -7,7 +7,7 @@ bool Ov002Task_IsCurrent(void *p) {
     return r;
 }
 
-void Task021ef530_PostUpdate(void) {
+void AsmodeusMenu_PostUpdate(void) {
 }
 
 }

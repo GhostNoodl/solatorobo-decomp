@@ -40,8 +40,8 @@ extern u8 data_ov015_02212e4e[];
 extern u8 data_ov015_02212e61[];
 BOOL Model0218fe1c_IsAnimDone(void *p);
 void Model0218fe1c_SetLoop(void *a);
-void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p);
-void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p);
+void Ov015FishState18_StepRise(Ov015FishState18 *self, Ov015Fish *p);
+void Ov015FishState18_StepSettle(Ov015FishState18 *self, Ov015Fish *p);
 static inline void Ov015_SpeedB6f0(Ov015Fish *p) {
     s32 r;
     s32 sp = p->info.unk_28;
@@ -61,7 +61,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
     self->fish = p;
     switch (self->step) {
     case 0:
-        func_ov015_0220bb68(self, p);
+        Ov015FishState18_StepRise(self, p);
         if (Model0218fe1c_IsAnimDone(&p->model)) {
             Model0218fe1c_SetAnim(&p->model, data_ov015_02212e4e, 0x19a, 0);
             Model0218fe1c_SetLoop(&p->model);
@@ -133,7 +133,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         break;
     }
     case 2:
-        func_ov015_0220be38(self, p);
+        Ov015FishState18_StepSettle(self, p);
         if (Model0218fe1c_IsAnimDone(&p->model)) {
             Ov015_SpeedB6f0(p);
             return FALSE;

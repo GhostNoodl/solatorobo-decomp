@@ -6,7 +6,7 @@ extern "C" {
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 extern const s16 FX_SinCosTable_[];
 
-void Task021ef69c_PreUpdate(Task021ef69c *self) {
+void AlbumMenu_PreUpdate(Task021ef69c *self) {
     TextList *o;
     s32 bz;
     s32 by;

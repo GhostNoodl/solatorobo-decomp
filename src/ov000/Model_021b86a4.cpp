@@ -32,7 +32,7 @@ struct Obj021b86a4 {
     u16 unk_58;
 };
 
-void func_ov000_021b86a4(Obj021b86a4 *self) {
+void ImageCard_Draw(Obj021b86a4 *self) {
     s32 st = self->unk_44;
     u16 i;
     s32 y;

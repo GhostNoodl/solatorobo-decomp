@@ -7,12 +7,12 @@
 #include "ov000/Obj0216ad04.h"
 
 extern "C" {
-void func_ov000_021b9a84(void *p);
-void func_ov000_021bac78(void *p);
-void func_ov000_021bbbdc(void *p);
+void MissionCard_Draw(void *p);
+void SceneCondCard_Draw(void *p);
+void MissionInfo_Draw(void *p);
 void TextBox_Draw(void *p);
-void func_ov000_021b8db4(void *p);
-void func_ov000_021b86a4(void *p);
+void PlaceNameCard_Draw(void *p);
+void ImageCard_Draw(void *p);
 void func_ov000_0216b880(void *p);
 
 void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
@@ -23,7 +23,7 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         }
     case 10:
         if (self->unk_3c != NULL) {
-            func_ov000_021b9a84(self->unk_3c);
+            MissionCard_Draw(self->unk_3c);
         }
     case 11:
         if (self->dialog != NULL) {
@@ -32,12 +32,12 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         break;
     case 8:
         if (self->unk_40 != NULL) {
-            func_ov000_021bac78(self->unk_40);
+            SceneCondCard_Draw(self->unk_40);
         }
         break;
     case 9:
         if (self->unk_44 != NULL) {
-            func_ov000_021bbbdc(self->unk_44);
+            MissionInfo_Draw(self->unk_44);
         }
         break;
     case 5:
@@ -52,12 +52,12 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         break;
     case 7:
         if (self->unk_38 != NULL) {
-            func_ov000_021b8db4(self->unk_38);
+            PlaceNameCard_Draw(self->unk_38);
         }
         break;
     }
     if (self->unk_34 != NULL) {
-        func_ov000_021b86a4(self->unk_34);
+        ImageCard_Draw(self->unk_34);
     }
     if (self->unk_50 != NULL) {
         func_ov000_0216d14c(self->unk_50);

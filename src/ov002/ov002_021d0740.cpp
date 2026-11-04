@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021efa1c_UpdateActive(Task021efa1c *self) {
+void MusicPlayer_UpdateActive(Task021efa1c *self) {
     u16 k = gPad->trig;
     if (k & 0x800) {
         SndQueue *g = gSndQueue.queue;

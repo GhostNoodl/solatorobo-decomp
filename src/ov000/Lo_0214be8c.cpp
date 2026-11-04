@@ -8,7 +8,7 @@ extern void *gDataRes;
 extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
 void TextWin_Init(void *p);
@@ -45,7 +45,7 @@ BOOL func_ov000_0214be8c(void) {
     u32 n = DataRes_GetCount(gDataRes, 1);
     u16 i;
     for (i = 0; i < n; i++) {
-        u32 fl = func_ov000_0214bf2c(LFLD(u16, tbl + i * 4, 2));
+        u32 fl = Quest_GetOptFlags(LFLD(u16, tbl + i * 4, 2));
         if (!(fl & 0x100) && !(fl & 0x40)) {
             if (!DataRes_ReadBitsAt_02059544(gDataRes, (u8 *)p + 0x30, tbl, 0x301, i)) {
                 return FALSE;

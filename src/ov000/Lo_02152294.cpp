@@ -28,7 +28,7 @@ extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
-void func_ov000_02152294(UiObj *self, u16 a, s32 b, UiItemFn c) {
+void UiObj_OpenChoice(UiObj *self, u16 a, s32 b, UiItemFn c) {
     Lo021cb0b8 *p;
     void *res = gMsgRes;
     p = (Lo021cb0b8 *)Heap_Alloc(sizeof(Lo021cb0b8));

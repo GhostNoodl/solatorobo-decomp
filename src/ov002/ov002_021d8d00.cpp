@@ -12,7 +12,7 @@ typedef struct Oam8d00 {
 
 extern "C" {
 
-// OAM callback that draws a two-digit number: entry 6 of an Obj021efed4's model (func_ov002_021d91d8
+// OAM callback that draws a two-digit number: entry 6 of an Obj021efed4's model (Obj021efed4_LoadPartModel
 // registers it with the piece as the entry argument) shows the piece's unk_a8 at the model's x/y. The locals' declaration order sets their colours
 // (reverse-declaration node numbers, round frB); it used to need fake div/x/chr/k parameters.
 Oam8d00 *func_ov002_021d8d00(Model *m, TexObjEntry *cell, Oam8d00 *oam, u16 *num) {

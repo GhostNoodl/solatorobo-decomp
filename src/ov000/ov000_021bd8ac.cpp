@@ -45,7 +45,7 @@ static inline void SetB_021bd8ac(u8 *p, const char *dir, const char *name) {
     LFLD(u8, p, 3) |= 4;
 }
 
-BOOL func_ov000_021bd8ac(ActorMarker *self) {
+BOOL ActorMarker_LoadIcons(ActorMarker *self) {
     void *res;
     s32 n;
 

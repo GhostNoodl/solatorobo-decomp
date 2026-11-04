@@ -22,7 +22,7 @@ static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
     self->unk_20 = 0;
 }
 
-void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
+void Obj021eff10_ShowCellInfo(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
     Obj021efe6c *w = self->owner->board;
     Ov002Cell *cur = ov002_GetCell(w, b);
     Ov002Cell *nxt = ov002_GetCell(w, a);

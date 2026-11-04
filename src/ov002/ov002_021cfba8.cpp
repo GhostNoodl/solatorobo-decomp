@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc Lo021cadcc_vtbl[];
 
-void Task021ef79c_Start(Task021ef79c *self) {
+void AudioMenu_Start(Task021ef79c *self) {
     UiObj *o;
     UiObj *o2;
     UiObj *s;
@@ -67,7 +67,7 @@ void Task021ef79c_Start(Task021ef79c *self) {
 
 BOOL func_ov002_021cf314(int idx, u32 arg);
 
-void Task021ef79c_PreUpdate(Task021ef79c *self) {
+void AudioMenu_PreUpdate(Task021ef79c *self) {
     UiListItem *e;
     void *mgr;
     void *s1;

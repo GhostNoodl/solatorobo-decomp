@@ -3,8 +3,8 @@
 extern "C" {
 
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void func_ov015_0220afcc(Ov015FishState2c *self);
-void func_ov015_0220b1b8(Ov015FishState2c *self);
+void Ov015FishState2c_UpdateWake(Ov015FishState2c *self);
+void Ov015FishState2c_UpdateSwim(Ov015FishState2c *self);
 
 BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
     EffectObj *o;
@@ -47,8 +47,8 @@ void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
     MTX_RotY33_((MtxFx33 *)m, FX_SinCosTable_[0xfbb * 2], FX_SinCosTable_[0xfbb * 2 + 1]);
     MTX_MultVec33(&dir, (MtxFx33 *)m, &dir);
     VEC_Normalize(&dir, (&p->dir));
-    func_ov015_0220afcc(self);
-    func_ov015_0220b1b8(self);
+    Ov015FishState2c_UpdateWake(self);
+    Ov015FishState2c_UpdateSwim(self);
 }
 
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
@@ -65,8 +65,8 @@ void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
     MTX_RotY33_((MtxFx33 *)m, FX_SinCosTable_[0x44 * 2], FX_SinCosTable_[0x44 * 2 + 1]);
     MTX_MultVec33(&dir, (MtxFx33 *)m, &dir);
     VEC_Normalize(&dir, (&p->dir));
-    func_ov015_0220afcc(self);
-    func_ov015_0220b1b8(self);
+    Ov015FishState2c_UpdateWake(self);
+    Ov015FishState2c_UpdateSwim(self);
 }
 
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);

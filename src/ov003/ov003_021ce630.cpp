@@ -191,7 +191,7 @@ extern void *gMsgRes;
 extern BOOL func_020621f8(void);
 extern Ov003Area *Param_GetRecord(u16 id);
 extern s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
-extern void func_02040a98(char *buf, u16 v);
+extern void Str_FormatInt(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void Ov003_AddLevels(s32 n);
@@ -364,7 +364,7 @@ void Ov003_AddExp(u16 exp) {
         }
     }
     bonus += exp;
-    func_02040a98(buf, bonus);
+    Str_FormatInt(buf, bonus);
     Ov003Log_Add(5, buf);
     {
         Ov003Save *s = gStageFlags;

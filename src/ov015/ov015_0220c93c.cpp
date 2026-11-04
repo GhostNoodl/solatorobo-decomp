@@ -107,8 +107,8 @@ BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
 }
 
 BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos);
-void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o);
-void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o);
+void Ov015FishState40_StepRise(Ov015FishState40 *self, Ov015Fish *o);
+void Ov015FishState40_StepDive(Ov015FishState40 *self, Ov015Fish *o);
 extern char data_ov015_02212e20[];
 extern char data_ov015_02212e34[];
 
@@ -241,7 +241,7 @@ clamp:
         break;
     }
     case 1:
-        func_ov015_0220d328(self, p);
+        Ov015FishState40_StepRise(self, p);
         if (self->unk_10 == 0) {
             self->step = 2;
             self->unk_10 = self->unk_14;
@@ -281,7 +281,7 @@ clamp:
         break;
     }
     case 3:
-        func_ov015_0220d578(self, p);
+        Ov015FishState40_StepDive(self, p);
         if (self->unk_10 == 0) {
             self->step = 0;
             self->unk_10 = self->unk_18 = p->info.unk_0e;

@@ -365,7 +365,7 @@ struct Menu021ca94c : public UiObj {
 };
 
 
-// Vtable Lo021ca9c4_vtbl; methods in 8 files, Lo_021501e4.cpp .. Lo_0215123c.cpp.
+// Vtable QuestWin_vtbl; methods in 8 files, Lo_021501e4.cpp .. Lo_0215123c.cpp.
 struct Lo021ca9c4 : public Task {
     VObj *unk_3c;
     u16 unk_40;
@@ -377,7 +377,7 @@ struct Lo021ca9c4 : public Task {
     struct MsgEntryEx *unk_54; // ov000/MsgEntry.h
     Lo021cad50 *unk_58;
     s32 unk_5c;
-    TextWin text[6]; // built in place by Lo021ca9c4_New (TextWin_Init, vtable TextWin_vtbl)
+    TextWin text[6]; // built in place by QuestWin_New (TextWin_Init, vtable TextWin_vtbl)
 };
 
 // Vtable Lo021caa44_vtbl; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.

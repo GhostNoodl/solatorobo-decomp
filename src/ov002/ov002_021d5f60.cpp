@@ -11,7 +11,7 @@ void StageFlags_SetCounter(void *a, u8 b, u8 c);
 
 s32 SndMgr_PlayPan(void *a, int b, int c);
 
-void func_ov002_021d5f60(Task021efc24 *self) {
+void RobotTypeMenu_ApplyType(Task021efc24 *self) {
     UiList *g = self->unk_50;
     u16 prev;
     UiListItem *p;
@@ -64,7 +64,7 @@ BOOL MsgBox_Update(void *p);
 void ModelViewer_Update(void *p);
 
 
-void Task021efc24_PreUpdate(Task021efc24 *self) {
+void RobotTypeMenu_PreUpdate(Task021efc24 *self) {
     switch (self->state) {
     case 8:
         self->unk_4c->flags &= ~2;
@@ -113,7 +113,7 @@ void Task021efc24_PreUpdate(Task021efc24 *self) {
         self->unk_54->vfunc_1c();
         id = UiList_GetCurrent(self->unk_50)->id;
         if (self->unk_54 != NULL) {
-            Obj0215bb14_SetText(self->unk_54, func_0206ec8c(id));
+            Obj0215bb14_SetText(self->unk_54, Param_GetDesc(id));
             self->unk_54->vfunc_70();
         }
         x = (Task021efba4 *)Task_FindById(0x1b);

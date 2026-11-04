@@ -77,8 +77,8 @@ BOOL func_ov000_0214c270(void);
 BOOL SceneResSet_IsLoaded08(void);
 s32 SceneResSet_Bind08(void);
 void *func_02061d54(s32 id);
-void *func_02061df0(u16 id);
-void *func_02061e7c(u16 id);
+void *StageTbl_GetMissionName(u16 id);
+void *StageTbl_GetQuestName(u16 id);
 void *MsgRes_GetString(void *g, void *id);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
@@ -127,7 +127,7 @@ static inline BOOL Idle_021b9010(VObj *o) {
     return LFLD(Bits021b9010, o, 0xc).b0 == 0 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021b9010(Obj021b9010 *self) {
+BOOL MissionCard_Update(Obj021b9010 *self) {
     char buf[0x20];
     MsgEntryEx tb;
 
@@ -182,9 +182,9 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         self->unk_18->flags |= 0x40000000;
         self->unk_18->flags |= 4;
         if (self->mode <= 1) {
-            text = func_02061df0(self->unk_10);
+            text = StageTbl_GetMissionName(self->unk_10);
         } else {
-            text = func_02061e7c(self->unk_10);
+            text = StageTbl_GetQuestName(self->unk_10);
         }
         self->unk_1c = NewTextWin_021b9010();
         self->unk_1c->font = 8;

@@ -10,14 +10,14 @@ void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
-BOOL func_ov002_021d0a80(Ov002RowList *self, Hud021cca10 *arg);
+BOOL TheaterMenu_List3cOnDecide(Ov002RowList *self, Hud021cca10 *arg);
 
 typedef struct {
     u16 a;
     u16 b;
 } Pair021d0b98;
 
-void func_ov002_021d0b98(Task021ef89c *self) {
+void TheaterMenu_BuildList(Task021ef89c *self) {
     void *g = gMsgRes;
     UiObj *p;
     {
@@ -40,7 +40,7 @@ void func_ov002_021d0b98(Task021ef89c *self) {
     }
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xeb));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xed));
-    self->unk_3c->onDecide = (void *)func_ov002_021d0a80;
+    self->unk_3c->onDecide = (void *)TheaterMenu_List3cOnDecide;
     {
         u16 i;
         u8 *base;

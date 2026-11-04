@@ -5,7 +5,7 @@ extern "C" {
 extern u8 gTaskSwitchPending;
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, int id);
-u8 *func_0206f000(u16 id);
+u8 *Param_GetExchangeItem(u16 id);
 BOOL Item_Give(u16 id, s32 n);
 BOOL Item_Set_0206f5e4(u16 id, s32 n);
 void Obj0215c1bc_SetText(void *a, s32 b, void *c);
@@ -13,7 +13,7 @@ extern Ov015Globals gOv015Globals;
 void TaskHost_Create(s32 a, s32 b);
 extern u8 data_ov015_02213360[];
 
-void Ov015Scene2b08_UpdateActive(Ov015Scene2b08 *self) {
+void Ov015PointShop_UpdateActive(Ov015Scene2b08 *self) {
     Pad *pd = gPad;
     u16 pad = pd->trig;
     BOOL on = self->unk_4c->hidden ? TRUE : FALSE;
@@ -42,7 +42,7 @@ static inline BOOL Ov015_IsFinished(UiObj *o) {
     }
     return r;
 }
-void Ov015Scene2b08_PreUpdate(Ov015Scene2b08 *self) {
+void Ov015PointShop_PreUpdate(Ov015Scene2b08 *self) {
     switch (self->state) {
     case 8:
         SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
@@ -76,7 +76,7 @@ bool Ov015Vt_02212d3c_IsShown(Ov015Child *self) {
     return r;
 }
 
-void Ov015Scene2b08_PostUpdate(Ov015Scene2b08 *self) {
+void Ov015PointShop_PostUpdate(Ov015Scene2b08 *self) {
     s32 a = self->unk_58;
     s32 r = 0;
     if (a < 0x1000000) {
@@ -90,7 +90,7 @@ void Ov015Scene2b08_PostUpdate(Ov015Scene2b08 *self) {
     }
 }
 
-void Ov015Scene2b08_Draw(Ov015Scene2b08 *self) {
+void Ov015PointShop_Draw(Ov015Scene2b08 *self) {
     if (self->vfunc_28() == 0) {
         return;
     }
@@ -122,10 +122,10 @@ static inline void Ov015_SetMoney24(u16 v) {
     if (v > 9999) v = 9999;
     gStageFlags->unk_024 = v;
 }
-BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
+BOOL Ov015PointShop_BuyItem(Ov015Scene2b08 *self) {
     UiListItem *item = Ov015_ListNth3(self->unk_3c);
     u16 id = item->unk_10;
-    u8 *def = func_0206f000(id);
+    u8 *def = Param_GetExchangeItem(id);
     BOOL consume = TRUE;
     BOOL r = TRUE;
     if (self->unk_40->value < item->unk_0c) {

@@ -24,7 +24,7 @@ void Gfx3D_SendDL(void *p, s32 a);
 void func_ov000_021b9b14(Obj021b9a84 *self);
 void func_ov000_021ba338(Obj021b9a84 *self);
 
-void func_ov000_021b9a84(Obj021b9a84 *self) {
+void MissionCard_Draw(Obj021b9a84 *self) {
     switch (self->unk_08) {
     case 11:
     case 12:

@@ -42,9 +42,9 @@ void Obj021eff10_Draw(Obj021eff10 *self, Obj021eff50 *ev) {
 }
 
 
-void func_ov002_021dd7f0(Obj021eff10 *self, void *a, void *b, int c);
+void Obj021eff10_ShowCellInfo(Obj021eff10 *self, void *a, void *b, int c);
 
-void func_ov002_021dc730(Obj021eff10 *self) {
+void Obj021eff10_Step00(Obj021eff10 *self) {
     BOOL done;
     Obj021efe6c *w;
     Obj021efe9c *a;
@@ -75,7 +75,7 @@ void func_ov002_021dc730(Obj021eff10 *self) {
             a = next;
         }
         if (done) {
-            func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
+            Obj021eff10_ShowCellInfo(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
             self->unk_18 = 10;
         }
         break;

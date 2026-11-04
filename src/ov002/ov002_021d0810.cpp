@@ -8,7 +8,7 @@ static inline BOOL ov002_isState5(UiObj *o) {
     return o->state == 5 ? TRUE : FALSE;
 }
 
-void Task021efa1c_PreUpdate(Task021efa1c *self) {
+void MusicPlayer_PreUpdate(Task021efa1c *self) {
     switch (self->state) {
     case 8:
         SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);

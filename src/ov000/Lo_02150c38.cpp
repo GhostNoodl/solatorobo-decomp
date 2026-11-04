@@ -9,7 +9,7 @@ extern void *gDataRes;
 extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
 void TextWin_Init(void *p);
@@ -40,7 +40,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void Lo021ca9c4_Init(Lo021ca9c4 *self) {
+void QuestWin_Init(Lo021ca9c4 *self) {
     self->fadeLen = 0x1000;
     self->unk_3c = 0;
     self->unk_44 = 0;

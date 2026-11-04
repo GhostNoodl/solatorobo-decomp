@@ -4,7 +4,7 @@ extern "C" {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021eb964(Ov002StageFile *self);
+void Ov002StageFile_FindChunks(Ov002StageFile *self);
 
 void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c) {
     s32 hdr;
@@ -17,7 +17,7 @@ void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c) {
     self->data = data;
     self->unk_0c = c;
     MI_CpuCopy8(data + 8, &hdr, 4);
-    func_ov002_021eb964(self);
+    Ov002StageFile_FindChunks(self);
     MI_CpuCopy8(self->unk_18 + 8, &n0, 4);
     MI_CpuCopy8(self->unk_1c + 8, &n1, 4);
     MI_CpuCopy8(self->unk_20 + 8, &n2, 4);

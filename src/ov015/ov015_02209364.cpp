@@ -30,7 +30,7 @@ extern char *data_ov015_02212db0[];
 char *Tbl_GetResFile(u16 id);
 void Shadow_Load(void *p);
 
-void func_ov015_02209364(Ov015Fish *self) {
+void Ov015Fish_LoadModels(Ov015Fish *self) {
     Ov015Anim *n1 = (Ov015Anim *)&self->res;
     Ov015Anim *n2 = (Ov015Anim *)&self->res2;
     {

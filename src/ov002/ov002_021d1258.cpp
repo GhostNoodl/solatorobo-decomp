@@ -3,10 +3,10 @@
 extern "C" {
 
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
-void Task021ef4b0_FreeWindows(Task021ef4b0 *p);
-void func_ov002_021ce660(Task021ef4b0 *p, u32 a);
-BOOL func_ov002_021d166c(Task021ef71c *self);
-BOOL func_ov002_021d178c(Task021ef71c *self);
+void CabinMenu_FreeWindows(Task021ef4b0 *p);
+void CabinMenu_Rebuild(Task021ef4b0 *p, u32 a);
+BOOL TheaterPlayer_PlayMovie(Task021ef71c *self);
+BOOL TheaterPlayer_PlaySlide(Task021ef71c *self);
 
 static inline void ov002_FreeParts(Task021ef89c *t) {
     void *saved;
@@ -48,7 +48,7 @@ static inline void ov002_PlayBgm(u16 id) {
     }
 }
 
-void Task021ef71c_PreUpdate(Task021ef71c *self) {
+void TheaterPlayer_PreUpdate(Task021ef71c *self) {
     switch (self->state) {
     case 8: {
         Task021ef89c *t = (Task021ef89c *)Task_FindById(0x15);
@@ -60,7 +60,7 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
         list = (Task021ef4b0 *)Task_FindById(0x12);
         if (list != NULL) {
             self->unk_6c = list->unk_44;
-            Task021ef4b0_FreeWindows(list);
+            CabinMenu_FreeWindows(list);
         }
         o = (Task021ef430 *)Task_FindById(0x11);
         if (o != NULL) {
@@ -94,7 +94,7 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
         break;
     }
     case 13:
-        if (self->unk_68 ? func_ov002_021d166c(self) : func_ov002_021d178c(self)) {
+        if (self->unk_68 ? TheaterPlayer_PlayMovie(self) : TheaterPlayer_PlaySlide(self)) {
             break;
         }
         self->fadeLen = 0x1e000;
@@ -112,13 +112,13 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
             HEAP_PUSH(saved);
             DELETE_VOBJ(t->unk_40);
             HEAP_POP(saved);
-            func_ov002_021d0b98(t);
+            TheaterMenu_BuildList(t);
             t->unk_3c->flags |= 2;
             t->unk_40->flags |= 2;
         }
         list = (Task021ef4b0 *)Task_FindById(0x12);
         if (list != NULL) {
-            func_ov002_021ce660(list, self->unk_6c);
+            CabinMenu_Rebuild(list, self->unk_6c);
         }
         o = (Task021ef430 *)Task_FindById(0x11);
         if (o != NULL) {

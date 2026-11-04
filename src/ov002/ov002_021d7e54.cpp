@@ -70,7 +70,7 @@ void Ov002Vt_021efe9c_Setup(Obj021efe9c *self) {
 void Ov002Vt_021efe9c_Update(Obj021efe9c *self) {
     switch (self->unk_a0) {
     case 0:
-        func_ov002_021d8148(self);
+        Obj021efe9c_LoadPartModel(self);
         self->unk_a0 = 0xa;
     case 0xa:
         if (self->unk_88 != NULL) {

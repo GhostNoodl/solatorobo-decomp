@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL Task021ef81c_List3cOnCursor(UiList *self, UiListItem *ev) {
+BOOL ComposeMenu_List3cOnCursor(UiList *self, UiListItem *ev) {
     Task021ef81c *t = (Task021ef81c *)self->owner;
     Lo021cadcc *w = t->unk_40;
     if (ev != NULL && ev->id != 0) {

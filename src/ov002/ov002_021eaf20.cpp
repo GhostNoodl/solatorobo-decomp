@@ -18,9 +18,9 @@ void func_ov002_021eb7c0(Ov002StageFile *self);
 
 void func_ov002_021eb870(Ov002StageFile *self);
 
-void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx);
+void Ov002_MakeSlideName(void *dst, u32 size, void *src, int mode, u8 idx);
 
-void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
+void Ov002_MakeSlideFileName(void *dst, u32 size, void *src, int mode, u8 idx);
 
 Ov002Obj *Ov002Obj021f07ac_New(void *a, void *b);
 
@@ -44,7 +44,7 @@ typedef struct Rec021eaf20 {
     u16 g;
 } Rec021eaf20;
 
-void func_ov002_021eaf20(Ov002StageFile *self) {
+void Ov002StageFile_BuildScene(Ov002StageFile *self) {
     u8 *d;
     s32 stride;
     s32 i;
@@ -75,11 +75,11 @@ void func_ov002_021eaf20(Ov002StageFile *self) {
     }
     func_ov002_021eb7c0(self);
     func_ov002_021eb870(self);
-    func_ov002_021e9cec(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9d7c(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
+    Ov002_MakeSlideName(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
+    Ov002_MakeSlideFileName(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
     Ov002Obj021f06bc_New(bufA, bufB);
-    func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9d7c(bufD, 0x20, self->unk_04, 2, ((u8 (*)(void))LangData_GetLang)());
+    Ov002_MakeSlideName(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))LangData_GetLang)());
+    Ov002_MakeSlideFileName(bufD, 0x20, self->unk_04, 2, ((u8 (*)(void))LangData_GetLang)());
     Ov002Obj021f07ac_New(bufC, bufD);
     MI_CpuCopy8(self->data + 0xc, &end, 4);
     Ov002Vt_021f0694_New(end);

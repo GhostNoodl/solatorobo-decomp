@@ -32,7 +32,7 @@ extern "C" {
 
 void func_02042f40(s32 a);
 
-void func_ov000_021b8db4(Obj021b8db4 *self) {
+void PlaceNameCard_Draw(Obj021b8db4 *self) {
     switch (self->state) {
     case 0:
     case 1:
@@ -61,7 +61,7 @@ void func_ov000_021b8db4(Obj021b8db4 *self) {
     }
 }
 
-void func_ov000_021b8e80(Obj021b8e80 *self, s32 a, u16 b) {
+void MissionCard_Init(Obj021b8e80 *self, s32 a, u16 b) {
     self->unk_00 = 0;
     self->unk_04 = 0;
     self->unk_08 = 1;

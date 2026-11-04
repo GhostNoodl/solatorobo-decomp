@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021efc24_PostUpdate(Task021efc24 *self) {
+void RobotTypeMenu_PostUpdate(Task021efc24 *self) {
     s32 x = self->unk_40;
     s32 v = 0;
     if (x < 0x1000000) {

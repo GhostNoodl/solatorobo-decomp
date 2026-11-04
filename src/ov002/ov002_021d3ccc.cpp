@@ -4,7 +4,7 @@ extern "C" {
 
 void MenuScript_Close(void);
 
-void Task021ef81c_FreeWindows(Task021ef81c *self) {
+void ComposeMenu_FreeWindows(Task021ef81c *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_3c);

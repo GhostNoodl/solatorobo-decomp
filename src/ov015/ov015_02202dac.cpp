@@ -96,7 +96,7 @@ void Ov015Scene2a88_Draw(Ov015Scene2a88 *self) {
     TexObj_DrawCell(model, arg, anim, 0);
 }
 
-BOOL Ov015Scene2a08_List80OnDecide(UiList *self, UiListItem *ev) {
+BOOL Ov015FishingMenu_List80OnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
             ((Ov015Scene2a08 *)self->owner)->unk_a4 = 1;
@@ -108,7 +108,7 @@ BOOL Ov015Scene2a08_List80OnDecide(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL Ov015Scene2a08_List80OnCursor(UiList *self, UiListItem *ev) {
+BOOL Ov015FishingMenu_List80OnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2a08 *o = (Ov015Scene2a08 *)self->owner;
     void *d = gMsgRes;
     void *m;
@@ -130,7 +130,7 @@ BOOL Ov015Scene2a08_List80OnCursor(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-void Ov015Scene2a08_DtorBase(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_DtorBase(Ov015Scene2a08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     {
@@ -174,7 +174,7 @@ void *Ov015Shadow_DtorDelete(Ov015Shadow *self) {
     return self;
 }
 
-void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_Load(Ov015Scene2a08 *self) {
     Ov015Ship *p;
     void *q;
     p = (Ov015Ship *)Heap_Alloc(0xd58);
@@ -193,7 +193,7 @@ void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
     Shadow_Load(q);
 }
 
-BOOL Ov015Scene2a08_IsLoaded(Ov015Scene2a08 *self) {
+BOOL Ov015FishingMenu_IsLoaded(Ov015Scene2a08 *self) {
     BOOL r = Ov015Ship_Load(self->ship) & 1 ? TRUE : FALSE;
     u8 st = self->shadow->state;
     BOOL idle = TRUE;
@@ -233,7 +233,7 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideZ = z;
 }
 
-void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
+void Ov015FishingMenu_Start(Ov015Scene2a08 *self) {
     VObj *p;
     void *res;
     if (self->vfunc_28()) {
@@ -313,8 +313,8 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
         UiList *o = self->unk_80;
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
-    self->unk_80->onDecide = Ov015Scene2a08_List80OnDecide;
-    self->unk_80->onCursor = Ov015Scene2a08_List80OnCursor;
+    self->unk_80->onDecide = Ov015FishingMenu_List80OnDecide;
+    self->unk_80->onCursor = Ov015FishingMenu_List80OnCursor;
     self->unk_80->owner = self;
     self->unk_80->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);

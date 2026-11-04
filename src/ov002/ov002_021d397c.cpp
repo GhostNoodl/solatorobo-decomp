@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Task021ef81c *Task021ef81c_New(void) {
+Task021ef81c *ComposeMenu_New(void) {
     Task021ef81c *p = (Task021ef81c *)Heap_Alloc(0x50);
     if (p != NULL) {
         TaskBase_ctor(p);

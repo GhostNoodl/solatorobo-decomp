@@ -23,7 +23,7 @@ void *Param_Get(u32 id) {
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset : NULL;
 }
 
-void *func_0206ec8c(u32 id) {
+void *Param_GetDesc(u32 id) {
     ParamOfs *ofs = &data_0214b12c[Param_Cat(id) - 1][Param_Idx(id)];
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset2 : NULL;
 }
@@ -41,7 +41,7 @@ typedef struct ParamItem {
 } ParamItem;
 
 char *Str_FindCharMb(char *str, int c);
-void func_02040a98(char *dst, int num);
+void Str_FormatInt(char *dst, int num);
 
 void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
     char num[0x10];
@@ -56,7 +56,7 @@ void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
         q = Str_FindCharMb(buf, '?');
         if (q != NULL) {
             *q = 0;
-            func_02040a98(num, item->num);
+            Str_FormatInt(num, item->num);
             if (q[1] == '?') {
                 q++;
             }
@@ -80,11 +80,11 @@ void *func_0206ee20(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
 }
 
-void *func_0206ee58(u32 id) {
+void *Param_GetBgmInfo(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
 }
 
-void *func_0206ee90(u32 id) {
+void *Param_GetMovieInfo(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
@@ -108,7 +108,7 @@ void *func_0206efc0(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
-void *func_0206f000(u32 id) {
+void *Param_GetExchangeItem(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 6;
 }
 

@@ -151,13 +151,13 @@ namespace m_021ce6bc {
 
 extern "C" {
 
-extern void *ov006_TaskCE_vtbl;
+extern void *ov006_ModeMenu_vtbl;
 
-void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 a);
+void ov006_ModeMenu_ShowHelp(ov006_TaskCE *self, u16 a);
 
 static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &ov006_TaskCE_vtbl;
+    *(void **)self = &ov006_ModeMenu_vtbl;
     self->step = 0;
     self->subStep = 0;
     self->unk44 = NULL;
@@ -167,7 +167,7 @@ static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
     self->unk54 = NULL;
 }
 
-ov006_TaskCE *ov006_TaskCE_New(void) {
+ov006_TaskCE *ov006_ModeMenu_New(void) {
     ov006_TaskCE *self = (ov006_TaskCE *)Heap_Alloc(sizeof(ov006_TaskCE));
     if (self != NULL) {
         ov006_TaskCE_Init(self);
@@ -184,7 +184,7 @@ static inline void ov006_TaskCE_Open(ov006_TaskCE *self, int id) {
     self->unk48->flags |= 2;
 }
 
-BOOL ov006_TaskCE_List44OnDecide(UiList *list, UiListItem *arg) {
+BOOL ov006_ModeMenu_List44OnDecide(UiList *list, UiListItem *arg) {
     ov006_TaskCE *self = (ov006_TaskCE *)list->owner;
     if (arg != NULL) {
         u16 id;
@@ -219,16 +219,16 @@ BOOL ov006_TaskCE_List44OnDecide(UiList *list, UiListItem *arg) {
     return TRUE;
 }
 
-BOOL ov006_TaskCE_List44OnCursor(UiList *list, UiListItem *arg) {
+BOOL ov006_ModeMenu_List44OnCursor(UiList *list, UiListItem *arg) {
     ov006_TaskCE *self = (ov006_TaskCE *)list->owner;
     if (arg != NULL) {
-        ov006_TaskCE_ShowHelp(self, arg->id);
+        ov006_ModeMenu_ShowHelp(self, arg->id);
     }
     return TRUE;
 }
 
 static inline void ov006_TaskCE_Dtor(ov006_TaskCE *self) {
-    *(void **)self = &ov006_TaskCE_vtbl;
+    *(void **)self = &ov006_ModeMenu_vtbl;
     OV006_DELETE_OBJECT(self->unk44);
     OV006_DELETE_OBJECT(self->unk48);
     OV006_DELETE_OBJECT(self->unk4C);
@@ -237,7 +237,7 @@ static inline void ov006_TaskCE_Dtor(ov006_TaskCE *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskCE *ov006_TaskCE_Dtor_021ce974(ov006_TaskCE *self) {
+ov006_TaskCE *ov006_ModeMenu_Dtor_021ce974(ov006_TaskCE *self) {
     ov006_TaskCE_Dtor(self);
     return self;
 }
@@ -249,7 +249,7 @@ ov006_MsgBox *ov006_MsgBox_DtorDelete(ov006_MsgBox *self) {
     return self;
 }
 
-ov006_TaskCE *ov006_TaskCE_DtorDelete(ov006_TaskCE *self) {
+ov006_TaskCE *ov006_ModeMenu_DtorDelete(ov006_TaskCE *self) {
     ov006_TaskCE_Dtor(self);
     Heap_Free(self);
     return self;
@@ -263,10 +263,10 @@ namespace m_021cec5c {
 
 extern "C" {
 
-void ov006_TaskCE_Load(void) {
+void ov006_ModeMenu_Load(void) {
 }
 
-BOOL ov006_TaskCE_IsLoaded(void) {
+BOOL ov006_ModeMenu_IsLoaded(void) {
     return TRUE;
 }
 
@@ -304,8 +304,8 @@ void ListRow_Init(void *self);
 void ListRowLabel_Init(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
 void ov006_CaptionPanel_PlayText(ov006_CaptionPanel *self, const void *s);
-BOOL ov006_TaskCE_List44OnDecide(UiList *list, UiListItem *arg);
-BOOL ov006_TaskCE_List44OnCursor(UiList *list, UiListItem *arg);
+BOOL ov006_ModeMenu_List44OnDecide(UiList *list, UiListItem *arg);
+BOOL ov006_ModeMenu_List44OnCursor(UiList *list, UiListItem *arg);
 }
 
 
@@ -320,7 +320,7 @@ static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
 
 // The list items are constructed in place through `item` (round jkH): with a `NewItem` inline
 // the inline's result is a compiler temp, numbered below `res`, and the two swap registers.
-void ov006_TaskCE_Start(ov006_TaskCE *self) {
+void ov006_ModeMenu_Start(ov006_TaskCE *self) {
     u8 n;
     u8 i;
     u8 k;
@@ -369,8 +369,8 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
         UiList *w = self->unk44;
         w->vfunc_a8(UiList_GetItemById(w, 0));
     }
-    self->unk44->onDecide = ov006_TaskCE_List44OnDecide;
-    self->unk44->onCursor = ov006_TaskCE_List44OnCursor;
+    self->unk44->onDecide = ov006_ModeMenu_List44OnDecide;
+    self->unk44->onCursor = ov006_ModeMenu_List44OnCursor;
     self->unk44->owner = self;
     self->unk44->vfunc_08();
     self->unk48 = ov006_NewLo021cadcc();
@@ -468,10 +468,10 @@ extern void *gMsgRes;
 extern ov006_DataRes *gDataRes;
 
 void *MsgRes_GetString(void *a, int id);
-void ov006_TaskCE_Step00(ov006_TaskCE *self);
-void ov006_TaskCE_Step02(ov006_TaskCE *self);
-void ov006_TaskCE_Step03(ov006_TaskCE *self);
-void ov006_TaskCE_Step06(ov006_TaskCE *self);
+void ov006_ModeMenu_Step00(ov006_TaskCE *self);
+void ov006_ModeMenu_Step02(ov006_TaskCE *self);
+void ov006_ModeMenu_Step03(ov006_TaskCE *self);
+void ov006_ModeMenu_Step06(ov006_TaskCE *self);
 void ov006_SetupDefaultSlots(void);
 void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
 u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
@@ -479,7 +479,7 @@ u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
-void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id) {
+void ov006_ModeMenu_ShowHelp(ov006_TaskCE *self, u16 id) {
     const void *str;
     void *res = gMsgRes;
     switch (id) {
@@ -520,7 +520,7 @@ namespace m_021cf414 {
 extern "C" {
 
 // Both tests have no effect, so MWCC drops the second load and compare but keeps the first.
-void ov006_TaskCE_UpdateActive(ov006_TaskCE *self) {
+void ov006_ModeMenu_UpdateActive(ov006_TaskCE *self) {
     if (self->unk4C == NULL) {
         return;
     }
@@ -543,10 +543,10 @@ typedef struct ov006_DataRes {
 extern "C" {
 
 extern ov006_DataRes *gDataRes;
-void ov006_TaskCE_Step00(ov006_TaskCE *self);
-void ov006_TaskCE_Step02(ov006_TaskCE *self);
-void ov006_TaskCE_Step03(ov006_TaskCE *self);
-void ov006_TaskCE_Step06(ov006_TaskCE *self);
+void ov006_ModeMenu_Step00(ov006_TaskCE *self);
+void ov006_ModeMenu_Step02(ov006_TaskCE *self);
+void ov006_ModeMenu_Step03(ov006_TaskCE *self);
+void ov006_ModeMenu_Step06(ov006_TaskCE *self);
 void ov006_SetupDefaultSlots(void);
 void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
 u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
@@ -554,14 +554,14 @@ u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
-void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
+void ov006_ModeMenu_PreUpdate(ov006_TaskCE *self) {
     u8 *block;
     u16 n;
     u16 i;
     void *ent;
     switch (self->step) {
     case 0:
-        ov006_TaskCE_Step00(self);
+        ov006_ModeMenu_Step00(self);
         break;
     case 1:
         switch (self->subStep) {
@@ -593,10 +593,10 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         }
         break;
     case 2:
-        ov006_TaskCE_Step02(self);
+        ov006_ModeMenu_Step02(self);
         break;
     case 3:
-        ov006_TaskCE_Step03(self);
+        ov006_ModeMenu_Step03(self);
         break;
     case 4: {
         ov006_SetupDefaultSlots();
@@ -630,7 +630,7 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         self->subStep = 0;
         break;
     case 6:
-        ov006_TaskCE_Step06(self);
+        ov006_ModeMenu_Step06(self);
         break;
     case 7:
         break;
@@ -651,7 +651,7 @@ namespace m_021cf7c4 {
 
 extern "C" {
 
-void ov006_TaskCE_PostUpdate(void) {
+void ov006_ModeMenu_PostUpdate(void) {
 }
 
 }
@@ -663,9 +663,9 @@ namespace m_021cf7c8 {
 extern "C" {
 
 BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
-void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id);
+void ov006_ModeMenu_ShowHelp(ov006_TaskCE *self, u16 id);
 
-void ov006_TaskCE_Step00(ov006_TaskCE *self) {
+void ov006_ModeMenu_Step00(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
         ov006_Menu_RequestShutdown(gOv006Menu);
@@ -693,7 +693,7 @@ void ov006_TaskCE_Step00(ov006_TaskCE *self) {
     }
 }
 
-void ov006_TaskCE_Step02(ov006_TaskCE *self) {
+void ov006_ModeMenu_Step02(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
         self->unk44->flags |= 4;
@@ -719,7 +719,7 @@ void ov006_TaskCE_Step02(ov006_TaskCE *self) {
             return;
         }
         ov006_TaskCE_HideMenus(self);
-        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_ModeMenu_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->step = 3;
         self->subStep = 0;
         break;
@@ -734,11 +734,11 @@ BOOL ov006_Window_IsShown(UiList *self) {
     return ov006_Task_IsState2(self) ? TRUE : FALSE;
 }
 
-void ov006_TaskCE_Step03(ov006_TaskCE *self) {
+void ov006_ModeMenu_Step03(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
         ov006_TaskCE_HideMenus(self);
-        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_ModeMenu_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->subStep++;
         break;
     case 1:
@@ -762,13 +762,13 @@ void ov006_TaskCE_Step03(ov006_TaskCE *self) {
         OV006_DELETE_OBJECT(self->unk4C);
         self->unk44->flags &= ~4;
         self->unk48->flags &= ~2;
-        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_ModeMenu_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->subStep = 1;
         break;
     }
 }
 
-void ov006_TaskCE_Step06(ov006_TaskCE *self) {
+void ov006_ModeMenu_Step06(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
         ov006_TaskCE_ShowMenus(self);
@@ -834,11 +834,11 @@ namespace m_021cfe84 {
 
 extern "C" {
 
-extern void *ov006_TaskD0_vtbl;
+extern void *ov006_GroupSelect_vtbl;
 
 void ov006_CaptionPanel_Draw(ov006_CaptionPanel *a);
 
-void ov006_TaskCE_Draw(ov006_TaskCE *self) {
+void ov006_ModeMenu_Draw(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
         self->unk44->vfunc_20();
     }
@@ -858,7 +858,7 @@ void ov006_TaskCE_Draw(ov006_TaskCE *self) {
 
 static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &ov006_TaskD0_vtbl;
+    *(void **)self = &ov006_GroupSelect_vtbl;
     self->step = 0;
     self->subStep = 0;
     MI_CpuFill8(self->names, 0, sizeof(self->names));
@@ -868,7 +868,7 @@ static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
     self->unk110 = 0;
 }
 
-ov006_TaskD0 *ov006_TaskD0_New(void) {
+ov006_TaskD0 *ov006_GroupSelect_New(void) {
     ov006_TaskD0 *self = (ov006_TaskD0 *)Heap_Alloc(sizeof(ov006_TaskD0));
     if (self != NULL) {
         ov006_TaskD0_Init(self);
@@ -878,19 +878,19 @@ ov006_TaskD0 *ov006_TaskD0_New(void) {
 }
 
 static inline void ov006_TaskD0_Dtor(ov006_TaskD0 *self) {
-    *(void **)self = &ov006_TaskD0_vtbl;
+    *(void **)self = &ov006_GroupSelect_vtbl;
     OV006_DELETE_OBJECT(self->unk104);
     OV006_DELETE_OBJECT(self->unk108);
     OV006_DELETE_OBJECT(self->unk10C);
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD0 *ov006_TaskD0_Dtor_021cff80(ov006_TaskD0 *self) {
+ov006_TaskD0 *ov006_GroupSelect_Dtor_021cff80(ov006_TaskD0 *self) {
     ov006_TaskD0_Dtor(self);
     return self;
 }
 
-ov006_TaskD0 *ov006_TaskD0_DtorDelete(ov006_TaskD0 *self) {
+ov006_TaskD0 *ov006_GroupSelect_DtorDelete(ov006_TaskD0 *self) {
     ov006_TaskD0_Dtor(self);
     Heap_Free(self);
     return self;
@@ -906,7 +906,7 @@ extern "C" {
 
 BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
 
-void ov006_TaskD0_Load(void) {
+void ov006_GroupSelect_Load(void) {
     if (gOv006Menu->state != 1) {
         ov006_Menu_RequestShutdown(gOv006Menu);
     }
@@ -927,7 +927,7 @@ extern void *Lo021cad50_vtbl;
 extern void *UiList_vtbl;
 extern void *UiList021cb4a8_vtbl;
 extern void *Lo021cadcc_vtbl;
-extern void *ov006_TaskD0C_vtbl;
+extern void *ov006_EntryWait_vtbl;
 
 BOOL func_0201fd04(void);
 BOOL ov006_Menu_RequestStart(ov006_Menu *self);
@@ -940,9 +940,9 @@ ov006_MenuNode *ov006_Menu_FindNode(ov006_Menu *self, int id);
 void *MsgRes_GetString(void *a, int id);
 void TaskList_Insert(Task *self);
 void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
-void ov006_TaskD0_RefreshList(ov006_TaskD0 *self);
+void ov006_GroupSelect_RefreshList(ov006_TaskD0 *self);
 
-BOOL ov006_TaskD0_IsLoaded(ov006_TaskD0 *self) {
+BOOL ov006_GroupSelect_IsLoaded(ov006_TaskD0 *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
@@ -968,7 +968,7 @@ BOOL ov006_TaskD0_IsLoaded(ov006_TaskD0 *self) {
     return r;
 }
 
-void ov006_TaskD0_Start(ov006_TaskD0 *self) {
+void ov006_GroupSelect_Start(ov006_TaskD0 *self) {
     UiListItem *item;
     u16 i;
     void *res;
@@ -1042,7 +1042,7 @@ static inline void ov006_TaskD0_Close(ov006_TaskD0 *self) {
     self->unk_04_0 = 1;
 }
 
-void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
+void ov006_GroupSelect_UpdateActive(ov006_TaskD0 *self) {
     u16 trg = gPad->trig;
     if (self->unk110) {
         if (trg & 1) {
@@ -1081,26 +1081,26 @@ void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
                 ov006_TaskD0_HideWindows(self);
             } else {
                 SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
-                ov006_TaskD0_RefreshList(self);
+                ov006_GroupSelect_RefreshList(self);
             }
         }
     }
 }
 
-void ov006_TaskD0_PreUpdate(ov006_TaskD0 *self) {
+void ov006_GroupSelect_PreUpdate(ov006_TaskD0 *self) {
     if (self->unk110) {
         self->unk10C->vfunc_1c();
         return;
     }
     if (!gOv006Menu->unk2C && gOv006Menu->unk26) {
-        ov006_TaskD0_RefreshList(self);
+        ov006_GroupSelect_RefreshList(self);
         gOv006Menu->unk26 = 0;
     }
     self->unk104->vfunc_1c();
     self->unk108->vfunc_1c();
 }
 
-void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
+void ov006_GroupSelect_PostUpdate(ov006_TaskD0 *self) {
     if (self->state != 0) {
         return;
     }
@@ -1121,7 +1121,7 @@ void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
     self->subStep = 3;
 }
 
-void ov006_TaskD0_Draw(ov006_TaskD0 *self) {
+void ov006_GroupSelect_Draw(ov006_TaskD0 *self) {
     if (!self->vfunc_28()) {
         return;
     }
@@ -1136,7 +1136,7 @@ void ov006_TaskD0_Draw(ov006_TaskD0 *self) {
     }
 }
 
-void ov006_TaskD0_RefreshList(ov006_TaskD0 *self) {
+void ov006_GroupSelect_RefreshList(ov006_TaskD0 *self) {
     u16 j;
     UiListItem *item;
     int id;
@@ -1192,7 +1192,7 @@ static inline void ov006_SlotPacked_Clear(ov006_SlotPacked *self) {
 
 static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &ov006_TaskD0C_vtbl;
+    *(void **)self = &ov006_EntryWait_vtbl;
     self->unk3C = 0;
     self->unk3D = 0;
     self->unk40 = 0;
@@ -1204,7 +1204,7 @@ static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
     self->unk124 = NULL;
 }
 
-ov006_TaskD0C *ov006_TaskD0C_New(void) {
+ov006_TaskD0C *ov006_EntryWait_New(void) {
     ov006_TaskD0C *self = (ov006_TaskD0C *)Heap_Alloc(sizeof(ov006_TaskD0C));
     if (self != NULL) {
         ov006_TaskD0C_Init(self);
@@ -1214,19 +1214,19 @@ ov006_TaskD0C *ov006_TaskD0C_New(void) {
 }
 
 static inline void ov006_TaskD0C_Dtor(ov006_TaskD0C *self) {
-    *(void **)self = &ov006_TaskD0C_vtbl;
+    *(void **)self = &ov006_EntryWait_vtbl;
     OV006_DELETE_OBJECT(self->unk11C);
     OV006_DELETE_OBJECT(self->unk120);
     OV006_DELETE_OBJECT(self->unk124);
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD0C *ov006_TaskD0C_Dtor_021d0d3c(ov006_TaskD0C *self) {
+ov006_TaskD0C *ov006_EntryWait_Dtor_021d0d3c(ov006_TaskD0C *self) {
     ov006_TaskD0C_Dtor(self);
     return self;
 }
 
-ov006_TaskD0C *ov006_TaskD0C_DtorDelete(ov006_TaskD0C *self) {
+ov006_TaskD0C *ov006_EntryWait_DtorDelete(ov006_TaskD0C *self) {
     ov006_TaskD0C_Dtor(self);
     Heap_Free(self);
     return self;
@@ -1240,10 +1240,10 @@ namespace m_021d0f44 {
 
 extern "C" {
 
-void ov006_TaskD0C_Load(void) {
+void ov006_EntryWait_Load(void) {
 }
 
-BOOL ov006_TaskD0C_IsLoaded(void) {
+BOOL ov006_EntryWait_IsLoaded(void) {
     return TRUE;
 }
 
@@ -1275,7 +1275,7 @@ static inline void *ov006_GetRes(void) {
     return gMsgRes;
 }
 
-void ov006_TaskD0C_Start(ov006_TaskD0C *self) {
+void ov006_EntryWait_Start(ov006_TaskD0C *self) {
     u16 i;
     void *res;
     if (self->vfunc_28()) {
@@ -1358,10 +1358,10 @@ extern void *gMsgRes;
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 void ov006_UpdateNetSlots(void);
-void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self);
+void ov006_EntryWait_RefreshSlots(ov006_TaskD0C *self);
 void *MsgRes_GetString(void *a, int id);
 
-void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
+void ov006_EntryWait_UpdateActive(ov006_TaskD0C *self) {
     u16 trg = gPad->trig;
     if (self->unk3C) {
         return;
@@ -1389,7 +1389,7 @@ void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
     SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
 }
 
-void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
+void ov006_EntryWait_PreUpdate(ov006_TaskD0C *self) {
     if (self->state == 9 || self->state == 0xd) {
         if (gOv006Menu->state != 9) {
             u8 n;
@@ -1397,7 +1397,7 @@ void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
             ov006_UpdateNetSlots();
             n = gOv006SlotManager->numActive;
             if (self->unk40 != n) {
-                ov006_TaskD0C_RefreshSlots(self);
+                ov006_EntryWait_RefreshSlots(self);
                 if (self->param == 1) {
                     void *res = gMsgRes;
                     if (self->unk40 <= 1 && n >= 2) {
@@ -1425,10 +1425,10 @@ namespace m_021d1694 {
 
 extern "C" {
 
-void ov006_TaskD0C_UpdateSeq(ov006_TaskD0C *self);
+void ov006_EntryWait_UpdateSeq(ov006_TaskD0C *self);
 
-void ov006_TaskD0C_PostUpdate(ov006_TaskD0C *self) {
-    ov006_TaskD0C_UpdateSeq(self);
+void ov006_EntryWait_PostUpdate(ov006_TaskD0C *self) {
+    ov006_EntryWait_UpdateSeq(self);
 }
 
 }
@@ -1478,7 +1478,7 @@ static inline u8 ov006_SlotManager_MinUnk10(void) {
 
 // The original reloads gOv006SlotManager after every block, so this function is built without CSE
 #pragma opt_common_subs off
-void ov006_TaskD0C_UpdateSeq(ov006_TaskD0C *self) {
+void ov006_EntryWait_UpdateSeq(ov006_TaskD0C *self) {
     switch (self->unk3C) {
     case 0:
         if (gOv006Menu->state == 9) {
@@ -1588,17 +1588,17 @@ extern const int data_ov006_021eb77c[];
 extern const u8 data_ov006_021eb6fe[4];
 extern const u8 data_ov006_021eb710[][3];
 extern const u16 data_ov006_021eb78c[];
-extern void *ov006_TaskD1F_vtbl;
+extern void *ov006_CraftSelect_vtbl;
 
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
 void *MsgRes_GetString(void *a, int id);
-void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
+void ov006_CraftSelect_ShowCraft(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
-ov006_TaskD1F *ov006_TaskD1F_Ctor(ov006_TaskD1F *self);
+ov006_TaskD1F *ov006_CraftSelect_Ctor(ov006_TaskD1F *self);
 
-void ov006_TaskD0C_Draw(ov006_TaskD0C *self) {
+void ov006_EntryWait_Draw(ov006_TaskD0C *self) {
     if (!self->vfunc_28()) {
         return;
     }
@@ -1618,7 +1618,7 @@ static inline BOOL ov006_Window_IsBit1(UiList *self) {
     return ov006_Window_Bit1(self) ? TRUE : FALSE;
 }
 
-void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
+void ov006_EntryWait_RefreshSlots(ov006_TaskD0C *self) {
     u8 i;
     ov006_Slot *slot;
     UiListItem *item;
@@ -1654,16 +1654,16 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
     }
 }
 
-ov006_TaskD1F *ov006_TaskD1F_New(void) {
+ov006_TaskD1F *ov006_CraftSelect_New(void) {
     ov006_TaskD1F *obj = (ov006_TaskD1F *)Heap_Alloc(sizeof(ov006_TaskD1F));
     if (obj != NULL) {
-        obj = ov006_TaskD1F_Ctor(obj);
+        obj = ov006_CraftSelect_Ctor(obj);
     }
     obj->vfunc_08(0x29, 0xc8);
     return obj;
 }
 
-BOOL ov006_TaskD1F_List54OnCursor(UiList *window, UiListItem *node) {
+BOOL ov006_CraftSelect_List54OnCursor(UiList *window, UiListItem *node) {
     ov006_TaskD1F *t;
     u16 id;
     u16 old;
@@ -1679,7 +1679,7 @@ BOOL ov006_TaskD1F_List54OnCursor(UiList *window, UiListItem *node) {
             Obj0215bb14_SetText(t->unk5C, str);
             t->unk5C->vfunc_70();
         }
-        func_ov006_021d3498(t, id, old > id);
+        ov006_CraftSelect_ShowCraft(t, id, old > id);
         p = Tbl_Elem_020706a0(id);
         ov006_Gauge_SetRatio(t->gauges[0], p->unk4 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(t->gauges[1], p->unk5 << 12, 0xa000, 1);
@@ -1701,10 +1701,10 @@ BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node) {
     return FALSE;
 }
 
-ov006_TaskD1F *ov006_TaskD1F_Ctor(ov006_TaskD1F *self) {
+ov006_TaskD1F *ov006_CraftSelect_Ctor(ov006_TaskD1F *self) {
     ov006_Slot *slot;
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &ov006_TaskD1F_vtbl;
+    *(void **)self = &ov006_CraftSelect_vtbl;
     self->step = 0;
     self->subStep = 0;
     self->unk44 = 0;
@@ -1727,7 +1727,7 @@ ov006_TaskD1F *ov006_TaskD1F_Ctor(ov006_TaskD1F *self) {
 
 static inline void ov006_TaskD1F_Dtor(ov006_TaskD1F *self) {
     int i;
-    *(void **)self = &ov006_TaskD1F_vtbl;
+    *(void **)self = &ov006_CraftSelect_vtbl;
     OV006_DELETE_OBJECT(self->unk54);
     OV006_DELETE_OBJECT(self->unk58);
     OV006_DELETE_OBJECT(self->unk5C);
@@ -1740,12 +1740,12 @@ static inline void ov006_TaskD1F_Dtor(ov006_TaskD1F *self) {
     OV006_TASKBASE_DTOR(self);
 }
 
-ov006_TaskD1F *ov006_TaskD1F_Dtor_021d2000(ov006_TaskD1F *self) {
+ov006_TaskD1F *ov006_CraftSelect_Dtor_021d2000(ov006_TaskD1F *self) {
     ov006_TaskD1F_Dtor(self);
     return self;
 }
 
-ov006_TaskD1F *ov006_TaskD1F_DtorDelete(ov006_TaskD1F *self) {
+ov006_TaskD1F *ov006_CraftSelect_DtorDelete(ov006_TaskD1F *self) {
     ov006_TaskD1F_Dtor(self);
     Heap_Free(self);
     return self;

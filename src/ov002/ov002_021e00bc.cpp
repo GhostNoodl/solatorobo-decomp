@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e00bc(Obj021eff30 *self) {
+void Obj021eff30_Step10(Obj021eff30 *self) {
     u16 k = gPad->trig;
     Obj021eff50 *w;
     u8 *q;

@@ -385,7 +385,7 @@ extern char data_0208cd39[];
 extern char data_0208cd47[];
 extern char data_0208cd4f[];
 
-void func_0206eaf8(void) {
+void Param_BindTables(void) {
     void **data;
     if (data_0214b128.res->IsLoaded()) {
         return;

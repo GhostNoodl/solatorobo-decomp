@@ -36,7 +36,7 @@ Ov008Item *Ov008Menu_AddItem(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
     return n;
 }
 
-void func_ov008_021cce38(Ov008Caption *o) {
+void Ov008Caption_Update(Ov008Caption *o) {
     char buf[0x20];
     BOOL again;
     do {

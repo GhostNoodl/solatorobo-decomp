@@ -46,7 +46,7 @@ struct Obj021bbd94 {
     u8 unk_76;
 };
 
-void func_ov000_021bbd94(Obj021bbd94 *self) {
+void MissionInfo_CreateBackButton(Obj021bbd94 *self) {
     void *msg = gMsgRes;
     Lo021cb5a8 *t;
     Model *m;

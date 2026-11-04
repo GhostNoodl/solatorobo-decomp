@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021ef79c_PostUpdate(void) {
+void AudioMenu_PostUpdate(void) {
 }
 
 }

@@ -27,7 +27,7 @@ static inline void Obj021b87d8_DeleteMember(Model *obj) {
     }
 }
 
-void func_ov000_021b87d8(Obj021b87d8 *self, u16 a) {
+void ImageCard_Init(Obj021b87d8 *self, u16 a) {
     self->unk_00 = 0;
     self->unk_44 = 1;
     self->unk_48 = a;
@@ -37,7 +37,7 @@ void func_ov000_021b87d8(Obj021b87d8 *self, u16 a) {
     self->unk_58 = 0;
 }
 
-void func_ov000_021b8800(Obj021b87d8 *self) {
+void ImageCard_Dtor(Obj021b87d8 *self) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     if (self->unk_4c != NULL) {

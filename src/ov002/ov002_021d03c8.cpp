@@ -10,7 +10,7 @@ void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
-BOOL func_ov002_021d0270(void *self, void *ev);
+BOOL MusicPlayer_List3cOnDecide(void *self, void *ev);
 void LoBase021ccb54_021ccbe0_SelectById(void *list, s32 a);
 
 typedef struct {
@@ -18,7 +18,7 @@ typedef struct {
     u16 b;
 } Pair021d03c8;
 
-void Task021efa1c_Start(Task021efa1c *self) {
+void MusicPlayer_Start(Task021efa1c *self) {
     void *g;
     UiObj *p;
     self->unk_04 &= ~2;
@@ -46,7 +46,7 @@ void Task021efa1c_Start(Task021efa1c *self) {
     }
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xf2));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xf4));
-    self->unk_3c->onDecide = (void *)func_ov002_021d0270;
+    self->unk_3c->onDecide = (void *)MusicPlayer_List3cOnDecide;
     {
         u16 i;
         u8 *base;

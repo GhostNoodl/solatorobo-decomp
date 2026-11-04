@@ -4,7 +4,7 @@ extern "C" {
 
 // Same caption draw as the inline in ov006_021e1bb4.cpp, with the statements
 // in the order that reproduces the target's scheduling.
-void func_ov006_021e0b80(ov006_Caption *self) {
+void ov006_Caption_DrawText(ov006_Caption *self) {
     if (self->visible) {
         const ov006_CaptionEntry *e = &ov006_CaptionTable[self->kind];
         TextWin *anim = self->label;

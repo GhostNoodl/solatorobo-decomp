@@ -32,7 +32,7 @@ static inline const ov006_Price021da098 *ov006_GetItemPrice(u8 item) {
     return p;
 }
 
-void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self) {
+void ov006_Winnings_SetupPrices(ov006_Task021ec040 *self) {
     u8 n = gOv006SlotManager->lap;
     u8 i;
     if (n < 1) {

@@ -81,7 +81,7 @@ void Ov002Session_Update(Ov002Session *self) {
 void Ov002Session_Draw(Ov002Session *self) {
 }
 
-Task021ef530 *Task021ef530_New(void) {
+Task021ef530 *AsmodeusMenu_New(void) {
     Task021ef530 *p = (Task021ef530 *)Heap_Alloc(sizeof(Task021ef530));
     if (p != NULL) {
         Task_021cd06c_ctor(p);
@@ -90,12 +90,12 @@ Task021ef530 *Task021ef530_New(void) {
     return p;
 }
 
-void Task021ef530_Load(Task021ef530 *self) {
+void AsmodeusMenu_Load(Task021ef530 *self) {
     ResMgr_LoadArchive(data_ov002_021ef3e4, data_ov002_021ef3ec, 2, 0);
     self->unk_4d = 1;
 }
 
-int Task021ef530_IsLoaded(void) {
+int AsmodeusMenu_IsLoaded(void) {
     return ResMgr_IsArchiveLoaded(data_ov002_021ef3e4, data_ov002_021ef3ec, 2);
 }
 
@@ -112,7 +112,7 @@ void Buffer0216f144_Init(void *p);
 void func_ov000_0216f828(void *p);
 void *MessageQueue_AddBuffer_0216f398(void *a, void *b, s32 c, void *d);
 
-void Task021ef530_Start(Task021ef530 *self) {
+void AsmodeusMenu_Start(Task021ef530 *self) {
     void *g;
     void *res;
     Model *m;

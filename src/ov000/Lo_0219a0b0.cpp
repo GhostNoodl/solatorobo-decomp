@@ -48,7 +48,7 @@ typedef struct {
 extern "C" {
 extern Mgr0219a0b0 *gMessageQueue;
 void Actor_SendMsg(Actor0219a0b0 *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void func_02040a98(char *dst, int num);
+void Str_FormatInt(char *dst, int num);
 
 static inline BOOL GBusy0219a0b0(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -92,7 +92,7 @@ void func_ov000_0219a0b0(Obj0219a0b0 *self, Actor0219a0b0 *actor) {
     self->timer = 0;
     msg.value = self->value;
     Actor_SendMsg(actor, 0xffff, 10, 1, 2, &msg);
-    func_02040a98(msg.str, self->value);
+    Str_FormatInt(msg.str, self->value);
     sub = gMessageQueue->unk_11c;
     if (sub == NULL || (log = sub->unk_7c) == NULL) {
         return;

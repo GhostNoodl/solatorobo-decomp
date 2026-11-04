@@ -9,7 +9,7 @@ void *Model0218fe1c_Init(void *a);
 void *Model0218fe1c_FreeAnims(void *a);
 void *ResSet_ReleaseAll(void *a);
 
-void *func_ov015_0220dde8(Ov015StageMdl *self) {
+void *Ov015StageMdl_Ctor(Ov015StageMdl *self) {
     s32 i;
     SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Init(self);

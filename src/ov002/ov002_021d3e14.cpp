@@ -11,16 +11,16 @@ void MenuScript_Run(u16 v);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
-void *func_0206ee58(u16 id);
-BOOL Task021ef81c_List3cOnDecide(UiList *self, UiListItem *ev);
-BOOL Task021ef81c_List3cOnCursor(UiList *self, UiListItem *ev);
+void *Param_GetBgmInfo(u16 id);
+BOOL ComposeMenu_List3cOnDecide(UiList *self, UiListItem *ev);
+BOOL ComposeMenu_List3cOnCursor(UiList *self, UiListItem *ev);
 
 static inline bool Ov002_Avail(u8 *blk, void *tbl, u16 i) {
     bool a = DataRes_ReadBitsAt_02059544(gDataRes, blk, tbl, 1, i) & 1;
     return a & (DataRes_ReadBitsAt_02059544(gDataRes, blk, tbl, 0x101, i) == 0);
 }
 
-void Task021ef81c_Start(Task021ef81c *self) {
+void ComposeMenu_Start(Task021ef81c *self) {
     void *g;
     u8 *blk;
     u32 count;
@@ -147,8 +147,8 @@ void Task021ef81c_Start(Task021ef81c *self) {
     self->unk_3c->unk_c0 = 0x78;
     UiList021cb4a8_SetLabel(self->unk_3c, MsgRes_GetString(g, 0xa2));
     UiList021cb4a8_SetCenteredLabel(self->unk_3c, MsgRes_GetString(g, 0x40));
-    self->unk_3c->onDecide = Task021ef81c_List3cOnDecide;
-    self->unk_3c->onCursor = Task021ef81c_List3cOnCursor;
+    self->unk_3c->onDecide = ComposeMenu_List3cOnDecide;
+    self->unk_3c->onCursor = ComposeMenu_List3cOnCursor;
     self->unk_3c->owner = self;
     MenuScript_Run(((u32)self->param));
 
@@ -158,7 +158,7 @@ void Task021ef81c_Start(Task021ef81c *self) {
     for (i = 0; i < count; i++) {
         if (Ov002_Avail(blk, tbl, i)) {
             id = i | 0x4000;
-            self->unk_3c->vfunc_74(Param_Get(id), id, 0xffff, FIELD(func_0206ee58(id), 2, u16));
+            self->unk_3c->vfunc_74(Param_Get(id), id, 0xffff, FIELD(Param_GetBgmInfo(id), 2, u16));
         }
     }
     {

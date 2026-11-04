@@ -8,7 +8,7 @@ extern void *data_0208cb74;
 void *ResMgr_GetArchiveList(void *a, void *b, int c);
 void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
-void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
+void Ov015_ParseTextTag(char *out, s32 *outId, u32 n, const char *src);
 void Ov015UiText_LoadText(Ov015UiText *self, void *p);
 s32 TexObj_GetCellWidth(void *m, void *anim);
 s32 TexObj_GetCellHeight(void *m, void *anim);
@@ -197,7 +197,7 @@ void Ov015UiText_SetText(Ov015UiText *self, void *msg) {
     if (msg == NULL) {
         return;
     }
-    func_ov015_02208bac(self->text, &self->textId, 0x20, (const char *)msg);
+    Ov015_ParseTextTag(self->text, &self->textId, 0x20, (const char *)msg);
     if (self->text[0] == 0 && self->textId < 0) {
         return;
     }
@@ -327,7 +327,7 @@ struct Ov015TagParser {
     char str[0x20];
 };
 typedef s32 (*Ov015CharFn)(const char **s);
-void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
+void Ov015_ParseTextTag(char *out, s32 *outId, u32 n, const char *src) {
     Ov015CharFn fn = *(Ov015CharFn *)((u8 *)GfxMgr_GetFont(gGfxMgr) + 4);
     const char *s;
     Ov015TagParser p;

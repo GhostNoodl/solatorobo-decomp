@@ -9,7 +9,7 @@ static inline BOOL LoIsState5(void *o) {
     return LFLD(s32, o, 4) == 5 ? TRUE : FALSE;
 }
 
-void Lo021ca9c4_Exit(Lo021ca9c4 *self, void *arg) {
+void QuestWin_Exit(Lo021ca9c4 *self, void *arg) {
     BOOL ok = TRUE;
     Lo021cb5a8 *q;
     if ((void *)self->unk_50 && !LoIsState5(self->unk_50)) {

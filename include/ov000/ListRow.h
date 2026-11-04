@@ -23,7 +23,7 @@ struct ObjBase021cac0c_021cb6f0;
 // 0x30 bytes.
 struct ListRow : public VObj {
     s32 index; // 0x04 set by the creator; LoBase021ccb54_021ccbe0_FindRow looks a row up by it
-    s32 unk_08; // ov002's lists keep the row's Param id here (Task021efa1c_Start)
+    s32 unk_08; // ov002's lists keep the row's Param id here (MusicPlayer_Start)
     s32 x; // 0x0c draw position (fx32), set by LoBase021ccb54_021ccbe0_DrawRows before the draw slot
     s32 y;
     s32 z;
@@ -57,7 +57,7 @@ struct Hud021cca10 : public ListRow {
 
 // Vtable Ov000Vt_021cc9f8_vtbl (0x44 bytes, init ListRowGauge_Init): a bar display and a label
 // (func_ov000_021c2c0c), built by slot 0x08 (ListRowGauge_Update) and drawn by slot 0x0c
-// (ListRowGauge_Draw). The bar shows value out of max (ov002's level list, Task021ef99c_Start, sets
+// (ListRowGauge_Draw). The bar shows value out of max (ov002's level list, LibraryMenu_Start, sets
 // value to level * 100 + the percent of the way to the next threshold and max to 300).
 struct ListRowGauge : public ListRow {
     ObjBase021cac0c_021cb6f0 *bar; // 0x30 (vtable Ov000Vt_021cca88_vtbl)
@@ -86,7 +86,7 @@ struct ListRowLabel : public ListRow {
     TextWin *text; // 0x30
 };
 
-// The item shown by a ListRow021cca70 (filled by func_ov000_021c308c from the item id).
+// The item shown by a ListRow021cca70 (filled by ListRow021cca70_SetPhotoItem from the item id).
 typedef struct ListRowItem {
     u8 unk_00[0x4];
     u16 id; // 0x04
@@ -97,15 +97,15 @@ typedef struct ListRowItem {
     u8 unk_0b;
 } ListRowItem;
 
-// Vtable Ov000Vt_021cca70_vtbl (0x7c bytes, init func_ov000_021c2f10, release ListRow021cca70_Release): an
+// Vtable Ov000Vt_021cca70_vtbl (0x7c bytes, init ListRow021cca70_Init, release ListRow021cca70_Release): an
 // item drawn as n parts with two models, loaded by slot 0x08 (ListRow021cca70_Update) and drawn by slot 0x0c
 // (ListRow021cca70_Draw).
 struct ListRow021cca70 : public ListRow {
-    char *arc; // 0x30 the models' archive and file (func_ov000_021c308c)
+    char *arc; // 0x30 the models' archive and file (ListRow021cca70_SetPhotoItem)
     char *name; // 0x34
     Model *unk_38; // the part model for a set bit of item.mask
     Model *unk_3c; // and for a clear bit
-    void *unk_40; // the row's text (ov002 Task021ef69c_Start: Param_Get(id))
+    void *unk_40; // the row's text (ov002 AlbumMenu_Start: Param_Get(id))
     s32 unk_44;
     ListRowItem item; // 0x48
     u8 alpha; // 0x54

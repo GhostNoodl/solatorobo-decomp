@@ -9,8 +9,8 @@ extern Ov008Save *gDataRes;
 Ov008Def *Lang_GetGroup(u8 id);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 Ov008Item *UiList_GetItemById(void *a, u32 id);
-BOOL Ov008Mgr_MenuOnDecide(Ov008Menu *self, Ov008Sel *sel);
-BOOL Ov008Mgr_MenuOnCursor(Ov008Menu *self, Ov008Sel *sel);
+BOOL Ov008WorldMap_MenuOnDecide(Ov008Menu *self, Ov008Sel *sel);
+BOOL Ov008WorldMap_MenuOnCursor(Ov008Menu *self, Ov008Sel *sel);
 extern void *gMsgRes;
 extern void *UiObj_vtbl;
 extern void *UiList_vtbl;
@@ -27,7 +27,7 @@ Ov008Chr *SceneStage_GetScript(void *p, s32 a);
 void MsgEntry_Init(Ov008Tag *t);
 void MsgEntry_Release(Ov008Tag *t);
 u32 func_ov000_0214c01c(u16 a);
-u32 func_ov000_0214bf2c(u16 id);
+u32 Quest_GetOptFlags(u16 id);
 const char *func_ov000_0214c064(u16 id);
 void Text_ScanTags(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
 void func_ov000_0214dc20(void *arg, s32 *tag);
@@ -59,7 +59,7 @@ typedef enum Ov008EntState {
     OV008_ENT_KNOWN = 1
 } Ov008EntState;
 
-void Ov008Mgr_BuildMenu(Ov008Mgr *m) {
+void Ov008WorldMap_BuildMenu(Ov008Mgr *m) {
     u16 i;
     Ov008Menu *p;
     void *res;
@@ -94,8 +94,8 @@ void Ov008Mgr_BuildMenu(Ov008Mgr *m) {
         q->posZ = -0x1000;
     }
     m->menu->onDrawItem = (Ov008Cb)func_ov008_021cf5c8;
-    m->menu->onDecide = (Ov008Cb)Ov008Mgr_MenuOnDecide;
-    m->menu->onCursor = (Ov008Cb)Ov008Mgr_MenuOnCursor;
+    m->menu->onDecide = (Ov008Cb)Ov008WorldMap_MenuOnDecide;
+    m->menu->onCursor = (Ov008Cb)Ov008WorldMap_MenuOnCursor;
     data_02fe1534.unk_44 = 1;
     m->unk_fc->v38(1);
     data_02fe1534.unk_44 = 0;
@@ -134,7 +134,7 @@ void Ov008Mgr_BuildMenu(Ov008Mgr *m) {
     tag.unk_36 = 0;
     func_ov000_0214c01c(gStageFlags[0x639]);
     for (; i < cnt; i++) {
-        flags = func_ov000_0214bf2c(ents[i].id);
+        flags = Quest_GetOptFlags(ents[i].id);
         if (flags & 0x20) {
             ok = OV008_ENT_NEW;
         } else {

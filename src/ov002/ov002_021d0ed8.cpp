@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021ef89c_UpdateActive(Task021ef89c *self) {
+void TheaterMenu_UpdateActive(Task021ef89c *self) {
     if (!(gPad->trig & 2)) {
         return;
     }

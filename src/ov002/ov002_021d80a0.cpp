@@ -45,7 +45,7 @@ static inline void *ov002_findEntry(u8 *d, char *name) {
     return NULL;
 }
 
-void func_ov002_021d8148(Obj021efe9c *self) {
+void Obj021efe9c_LoadPartModel(Obj021efe9c *self) {
     void *res;
     char *name;
     void *n8;

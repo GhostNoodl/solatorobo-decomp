@@ -55,7 +55,7 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
     SndMgr_PlayVolume(gSndMgr, s1, -1, -1, -1);
     SndMgr_PlayVolume(gSndMgr, s2, -1, -1, -1);
 }
-void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
+void Ov015FishState18_StepRise(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec t(*(Ov015Vec *)&p->pos);
     s32 d = 0x4000 - t.y;
     if ((d < 0 ? -d : d) <= 0x19a) {
@@ -71,7 +71,7 @@ void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
     }
 }
 
-void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
+void Ov015FishState18_StepSettle(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec a;
     Ov015Vec c;
     Ov015Vec d;
@@ -160,7 +160,7 @@ BOOL Ov015FishState1c_Enter(Ov015FishState1c *self, Ov015Fish *p) {
 
 
 BOOL func_ov015_0220c810(Ov015FishState1c *self);
-void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p);
+void Ov015FishState1c_StepSurface(Ov015FishState1c *self, Ov015Fish *p);
 s32 Rand_UpTo(s32 n);
 void Model0218fe1c_ClearLoop(void *a);
 extern u8 data_ov015_02212e74[];
@@ -273,7 +273,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
         break;
     }
     case 5:
-        func_ov015_0220c6c8(self, p);
+        Ov015FishState1c_StepSurface(self, p);
         if (self->timer == 0) ret = FALSE;
         break;
     }

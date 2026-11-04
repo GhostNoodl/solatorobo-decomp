@@ -60,7 +60,7 @@ BOOL Ov015Fish_IsLoaded(Ov015Fish *self) {
     return r;
 }
 
-BOOL func_ov015_02209500(Ov015Fish *self) {
+BOOL Ov015Fish_SetupModels(Ov015Fish *self) {
     u8 *p;
     u32 n;
     VObj *m;

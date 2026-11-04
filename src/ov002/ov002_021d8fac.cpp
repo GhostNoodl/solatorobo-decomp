@@ -5,12 +5,12 @@ extern "C" {
 
 #define SIN_TABLE FX_SINCOS_TABLE
 
-void func_ov002_021d91d8(Obj021efed4 *self);
+void Obj021efed4_LoadPartModel(Obj021efed4 *self);
 
 void Ov002Vt_021efed4_Update(Obj021efed4 *self) {
     switch (self->unk_98) {
     case 0:
-        func_ov002_021d91d8(self);
+        Obj021efed4_LoadPartModel(self);
         self->unk_98 = 10;
     case 10:
         self->unk_88->frame = self->unk_ac << 12;
@@ -96,7 +96,7 @@ static inline void *ov002_findEntry(u8 *d, char *name) {
     return NULL;
 }
 
-void func_ov002_021d91d8(Obj021efed4 *self) {
+void Obj021efed4_LoadPartModel(Obj021efed4 *self) {
     void *res;
     u8 *info;
     char buf[16];

@@ -9,8 +9,8 @@ BOOL MsgRes_LoadGlobal(void);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
 BOOL MsgRes_BindGlobal(void);
-void func_0206faec(void);
-void func_0206eaf8(void);
+void LangRes2_BindTables(void);
+void Param_BindTables(void);
 
 static inline BOOL HasMgr(void) {
     return gDataRes != NULL ? TRUE : FALSE;
@@ -56,8 +56,8 @@ BOOL func_ov000_02189068(void *self) {
     gDataRes->vfunc_30();
     gStageDataRes->vfunc_30();
     MsgRes_BindGlobal();
-    func_0206faec();
-    func_0206eaf8();
+    LangRes2_BindTables();
+    Param_BindTables();
     return TRUE;
 }
 }

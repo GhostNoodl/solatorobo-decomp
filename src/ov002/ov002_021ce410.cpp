@@ -43,7 +43,7 @@ void Task021ef430_Draw(Task021ef430 *self) {
     TexObj_DrawCell(model, arg, anim, 0);
 }
 
-Task021ef4b0 *Task021ef4b0_New(void) {
+Task021ef4b0 *CabinMenu_New(void) {
     Task021ef4b0 *p = (Task021ef4b0 *)Heap_Alloc(0x4c);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -57,16 +57,16 @@ Task021ef4b0 *Task021ef4b0_New(void) {
     return p;
 }
 
-void Task021ef4b0_SwitchTo(Task021ef4b0 *self, int arg) {
+void CabinMenu_SwitchTo(Task021ef4b0 *self, int arg) {
     TaskHost_RequestSwitch(gTaskHost, arg, 0);
 }
 
-void Task021ef4b0_Start(Task021ef4b0 *self) {
+void CabinMenu_Start(Task021ef4b0 *self) {
     self->unk_04_1 = 0;
     if (self->vfunc_28() != 0) {
         return;
     }
-    func_ov002_021ce7b8(self);
+    CabinMenu_BuildMenu(self);
     if (func_ov002_isMode4()) {
         GfxSys_StartFadeIn(self->fadeLen, 0, -1);
     }
@@ -78,7 +78,7 @@ void Ov002Task_SetFlag7(Task *self) {
     self->unk_04_7 = 1;
 }
 
-void func_ov002_021ce660(Task021ef4b0 *self, u32 arg) {
+void CabinMenu_Rebuild(Task021ef4b0 *self, u32 arg) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_3c);
@@ -87,12 +87,12 @@ void func_ov002_021ce660(Task021ef4b0 *self, u32 arg) {
     DELETE_VOBJ(self->unk_40);
     HEAP_POP(saved);
     self->unk_44 = arg;
-    func_ov002_021ce7b8(self);
+    CabinMenu_BuildMenu(self);
     self->unk_3c->flags |= 2;
     self->unk_40->flags |= 2;
 }
 
-void Task021ef4b0_FreeWindows(Task021ef4b0 *self) {
+void CabinMenu_FreeWindows(Task021ef4b0 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_3c);
@@ -138,7 +138,7 @@ static inline BOOL ov002_021ce7b8_check(int idx, u32 arg) {
     return ok;
 }
 
-void func_ov002_021ce7b8(Task021ef4b0 *self) {
+void CabinMenu_BuildMenu(Task021ef4b0 *self) {
     void *g = gMsgRes;
     UiObj *o;
     UiListItem *e;
@@ -241,7 +241,7 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
 }
 
 extern "C" {
-void func_ov002_021cf280(Task021ef4b0 *self, u32 id);
+void CabinMenu_SetItemHelp(Task021ef4b0 *self, u32 id);
 
 static inline UiListItem *ov002_021cedec_getSelected(UiList *list) {
     UiListItem *item = list->topItem;
@@ -255,13 +255,13 @@ static inline UiListItem *ov002_021cedec_getSelected(UiList *list) {
     }
     return item;
 }
-void Task021ef4b0_UpdateActive(Task021ef4b0 *self) {
+void CabinMenu_UpdateActive(Task021ef4b0 *self) {
     u16 keys;
     u32 id;
     keys = gPad->trig;
     id = ov002_021cedec_getSelected(self->unk_3c)->id;
     if (self->unk_44 != id) {
-        func_ov002_021cf280(self, id);
+        CabinMenu_SetItemHelp(self, id);
     }
     self->unk_44 = id;
     if (keys & 1) {

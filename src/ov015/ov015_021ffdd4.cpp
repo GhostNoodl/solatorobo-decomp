@@ -7,7 +7,7 @@ void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
-Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self);
+Ov015Fish *Ov015Obj30_FindHookedFish(Ov015Obj30 *self);
 BOOL Ov015Fish_HitTestWide(Ov015Fish *self, void *a);
 
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
@@ -17,7 +17,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     if (self->unk_0c != 0) return r;
     Ov015CamPair_SetMode(self->cam, 7, (const Ov015Vec *)&self->unk_10->pos);
     self->unk_14->vfunc_18();
-    self->fish = func_ov015_021fffc4(self);
+    self->fish = Ov015Obj30_FindHookedFish(self);
     if (self->unk_14->vfunc_20() || self->fish != NULL) {
         if (self->fish != NULL) {
             Ov015CamPair *p = self->cam;
@@ -70,7 +70,7 @@ BOOL func_ov015_021fffb0(Ov015Obj30 *self) {
     return self->timer >= 2 ? TRUE : FALSE;
 }
 
-Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
+Ov015Fish *Ov015Obj30_FindHookedFish(Ov015Obj30 *self) {
     Ov015Fish *found = NULL;
     Ov015Node *n = self->fishList->head;
     while (n != NULL) {

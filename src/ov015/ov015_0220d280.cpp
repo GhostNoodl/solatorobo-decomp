@@ -32,7 +32,7 @@ BOOL Ov015FishState40_Exit(Ov015FishState40 *self, Ov015Fish *p) {
     return TRUE;
 }
 
-void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
+void Ov015FishState40_StepRise(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;
@@ -69,7 +69,7 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     }
 }
 
-void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
+void Ov015FishState40_StepDive(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;

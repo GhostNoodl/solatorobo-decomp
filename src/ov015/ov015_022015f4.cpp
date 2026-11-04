@@ -17,7 +17,7 @@ void Ov015MsgMgr_Init(Ov015MsgMgr *self);
 void Ov015Info38_Set(Ov015Info38 *self, u16 id, s32 mode);
 void Ov015FishInfo_Init(Ov015FishInfo *self, u16 a, const void *src);
 void *Ov015Fish_Ctor(Ov015Fish *self);
-void func_ov015_02209364(Ov015Fish *self);
+void Ov015Fish_LoadModels(Ov015Fish *self);
 
 BOOL Ov015Game_Load(void) {
     return ResMgr_IsLoaded(data_ov015_022128c1, 7) != 0 ? TRUE : FALSE;
@@ -75,7 +75,7 @@ BOOL Ov015Game_Setup(Ov015Game *self) {
         Ov015FishInfo_Init(&e->info, e->id, def);
         e->info.unk_20 = self->info.unk_20;
         e->info.unk_24 = self->info.unk_24;
-        func_ov015_02209364(e);
+        Ov015Fish_LoadModels(e);
         L = self->fishList;
         nd = (Ov015Node *)Heap_Alloc(0x10);
         if (nd != NULL) {
@@ -124,13 +124,13 @@ BOOL Ov015Ship_Setup(Ov015Ship *self);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
-BOOL func_ov015_02209500(Ov015Fish *self);
+BOOL Ov015Fish_SetupModels(Ov015Fish *self);
 BOOL func_ov015_02210c28(void);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 s32 Ov015MsgMgr_Update(Ov015MsgMgr *self, Ov015Stat *a, s32 b);
-BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
-BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
-void func_ov015_0220101c(Ov015Game *self);
+BOOL Ov015Obj30_Run(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
+BOOL Ov015Obj34_Run(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
+void Ov015Game_FreeAll(Ov015Game *self);
 
 static inline BOOL Ov015_SysB4(void) {
     return gGfxSys->unk_a30_4 ? TRUE : FALSE;
@@ -284,9 +284,9 @@ BOOL Ov015Game_Update(Ov015Game *self) {
         Model0218fe1c_SetLoop(&p->p[2].mdl);
         p->p[2].mdl.flags.visible = 1;
         for (n = self->fishList->head; n != NULL; n = n->next) {
-            func_ov015_02209500(n->fish);
+            Ov015Fish_SetupModels(n->fish);
         }
-        func_ov015_021fb474(self->hud);
+        Ov015Hud_Setup(self->hud);
         if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
@@ -313,7 +313,7 @@ BOOL Ov015Game_Update(Ov015Game *self) {
             }
         }
         }
-        if (!func_ov015_021ff4a0(&self->phase1, self->ship, self->cam, self->fishList, &self->info)) {
+        if (!Ov015Obj30_Run(&self->phase1, self->ship, self->cam, self->fishList, &self->info)) {
             self->step = 0x32;
             SndMgr_Stop(gSndMgr, 0x4f);
         }
@@ -332,8 +332,8 @@ BOOL Ov015Game_Update(Ov015Game *self) {
         Ov015_ModelsReset(self->unk_20);
         if (self->unk_90 == NULL || self->phase2.step < 2 ||
             !Ov015MsgMgr_Update(self->unk_90, &data_ov015_0221332c, 0x32)) {
-            func_ov015_021fb5d4(self->hud);
-            if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, self->fishList->head->fish,
+            Ov015Hud_Update(self->hud);
+            if (!Ov015Obj34_Run((Ov015Obj34 *)&self->phase2, self->ship, self->fishList->head->fish,
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
                 Ov015Fade_ToOpaque(Ov015_GetFade(), 0x1e000, 0x7fff);
@@ -362,7 +362,7 @@ BOOL Ov015Game_Update(Ov015Game *self) {
                 pad->unk_02 = 0;
             }
         }
-        func_ov015_0220101c(self);
+        Ov015Game_FreeAll(self);
         EffectMgr_FreeAll(gEffectMgr);
         Ov015Fade_ToClear(Ov015_GetFade(), 0x1000, 0x7fff);
         {

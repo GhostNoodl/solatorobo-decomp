@@ -2278,7 +2278,7 @@ extern "C" {
 
 extern void *data_ov002_021f0104[];
 void *ResMgr_GetDataType0(void *a);
-void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
+void Ov002_MakeSlideFileName(void *dst, u32 size, void *src, int mode, u8 idx);
 
 static inline BOOL ov002_ResReady(Ov002Stage *self) {
     BOOL r = FALSE;
@@ -2336,10 +2336,10 @@ BOOL Ov002Stage_State1(Ov002Stage *self) {
         self->step = 0x14;
     case 0x14:
         if (self->unk_20 != NULL) {
-            func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
+            Ov002_MakeSlideFileName((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
             ResMgr_LoadArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
-            func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
+            Ov002_MakeSlideFileName((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
             ResMgr_Load((char *)((u8 *)self + 0x48), 0, 0);
         }
         self->step++;
@@ -2359,10 +2359,10 @@ BOOL Ov002Stage_State1(Ov002Stage *self) {
             MI_CpuFill8((u8 *)self + 0x24, 0, 0x20);
             STD_CopyLString((char *)((u8 *)self + 0x24), n, 0x20);
             STD_TSNPrintf((u8 *)self + 0x24, 0x20, data_ov002_021f0647, n, data_ov002_021f0104[0x520 / 4]);
-            func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
+            Ov002_MakeSlideFileName((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
             ResMgr_LoadArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
-            func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
+            Ov002_MakeSlideFileName((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
             ResMgr_Load((char *)((u8 *)self + 0x48), 0, 0);
         }
         self->step++;
@@ -2402,7 +2402,7 @@ void func_0204a360(void *a, int b);
 
 BOOL SndMgr_IsLoadDone(void *a);
 
-void func_ov002_021eaf20(Ov002StageFile *self);
+void Ov002StageFile_BuildScene(Ov002StageFile *self);
 
 Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count);
 
@@ -2436,7 +2436,7 @@ BOOL Ov002Stage_State2(Ov002Stage *self) {
         func_0204aad0(gSndQueue.queue);
         if (self->unk_68 != NULL) {
             Ov002StageFile_Open(&self->file, *self->unk_68, self->unk_44, 1);
-            func_ov002_021eaf20(&self->file);
+            Ov002StageFile_BuildScene(&self->file);
         }
         func_0204a360(gSndMgr, -1);
         self->step = 10;
@@ -2703,11 +2703,11 @@ extern "C" {
 extern u8 data_ov002_021f0878[];
 extern u8 data_ov002_021f087c[];
 extern u8 data_ov002_021f0880[];
-void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
+void Ov002_MakeSlideFileName(void *dst, u32 size, void *src, int mode, u8 idx);
 
 #define GAME ((u8 *)gOv002Stage)
 
-void func_ov002_021e8f04(s32 idx) {
+void Ov002Stage_CreateSlide(s32 idx) {
     Ov002Stage *p;
     void *name;
     Ov002Stage *g;
@@ -2745,7 +2745,7 @@ void func_ov002_021e8f04(s32 idx) {
         g2 = (Ov002Stage *)GAME;
         desc = *(void **)(data_ov002_021f087c + off);
         g2->unk_44 = (char *)desc;
-        func_ov002_021e9d7c((u8 *)g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
+        Ov002_MakeSlideFileName((u8 *)g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {
@@ -3258,7 +3258,7 @@ Ov002Obj *Ov002Obj021f06bc_New(void *a, void *b) {
 namespace m_021e9cec {
 extern "C" {
 
-void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx) {
+void Ov002_MakeSlideName(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *s;
     MI_CpuFill8(dst, 0, size);
     STD_CopyLString((char *)dst, (char *)src, size);
@@ -3279,7 +3279,7 @@ void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx) {
     STD_TSNPrintf(dst, size, data_ov002_021f0647, src, s);
 }
 
-void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx) {
+void Ov002_MakeSlideFileName(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *a;
     void *b;
     MI_CpuFill8(dst, 0, size);
@@ -3316,10 +3316,10 @@ extern "C" {
 extern u8 data_ov002_021f0878[];
 extern u8 data_ov002_021f087c[];
 extern u8 data_ov002_021f0880[];
-void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
+void Ov002_MakeSlideFileName(void *dst, u32 size, void *src, int mode, u8 idx);
 
 #define GAME ((u8 *)gOv002Stage)
-void func_ov002_021e9e40(int idx) {
+void Ov002Stage_SelectSlide(int idx) {
     void *name;
     Ov002Stage *g;
     u8 m;
@@ -3340,7 +3340,7 @@ void func_ov002_021e9e40(int idx) {
         g2 = (Ov002Stage *)GAME;
         desc = *(void **)(data_ov002_021f087c + off);
         g2->unk_44 = (char *)desc;
-        func_ov002_021e9d7c((u8 *)g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
+        Ov002_MakeSlideFileName((u8 *)g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {

@@ -8,7 +8,7 @@ extern "C" {
 typedef void (*VFunc)(void);
 
 extern VFunc TextWin_vtbl[];
-void *func_02061d64(u16 idx);
+void *StageTbl_GetSceneCond(u16 idx);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 
@@ -60,7 +60,7 @@ struct Obj021ba92c {
     s32 unk_2c;
 };
 
-s32 func_ov000_021ba92c(Obj021ba92c *self) {
+s32 SceneCondCard_Update(Obj021ba92c *self) {
     switch (self->unk_04) {
     case 1:
         self->unk_04 = 2;
@@ -73,7 +73,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         if (!IsMode021ba92c(m) && (u32)(m - 0x11) > 2) {
             break;
         }
-        str = func_02061d64(self->unk_08);
+        str = StageTbl_GetSceneCond(self->unk_08);
         t = (Ov000Text *)Heap_Alloc(0xb8);
         if (t != NULL) {
             t->vtbl = TextWin_vtbl;

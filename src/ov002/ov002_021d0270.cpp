@@ -7,12 +7,12 @@ typedef struct BgmInfo {
     u16 type : 2;
 } BgmInfo;
 
-BgmInfo *func_0206ee58(u16 id);
+BgmInfo *Param_GetBgmInfo(u16 id);
 
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 
-BOOL func_ov002_021d0270(void *self, void *ev) {
-    BgmInfo *info = func_0206ee58(FIELD(ev, 0x8, u32));
+BOOL MusicPlayer_List3cOnDecide(void *self, void *ev) {
+    BgmInfo *info = Param_GetBgmInfo(FIELD(ev, 0x8, u32));
     if (info != NULL) {
         {
             SndQueue *m = gSndQueue.queue;

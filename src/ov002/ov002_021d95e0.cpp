@@ -36,7 +36,7 @@ void func_ov002_021d95e0(Obj021efe6c *self) {
         StageFlags_ChangeShape(gStageFlags, 0x9001);
     }
     self->field->unk_68 = gStageFlags->shapeId;
-    func_ov002_021d7058(self->field);
+    Obj021efe4c_SetupBoxModels(self->field);
     cam = Heap_Alloc(0x24);
     if (cam != NULL) {
         cam = GfxCamPos_Init(cam);

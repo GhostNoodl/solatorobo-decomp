@@ -9,21 +9,21 @@ extern VFunc Ov002Vt_021ef674_vtbl[];
 void func_ov000_021c6140(TextList *self);
 void ListRow_Init(void *self);
 void func_ov000_021c2208(void *self);
-void func_ov000_021c2f10(void *self);
-void func_ov000_021c308c(void *self, u16 id);
+void ListRow021cca70_Init(void *self);
+void ListRow021cca70_SetPhotoItem(void *self, u16 id);
 void List021c6474_Append(TextList *self, ListRow *row);
 void TextList_SelectByKey(TextList *self, s32 index);
 u16 func_0206f788(u16 id);
 void *func_0206eed0(u16 id);
-BOOL Task021ef69c_List3cOnCursor(TextList *self, ListRow021cca70 *row);
-BOOL Task021ef69c_List3cOnDecide(TextList *self, ListRow021cca70 *ev);
+BOOL AlbumMenu_List3cOnCursor(TextList *self, ListRow021cca70 *row);
+BOOL AlbumMenu_List3cOnDecide(TextList *self, ListRow021cca70 *ev);
 
 typedef struct {
     u16 a;
     u16 b;
 } Pair021d1970;
 
-void Task021ef69c_Start(Task021ef69c *self) {
+void AlbumMenu_Start(Task021ef69c *self) {
     void *g;
     UiObj *p;
     self->unk_04 &= ~2;
@@ -64,18 +64,18 @@ void Task021ef69c_Start(Task021ef69c *self) {
                     *(VFunc **)q = Ov000Vt_021cca70_vtbl;
                     *(VFunc **)&q->item = Ov002Vt_021ef674_vtbl;
                     func_ov000_021c2208(&q->item);
-                    func_ov000_021c2f10(q);
+                    ListRow021cca70_Init(q);
                 }
                 q->index = ((u32)tbl[i].b << 4) >> 16;
-                func_ov000_021c308c(q, id);
+                ListRow021cca70_SetPhotoItem(q, id);
                 q->unk_44 = i + 1;
                 q->unk_40 = Param_Get(id);
                 List021c6474_Append(self->unk_3c, q);
             }
         }
     }
-    self->unk_3c->onCursor = (TextListFn)Task021ef69c_List3cOnCursor;
-    self->unk_3c->onDecide = (TextListFn)Task021ef69c_List3cOnDecide;
+    self->unk_3c->onCursor = (TextListFn)AlbumMenu_List3cOnCursor;
+    self->unk_3c->onDecide = (TextListFn)AlbumMenu_List3cOnDecide;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     TextList_SelectByKey(self->unk_3c, data_ov002_021f0f84[2]);

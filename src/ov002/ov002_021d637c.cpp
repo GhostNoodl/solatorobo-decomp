@@ -45,7 +45,7 @@ static inline void *ov002_new637c(void) {
     return o;
 }
 
-void Task021efc24_UpdateActive(Task021efc24 *self) {
+void RobotTypeMenu_UpdateActive(Task021efc24 *self) {
     s32 z = 0;
     UiList *g;
     u16 keys;

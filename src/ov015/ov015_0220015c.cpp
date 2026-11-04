@@ -36,7 +36,7 @@ void Ov015Obj34_DtorBase(Ov015Obj34 *self) {
     HEAP_POP(saved);
 }
 
-BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d) {
+BOOL Ov015Obj34_Run(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d) {
     BOOL r = TRUE;
     self->info = d;
     self->ship = a;

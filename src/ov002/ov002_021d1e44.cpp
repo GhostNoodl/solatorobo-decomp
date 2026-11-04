@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void Task021ef69c_PostUpdate(void) {
+void AlbumMenu_PostUpdate(void) {
 }
 
-void Task021ef69c_UpdateActive(Task021ef69c *self) {
+void AlbumMenu_UpdateActive(Task021ef69c *self) {
     u16 keys = gPad->trig;
     ListRow021cca70 *ev = self->unk_44;
     if (ev != NULL) {
@@ -34,7 +34,7 @@ void Task021ef69c_UpdateActive(Task021ef69c *self) {
     }
 }
 
-void Task021ef69c_Draw(Task021ef69c *self) {
+void AlbumMenu_Draw(Task021ef69c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }

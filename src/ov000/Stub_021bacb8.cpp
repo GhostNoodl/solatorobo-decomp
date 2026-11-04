@@ -18,7 +18,7 @@ SIZE_ASSERT(Obj021bacb8, 0x30);
 
 extern "C" {
 
-void func_ov000_021bacb8(Obj021bacb8 *self, u16 a) {
+void SceneCondCard_Init(Obj021bacb8 *self, u16 a) {
     self->unk_00 = 0;
     self->unk_04 = 1;
     self->unk_08 = a;

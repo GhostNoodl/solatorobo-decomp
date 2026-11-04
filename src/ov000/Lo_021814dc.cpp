@@ -762,12 +762,12 @@ namespace m_Heap_02182374 {
 extern "C" {
 
 extern void *gDataRes;
-u32 func_ov000_0214bf2c(u32 id);
+u32 Quest_GetOptFlags(u32 id);
 void DataRes_WriteEntry(void *p, s32 a, s32 b, s32 c, s32 d);
 void SceneStage_StartScript(SceneStage *self);
 
 void func_ov000_02182374(SceneStage *self, u32 id, BOOL force) {
-    u32 flags = func_ov000_0214bf2c(id);
+    u32 flags = Quest_GetOptFlags(id);
     BOOL b = TRUE;
     SceneScript *node;
     if (force) {
@@ -1507,7 +1507,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -1603,7 +1603,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -1788,7 +1788,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -2532,7 +2532,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -2638,7 +2638,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -2737,7 +2737,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -2775,7 +2775,7 @@ static inline BOOL MgrBusy(void) {
     return ListBuffer021cb940_HasDialog(mgr->unk_11c);
 }
 
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg) {
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg) {
     switch (self->step) {
     case 0:
         MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, func_02061d54(0x25)));
@@ -2868,7 +2868,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -2897,7 +2897,7 @@ static inline BOOL MgrBusy(void);
 s32 SceneCmd_Run0e(SceneCmd *self) {
     switch (self->unk_a4 / 100) {
     case 0:
-        func_ov000_02184a1c(self, self->unk_a4);
+        SceneCmd_RunShopPrompt(self, self->unk_a4);
         break;
     case 1:
         switch (self->step) {
@@ -3006,7 +3006,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -3606,13 +3606,13 @@ void LangData_CreateRes(void);
 void Movie_RequestStop(void *p);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
-void func_0206faec(void);
-void func_0206eaf8(void);
+void LangRes2_BindTables(void);
+void Param_BindTables(void);
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
 void SceneCmd_Run16_Exit(void);
 void SceneCmd_Run16_Update(void);
 void SceneCmd_Run16_Draw(void);
-void func_ov002_021e8f04(s32 a);
+void Ov002Stage_CreateSlide(s32 a);
 void SndMgr_SetStrmVolume_0204a2a8(void *p, s32 a, s32 b);
 
 static inline void ClearCallbacks(void) {
@@ -3750,8 +3750,8 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
                 ok = FALSE;
             }
             if (ok) {
-                func_0206faec();
-                func_0206eaf8();
+                LangRes2_BindTables();
+                Param_BindTables();
                 CmdObj_Push(self, 0x26, 0);
                 CmdObj_Done(self);
             }
@@ -3766,7 +3766,7 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
             data_ov000_021ccd5c = SceneCmd_Run16_Exit;
             data_ov000_021ccd58 = SceneCmd_Run16_Update;
             data_ov000_021ccd60 = SceneCmd_Run16_Draw;
-            func_ov002_021e8f04(id);
+            Ov002Stage_CreateSlide(id);
             self->step++;
             return 0;
         }
@@ -4280,7 +4280,7 @@ extern u8 *gSceneMgr;
 extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_8_ID[];
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
-void Ov008Mgr_Create(void);
+void Ov008WorldMap_Create(void);
 void SceneCmd_Run1e_Exit(void);
 void SceneCmd_Run1e_Update(void);
 void SceneCmd_Run1e_Draw(void);
@@ -4342,20 +4342,20 @@ namespace m_Stub_02186b74 {
 extern "C" {
 
 extern u8 gOv008Mgr[];
-void Ov008Mgr_Delete();
-s32 Ov008Mgr_Update(void *a);
-void Ov008Mgr_Draw(void *a);
+void Ov008WorldMap_Delete();
+s32 Ov008WorldMap_Update(void *a);
+void Ov008WorldMap_Draw(void *a);
 
 void SceneCmd_Run1f_Exit(void) {
-    Ov008Mgr_Delete();
+    Ov008WorldMap_Delete();
 }
 
 void SceneCmd_Run1f_Update(void) {
-    Ov008Mgr_Update(*(void **)(gOv008Mgr + 0x0));
+    Ov008WorldMap_Update(*(void **)(gOv008Mgr + 0x0));
 }
 
 void SceneCmd_Run1f_Draw(void) {
-    Ov008Mgr_Draw(*(void **)(gOv008Mgr + 0x0));
+    Ov008WorldMap_Draw(*(void **)(gOv008Mgr + 0x0));
 }
 
 }
@@ -4423,7 +4423,7 @@ extern u8 *gSceneMgr;
 extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_8_ID[];
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
-void Ov008Mgr_Create(void);
+void Ov008WorldMap_Create(void);
 void SceneCmd_Run1e_Exit(void);
 void SceneCmd_Run1e_Update(void);
 void SceneCmd_Run1e_Draw(void);
@@ -4462,7 +4462,7 @@ s32 SceneCmd_Run1f(SceneCmd *self) {
         data_ov000_021ccd58 = SceneCmd_Run1f_Update;
         data_ov000_021ccd60 = SceneCmd_Run1f_Draw;
         Scene_SetSubOverlay_0204b270(gSceneMgr, (s32)OVERLAY_8_ID, 0);
-        Ov008Mgr_Create();
+        Ov008WorldMap_Create();
         self->step++;
         return 0;
     case 1:
@@ -4533,7 +4533,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -4667,8 +4667,8 @@ extern "C" {
 
 void *ov006_Task_DtorDelete();
 extern void *gOv007Scene;
-s32 Ov007Scene_Update(void *p);
-void Ov007Scene_Draw(void *p);
+s32 Ov007Title_Update(void *p);
+void Ov007Title_Draw(void *p);
 
 typedef struct {
     u16 b0 : 3;
@@ -4693,11 +4693,11 @@ void SceneCmd_Run21_Exit(void) {
 }
 
 void SceneCmd_Run21_Update(void) {
-    Ov007Scene_Update(gOv007Scene);
+    Ov007Title_Update(gOv007Scene);
 }
 
 void SceneCmd_Run21_Draw(void) {
-    Ov007Scene_Draw(gOv007Scene);
+    Ov007Title_Draw(gOv007Scene);
 }
 
 
@@ -4982,7 +4982,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
@@ -5190,7 +5190,7 @@ void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
+s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
 extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;

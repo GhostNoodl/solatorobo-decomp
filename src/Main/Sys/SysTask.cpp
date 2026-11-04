@@ -80,7 +80,7 @@ extern u32 data_020828f8[];
 extern char data_0208c1a0[];
 extern char data_0208c1a4[];
 extern char data_0208c1a8[];
-extern BOOL func_02063484(Unk0214a418 *p);
+extern BOOL Unk0214a418_LoadTitleWipe(Unk0214a418 *p);
 extern BOOL func_02063650(Unk0214a418 *p);
 extern void *Model0218fe1c_Init(void *p);
 extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
@@ -195,7 +195,7 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
     u8 again;
     u32 size;
     if (!ST_IsReady(p)) {
-        if (func_02063484(p)) {
+        if (Unk0214a418_LoadTitleWipe(p)) {
             if (p->unk_0c == NULL) {
                 void *o = Heap_Alloc(0xe8);
                 if (o != NULL) {

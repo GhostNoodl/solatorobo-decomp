@@ -34,7 +34,7 @@ extern VFunc Lo021cad50_vtbl[];
 
 extern void *data_ov002_021ef634[];
 
-BOOL func_ov002_021d2410(UiObj *self, ListRow *ev) {
+BOOL LibraryMenu_List3cOnDecide(UiObj *self, ListRow *ev) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (ev != NULL) {
         u16 idx = ev->index;
@@ -58,9 +58,9 @@ BOOL func_ov002_021d2410(UiObj *self, ListRow *ev) {
             Task021ef91c *w = (Task021ef91c *)TaskHost_RequestSwitch(gTaskHost, 0x19, 0);
             if (idx < 7) {
                 int mode = LangData_GetLang();
-                func_ov002_021d4540(w->unk_44, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, mode);
-                func_ov002_021d4540(w->unk_64, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.bmExt, mode);
-                func_ov002_021d4540(w->unk_7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.hdExt, mode);
+                Ov002_MakeLangFileName(w->unk_44, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, mode);
+                Ov002_MakeLangFileName(w->unk_64, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.bmExt, mode);
+                Ov002_MakeLangFileName(w->unk_7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.hdExt, mode);
                 w->unk_bc = idx;
                 w->unk_c0 = (u16)n;
                 func_ov002_021d36b8(w, (u16)(idx * 3));
@@ -79,7 +79,7 @@ namespace m_021d25ec {
 extern "C" {
 
 
-void Task021ef99c_FreeWindows(Task021ef99c *self) {
+void LibraryMenu_FreeWindows(Task021ef99c *self) {
     void *saved;
     int i;
     HEAP_PUSH(saved);
@@ -100,12 +100,12 @@ void Task021ef99c_FreeWindows(Task021ef99c *self) {
     ResMgr_ReleaseByName(gResMgr, self->unk_f4, 7, 0);
 }
 
-void Task021ef99c_Load(Task021ef99c *self) {
-    func_ov002_021d4540(self->unk_f4, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, LangData_GetLang());
+void LibraryMenu_Load(Task021ef99c *self) {
+    Ov002_MakeLangFileName(self->unk_f4, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, LangData_GetLang());
     ResMgr_Load(self->unk_f4, 7, 0);
 }
 
-bool Task021ef99c_IsLoaded(Task021ef99c *self) {
+bool LibraryMenu_IsLoaded(Task021ef99c *self) {
     return ResMgr_IsLoaded(self->unk_f4, 7) != 0;
 }
 
@@ -130,8 +130,8 @@ void ListRow_Init(ListRow *self);
 void ListRowGauge_Init(ListRowGauge *self);
 void func_ov000_021c2c0c(ListRowGauge *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
-BOOL func_ov002_021d2390(UiObj *self, ListRow *arg);
-BOOL func_ov002_021d2410(UiObj *self, ListRow *ev);
+BOOL LibraryMenu_List3cOnCursor(UiObj *self, ListRow *arg);
+BOOL LibraryMenu_List3cOnDecide(UiObj *self, ListRow *ev);
 
 static inline s32 ov002_Thresh(Ov002LevelTable *e, s32 idx) {
     s32 *arr = e->thresholds;
@@ -144,7 +144,7 @@ static inline s32 ov002_Thresh(Ov002LevelTable *e, s32 idx) {
     return -1;
 }
 
-void Task021ef99c_Start(Task021ef99c *self) {
+void LibraryMenu_Start(Task021ef99c *self) {
     void *g;
     u16 i;
     u8 buf[0x18];
@@ -154,7 +154,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
     }
     g = gMsgRes;
     for (i = 0; i < 7; i++) {
-        func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))LangData_GetLang)());
+        Ov002_MakeLangFileName(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))LangData_GetLang)());
         Ov002LevelTable_Load(&self->unk_4c[i], *(u8 **)ResMgr_FindArcType0(self->unk_f4, buf));
     }
     {
@@ -208,8 +208,8 @@ void Task021ef99c_Start(Task021ef99c *self) {
         LoBase021ccb54_021ccbe0_AppendRow(self->unk_3c, q);
     }
     self->unk_3c->owner = self;
-    self->unk_3c->onCursor = (void *)func_ov002_021d2390;
-    self->unk_3c->onDecide = (void *)func_ov002_021d2410;
+    self->unk_3c->onCursor = (void *)LibraryMenu_List3cOnCursor;
+    self->unk_3c->onDecide = (void *)LibraryMenu_List3cOnDecide;
     self->unk_3c->vfunc_08();
     {
         Lo021cadcc *p = (Lo021cadcc *)Heap_Alloc(sizeof(Lo021cadcc));
@@ -274,7 +274,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
 namespace m_021d2c2c {
 extern "C" {
 
-void Task021ef99c_UpdateActive(Task021ef99c *self) {
+void LibraryMenu_UpdateActive(Task021ef99c *self) {
     if (!(gPad->trig & 2)) {
         return;
     }
@@ -300,7 +300,7 @@ static inline BOOL ov002_isDone2ca4(UiObj *o) {
     return o->state == 5;
 }
 
-void Task021ef99c_PreUpdate(Task021ef99c *self) {
+void LibraryMenu_PreUpdate(Task021ef99c *self) {
     switch (self->state) {
     case 8:
         SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
@@ -359,10 +359,10 @@ done:
 namespace m_021d2ef4 {
 extern "C" {
 
-void Task021ef99c_PostUpdate(void) {
+void LibraryMenu_PostUpdate(void) {
 }
 
-void Task021ef99c_Draw(Task021ef99c *self) {
+void LibraryMenu_Draw(Task021ef99c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }
@@ -377,7 +377,7 @@ void Task021ef99c_Draw(Task021ef99c *self) {
     }
 }
 
-Task021ef91c *Task021ef91c_New(void) {
+Task021ef91c *LibraryViewer_New(void) {
     Task021ef91c *p = (Task021ef91c *)Heap_Alloc(0xd0);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -422,7 +422,7 @@ static inline bool ov002_HasActive(FieldPlayer *t) {
     return ov002_IsActive(p) != 0;
 }
 
-void Task021ef91c_Start(Task021ef91c *self) {
+void LibraryViewer_Start(Task021ef91c *self) {
     UiObj *p;
     void *g;
     u32 i;
@@ -510,7 +510,7 @@ void Task021ef91c_Start(Task021ef91c *self) {
 namespace m_021d32d4 {
 extern "C" {
 
-void Task021ef91c_Init(Task021ef91c *self) {
+void LibraryViewer_Init(Task021ef91c *self) {
     self->fadeLen = 0x1000;
     self->unk_3c = NULL;
     self->unk_40 = NULL;
@@ -530,7 +530,7 @@ void Task021ef91c_Init(Task021ef91c *self) {
 namespace m_021d331c {
 extern "C" {
 
-void Task021ef91c_Release(Task021ef91c *self) {
+void LibraryViewer_Release(Task021ef91c *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_3c);
@@ -573,7 +573,7 @@ static inline bool func_ov002_021d3434_idle(void) {
     }
     return r;
 }
-void Task021ef91c_UpdateActive(Task021ef91c *self) {
+void LibraryViewer_UpdateActive(Task021ef91c *self) {
     FieldPlayer *t;
     if (!(gPad->trig & 2) || self->unk_c4 == NULL) {
         return;
@@ -595,7 +595,7 @@ void Task021ef91c_UpdateActive(Task021ef91c *self) {
     }
 }
 
-void Task021ef91c_PreUpdate(Task021ef91c *self) {
+void LibraryViewer_PreUpdate(Task021ef91c *self) {
     if (self->state == 0xd) {
         func_ov002_021d37f8(self);
     }
@@ -608,7 +608,7 @@ void Task021ef91c_PreUpdate(Task021ef91c *self) {
 namespace m_021d3530 {
 extern "C" {
 
-void Task021ef91c_PostUpdate(Task021ef91c *self) {
+void LibraryViewer_PostUpdate(Task021ef91c *self) {
     s32 cnt;
     if (self->state != 0xd) {
         return;
@@ -636,7 +636,7 @@ void Task021ef91c_PostUpdate(Task021ef91c *self) {
 namespace m_021d35d4 {
 extern "C" {
 
-void Task021ef91c_Draw(Task021ef91c *self) {
+void LibraryViewer_Draw(Task021ef91c *self) {
     Model *model;
     ModelRes *res;
     ModelPart *anim;

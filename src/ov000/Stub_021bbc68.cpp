@@ -36,7 +36,7 @@ extern "C" {
 extern Game021bbcac *gMessageQueue;
 void Lo021cb6b0_FreeAnim(void *p);
 
-void func_ov000_021bbc68(Obj021bbc68 *self, u8 a, u8 b, u8 c) {
+void MissionInfo_Init(Obj021bbc68 *self, u8 a, u8 b, u8 c) {
     self->unk_00 = 0;
     self->unk_50 = 1;
     self->unk_54 = 0;

@@ -13,7 +13,7 @@ extern s32 data_ov000_021ca8d8;
 void StageRes_Init(void *p);
 void StageRes_Open(void *p, void *buf, const void *s);
 
-void Lo021ca9c4_Load(Lo021ca9c4 *self) {
+void QuestWin_Load(Lo021ca9c4 *self) {
     char buf[0x20];
     VObj *obj;
     if (self->unk_42 == 0xffff) {

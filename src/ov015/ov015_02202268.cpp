@@ -8,7 +8,7 @@ void Ov015Fish_Draw(Ov015Fish *self);
 void Ov015MsgMgr_Draw(Ov015MsgMgr *self);
 void Ov015Obj292c_Draw(Ov015Obj292c *self);
 BOOL Model021903b4_Draw(void *a);
-void func_ov015_0220101c(Ov015Game *self);
+void Ov015Game_FreeAll(Ov015Game *self);
 void Ov015Info38_Dtor(Ov015Info38 *p);
 extern u8 Ov015Game_vtbl[];
 extern u8 Ov015Child_vtbl[];
@@ -94,7 +94,7 @@ void Ov015Game_Draw(Ov015Game *self) {
 void *Ov015Game_DtorDelete(Ov015Game *self) {
     void *saved;
     SET_VT(self, Ov015Game_vtbl);
-    func_ov015_0220101c(self);
+    Ov015Game_FreeAll(self);
     ResMgr_ReleaseByName(gResMgr, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
@@ -135,7 +135,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
 void *Ov015Game_Dtor(Ov015Game *self) {
     void *saved;
     SET_VT(self, Ov015Game_vtbl);
-    func_ov015_0220101c(self);
+    Ov015Game_FreeAll(self);
     ResMgr_ReleaseByName(gResMgr, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
@@ -249,7 +249,7 @@ void *Ov015Obj292c_Dtor(Ov015Obj292c *self) {
     return self;
 }
 
-void func_ov015_022029d4(Ov015List *self, Ov015Fish *fish) {
+void Ov015List_Remove(Ov015List *self, Ov015Fish *fish) {
     Ov015Node *n;
     void *saved;
     if (self->head == NULL) {

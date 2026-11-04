@@ -7,21 +7,21 @@
 extern "C" {
 
 #pragma force_active on
-void Ov007Scene_Create(void) {
+void Ov007Title_Create(void) {
     Ov007Scene *p = (Ov007Scene *)Heap_Alloc(0x6c);
     if (p != NULL) {
-        Ov007Scene_Init(p);
+        Ov007Title_Init(p);
     }
     gOv007Scene = p;
 }
 
-void Ov007Scene_Delete(void) {
+void Ov007Title_Delete(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     if (gOv007Scene != NULL) {
         Ov007Scene *p = gOv007Scene;
         if (p != NULL) {
-            Ov007Scene_Release(p);
+            Ov007Title_Release(p);
             Heap_Free(p);
         }
         gOv007Scene = NULL;
@@ -31,7 +31,7 @@ void Ov007Scene_Delete(void) {
 
 #pragma force_active reset
 
-void Ov007Scene_Init(Ov007Scene *s) {
+void Ov007Title_Init(Ov007Scene *s) {
     s32 i;
     s->timer = 0;
     s->mode = 0;
@@ -66,14 +66,14 @@ void Ov007Scene_Init(Ov007Scene *s) {
     s->player = NULL;
 }
 
-void Ov007Scene_Release(Ov007Scene *s) {
+void Ov007Title_Release(Ov007Scene *s) {
     OV007_FREE_V(s->pic, v04);
     OV007_FREE_V(s->menu, v04);
     OV007_FREE_V(s->player, v04);
-    Ov007Scene_FreeRes(s);
+    Ov007Title_FreeRes(s);
 }
 
-void Ov007Scene_FreeRes(Ov007Scene *s) {
+void Ov007Title_FreeRes(Ov007Scene *s) {
     s32 i;
     void *saved;
     s->unk_64 = 0;
@@ -93,7 +93,7 @@ void Ov007Scene_FreeRes(Ov007Scene *s) {
     }
 }
 
-s32 Ov007Scene_Update(Ov007Scene *s) {
+s32 Ov007Title_Update(Ov007Scene *s) {
     Ov007Pic *pic;
     Ov007Player *pl;
     s->timer += 0x1000;
@@ -137,13 +137,13 @@ s32 Ov007Scene_Update(Ov007Scene *s) {
         }
         break;
     case 3:
-        Ov007Scene_State3(s);
+        Ov007Title_State3(s);
         break;
     case 4:
-        Ov007Scene_State4(s);
+        Ov007Title_State4(s);
         break;
     case 5:
-        Ov007Scene_State5(s);
+        Ov007Title_State5(s);
         break;
     case 7:
         if (s->sub == 0 && func_ov000_02189068(gSceneCmd)) {
@@ -213,7 +213,7 @@ void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s) {
 
 extern "C" {
 
-void Ov007Scene_State3(Ov007Scene *s) {
+void Ov007Title_State3(Ov007Scene *s) {
     Ov007V *p;
     Model *m;
     Ov007Menu8 *t;
@@ -641,7 +641,7 @@ static inline BOOL Ov007_HasMsgN(s32 r, s32 w, s32 id) {
 }
 
 // Kept (round auA honesty audit): the volatile read of gSceneCmd is a scheduling lever (used by
-// Ov007Scene_State5), no honest form found; the file has .data and the function is mid-file,
+// Ov007Title_State5), no honest form found; the file has .data and the function is mid-file,
 // so it can't be cut out to a dsd gap.
 static inline BOOL Ov007_HasMsg(s32 r, s32 w, s32 id) {
     Ov007MsgQ *q = (Ov007MsgQ *)*(volatile u32 *)&gSceneCmd;
@@ -701,7 +701,7 @@ static inline void Ov007Mdl_SetCb(Ov007Model *m, void *cb) {
 
 extern "C" {
 
-void Ov007Scene_State5(Ov007Scene *s) {
+void Ov007Title_State5(Ov007Scene *s) {
     char buf[0x20];
     switch (s->sub) {
     case 0: {
@@ -918,7 +918,7 @@ void Ov007Scene_State5(Ov007Scene *s) {
         break;
     case 9:
         if (Ov007_FadeDone()) {
-            Ov007Scene_FreeRes(s);
+            Ov007Title_FreeRes(s);
             s->state = 4;
             s->sub = 0;
             s->idx = 0;
@@ -1105,7 +1105,7 @@ static inline void Ov007_SetupView1(void) {
 
 extern "C" {
 
-void Ov007Scene_State4(Ov007Scene *s) {
+void Ov007Title_State4(Ov007Scene *s) {
     char buf[0x20];
     Ov007Pic *p;
     switch (s->sub) {
@@ -1161,7 +1161,7 @@ void Ov007Scene_State4(Ov007Scene *s) {
     }
 }
 
-void Ov007Scene_Draw(Ov007Scene *s) {
+void Ov007Title_Draw(Ov007Scene *s) {
     switch (s->state) {
     case 3:
         if (Ov007_FadeDone()) {

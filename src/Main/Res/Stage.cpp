@@ -4940,7 +4940,7 @@ u16 func_02061d54(u16 a) {
     return a & ~0x8000;
 }
 
-void *func_02061d64(u16 idx) {
+void *StageTbl_GetSceneCond(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "SceneCondTbl";
     u32 i = 0;
@@ -4962,7 +4962,7 @@ found:
     }
 }
 
-void *func_02061df0(u16 idx) {
+void *StageTbl_GetMissionName(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "MissionNameTbl";
     u32 i = 0;
@@ -4984,7 +4984,7 @@ found:
     }
 }
 
-void *func_02061e7c(u16 idx) {
+void *StageTbl_GetQuestName(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "QuestNameTbl";
     u32 i = 0;
@@ -5006,7 +5006,7 @@ found:
     }
 }
 
-void *func_02061f08(u16 idx) {
+void *StageTbl_GetQuestOpt(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "QuestOptTbl";
     u32 i = 0;
@@ -5028,7 +5028,7 @@ found:
     }
 }
 
-void *func_02061f94(u16 idx) {
+void *StageTbl_GetImage(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "ImageTbl";
     u32 i = 0;
@@ -5050,7 +5050,7 @@ found:
     }
 }
 
-void *func_02062020(u16 idx) {
+void *StageTbl_GetKeyItemName(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "KeyItemNameTbl";
     u32 i = 0;
@@ -5072,7 +5072,7 @@ found:
     }
 }
 
-void *func_020620ac(u16 idx) {
+void *StageTbl_GetSavePos(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "SavePosTbl";
     u32 i = 0;
@@ -5094,7 +5094,7 @@ found:
     }
 }
 
-void *func_02062138(u16 idx) {
+void *StageTbl_GetHelpName(u16 idx) {
     DataRes *res = gStageDataRes;
     const char *key = "HelpNameTbl";
     u32 i = 0;

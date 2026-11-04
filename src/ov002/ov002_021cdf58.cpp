@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void Task021ef530_Draw(Task021ef530 *self) {
+void AsmodeusMenu_Draw(Task021ef530 *self) {
     if (self->unk_3c != NULL && Model_IsReady(self->unk_3c, 0xffff)) {
         self->unk_3c->unk_150 = -0x1fe66;
         Model_PlayPart(self->unk_3c, 0);

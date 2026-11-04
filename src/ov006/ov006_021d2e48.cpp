@@ -15,14 +15,14 @@ void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32
 void ModelViewer_Update(ov006_Actor58 *self);
 void ModelViewer_Draw(ov006_Actor58 *self);
 void ov006_Caption_Update(ov006_Caption *self);
-void func_ov006_021e0b80(ov006_Caption *self);
+void ov006_Caption_DrawText(ov006_Caption *self);
 void ov006_Gauge_Update(ov006_Gauge *self);
 void ov006_Gauge_Draw(ov006_Gauge *self);
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void ov006_TaskD1F_Step01(ov006_TaskD1F *self);
-void ov006_TaskD1F_Step02(ov006_TaskD1F *self);
-void ov006_TaskD1F_Step03(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step01(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step02(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step03(ov006_TaskD1F *self);
 void ov006_UpdateNetSlots(void);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_ShowObj(ov006_Menu *self);
@@ -46,7 +46,7 @@ static inline void ov006_TaskD1F_Exit(ov006_TaskD1F *self, int a) {
     self->subStep = 0;
 }
 
-void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
+void ov006_CraftSelect_PostUpdate(ov006_TaskD1F *self) {
     if (self->step != 3 && gOv006Menu->state == 9) {
         self->step = 3;
         self->subStep = 0;
@@ -56,13 +56,13 @@ void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
     case 0:
         break;
     case 1:
-        ov006_TaskD1F_Step01(self);
+        ov006_CraftSelect_Step01(self);
         break;
     case 2:
-        ov006_TaskD1F_Step02(self);
+        ov006_CraftSelect_Step02(self);
         break;
     case 3:
-        ov006_TaskD1F_Step03(self);
+        ov006_CraftSelect_Step03(self);
         break;
     case 4:
         ov006_TaskD1F_Exit(self, 1);
@@ -75,7 +75,7 @@ void ov006_TaskD1F_PostUpdate(ov006_TaskD1F *self) {
     }
 }
 
-void ov006_TaskD1F_Step01(ov006_TaskD1F *self) {
+void ov006_CraftSelect_Step01(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk54->flags |= 4;
@@ -115,7 +115,7 @@ static inline BOOL ov006_IsReady(int type) {
     return r;
 }
 
-void ov006_TaskD1F_Step02(ov006_TaskD1F *self) {
+void ov006_CraftSelect_Step02(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk64->flags &= ~2;
@@ -158,7 +158,7 @@ void ov006_TaskD1F_Step02(ov006_TaskD1F *self) {
     }
 }
 
-void ov006_TaskD1F_Step03(ov006_TaskD1F *self) {
+void ov006_CraftSelect_Step03(ov006_TaskD1F *self) {
     switch (self->subStep) {
     case 0:
         self->unk54->flags |= 4;
@@ -191,7 +191,7 @@ void ov006_TaskD1F_Step03(ov006_TaskD1F *self) {
     }
 }
 
-void ov006_TaskD1F_Draw(ov006_TaskD1F *self) {
+void ov006_CraftSelect_Draw(ov006_TaskD1F *self) {
     int i;
     if (!self->vfunc_28()) {
         return;
@@ -201,7 +201,7 @@ void ov006_TaskD1F_Draw(ov006_TaskD1F *self) {
     self->unk5C->vfunc_20();
     self->unk60->vfunc_20();
     self->unk64->vfunc_20();
-    func_ov006_021e0b80(self->unk68);
+    ov006_Caption_DrawText(self->unk68);
     for (i = 0; i < 4; i++) {
         ov006_Gauge_Draw(self->gauges[i]);
     }

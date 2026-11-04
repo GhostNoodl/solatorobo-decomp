@@ -275,7 +275,7 @@ typedef struct Ov002ResList {
 
 // Stage file reader (0x64, vtable Ov002Vt_021f0684_vtbl; init Ov002StageFile_Init, release
 // Ov002StageFile_Free), embedded in the stage context. Ov002StageFile_Open points it at a loaded
-// stage file and func_ov002_021eb964 finds the file's sections; func_ov002_021eaf20 builds the
+// stage file and Ov002StageFile_FindChunks finds the file's sections; Ov002StageFile_BuildScene builds the
 // stage objects from them.
 struct Ov002StageFile : public VObj {
     char *unk_04; // stage name (the context's unk_44)
@@ -291,7 +291,7 @@ struct Ov002StageFile : public VObj {
     u8 *unk_28;   // kind 6 records
     u8 *unk_2c;   // kind 10 records (func_ov002_021eb7c0)
     u8 *unk_30;   // effect records (func_ov002_021eb870)
-    u8 *unk_34;   // three more record blocks found by func_ov002_021eb964
+    u8 *unk_34;   // three more record blocks found by Ov002StageFile_FindChunks
     u8 *unk_38;
     u8 *unk_3c;
     Ov002ObjLink *links;
@@ -307,7 +307,7 @@ struct Ov002StageFile : public VObj {
 SIZE_ASSERT(Ov002StageFile, 0x64);
 
 // Stage context (0x2cc, vtable Ov002Vt_021f0674_vtbl), gOv002Stage, built by
-// Ov002Stage_Create / func_ov002_021e8f04 (ctor Ov002Stage_Init, dtor Ov002Stage_Release).
+// Ov002Stage_Create / Ov002Stage_CreateSlide (ctor Ov002Stage_Init, dtor Ov002Stage_Release).
 // It loads the stage file, runs the stage objects in its list and fades the screens in and out
 // (Ov002Stage_Update).
 struct Ov002Stage : public VObj {
@@ -320,7 +320,7 @@ struct Ov002Stage : public VObj {
     u16 unk_18;   // buttons that skip
     u8 unk_1a;
     u8 unk_1b;
-    s32 unk_1c;   // stage index (func_ov002_021e9e40)
+    s32 unk_1c;   // stage index (Ov002Stage_SelectSlide)
     char *unk_20; // archive name, NULL: a loose file
     char unk_24[0x20]; // archive path
     char *unk_44; // stage name
@@ -369,7 +369,7 @@ void Ov002Stage_Draw(Ov002Stage *self);
 Ov002Obj *Ov002Obj021f07d4_New(s32 start, s32 end, s32 screen, bool b, u8 a);
 Ov002Obj *Ov002Obj021f075c_New(s32 start, s32 end, s32 screen, s32 d, s32 e);
 Ov002Obj *Ov002Vt_021f0694_New(s32 end);
-void func_ov002_021e9e40(s32 idx);
+void Ov002Stage_SelectSlide(s32 idx);
 
 #ifdef __cplusplus
 }

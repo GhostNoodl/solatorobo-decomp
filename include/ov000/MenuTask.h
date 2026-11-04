@@ -69,7 +69,7 @@ public:
 };
 SIZE_ASSERT(Task021cbb60, 0xc4);
 
-// Vtable Task021cbbe0_vtbl, task kind 0x2 (Task_NewTable[0x2] is its New), 0x4b0 bytes. 0x60..0x4b0 holds six text windows of 0xb8 bytes
+// Vtable PauseMenu_vtbl, task kind 0x2 (Task_NewTable[0x2] is its New), 0x4b0 bytes. 0x60..0x4b0 holds six text windows of 0xb8 bytes
 // (vtable TextWin_vtbl, reset by the Dtor); unk_a4 is the first one's TextWin::width.
 class Task021cbbe0 : public Task {
 public:
@@ -111,7 +111,7 @@ public:
 };
 SIZE_ASSERT(Task021cbce0, 0x90);
 
-// Vtable Task021cbd60_vtbl, task kind 0x6 (Task_NewTable[0x6] is its New), 0x48 bytes.
+// Vtable ObjectiveMenu_vtbl, task kind 0x6 (Task_NewTable[0x6] is its New), 0x48 bytes.
 class Task021cbd60 : public Task {
 public:
     VObj *unk_3c;
@@ -120,7 +120,7 @@ public:
 };
 SIZE_ASSERT(Task021cbd60, 0x48);
 
-// Vtable Task021cbde0_vtbl, task kind 0x5 (Task_NewTable[0x5] is its New), 0x54 bytes.
+// Vtable HelpMenu_vtbl, task kind 0x5 (Task_NewTable[0x5] is its New), 0x54 bytes.
 class Task021cbde0 : public Task {
 public:
     VObj *unk_3c;
@@ -133,7 +133,7 @@ public:
 };
 SIZE_ASSERT(Task021cbde0, 0x54);
 
-// Vtable Task021cbe60_vtbl, task kind 0xa (Task_NewTable[0xa] is its New), 0x158 bytes.
+// Vtable SellMenu_vtbl, task kind 0xa (Task_NewTable[0xa] is its New), 0x158 bytes.
 class Task021cbe60 : public Task {
 public:
     UiList021cb4a8 *unk_3c;
@@ -147,7 +147,7 @@ public:
 };
 SIZE_ASSERT(Task021cbe60, 0x158);
 
-// Vtable Task021cbee0_vtbl, task kind 0x4 (Task_NewTable[0x4] is its New), 0x15c bytes.
+// Vtable StoreMenu_vtbl, task kind 0x4 (Task_NewTable[0x4] is its New), 0x15c bytes.
 class Task021cbee0 : public Task {
 public:
     Lo021cb5a8 *unk_3c;
@@ -162,7 +162,7 @@ public:
 };
 SIZE_ASSERT(Task021cbee0, 0x15c);
 
-// Vtable Task021cbf60_vtbl, task kind 0xc (Task_NewTable[0xc] is its New), 0x160 bytes.
+// Vtable DiscardMenu_vtbl, task kind 0xc (Task_NewTable[0xc] is its New), 0x160 bytes.
 class Task021cbf60 : public Task {
 public:
     UiList021cb4a8 *unk_3c;

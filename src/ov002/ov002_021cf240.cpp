@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void Task021ef4b0_PostUpdate(void) {
+void CabinMenu_PostUpdate(void) {
 }
 
-void Task021ef4b0_Draw(Task021ef4b0 *self) {
+void CabinMenu_Draw(Task021ef4b0 *self) {
     if (self->fadeRatio != 0) {
         Task_Draw(self);
         self->unk_3c->vfunc_20();
@@ -13,7 +13,7 @@ void Task021ef4b0_Draw(Task021ef4b0 *self) {
     }
 }
 
-void func_ov002_021cf280(Task021ef4b0 *self, int kind) {
+void CabinMenu_SetItemHelp(Task021ef4b0 *self, int kind) {
     void *msg;
     void *str;
     if (self->unk_40 == NULL) {

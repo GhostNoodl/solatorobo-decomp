@@ -19,8 +19,8 @@ extern char data_ov000_021cabfb[];
 extern char data_ov000_021cac00[];
 char *Tbl_GetText(u16 id);
 char *Param_Get(u16 id);
-char *func_02062020(u16 id);
-void func_02040a98(char *buf, u16 id);
+char *StageTbl_GetKeyItemName(u16 id);
+void Str_FormatInt(char *buf, u16 id);
 char *MsgRes_GetString(void *msg, s32 id);
 
 char *func_ov000_0215cfd0(Text0215cfd0 *self) {
@@ -36,7 +36,7 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
         if (self->unk_88 & 0xf000) {
             s = Param_Get(self->unk_88);
         } else {
-            s = func_02062020(self->unk_88);
+            s = StageTbl_GetKeyItemName(self->unk_88);
         }
         len = STD_GetStringLength(s);
         if (self->unk_8c != NULL) {
@@ -49,16 +49,16 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
         STD_ConcatenateString(self->unk_8c, data_ov000_021cabfb);
         return self->unk_8c;
     case 0x400:
-        func_02040a98(buf, self->unk_88);
+        Str_FormatInt(buf, self->unk_88);
         break;
     case 0x2000:
-        func_02040a98(buf, self->unk_88);
+        Str_FormatInt(buf, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
         STD_ConcatenateString(buf, MsgRes_GetString(gMsgRes, 0x3e));
         break;
     case 0x4000:
         STD_CopyString(buf, MsgRes_GetString(gMsgRes, 0x45));
-        func_02040a98(tmp, self->unk_88);
+        Str_FormatInt(tmp, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
         STD_ConcatenateString(buf, tmp);
         STD_ConcatenateString(buf, data_ov000_021cac00);

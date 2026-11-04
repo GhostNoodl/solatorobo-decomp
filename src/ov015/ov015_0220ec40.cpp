@@ -48,7 +48,7 @@ static inline void *GetRes0220e634(void) {
     return gMsgRes;
 }
 
-void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
+void Ov015ResultPanel_Build(Ov015ResultPanel *self, s32 mode) {
     Ov015Shared *sh;
     s32 i;
     UiObj *p;

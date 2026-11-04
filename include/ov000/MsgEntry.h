@@ -6,7 +6,7 @@
 class VObj;
 
 // A 0x30-byte record (ctor MsgEntry_Init, dtor MsgEntry_Release) about the message `id`
-// (looked up with MsgRes_GetLines, func_02061e7c and func_ov000_0214bf2c). The prev / next words link
+// (looked up with MsgRes_GetLines, StageTbl_GetQuestName and Quest_GetOptFlags). The prev / next words link
 // it into the list of Lo021caac8_AddItem.
 typedef struct MsgEntry {
     /* 0x00 */ s32 unk_00;

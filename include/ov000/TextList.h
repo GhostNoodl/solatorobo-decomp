@@ -11,7 +11,7 @@
 // Ov000Vt_021ccadc_DrawBody (places the rows and the cursor), slot 0x60 Ov000Vt_021ccadc_DrawTitle (draws the
 // window); List021c6474_Append appends a row, TextList_SelectByKey selects the row with an index,
 // Obj021c64b4_SetText sets the cursor text and func_ov000_021c6d64 draws the arrows beside the row.
-// ov002 builds two (Task021ef69c_Start and the 021ef150 task).
+// ov002 builds two (AlbumMenu_Start and the 021ef150 task).
 
 #include "ov000/UiObj.h"
 #include "ov000/ListRow.h"

@@ -31,7 +31,7 @@ extern "C" {
 extern void *gFinishingTask;
 extern u32 gLastTaskId;
 extern u8 TextWin_vtbl[];
-extern u8 Lo021ca9c4_vtbl[];
+extern u8 QuestWin_vtbl[];
 extern u8 Lo021caa44_vtbl[];
 extern u8 Task_vtbl[];
 void Heap_Free(void *ptr);
@@ -110,8 +110,8 @@ BOOL Task_IsReady(void) {
     return TRUE;
 }
 
-Lo021ca9c4 *Lo021ca9c4_DtorDelete(Lo021ca9c4 *self) {
-    VOBJ_SET_VTABLE(self, Lo021ca9c4_vtbl);
+Lo021ca9c4 *QuestWin_DtorDelete(Lo021ca9c4 *self) {
+    VOBJ_SET_VTABLE(self, QuestWin_vtbl);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(&self->text[5], TextWin_vtbl);
     self->text[5].unk_vf08();
@@ -131,7 +131,7 @@ Lo021ca9c4 *Lo021ca9c4_DtorDelete(Lo021ca9c4 *self) {
     return self;
 }
 
-BOOL Lo021ca9c4_TryReleaseCurrent(StateOwner *self) {
+BOOL QuestWin_TryReleaseCurrent(StateOwner *self) {
     BOOL ok = TRUE;
     if (self->unk_50 != NULL && !IsState5(self->unk_50)) {
         ok = FALSE;
@@ -151,8 +151,8 @@ BOOL Lo021ca9c4_TryReleaseCurrent(StateOwner *self) {
     return TRUE;
 }
 
-Lo021ca9c4 *Lo021ca9c4_Dtor(Lo021ca9c4 *self) {
-    VOBJ_SET_VTABLE(self, Lo021ca9c4_vtbl);
+Lo021ca9c4 *QuestWin_Dtor(Lo021ca9c4 *self) {
+    VOBJ_SET_VTABLE(self, QuestWin_vtbl);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(&self->text[5], TextWin_vtbl);
     self->text[5].unk_vf08();

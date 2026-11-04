@@ -391,12 +391,12 @@ extern Ov007Scene *gOv007Scene;
 extern void *UiObj_vtbl;
 extern void *Lo021cad50_vtbl;
 
-void Ov007Scene_Init(Ov007Scene *s);
-void Ov007Scene_Release(Ov007Scene *s);
-void Ov007Scene_FreeRes(Ov007Scene *s);
-void Ov007Scene_State3(Ov007Scene *s);
-void Ov007Scene_State4(Ov007Scene *s);
-void Ov007Scene_State5(Ov007Scene *s);
+void Ov007Title_Init(Ov007Scene *s);
+void Ov007Title_Release(Ov007Scene *s);
+void Ov007Title_FreeRes(Ov007Scene *s);
+void Ov007Title_State3(Ov007Scene *s);
+void Ov007Title_State4(Ov007Scene *s);
+void Ov007Title_State5(Ov007Scene *s);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
 void Obj0215c1bc_SetText(void *self, u32 flags, char *str);

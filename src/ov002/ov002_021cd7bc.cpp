@@ -7,7 +7,7 @@ bool Ov002Task_GetFlag4(Task *self) {
     return r;
 }
 
-void Task021ef530_Init(Task021ef530 *self) {
+void AsmodeusMenu_Init(Task021ef530 *self) {
     self->fadeLen = 0x10000;
     self->unk_3c = NULL;
     self->unk_40 = NULL;
@@ -17,7 +17,7 @@ void Task021ef530_Init(Task021ef530 *self) {
     self->unk_4d = 0;
 }
 
-void Task021ef530_Release(Task021ef530 *self) {
+void AsmodeusMenu_Release(Task021ef530 *self) {
     void *saved;
     void *p;
     VObj *o;
@@ -59,11 +59,11 @@ void Task021ef530_Release(Task021ef530 *self) {
     }
 }
 
-void Task021ef530_SwitchTo(Task021ef530 *self, int arg) {
+void AsmodeusMenu_SwitchTo(Task021ef530 *self, int arg) {
     TaskHost_RequestSwitch(gTaskHost, arg, 0);
 }
 
-void Task021ef530_ShowMsg(Task021ef530 *self, int kind) {
+void AsmodeusMenu_ShowMsg(Task021ef530 *self, int kind) {
     void *msg = gMsgRes;
     void *str = data_ov002_021ef3f8;
     switch (kind) {
@@ -105,7 +105,7 @@ typedef struct {
     u32 rest : 29;
 } Flags021cd9c0;
 
-void Task021ef530_UpdateActive(Task021ef530 *self) {
+void AsmodeusMenu_UpdateActive(Task021ef530 *self) {
     u16 keys;
     s8 sel;
     s8 v;

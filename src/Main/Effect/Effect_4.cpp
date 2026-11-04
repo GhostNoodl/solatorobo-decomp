@@ -21,7 +21,7 @@ extern u32 EffectObj_vtbl[];
 extern void EffectObj_Register(EffectObj *obj);
 extern struct EffectGroup *Effect_SpawnGroupById(s32 id, const VecFx32 *pos);
 extern struct Effect3D *Effect_Spawn3DById(s32 id, const VecFx32 *pos);
-extern struct EffectGroup *func_02067984(const VecFx32 *pos);
+extern struct EffectGroup *Effect_SpawnRingBurst(const VecFx32 *pos);
 extern struct EffectGroup *Effect_SpawnGroup12c(s32 id, const VecFx32 *pos);
 extern EffectObj *Effect_Spawn191(s32 id, const VecFx32 *pos);
 extern struct Effect3D *Effect_Spawn3D44c(s32 id, const VecFx32 *pos);
@@ -85,7 +85,7 @@ EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
         obj = (EffectObj *)Effect_Spawn3DById(id, pos);
         break;
     case 0x69:
-        obj = (EffectObj *)func_02067984(pos);
+        obj = (EffectObj *)Effect_SpawnRingBurst(pos);
         break;
     case 0xc8:
     case 0xca:

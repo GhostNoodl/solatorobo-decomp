@@ -13,7 +13,7 @@
 #include "ov006/Label.h"
 #include "ov006/Gauge.h"
 
-/* Task with vtable ov006_TaskCE_vtbl (0x58 bytes). */
+/* Task with vtable ov006_ModeMenu_vtbl (0x58 bytes). */
 struct ov006_TaskCE : public ov006_TaskBase {
     UiList *unk44;
     Lo021cadcc *unk48;
@@ -22,7 +22,7 @@ struct ov006_TaskCE : public ov006_TaskBase {
     ov006_CaptionPanel *unk54;
 };
 
-/* Task with vtable ov006_TaskD0_vtbl (0x114 bytes). */
+/* Task with vtable ov006_GroupSelect_vtbl (0x114 bytes). */
 struct ov006_TaskD0 : public ov006_TaskBase {
     char names[4][0x30];
     UiList021cb4a8 *unk104;
@@ -31,7 +31,7 @@ struct ov006_TaskD0 : public ov006_TaskBase {
     u8 unk110;
 };
 
-/* Task with vtable ov006_TaskD0C_vtbl (0x128 bytes). */
+/* Task with vtable ov006_EntryWait_vtbl (0x128 bytes). */
 struct ov006_TaskD0C : public Task {
     u8 unk3C;
     u8 unk3D;
@@ -63,7 +63,7 @@ typedef struct ov006_Actor58 {
     ov006_Vec16 rot;
 } ov006_Actor58;
 
-/* Task with vtable ov006_TaskD1F_vtbl (0x7c bytes). */
+/* Task with vtable ov006_CraftSelect_vtbl (0x7c bytes). */
 struct ov006_TaskD1F : public ov006_TaskBase {
     int unk44;
     u8 unk48;
@@ -81,7 +81,7 @@ struct ov006_TaskD1F : public ov006_TaskBase {
 };
 
 /* Task with vtable Ov006Vt_021ec040_vtbl (0x44 bytes, ctor Ov006Vt_021ec040_Ctor), created by
-   ov006_Manager_SwitchTask for task type 2. ov006_Task021ec040_BuildShopList builds its windows, ov006_Task021ec040_SetupPrices
+   ov006_Manager_SwitchTask for task type 2. ov006_Winnings_BuildShopList builds its windows, ov006_Winnings_SetupPrices
    sums unk38 from the price tables, Ov006Vt_021ec040_Update runs it and Ov006Vt_021ec040_Draw draws it. */
 struct ov006_Task021ec040 : public ov006_Task {
     UiList021cb4a8 *unk10;
@@ -130,7 +130,7 @@ typedef struct ov006_Anm74 {
     u8 unk19;
 } ov006_Anm74;
 
-/* Task with vtable ov006_TaskD37_vtbl (0x140 bytes). */
+/* Task with vtable ov006_CourseSelect_vtbl (0x140 bytes). */
 struct ov006_TaskD37 : public Task {
     u8 step;
     u8 unk3D;

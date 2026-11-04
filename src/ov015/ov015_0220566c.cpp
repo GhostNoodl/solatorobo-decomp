@@ -6,15 +6,15 @@ extern u8 gTaskSwitchPending;
 u8 *func_0206ef88(u16 id);
 void GfxSys_StartFadeOut(int a, int b, int c);
 BOOL MsgBox_Update(void *p);
-void *func_0206ec8c(u16 id);
+void *Param_GetDesc(u16 id);
 void Obj0215bb14_SetText(void *a, void *b);
 void MsgBox_Render(void *p);
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 void func_0206ecd4(s32 n, void *buf, u16 id);
-BOOL func_ov015_02206888(Ov015Scene2b08 *o);
+BOOL Ov015PointShop_BuyItem(Ov015Scene2b08 *o);
 
-void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a) {
+void Ov015SpotSelect_ConfirmSpot(Ov015Scene2b88 *self, s32 a) {
     if (a == 1 || a == -1) {
         self->unk_54 = 0xffff;
         self->unk_3c->flags &= ~4;
@@ -48,7 +48,7 @@ void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a) {
 static inline BOOL Ov015_IsState5c(UiObj *o) {
     return o->state == 5 ? TRUE : FALSE;
 }
-void Ov015Scene2b88_UpdateActive(Ov015Scene2b88 *self) {
+void Ov015SpotSelect_UpdateActive(Ov015Scene2b88 *self) {
     if (((s32)self->unk_4c) != 0) {
         return;
     }
@@ -81,7 +81,7 @@ static inline UiListItem *Ov015_ListNthB(UiList *o) {
     }
     return r;
 }
-void Ov015Scene2b88_PreUpdate(Ov015Scene2b88 *self) {
+void Ov015SpotSelect_PreUpdate(Ov015Scene2b88 *self) {
     void *saved;
     void *s;
     switch (self->state) {
@@ -109,17 +109,17 @@ void Ov015Scene2b88_PreUpdate(Ov015Scene2b88 *self) {
     self->unk_44->flags &= ~2;
     self->unk_40->flags &= ~2;
     self->unk_40->state = 0;
-    s = func_0206ec8c(Ov015_ListNthB(self->unk_3c)->id);
+    s = Param_GetDesc(Ov015_ListNthB(self->unk_3c)->id);
     if (self->unk_40 != NULL && s != NULL) {
         Obj0215bb14_SetText(self->unk_40, s);
         self->unk_40->vfunc_70();
     }
 }
 
-void Ov015Scene2b88_PostUpdate(void) {
+void Ov015SpotSelect_PostUpdate(void) {
 }
 
-void Ov015Scene2b88_Draw(Ov015Scene2b88 *self) {
+void Ov015SpotSelect_Draw(Ov015Scene2b88 *self) {
     if (self->vfunc_28() == 0) {
         return;
     }
@@ -133,7 +133,7 @@ void Ov015Scene2b88_Draw(Ov015Scene2b88 *self) {
     MsgBox_Render(self->unk_4c);
 }
 
-BOOL Ov015Scene2b08_List3cOnCursor(UiList *self, UiListItem *ev) {
+BOOL Ov015PointShop_List3cOnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
     if (ev != NULL) {
         func_0206ecd4(0x100, o->textBuf, ev->id);
@@ -151,7 +151,7 @@ BOOL Ov015Scene2b08_List3cOnCursor(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL Ov015Scene2b08_List3cOnDecide(UiList *self, UiListItem *ev) {
+BOOL Ov015PointShop_List3cOnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
         Lo021cb0b8 *t;
@@ -164,12 +164,12 @@ BOOL Ov015Scene2b08_List3cOnDecide(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL Ov015Scene2b08_List4cOnDecide(UiList *self, UiListItem *item) {
+BOOL Ov015PointShop_List4cOnDecide(UiList *self, UiListItem *item) {
     Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
     if (item != NULL) {
         switch (item->id) {
         case 0:
-            if (func_ov015_02206888(o)) {
+            if (Ov015PointShop_BuyItem(o)) {
                 SndMgr_PlayVolume(gSndMgr, 0x30, -1, -1, -1);
             } else {
                 SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
@@ -187,7 +187,7 @@ BOOL Ov015Scene2b08_List4cOnDecide(UiList *self, UiListItem *item) {
     return FALSE;
 }
 
-void Ov015Scene2b08_DtorBase(Ov015Scene2b08 *self) {
+void Ov015PointShop_DtorBase(Ov015Scene2b08 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);
@@ -209,10 +209,10 @@ void Ov015Scene2b08_DtorBase(Ov015Scene2b08 *self) {
     HEAP_POP(saved);
 }
 
-void Ov015Scene2b08_Load(void) {
+void Ov015PointShop_Load(void) {
 }
 
-s32 Ov015Scene2b08_IsLoaded(void) {
+s32 Ov015PointShop_IsLoaded(void) {
     return 1;
 }
 
@@ -233,7 +233,7 @@ void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
 void UiList_SetIconModel(void *a, void *b, void *c, u16 d);
 BOOL func_0206f66c(u16 id);
-u8 *func_0206f000(u16 id);
+u8 *Param_GetExchangeItem(u16 id);
 void *Param_Get(u16 id);
 s32 func_0206f080(u16 id);
 
@@ -249,7 +249,7 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideZ = z;
 }
 
-void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
+void Ov015PointShop_Start(Ov015Scene2b08 *self) {
     VObj *p;
     s32 i;
     u16 id;
@@ -286,7 +286,7 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
     for (i = 0; i < 13; i++) {
         id = i | 0xc000;
         if (!func_0206f66c(id)) {
-            u8 *e = func_0206f000(id);
+            u8 *e = Param_GetExchangeItem(id);
             switch (e[0]) {
             case 0: {
                 u16 k = FLD(u16, e, 2);
@@ -307,8 +307,8 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
         o->vfunc_a8(UiList_GetItemById(o, 0));
     }
     self->unk_3c->owner = self;
-    self->unk_3c->onDecide = Ov015Scene2b08_List3cOnDecide;
-    self->unk_3c->onCursor = Ov015Scene2b08_List3cOnCursor;
+    self->unk_3c->onDecide = Ov015PointShop_List3cOnDecide;
+    self->unk_3c->onCursor = Ov015PointShop_List3cOnCursor;
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x98);
     if (p != NULL) {
@@ -384,7 +384,7 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
     }
     self->unk_4c = (Lo021cb0b8 *)p;
     self->unk_4c->vfunc_10(MsgRes_GetString(res, 0xd6));
-    self->unk_4c->onDecide = Ov015Scene2b08_List4cOnDecide;
+    self->unk_4c->onDecide = Ov015PointShop_List4cOnDecide;
     self->unk_4c->posZ = -0x666;
     self->unk_4c->vfunc_08();
     self->unk_4c->owner = self;

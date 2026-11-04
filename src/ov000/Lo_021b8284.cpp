@@ -8,7 +8,7 @@ extern "C" {
 extern int gFadeState[];
 extern void *gSndMgr;
 extern char data_ov000_021cc879[];
-char *func_02061f94(u16 id);
+char *StageTbl_GetImage(u16 id);
 void ResMgr_LoadArchive(void *a, void *b, s32 c, s32 d);
 BOOL ResMgr_IsArchiveLoaded(void *a, void *b, s32 c);
 void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
@@ -36,7 +36,7 @@ static inline BOOL Fade4_021b8284(void) {
     return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
-// ListBuffer021cb940::unk_34 (0x5c bytes, ctor func_ov000_021b87d8).
+// ListBuffer021cb940::unk_34 (0x5c bytes, ctor ImageCard_Init).
 struct Obj021b8284 {
     union {
         u32 flags;
@@ -45,7 +45,7 @@ struct Obj021b8284 {
             u32 unk_00_1 : 31;
         };
     };
-    char arcName[0x20]; // the part of func_02061f94's path before the separator
+    char arcName[0x20]; // the part of StageTbl_GetImage's path before the separator
     char fileName[0x20]; // the part after it
 
     s32 unk_44;
@@ -57,11 +57,11 @@ struct Obj021b8284 {
     u16 unk_58;
 };
 
-BOOL func_ov000_021b8284(Obj021b8284 *self) {
+BOOL ImageCard_Update(Obj021b8284 *self) {
     switch (self->unk_44) {
     case 1: {
         char *c;
-        STD_CopyString(self->arcName, func_02061f94(self->unk_48));
+        STD_CopyString(self->arcName, StageTbl_GetImage(self->unk_48));
         c = STD_SearchString(self->arcName, data_ov000_021cc879);
         *c = 0;
         STD_CopyString(self->fileName, c + 1);

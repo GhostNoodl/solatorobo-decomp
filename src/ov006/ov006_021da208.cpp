@@ -72,7 +72,7 @@ static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov00
     e->unk40 = price * cnt;
 }
 
-void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
+void ov006_Winnings_BuildShopList(ov006_Task021ec040 *self) {
     void *res = ov006_GetRes();
     u8 n = gOv006SlotManager->lap;
     const ov006_Price021da208 *base;

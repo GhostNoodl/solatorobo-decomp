@@ -11,19 +11,19 @@ void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32
 void ModelViewer_Update(ov006_Actor58 *self);
 void ModelViewer_Draw(ov006_Actor58 *self);
 void ov006_Caption_Update(ov006_Caption *self);
-void func_ov006_021e0b80(ov006_Caption *self);
+void ov006_Caption_DrawText(ov006_Caption *self);
 void ov006_Gauge_Update(ov006_Gauge *self);
 void ov006_Gauge_Draw(ov006_Gauge *self);
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void ov006_TaskD1F_Step01(ov006_TaskD1F *self);
-void ov006_TaskD1F_Step02(ov006_TaskD1F *self);
-void ov006_TaskD1F_Step03(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step01(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step02(ov006_TaskD1F *self);
+void ov006_CraftSelect_Step03(ov006_TaskD1F *self);
 void ov006_UpdateNetSlots(void);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_ShowObj(ov006_Menu *self);
 
-void ov006_TaskD1F_UpdateActive(ov006_TaskD1F *self) {
+void ov006_CraftSelect_UpdateActive(ov006_TaskD1F *self) {
     u16 trg;
     if (self->step != 0) {
         return;
@@ -61,7 +61,7 @@ static inline void ov006_Actor58_SetRot(ov006_Actor58 *self, s16 x, s16 y, s16 z
     self->rot.z = z;
 }
 
-void ov006_TaskD1F_PreUpdate(ov006_TaskD1F *self) {
+void ov006_CraftSelect_PreUpdate(ov006_TaskD1F *self) {
     u8 buf[0x18];
     int i;
     if (self->state == 0xd) {

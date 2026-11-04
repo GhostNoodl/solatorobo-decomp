@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void Task021ef81c_UpdateActive(void) {
+void ComposeMenu_UpdateActive(void) {
 }
 
-void Task021ef81c_PreUpdate(Task021ef81c *self) {
+void ComposeMenu_PreUpdate(Task021ef81c *self) {
     bool r;
     if (self->state == 8 || self->state == 10) {
         return;
@@ -23,10 +23,10 @@ void Task021ef81c_PreUpdate(Task021ef81c *self) {
     }
 }
 
-void Task021ef81c_PostUpdate(void) {
+void ComposeMenu_PostUpdate(void) {
 }
 
-void Task021ef81c_Draw(Task021ef81c *self) {
+void ComposeMenu_Draw(Task021ef81c *self) {
     if (self->fadeRatio != 0) {
         Task_Draw(self);
         self->unk_3c->vfunc_20();
@@ -36,7 +36,7 @@ void Task021ef81c_Draw(Task021ef81c *self) {
     }
 }
 
-void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode) {
+void Ov002_MakeLangFileName(void *dst, u32 size, const void *a, const void *b, int mode) {
     const u8 *s;
     MI_CpuFill8(dst, 0, size);
     switch (mode) {
@@ -67,7 +67,7 @@ void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int 
 
 Task021ef81c *Ov002TaskVt_021ef81c_DtorDelete(Task021ef81c *self) {
     *(VFunc **)self = Ov002TaskVt_021ef81c_vtbl;
-    Task021ef81c_FreeWindows(self);
+    ComposeMenu_FreeWindows(self);
     TaskBase_dtor(self);
     Heap_Free(self);
     return self;
@@ -75,7 +75,7 @@ Task021ef81c *Ov002TaskVt_021ef81c_DtorDelete(Task021ef81c *self) {
 
 Task021ef81c *Ov002TaskVt_021ef81c_Dtor(Task021ef81c *self) {
     *(VFunc **)self = Ov002TaskVt_021ef81c_vtbl;
-    Task021ef81c_FreeWindows(self);
+    ComposeMenu_FreeWindows(self);
     TaskBase_dtor(self);
     return self;
 }
@@ -108,7 +108,7 @@ Task021ef91c *Ov002TaskVt_021ef91c_Dtor(Task021ef91c *self) {
 
 Task021ef99c *Ov002TaskVt_021ef99c_DtorDelete(Task021ef99c *self) {
     *(VFunc **)self = Ov002TaskVt_021ef99c_vtbl;
-    Task021ef99c_FreeWindows(self);
+    LibraryMenu_FreeWindows(self);
     __cxa_vec_cleanup(self->unk_4c, 7, 0x18, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
     TaskBase_dtor(self);
     Heap_Free(self);
@@ -117,7 +117,7 @@ Task021ef99c *Ov002TaskVt_021ef99c_DtorDelete(Task021ef99c *self) {
 
 Task021ef99c *Ov002TaskVt_021ef99c_Dtor(Task021ef99c *self) {
     *(VFunc **)self = Ov002TaskVt_021ef99c_vtbl;
-    Task021ef99c_FreeWindows(self);
+    LibraryMenu_FreeWindows(self);
     __cxa_vec_cleanup(self->unk_4c, 7, 0x18, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
     TaskBase_dtor(self);
     return self;
@@ -396,7 +396,7 @@ void Task021efb24_Draw(Task021efb24 *p) {
     }
 }
 
-Task021efc24 *Task021efc24_New(void) {
+Task021efc24 *RobotTypeMenu_New(void) {
     Task021efc24 *p = (Task021efc24 *)Heap_Alloc(0x78);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -418,11 +418,11 @@ Task021efc24 *Task021efc24_New(void) {
     return p;
 }
 
-BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev) {
+BOOL RobotTypeMenu_ConfirmOnDecide(UiList *self, UiListItem *ev) {
     Task021efba4 *t;
     if (ev != NULL) {
         if (ev->id == 0) {
-            func_ov002_021d5f60((Task021efc24 *)self->owner);
+            RobotTypeMenu_ApplyType((Task021efc24 *)self->owner);
         } else {
             SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         }
@@ -434,14 +434,14 @@ BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev) {
     return FALSE;
 }
 
-BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev) {
+BOOL RobotTypeMenu_List50OnCursor(UiList *self, UiListItem *ev) {
     Task021efc24 *owner = (Task021efc24 *)self->owner;
     u16 id;
     Task021efba4 *t;
     if (ev != NULL) {
         id = ev->id;
         if (owner->unk_54 != NULL) {
-            Obj0215bb14_SetText(owner->unk_54, func_0206ec8c(id));
+            Obj0215bb14_SetText(owner->unk_54, Param_GetDesc(id));
             owner->unk_54->vfunc_70();
         }
         if (owner->unk_58 != NULL) {
@@ -463,12 +463,12 @@ BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev) {
     return TRUE;
 }
 
-BOOL Task021efc24_List50OnDecide(UiList *self, UiListItem *ev) {
+BOOL RobotTypeMenu_List50OnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->id != ((Task021efc24 *)self->owner)->unk_74) {
             Task021efba4 *t;
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
-            func_ov000_02152294(self, 0x8d, 0x23, (EvCallback)func_ov002_021d52e0);
+            UiObj_OpenChoice(self, 0x8d, 0x23, (EvCallback)RobotTypeMenu_ConfirmOnDecide);
             t = (Task021efba4 *)Task_FindById(0x1b);
             if (t != NULL && t->hud != NULL) {
                 Ov002Hud_SetRow(t->hud, 0, 0);

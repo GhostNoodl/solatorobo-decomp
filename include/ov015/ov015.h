@@ -31,7 +31,7 @@ struct Ov015ShipCfg {
 
 // The overlay's vector: a VecFx32 with a user-declared (empty) default constructor and a member-wise
 // copy constructor. Both are load-bearing: copy-initialised locals (func_ov015_021fd0f4,
-// Ov015Scene2a08_Draw, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
+// Ov015FishingMenu_Draw, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
 // class with only the implicit copy) is copied as one 12-byte block. Being derived from VecFx32, it
 // passes to the SDK's VecFx32 * parameters without a cast. (Ov015Vec, which spelled the copy as a
 // mem-initialiser list, gives the same code and is merged into it.)
@@ -408,7 +408,7 @@ struct Ov015Slot524 {
     s16 speed;
 };
 
-// Animated stage model (0x584, vtable Ov015StageMdl_vtbl; ctor func_ov015_0220dde8, base vtable
+// Animated stage model (0x584, vtable Ov015StageMdl_vtbl; ctor Ov015StageMdl_Ctor, base vtable
 // Ov015Vt_02212f64_vtbl): two resource sets and models on an ov002 stage object. The model pose
 // (unk_4d0/unk_4dc/unk_500) is copied from the object at unk_520 each frame; slots pick the
 // animation by time (Ov015StageMdl_QueueAnim adds one).
@@ -437,7 +437,7 @@ struct Ov015StageMdl : public Ov002Obj {
 };
 SIZE_ASSERT(Ov015StageMdl, 0x584);
 
-void *func_ov015_0220dde8(Ov015StageMdl *self);
+void *Ov015StageMdl_Ctor(Ov015StageMdl *self);
 void Ov015StageMdl_QueueAnim(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed);
 
 
@@ -688,9 +688,9 @@ struct Ov015Info38 : public VObj {
     s32 unk_34;
 };
 OV015_SIZE(Ov015Info38, 0x38);
-// Fishing game controller (0xcc bytes, vtable Ov015Game_vtbl, func_ov015_02200f74).
+// Fishing game controller (0xcc bytes, vtable Ov015Game_vtbl, Ov015Game_Reset).
 // Fishing HUD (0x30, vtable Ov015Hud_vtbl; built by Ov015Game_Create, dtor
-// Ov015Hud_Dtor). func_ov015_021fb5d4 updates the counters from data_ov015_0221332c each frame;
+// Ov015Hud_Dtor). Ov015Hud_Update updates the counters from data_ov015_0221332c each frame;
 // Ov015Hud_Draw draws the two 2D models.
 struct Ov015Hud : public VObj {
     s32 unk_04;
@@ -707,8 +707,8 @@ struct Ov015Hud : public VObj {
 };
 OV015_SIZE(Ov015Hud, 0x30);
 
-s32 func_ov015_021fb474(Ov015Hud *self);
-BOOL func_ov015_021fb5d4(Ov015Hud *self);
+s32 Ov015Hud_Setup(Ov015Hud *self);
+BOOL Ov015Hud_Update(Ov015Hud *self);
 void Ov015Hud_Draw(Ov015Hud *self);
 void func_ov015_021fc40c(Ov015Hud *self, s32 mode);
 void func_ov015_021fcb1c(Ov015Hud *self);
@@ -863,7 +863,7 @@ struct Ov015MsgBox : public VObj {
 };
 SIZE_ASSERT(Ov015MsgBox, 0x2c);
 
-// Scene task, vtable Ov015Scene2a08_vtbl (0xb0 bytes, built by Ov015Scene2a08_New).
+// Scene task, vtable Ov015FishingMenu_vtbl (0xb0 bytes, built by Ov015FishingMenu_New).
 struct Ov015Scene2a08 : public Task {
     Ov015Ship *ship;
     Ov015Shadow *shadow;
@@ -884,7 +884,7 @@ struct Ov015Scene2a08 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2a08, 0xb0);
 
-// Scene task, vtable Ov015Scene2c08_vtbl (0x6c bytes, built by Ov015Scene2c08_New).
+// Scene task, vtable Ov015HarpoonSelect_vtbl (0x6c bytes, built by Ov015HarpoonSelect_New).
 struct Ov015Scene2c08 : public Task {
     UiList *unk_3c;
     Lo021cadcc *unk_40;
@@ -903,7 +903,7 @@ struct Ov015Scene2c08 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2c08, 0x6c);
 
-// Scene task, vtable Ov015Scene2b88_vtbl (0x58 bytes, built by Ov015Scene2b88_New).
+// Scene task, vtable Ov015SpotSelect_vtbl (0x58 bytes, built by Ov015SpotSelect_New).
 struct Ov015Scene2b88 : public Task {
     UiList *unk_3c;
     Lo021cadcc *unk_40;
@@ -915,9 +915,9 @@ struct Ov015Scene2b88 : public Task {
     u8 unk_56[0x2];
 };
 SIZE_ASSERT(Ov015Scene2b88, 0x58);
-extern "C" void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a);
+extern "C" void Ov015SpotSelect_ConfirmSpot(Ov015Scene2b88 *self, s32 a);
 
-// Scene task, vtable Ov015Scene2b08_vtbl (0x164 bytes, built by Ov015Scene2b08_New).
+// Scene task, vtable Ov015PointShop_vtbl (0x164 bytes, built by Ov015PointShop_New).
 struct Ov015Scene2b08 : public Task {
     UiList *unk_3c;
     Ov015UiNum *unk_40;
@@ -961,7 +961,7 @@ SIZE_ASSERT(Ov015Msg, 0x144);
 // Text window with a portrait model (0xb4 bytes, vtables UiObj_vtbl -> Ov015Vt_02212d3c_vtbl, init Ov015UiText_ClearText).
 struct Ov015UiText : public UiObj {
     TextWin *unk_84; // deleted and rebuilt by Ov015UiText_LoadText
-    char text[0x20]; // filled by func_ov015_02208bac
+    char text[0x20]; // filled by Ov015_ParseTextTag
     s32 textId;
     s32 unk_ac;
     s32 unk_b0; // redraw countdown (the text is rebuilt when it reaches 7)
@@ -990,7 +990,7 @@ struct Ov015MsgMgr : public VObj {
 SIZE_ASSERT(Ov015MsgMgr, 0x14);
 
 // Result panel (0x64 bytes, vtable Ov015ResultPanel_vtbl, built by Ov015Result_Init and set up by
-// func_ov015_0220e634).
+// Ov015ResultPanel_Build).
 struct Ov015ResultPanel : public VObj {
     Lo021cb3a8 *unk_04;
     UiObj *unk_08; // 0x100 bytes, vtable Ov000Vt_021ccb54_vtbl
@@ -1050,7 +1050,7 @@ struct Ov015Obj292c : public VObj {
     struct ActorMarker *marker; // 0x08 (ov000/ActorMarker.h), made by Ov015Obj292c_Setup
     Ov015Vec pos; // position
     Ov015Vec scale; // scale
-    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); Ov015Obj292c_Draw copies it to marker->unk_50
+    Ov015Vec unk_24; // a found fish's position (Ov015Obj30_FindHookedFish); Ov015Obj292c_Draw copies it to marker->unk_50
     s32 unk_30;
 };
 SIZE_ASSERT(Ov015Obj292c, 0x34);

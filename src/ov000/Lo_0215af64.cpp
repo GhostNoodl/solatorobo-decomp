@@ -7,7 +7,7 @@ extern "C" {
 BOOL Model_IsReady(void *a, s32 b);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *gSndMgr;
-BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
+BOOL QuestWin_AcceptOnDecide(UiList *p, UiListItem *msg);
 
 void LoBase021cafc0_021cb0b8_DrawBody(LoBase021cafc0_021cb0b8 *self, void *a, void *b, s32 d) {
     if (a == NULL) {

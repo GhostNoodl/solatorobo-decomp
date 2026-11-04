@@ -53,7 +53,7 @@ static inline Ov008Pic *Ov008_NewLoader(void) {
     return p;
 }
 
-void Ov008Mgr_LoadRes(Ov008Mgr *self) {
+void Ov008WorldMap_LoadRes(Ov008Mgr *self) {
     char name[0x20];
     char path[0x20];
     Ov008Pic *p;

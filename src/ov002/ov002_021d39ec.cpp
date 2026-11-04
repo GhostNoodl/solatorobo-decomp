@@ -4,7 +4,7 @@ extern "C" {
 
 void Lo021cae48_SetValue(void *a, u32 b, int c);
 
-BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
+BOOL ComposeMenu_ConfirmOnDecide(UiList *self, UiListItem *ev) {
     Task021ef81c *o;
     Lo021cae48 *c;
     UiListItem *item;
@@ -39,13 +39,13 @@ BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
     return FALSE;
 }
 
-BOOL Task021ef81c_List3cOnDecide(UiList *self, UiListItem *ev) {
+BOOL ComposeMenu_List3cOnDecide(UiList *self, UiListItem *ev) {
     Task021ef81c *o = (Task021ef81c *)self->owner;
     UiList021cb4a8 *a = o->unk_3c;
     Lo021cae48 *c = o->unk_44;
     if (ev != NULL) {
         if (c->value >= ev->unk_0c) {
-            func_ov000_02152294(a, 0xf5, 0x18, (EvCallback)func_ov002_021d39ec);
+            UiObj_OpenChoice(a, 0xf5, 0x18, (EvCallback)ComposeMenu_ConfirmOnDecide);
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         } else {
             Lo021cadcc *b = o->unk_40;

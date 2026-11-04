@@ -6,7 +6,7 @@ static inline bool ov002_Task_getFlag1(Task *self) {
     return self->unk_04_1;
 }
 
-void Task021ef89c_PreUpdate(Task021ef89c *self) {
+void TheaterMenu_PreUpdate(Task021ef89c *self) {
     switch (self->state) {
     case 8:
         if (func_ov002_isMode4() || func_ov002_isMode4b()) {

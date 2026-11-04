@@ -8,8 +8,8 @@ extern "C" {
 extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void Camera_Dtor(void *p);
-void Ov008Mgr_Init(Ov008Mgr *m);
-void Ov008Mgr_FreeAll(Ov008Mgr *m);
+void Ov008WorldMap_Init(Ov008Mgr *m);
+void Ov008WorldMap_FreeAll(Ov008Mgr *m);
 void SceneResSet_Close08(void);
 void func_ov000_0214c210(void);
 extern void *ResHandle_vtbl;
@@ -72,7 +72,7 @@ static inline Ov008Pic *Ov008_NewText(void) {
 
 extern "C" {
 
-BOOL Ov008Mgr_IsResReady(Ov008Mgr *m) {
+BOOL Ov008WorldMap_IsResReady(Ov008Mgr *m) {
     BOOL r = TRUE;
     if (((Ov008V *)m->unk_d4)->v2c() == 0) {
         r = FALSE;

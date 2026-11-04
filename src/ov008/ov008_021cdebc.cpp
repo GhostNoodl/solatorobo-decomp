@@ -38,13 +38,13 @@ extern void *UiList_vtbl;
 extern void *Ov000Vt_021cb1b0_vtbl;
 extern void *Ov000Vt_021cb0b8_vtbl;
 extern void *gSndMgr;
-void Ov008Mgr_LoadRes(Ov008Mgr *m);
-BOOL Ov008Mgr_IsResReady(Ov008Mgr *m);
-void Ov008Mgr_Setup(Ov008Mgr *m);
-void Ov008Mgr_BuildMenu(Ov008Mgr *m);
-void Ov008Mgr_UpdateCaption(Ov008Mgr *m);
-void func_ov008_021cce38(Ov008Caption *p);
-BOOL Ov008Mgr_DialogOnDecide(void);
+void Ov008WorldMap_LoadRes(Ov008Mgr *m);
+BOOL Ov008WorldMap_IsResReady(Ov008Mgr *m);
+void Ov008WorldMap_Setup(Ov008Mgr *m);
+void Ov008WorldMap_BuildMenu(Ov008Mgr *m);
+void Ov008WorldMap_UpdateCaption(Ov008Mgr *m);
+void Ov008Caption_Update(Ov008Caption *p);
+BOOL Ov008WorldMap_DialogOnDecide(void);
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
@@ -97,7 +97,7 @@ static inline Ov008Model *Ov008_NewMdl(void) {
 
 extern "C" {
 
-void Ov008Mgr_Setup(Ov008Mgr *m) {
+void Ov008WorldMap_Setup(Ov008Mgr *m) {
     VecFx32 pos = data_ov008_021d02d0;
     VecFx32 tgt = data_ov008_021d02dc;
     Ov008Rot3 rot = data_ov008_021d02c8;

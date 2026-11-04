@@ -7,8 +7,8 @@ typedef struct {
 
 extern void *gDataRes;
 Ent0214bcc4 *DataRes_GetTable(void *a, s32 b);
-s32 func_02061f08(u16 id);
-u32 func_ov000_0214bf2c(u16 a);
+s32 StageTbl_GetQuestOpt(u16 id);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 
@@ -24,8 +24,8 @@ u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
     base = *(u8 **)((u8 *)gDataRes + 0x4c);
     tbl = DataRes_GetTable(gDataRes, 1);
     ret = 0xffff;
-    x = func_02061f08(tbl[idx].b);
-    fl = func_ov000_0214bf2c(tbl[idx].b);
+    x = StageTbl_GetQuestOpt(tbl[idx].b);
+    fl = Quest_GetOptFlags(tbl[idx].b);
     {
         s32 hidden = fl;
         hidden &= 0x100;

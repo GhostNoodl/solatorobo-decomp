@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021ef530_PreUpdate(Task021ef530 *self) {
+void AsmodeusMenu_PreUpdate(Task021ef530 *self) {
     switch (self->state) {
     case 8:
         self->unk_40->flags &= ~2;

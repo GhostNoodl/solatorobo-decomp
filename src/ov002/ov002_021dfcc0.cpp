@@ -57,7 +57,7 @@ static inline Obj021efe6c *GetUnit021dfcc0(Obj021eff30 *self) { return self->own
 static inline Ov002Shape *GetMap021dfcc0(Obj021efe6c *unit) { return unit->field->map; }
 static inline void *GetMgr021dfcc0(void) { return gMsgRes; }
 
-void func_ov002_021dfcc0(Obj021eff30 *self) {
+void Obj021eff30_Step01(Obj021eff30 *self) {
     Obj021efe6c *cam;
     void *mgr;
     Obj021efe9c *cur;

@@ -8,13 +8,13 @@ extern "C" {
 extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void Camera_Dtor(void *p);
-void Ov008Mgr_Init(Ov008Mgr *m);
-void Ov008Mgr_FreeAll(Ov008Mgr *m);
+void Ov008WorldMap_Init(Ov008Mgr *m);
+void Ov008WorldMap_FreeAll(Ov008Mgr *m);
 void SceneResSet_Close08(void);
 void func_ov000_0214c210(void);
 extern void *ResHandle_vtbl;
 
-void Ov008Mgr_Create(void) {
+void Ov008WorldMap_Create(void) {
     Ov008Mgr *p;
     if (gOv008Mgr != NULL) {
         return;
@@ -22,19 +22,19 @@ void Ov008Mgr_Create(void) {
     p = (Ov008Mgr *)Heap_Alloc(0x120);
     if (p != NULL) {
         Camera_Ctor(&p->cam);
-        Ov008Mgr_Init(p);
+        Ov008WorldMap_Init(p);
     }
     gOv008Mgr = p;
 }
 
-void Ov008Mgr_Delete(void) {
+void Ov008WorldMap_Delete(void) {
     if (gOv008Mgr == NULL) {
         return;
     }
-    OV008_FREE(gOv008Mgr, Ov008Mgr *, (Ov008Mgr_FreeAll(p_), Camera_Dtor(&p_->cam), Heap_Free(p_)));
+    OV008_FREE(gOv008Mgr, Ov008Mgr *, (Ov008WorldMap_FreeAll(p_), Camera_Dtor(&p_->cam), Heap_Free(p_)));
 }
 
-void Ov008Mgr_Init(Ov008Mgr *m) {
+void Ov008WorldMap_Init(Ov008Mgr *m) {
     m->unk_00 = 0;
     m->state = 1;
     m->unk_c4 = NULL;
@@ -63,7 +63,7 @@ void Ov008Mgr_Init(Ov008Mgr *m) {
     m->unk_11c = 0x80000;
 }
 
-void Ov008Mgr_FreeAll(Ov008Mgr *m) {
+void Ov008WorldMap_FreeAll(Ov008Mgr *m) {
     OV008_FREE_D(m->unk_c8, Model0218fe1c_FreeAnims);
     OV008_FREE_D(m->unk_d0, Model0218fe1c_FreeAnims);
     OV008_FREE_M(m->unk_d8);

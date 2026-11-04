@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void Task021ef79c_Draw(Task021ef79c *self) {
+void AudioMenu_Draw(Task021ef79c *self) {
     if (self->vfunc_28() == 0) {
         return;
     }
@@ -10,7 +10,7 @@ void Task021ef79c_Draw(Task021ef79c *self) {
     self->unk_40->vfunc_20();
 }
 
-Task021efa1c *Task021efa1c_New(void) {
+Task021efa1c *MusicPlayer_New(void) {
     Task021efa1c *p = (Task021efa1c *)Heap_Alloc(0x44);
     if (p != NULL) {
         TaskBase_ctor(p);

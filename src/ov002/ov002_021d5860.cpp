@@ -11,10 +11,10 @@ VObj *Ov002Vt_021efca4_DtorDelete(VObj *self) {
     return self;
 }
 
-void Task021efc24_Load(void) {
+void RobotTypeMenu_Load(void) {
 }
 
-BOOL Task021efc24_IsLoaded(void) {
+BOOL RobotTypeMenu_IsLoaded(void) {
     return TRUE;
 }
 
@@ -30,8 +30,8 @@ void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
 void func_ov000_021c95fc(void *p);
-BOOL Task021efc24_List50OnDecide(UiList *self, UiListItem *ev);
-BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev);
+BOOL RobotTypeMenu_List50OnDecide(UiList *self, UiListItem *ev);
+BOOL RobotTypeMenu_List50OnCursor(UiList *self, UiListItem *ev);
 void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
 static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
@@ -49,7 +49,7 @@ static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
 
 static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
     if (self->unk_54 != NULL) {
-        Obj0215bb14_SetText(self->unk_54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk_54, Param_GetDesc(id));
         self->unk_54->vfunc_70();
     }
 }
@@ -68,7 +68,7 @@ static inline void ov002_021d58b8_setId(Ov002Hud *x, u16 id) {
     }
 }
 
-void Task021efc24_Start(Task021efc24 *self) {
+void RobotTypeMenu_Start(Task021efc24 *self) {
     void *res;
     void *m;
     UiObj *o;
@@ -171,8 +171,8 @@ void Task021efc24_Start(Task021efc24 *self) {
             }
         }
     }
-    self->unk_50->onDecide = Task021efc24_List50OnDecide;
-    self->unk_50->onCursor = Task021efc24_List50OnCursor;
+    self->unk_50->onDecide = RobotTypeMenu_List50OnDecide;
+    self->unk_50->onCursor = RobotTypeMenu_List50OnCursor;
     self->unk_50->owner = self;
     {
         VObj *mm = self->unk_50;

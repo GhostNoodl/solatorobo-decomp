@@ -15,7 +15,7 @@ extern u8 Lo021caa44_vtbl[];
 
 void *Heap_Alloc(u32 size);
 Obj0214e718 *Task_FindById(s32 id);
-s32 func_02061e7c(s32 a);
+s32 StageTbl_GetQuestName(s32 a);
 
 s32 UiList_GetTextX(Obj0214e718 *self) {
     s32 value = self->vfunc_30();
@@ -40,7 +40,7 @@ VObj *Lo021caa44_New(void) {
 
 void func_ov000_0214e7ac(s32 id) {
     VObj *obj = Task_FindById(0xe)->unk_50;
-    obj->vfunc_74(func_02061e7c(id), id, 0xffff, 0xffff);
+    obj->vfunc_74(StageTbl_GetQuestName(id), id, 0xffff, 0xffff);
 }
 
 }

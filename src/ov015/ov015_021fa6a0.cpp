@@ -29,12 +29,12 @@ void Ov015Shared_Create(void);
 void Ov015Obj30_Init(Ov015Obj30 *self);
 void Ov015Obj34_Init(Ov015Obj34 *self);
 void Ov015Info38_Ctor(Ov015Info38 *p);
-void func_ov015_02200f74(Ov015Game *p);
+void Ov015Game_Reset(Ov015Game *p);
 void Ov015Obj30_Free(Ov015Obj30 *self);
 void Ov015Obj34_DtorBase(Ov015Obj34 *self);
 u8 Gfx3DState_NextPolyId(void *p);
 void Gfx3D_DrawPrimScaled(s32 a, s32 b, s32 c, s32 d);
-BOOL func_ov015_021faa74(Ov015Main *self);
+BOOL Ov015Main_LoadCommonRes(Ov015Main *self);
 
 static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
     VObj *c = NULL;
@@ -63,7 +63,7 @@ static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
             SET_VT(&p->phase2, Ov015Obj34_vtbl);
             Ov015Obj34_Init(&p->phase2);
             Ov015Info38_Ctor(&p->info);
-            func_ov015_02200f74(p);
+            Ov015Game_Reset(p);
         }
         c = (VObj *)p;
         break;
@@ -228,7 +228,7 @@ void *Ov015Child_DtorDelete(Ov015Child *self) {
     return self;
 }
 
-BOOL func_ov015_021faa74(Ov015Main *self) {
+BOOL Ov015Main_LoadCommonRes(Ov015Main *self) {
     BOOL r = FALSE;
     switch (self->unk_10) {
     case 0:
@@ -265,7 +265,7 @@ BOOL Ov015Main_Update(Ov015Main *self) {
     void *saved;
     switch (self->unk_0c) {
     case 1:
-        if (!func_ov015_021faa74(self)) {
+        if (!Ov015Main_LoadCommonRes(self)) {
             break;
         }
         self->unk_0c = 2;
@@ -448,7 +448,7 @@ void *Ov015Child_Dtor(Ov015Child *self) {
 }
 
 
-void func_ov015_021fb240(Ov015Vec *dst, const Ov015Vec *src) {
+void Ov015Vec_Copy(Ov015Vec *dst, const Ov015Vec *src) {
     *dst = *src;
 }
 

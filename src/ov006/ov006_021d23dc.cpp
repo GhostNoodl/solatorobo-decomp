@@ -33,12 +33,12 @@ void ov006_Gauge_SetText(ov006_Gauge *self, void *text);
 void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
-void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
+void ov006_CraftSelect_ShowCraft(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void TaskList_Insert(Task *self);
-BOOL ov006_TaskD1F_List54OnCursor(UiList *window, UiListItem *node);
+BOOL ov006_CraftSelect_List54OnCursor(UiList *window, UiListItem *node);
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 
 static inline void ov006_Caption_SetPos(ov006_Caption *c, int x, int y) {
@@ -56,7 +56,7 @@ static inline void ov006_Gauge_SetPos(ov006_Gauge *g, int x, int y) {
     g->y = y;
 }
 
-void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
+void ov006_CraftSelect_Start(ov006_TaskD1F *self) {
     int y;
     int i;
     void *res;
@@ -88,7 +88,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
         self->unk54->vfunc_a8(ListOwner_GetNth(self->unk54, 0));
     }
     self->unk54->owner = self;
-    self->unk54->onCursor = ov006_TaskD1F_List54OnCursor;
+    self->unk54->onCursor = ov006_CraftSelect_List54OnCursor;
     {
         void *p = Heap_Alloc(0x708);
         if (p != NULL) {
@@ -175,7 +175,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
             Obj0215bb14_SetText(self->unk5C, str);
             self->unk5C->vfunc_70();
         }
-        func_ov006_021d3498(self, id, FALSE);
+        ov006_CraftSelect_ShowCraft(self, id, FALSE);
         p = Tbl_Elem_020706a0(id);
         ov006_Gauge_SetRatio(self->gauges[0], p->unk4 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(self->gauges[1], p->unk5 << 12, 0xa000, 1);

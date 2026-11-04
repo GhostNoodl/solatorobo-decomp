@@ -3,8 +3,8 @@
 extern "C" {
 
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void func_ov015_0220afcc(Ov015FishState2c *self);
-void func_ov015_0220b1b8(Ov015FishState2c *self);
+void Ov015FishState2c_UpdateWake(Ov015FishState2c *self);
+void Ov015FishState2c_UpdateSwim(Ov015FishState2c *self);
 void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p);
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p);
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);
@@ -135,8 +135,8 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         p->pos.z = pos.z;
         dir.x -= d;
         VEC_Normalize(&dir, (&p->dir));
-        func_ov015_0220afcc(self);
-        func_ov015_0220b1b8(self);
+        Ov015FishState2c_UpdateWake(self);
+        Ov015FishState2c_UpdateSwim(self);
         if (self->unk_06 <= 0 || p->pos.x < p->minX) {
             p->unk_bc = 3;
             self->step = 4;
@@ -155,8 +155,8 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         p->pos.z = pos.z;
         dir.x += d;
         VEC_Normalize(&dir, (&p->dir));
-        func_ov015_0220afcc(self);
-        func_ov015_0220b1b8(self);
+        Ov015FishState2c_UpdateWake(self);
+        Ov015FishState2c_UpdateSwim(self);
         if (self->unk_06 <= 0 || p->pos.x > p->maxX) {
             p->unk_bc = 2;
             self->step = 3;
@@ -194,8 +194,8 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         dir.z = FX_Mul(dir.z, 0xfae);
         dir.x -= 0x29;
         VEC_Normalize(&dir, (&p->dir));
-        func_ov015_0220afcc(self);
-        func_ov015_0220b1b8(self);
+        Ov015FishState2c_UpdateWake(self);
+        Ov015FishState2c_UpdateSwim(self);
         if (self->unk_06 > 0) {
             break;
         }
@@ -233,8 +233,8 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         dir.z = FX_Mul(dir.z, 0xfae);
         dir.x += 0x29;
         VEC_Normalize(&dir, (&p->dir));
-        func_ov015_0220afcc(self);
-        func_ov015_0220b1b8(self);
+        Ov015FishState2c_UpdateWake(self);
+        Ov015FishState2c_UpdateSwim(self);
         if (self->unk_06 > 0) {
             break;
         }

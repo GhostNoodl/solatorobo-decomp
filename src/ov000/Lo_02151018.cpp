@@ -9,7 +9,7 @@ extern u8 UiObj_vtbl[];
 extern u8 Lo021cad50_vtbl[];
 void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 
-void Lo021ca9c4_PostUpdate(Lo021ca9c4 *self) {
+void QuestWin_PostUpdate(Lo021ca9c4 *self) {
     switch (self->state) {
     case 13: {
         s32 n;

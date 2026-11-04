@@ -70,7 +70,7 @@ void MsgEntry_Init(void *p);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void Text_ScanTags(s32 a, s32 b, void *c, void *d);
 void func_ov000_0214dc20(void *self, s32 *msg);
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadById(void *a, s32 b, s32 c, u16 d);
 }
 
@@ -106,7 +106,7 @@ static inline u8 *GetG0214dd3c(void) {
 static inline u16 KeyR0214dd3c(Node0214dd3c *p, u8 *&g) {
     u16 k = p->unk_36 & 0xf;
     g = GetG0214dd3c();
-    if (func_ov000_0214bf2c(p->id) & 0x10) {
+    if (Quest_GetOptFlags(p->id) & 0x10) {
         k |= 0x3f0;
     } else {
         k |= (u16)((p->unk_34 & 0x3f) << 4);
@@ -187,7 +187,7 @@ Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d
             i++;
         }
     }
-    fl = func_ov000_0214bf2c(id);
+    fl = Quest_GetOptFlags(id);
     if (fl & 0x10) {
         m->unk_08 = 0xb;
         if (data_02fe1534.unk_46 == m->unk_30) {

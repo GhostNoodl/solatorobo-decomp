@@ -10,7 +10,7 @@ extern void *gDataRes;
 extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
 void TextWin_Init(void *p);
@@ -41,7 +41,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void Lo021ca9c4_Draw(Lo021ca9c4 *self) {
+void QuestWin_Draw(Lo021ca9c4 *self) {
     s32 s;
     if (self->fadeRatio == 0 || (s = self->state) == 0) {
         return;
@@ -86,7 +86,7 @@ void Lo021ca9c4_Draw(Lo021ca9c4 *self) {
 // written after bx): z is still propagated (only bx and h are scalarized), so the result is 30 / 0, the same as an @ bx.
 extern "C" {
 
-u32 func_ov000_0214bf2c(u16 a);
+u32 Quest_GetOptFlags(u16 a);
 
 }
 
@@ -185,7 +185,7 @@ void func_ov000_021512b4(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
     gGfxMgr->unk_004 = self->unk_118.unk_28;
     h = self->unk_118.unk_38 + ((NNSG2dFont *)GfxMgr_GetFont(gGfxMgr))->pRes->pGlyph->cellHeight;
     y += h * 5 + 1;
-    if (func_ov000_0214bf2c(LFLD(u16, self->unk_54, 6)) & 0x10) {
+    if (Quest_GetOptFlags(LFLD(u16, self->unk_54, 6)) & 0x10) {
         self->unk_340.depth = -0x191a;
         self->unk_340.unk_vf20(bx + 0x19, y);
         self->unk_340.Render();

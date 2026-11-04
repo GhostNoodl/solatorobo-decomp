@@ -9,7 +9,7 @@ extern char data_ov000_021cc894[];
 extern void *gSndMgr;
 extern const s16 FX_SinCosTable_[];
 void LangData_LocalizePath(char *dst, const char *src);
-void func_ov000_021bbd94(u8 *self);
+void MissionInfo_CreateBackButton(u8 *self);
 BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -51,7 +51,7 @@ static inline BOOL Ready021bb8dc(Obj021bb8dc *self) {
     return ok;
 }
 
-BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
+BOOL MissionInfo_Update(Obj021bb8dc *self) {
     s32 t;
     void *p = Get021bb8dc();
 
@@ -69,7 +69,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         }
         self->unk_50 = 4;
     case 4:
-        func_ov000_021bbd94((u8 *)self);
+        MissionInfo_CreateBackButton((u8 *)self);
         self->unk_50 = 10;
     case 10:
         if (!Model_IsReady(self->unk_58, 0xffff)) {

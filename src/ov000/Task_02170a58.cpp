@@ -23,19 +23,19 @@ void func_ov000_0216b474(Lo0216b474 *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
 BOOL MsgRes_BindGlobal(void);
-BOOL func_ov000_021b9010(void *p);
-BOOL func_ov000_021ba92c(void *p);
-BOOL func_ov000_021bb8dc(void *p);
+BOOL MissionCard_Update(void *p);
+BOOL SceneCondCard_Update(void *p);
+BOOL MissionInfo_Update(void *p);
 BOOL TextWinTitle_Update(void *p);
-BOOL func_ov000_021b8994(void *p);
+BOOL PlaceNameCard_Update(void *p);
 BOOL func_ov000_021bb33c(void *p);
-BOOL func_ov000_021b8284(void *p);
+BOOL ImageCard_Update(void *p);
 void SceneStage_RunCur(SceneStage *self);
 void func_ov000_0216b550(Lo0216b474 *p);
 void Obj021bbc68_Release(void *p);
 void TextBox_Release(void *p);
-void func_ov000_021b8800(void *p);
-void func_ov000_021b88d8(void *p);
+void ImageCard_Dtor(void *p);
+void PlaceNameCard_Dtor(void *p);
 void Obj021b8ecc_Release(void *p);
 void Obj021bacf4_Release(void *p);
 void func_ov000_021bb840(void *p);
@@ -120,7 +120,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
             self->state = 3;
         }
     case 10:
-        if (self->unk_3c != NULL && !func_ov000_021b9010(self->unk_3c)) {
+        if (self->unk_3c != NULL && !MissionCard_Update(self->unk_3c)) {
             HEAP_DELETE_FN(self->unk_3c, Obj021b8ecc_Release);
             if (self->state == 10) {
                 self->state = 3;
@@ -139,13 +139,13 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         }
         break;
     case 8:
-        if (self->unk_40 != NULL && !func_ov000_021ba92c(self->unk_40)) {
+        if (self->unk_40 != NULL && !SceneCondCard_Update(self->unk_40)) {
             HEAP_DELETE_FN(self->unk_40, Obj021bacf4_Release);
             self->state = 3;
         }
         break;
     case 9:
-        if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
+        if (self->unk_44 != NULL && !MissionInfo_Update(self->unk_44)) {
             HEAP_DELETE(u8 *, (u8 *)self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = ResHandle_vtbl; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
             self->state = 3;
         }
@@ -163,8 +163,8 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         }
         break;
     case 7:
-        if (!func_ov000_021b8994(self->unk_38)) {
-            HEAP_DELETE_FN(self->unk_38, func_ov000_021b88d8);
+        if (!PlaceNameCard_Update(self->unk_38)) {
+            HEAP_DELETE_FN(self->unk_38, PlaceNameCard_Dtor);
             self->state = 3;
         }
         break;
@@ -172,8 +172,8 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
     if (self->unk_4c != NULL && !func_ov000_021bb33c(self->unk_4c)) {
         HEAP_DELETE_FN(self->unk_4c, func_ov000_021bb840);
     }
-    if (self->unk_34 != NULL && !func_ov000_021b8284(self->unk_34)) {
-        HEAP_DELETE_FN(self->unk_34, func_ov000_021b8800);
+    if (self->unk_34 != NULL && !ImageCard_Update(self->unk_34)) {
+        HEAP_DELETE_FN(self->unk_34, ImageCard_Dtor);
     }
     if (self->unk_50 != NULL && !func_ov000_0216ca70(self->unk_50)) {
         HEAP_DELETE(Obj0216c954 *, self->unk_50, Obj0216c9b0_Release(p); Heap_Free(p));
