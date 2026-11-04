@@ -63,12 +63,12 @@ paramlocal	src/ov000/Hit_0219a8bc.cpp	Hit_Apply	legit: real parameter (callers p
 paramlocal	src/ov000/Lo_02161994.cpp	func_ov000_02161994	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/ov000/Robo_021b2f08.cpp	func_ov000_021b2f08	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/ov015/ov015_02200a18.cpp	func_ov015_02200bf4	legit: real parameter (callers pass spd), overwritten on some paths only
-paramlocal	src/Main/Gfx/SlideWin_3.cpp	func_020572f8	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/Main/Gfx/SlideWin_3.cpp	SlideWinX_RenderText	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/Main/Res/Stage.cpp	StageRes_ApplyArith	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: locals cur/node as fake parameters (GfxSys.cpp has .bss, mid-file)
 arity	src/Main/Gfx/GfxSys.cpp	GfxSys_AllocVram	kept: see the paramlocal line
-paramlocal	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: local fn as a fake parameter (TextWin.cpp has .data, mid-file)
-arity	src/Main/Gfx/TextWin.cpp	func_02051a34	kept: see the paramlocal line
+paramlocal	src/Main/Gfx/TextWin.cpp	SlideWin_RenderText	kept: local fn as a fake parameter (TextWin.cpp has .data, mid-file)
+arity	src/Main/Gfx/TextWin.cpp	SlideWin_RenderText	kept: see the paramlocal line
 paramlocal	src/ov000/Menu_021763c8.cpp	SellMenu_Start	kept: local g as a fake parameter (file has .data/.bss, mid-file)
 arity	src/	*	hygiene: a caller-side prototype disagrees with the definition (`()` declarations for function addresses, or a caller that passes an argument the callee ignores); codegen-neutral for the callee
 unusedparam	src/	*	legit: callback, vtable-slot, state-table and command-table signatures, and real parameters the callee ignores (the scanner's arity lines list the definitions that callers do not declare)
