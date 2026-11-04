@@ -245,3 +245,39 @@ src/ov015/ov015_0221276c.cpp:
     .init       start:0x0221276c end:0x0221278c
     .ctor       start:0x022127a8 end:0x022127ac
     .data       start:0x022131f4 end:0x022131f8
+
+data/ov015/ov015_rodata_02212524.dspec:
+    complete
+    .rodata     start:0x02212524 end:0x0221268c
+
+data/ov015/ov015_data_022127c4.dspec:
+    complete
+    .data       start:0x022127c4 end:0x0221282c
+
+data/ov015/ov015_data_02212830.dspec:
+    complete
+    .data       start:0x02212830 end:0x0221298c
+
+data/ov015/ov015_data_02212990.dspec:
+    complete
+    .data       start:0x02212990 end:0x02212c80
+
+data/ov015/ov015_data_02212c84.dspec:
+    complete
+    .data       start:0x02212c84 end:0x02212d08
+
+data/ov015/ov015_data_02212d34.dspec:
+    complete
+    .data       start:0x02212d34 end:0x02212db0
+
+data/ov015/ov015_data_02212db8.dspec:
+    complete
+    .data       start:0x02212db8 end:0x02212f84
+
+data/ov015/ov015_data_02212f88.dspec:
+    complete
+    .data       start:0x02212f88 end:0x022131f4
+
+data/ov015/ov015_data_022131f8.dspec:
+    complete
+    .data       start:0x022131f8 end:0x02213320

@@ -1,2 +1,6 @@
     .data       start:0x02fe0000 end:0x02fe01e0 kind:data align:32
     .bss        start:0x02fe01e0 end:0x02fe15c0 kind:bss align:32
+
+data/dtcm/dtcm_data_02fe0000.dspec:
+    complete
+    .data       start:0x02fe0000 end:0x02fe01e0

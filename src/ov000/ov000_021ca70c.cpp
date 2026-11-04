@@ -97,14 +97,30 @@ extern "C" {
 Ov000ScpNames data_ov000_021cc0d8 = {FX_Div(256 * FX32_ONE, 15 * FX32_ONE), data_ov000_021c9d44, "photo00", "photo01", data_ov000_021c9d48, data_ov000_021c9d44};
 const char *const data_ov000_021c9d44 = data_ov000_021cc0d8.photo1;
 const char *const data_ov000_021c9d48 = data_ov000_021cc0d8.photo0;
-char data_ov000_021cc0f8[] = "scpdmy.ccscp";
-char data_ov000_021cc105[] = "scp%s.ccscp";
-char data_ov000_021cc111[] = "script/";
-char data_ov000_021cc119[] = "scninfo";
-char data_ov000_021cc121[] = "scpmis%d.ccscp";
-char data_ov000_021cc130[] = "misinfo";
-char data_ov000_021cc138[] = "scpqst%d.ccscp";
-char data_ov000_021cc147[] = "qstinfo";
+char data_ov000_021cc0f8[] =
+#include "romdata/ov000/021cc0f8.inc"
+;
+char data_ov000_021cc105[] =
+#include "romdata/ov000/021cc105.inc"
+;
+char data_ov000_021cc111[] =
+#include "romdata/ov000/021cc111.inc"
+;
+char data_ov000_021cc119[] =
+#include "romdata/ov000/021cc119.inc"
+;
+char data_ov000_021cc121[] =
+#include "romdata/ov000/021cc121.inc"
+;
+char data_ov000_021cc130[] =
+#include "romdata/ov000/021cc130.inc"
+;
+char data_ov000_021cc138[] =
+#include "romdata/ov000/021cc138.inc"
+;
+char data_ov000_021cc147[] =
+#include "romdata/ov000/021cc147.inc"
+;
 u32 data_ov000_021cc150[2] = {0, 0};
 Ov000Fn Ov000Vt_021cc158_vtbl[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)ResHandle_Clear, (Ov000Fn)ResHandle_Unload, (Ov000Fn)ResHandle_GetData, (Ov000Fn)ResHandle_LoadSync, (Ov000Fn)ResHandle_OpenInArc, (Ov000Fn)ResHandle_Request, (Ov000Fn)ResHandle_RequestFlag, (Ov000Fn)ResHandle_LoadFromArc, (Ov000Fn)ResHandle_LoadFromArcFlag, (Ov000Fn)ResHandle_IsLoaded, (Ov000Fn)ResHandle_OnLoad, (Ov000Fn)ResHandle_IsReady, (Ov000Fn)SceneScript_Run, (Ov000Fn)StageRes_EvalCond, (Ov000Fn)StageRes_AccessVar, (Ov000Fn)StageRes_ExecCmd };
 __declspec(weak) Ov000ScpEnt SceneCmd_Table[42] = {

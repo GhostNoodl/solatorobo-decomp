@@ -1,0 +1,3 @@
+# ov000 .data 0x021cba0c..0x021cba18: a string pool that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default str

@@ -55,3 +55,11 @@ src/ov008/ov008_021cff1c.cpp:
 src/ov008/ov008_021d0014.cpp:
     complete
     .text       start:0x021d0014 end:0x021d02c8
+
+data/ov008/ov008_rodata_021d02c8.dspec:
+    complete
+    .rodata     start:0x021d02c8 end:0x021d0348
+
+data/ov008/ov008_data_021d0360.dspec:
+    complete
+    .data       start:0x021d0360 end:0x021d0500

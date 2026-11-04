@@ -110,6 +110,7 @@ mwcc_path        = mwcc_root / MWCC_VERSION
 includes = [
     root_path / "include",
     root_path / "build" / "gen",  # Formula tables written by tools/gen_tables.py
+    root_path / "build" / "gen" / args.version,  # ROM data initializers, romdata/*.inc (tools/extract_data.py)
 ]
 for root, dirs, _ in os.walk(libs_path):
     for dir in dirs:
@@ -187,7 +188,14 @@ class Project:
         for source_file in self.source_files():
             src_obj_path = self.game_build / source_file
             files.append(str(src_obj_path.with_suffix(".o")))
-        return files
+        return files + self.data_object_files()
+
+    def data_specs(self) -> list[str]:
+        '''Data specs named in delinks.txt (objects built from the ROM by tools/extract_data.py)'''
+        return sorted({file['name'] for file in self.files() if file['name'].endswith(DATA_SPEC_SUFFIX)})
+
+    def data_object_files(self) -> list[str]:
+        return [str((self.game_build / spec).with_suffix(".o")) for spec in self.data_specs()]
 
     def arm9_o(self) -> Path:
         return self.game_build / "arm9.o"
@@ -363,6 +371,23 @@ def main():
         n.rule(
             name="gen_tables",
             command=f"{PYTHON} tools/gen_tables.py $out_dir"
+        )
+        n.newline()
+
+        # Game data objects built from the user's ROM (tools/extract_data.py, data/*/*.dspec).
+        n.rule(
+            name="extract_data",
+            command=f"{PYTHON} tools/extract_data.py object --config $config_dir --extract $extract_dir $in $out",
+            description="DATA $out",
+            restat=True,
+        )
+        n.newline()
+
+        n.rule(
+            name="extract_data_inc",
+            command=f"{PYTHON} tools/extract_data.py inc --config $config_dir --extract $extract_dir $in $out_dir",
+            description="DATA $out_dir",
+            restat=True,
         )
         n.newline()
 
@@ -574,6 +599,44 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
 
+DATA_SPEC_SUFFIX = ".dspec"
+ROMDATA_INC_DIR = build_path / "gen"
+
+
+def add_extract_data_builds(n: ninja_syntax.Writer, project: Project) -> list[str]:
+    '''Data objects and C initializers from the user's ROM; returns the .inc outputs.'''
+    deps = ["tools/extract_data.py", str(project.baserom_config()), *project.dsd_configs()]
+    variables = {
+        "config_dir": str(project.arm9_config_yaml().parent),
+        "extract_dir": str(project.game_extract),
+    }
+    for spec in project.data_specs():
+        n.build(
+            inputs=spec,
+            implicit=deps,
+            rule="extract_data",
+            outputs=str((project.game_build / spec).with_suffix(".o")),
+            variables=variables,
+        )
+        n.newline()
+
+    incs: list[str] = []
+    inc_spec = project.game_config / "romdata_inc.txt"
+    if inc_spec.is_file():
+        sys.path.insert(0, str(tools_path))
+        from extract_data import inc_outputs
+        incs = [str(ROMDATA_INC_DIR / project.game_version / out) for out in inc_outputs(inc_spec)]
+        n.build(
+            inputs=str(inc_spec),
+            implicit=deps,
+            rule="extract_data_inc",
+            outputs=incs,
+            variables={**variables, "out_dir": str(ROMDATA_INC_DIR / project.game_version)},
+        )
+        n.newline()
+    return incs
+
+
 GEN_TABLES_DIR = build_path / "gen"
 GEN_TABLES = ["fx_sincos.inc", "fx_atan.inc", "snd_decibel.inc", "snd_volume.inc"]
 
@@ -587,6 +650,8 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
         variables={"out_dir": str(GEN_TABLES_DIR)},
     )
     n.newline()
+    # Formula tables and ROM-data initializers: written before any compile.
+    gen_tables = gen_tables + add_extract_data_builds(n, project)
 
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
@@ -786,6 +851,8 @@ def add_configure_build(n: ninja_syntax.Writer, project: Project):
             # Require dsd to exist when rerunning configure.py
             DSD,
             *project.dsd_configs(),
+            # The ROM-data initializers it lists are build outputs
+            *([str(project.game_config / "romdata_inc.txt")] if (project.game_config / "romdata_inc.txt").is_file() else []),
         ]
     )
 

@@ -1,0 +1,32 @@
+# ov002 .data 0x021efd98..0x021eff90: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021efd98  str     # data_ov002_021efd98
+0x021efda3  str     # data_ov002_021efda3
+0x021efdb3  str     # data_ov002_021efdb3
+0x021efdba  str     # data_ov002_021efdba
+0x021efdca  str     # data_ov002_021efdca
+0x021efdd1  str     # data_ov002_021efdd1
+0x021efdd7  str     # data_ov002_021efdd7
+0x021efddd  str     # data_ov002_021efddd
+0x021efdea  str     # data_ov002_021efdea
+0x021efdf6  str     # data_ov002_021efdf6
+0x021efe02  str     # data_ov002_021efe02
+0x021efe0e  str     # data_ov002_021efe0e
+0x021efe1a  str     # data_ov002_021efe1a
+0x021efe26  str     # data_ov002_021efe26
+0x021efe3c  ptr[]   # Ov002Vt_021efe3c_vtbl
+0x021efe4c  ptr[]   # Ov002Vt_021efe4c_vtbl
+0x021efe5c  ptr[]   # Ov002Vt_021efe5c_vtbl
+0x021efe6c  ptr[]   # Ov002Vt_021efe6c_vtbl
+0x021efe7c  ptr[]   # Ov002Vt_021efe7c_vtbl
+0x021efe8c  ptr[]   # Ov002Vt_021efe8c_vtbl
+0x021efe9c  ptr[]   # Ov002Vt_021efe9c_vtbl
+0x021efeb8  ptr[]   # Ov002Vt_021efeb8_vtbl
+0x021efed4  ptr[]   # Ov002Vt_021efed4_vtbl
+0x021efef0  ptr[]   # Ov002Vt_021efef0_vtbl
+0x021eff10  ptr[]   # Ov002Vt_021eff10_vtbl
+0x021eff30  ptr[]   # Ov002Vt_021eff30_vtbl
+0x021eff50  ptr[]   # Ov002Vt_021eff50_vtbl
+0x021eff74  ptr[]   # Ov002Vt_021eff74_vtbl

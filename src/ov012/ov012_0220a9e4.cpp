@@ -29,14 +29,20 @@ extern char data_ov012_0220afb2[];
 extern const VecFx32 data_ov012_0220afb8;
 
 const Rot16 data_ov012_0220a588 = {0, 0, 0};
-char data_ov012_0220afa6[] = "nut00";
-char data_ov012_0220afac[] = "att00";
+char data_ov012_0220afa6[] =
+#include "romdata/ov012/0220afa6.inc"
+;
+char data_ov012_0220afac[] =
+#include "romdata/ov012/0220afac.inc"
+;
 const Rot16 data_ov012_0220afa0 = data_ov012_0220a588;
 const char *const data_ov012_0220a580 = data_ov012_0220afb2;
 const char *const data_ov012_0220a584 = data_ov012_0220afac;
 const char *const data_ov012_0220a57c = data_ov012_0220afa6;
 const s16 data_ov012_0220a58e[6] = {700, 600, 500, 0x5fff, 0, 0};
-char data_ov012_0220afb2[] = "run00";
+char data_ov012_0220afb2[] =
+#include "romdata/ov012/0220afb2.inc"
+;
 
 static asm void Ov012_Dummy(void) {}
 

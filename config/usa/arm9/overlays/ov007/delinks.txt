@@ -12,3 +12,11 @@ src/ov007/ov007_021ccda0.cpp:
 src/ov007/ov007_021cf474.cpp:
     complete
     .text       start:0x021cf474 end:0x021cfa3c
+
+data/ov007/ov007_rodata_021cfa3c.dspec:
+    complete
+    .rodata     start:0x021cfa3c end:0x021cfb58
+
+data/ov007/ov007_data_021cfb60.dspec:
+    complete
+    .data       start:0x021cfb60 end:0x021cfbd8

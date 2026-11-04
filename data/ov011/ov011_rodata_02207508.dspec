@@ -1,0 +1,6 @@
+# ov011 .rodata 0x02207508..0x022077c0: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x022076ac  str     # data_ov011_022076ac
+0x022076cc  str     # data_ov011_022076cc

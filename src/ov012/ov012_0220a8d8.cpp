@@ -142,21 +142,49 @@ const VecFx32 data_ov012_0220a468 = {0, 0x1333, 0x4000};
 const VecFx32 data_ov012_0220a474 = {0, 0, 0};
 
 const Rot16 data_ov012_0220aaa0 = data_ov012_0220a3e4;
-char data_ov012_0220aaa6[] = "run00";
-char data_ov012_0220aaac[] = "nut00";
-char data_ov012_0220aab2[] = "ef3di1ope11";
-char data_ov012_0220aabe[] = "ef3di1ope10";
+char data_ov012_0220aaa6[] =
+#include "romdata/ov012/0220aaa6.inc"
+;
+char data_ov012_0220aaac[] =
+#include "romdata/ov012/0220aaac.inc"
+;
+char data_ov012_0220aab2[] =
+#include "romdata/ov012/0220aab2.inc"
+;
+char data_ov012_0220aabe[] =
+#include "romdata/ov012/0220aabe.inc"
+;
 const VecFx32 data_ov012_0220aacc = data_ov012_0220a474;
-char data_ov012_0220aad8[] = "ef/effect3dope";
-char data_ov012_0220aae7[] = "ef3di1ope12.cceff";
-char data_ov012_0220aaf9[] = "ef/effect3dope";
-char data_ov012_0220ab08[] = "g1lft01";
-char data_ov012_0220ab10[] = "gm/g1lft01";
-char data_ov012_0220ab1b[] = "att00";
-char data_ov012_0220ab21[] = "nut00";
-char data_ov012_0220ab27[] = "gun00";
-char data_ov012_0220ab2d[] = "att10";
-char data_ov012_0220ab33[] = "att20";
+char data_ov012_0220aad8[] =
+#include "romdata/ov012/0220aad8.inc"
+;
+char data_ov012_0220aae7[] =
+#include "romdata/ov012/0220aae7.inc"
+;
+char data_ov012_0220aaf9[] =
+#include "romdata/ov012/0220aaf9.inc"
+;
+char data_ov012_0220ab08[] =
+#include "romdata/ov012/0220ab08.inc"
+;
+char data_ov012_0220ab10[] =
+#include "romdata/ov012/0220ab10.inc"
+;
+char data_ov012_0220ab1b[] =
+#include "romdata/ov012/0220ab1b.inc"
+;
+char data_ov012_0220ab21[] =
+#include "romdata/ov012/0220ab21.inc"
+;
+char data_ov012_0220ab27[] =
+#include "romdata/ov012/0220ab27.inc"
+;
+char data_ov012_0220ab2d[] =
+#include "romdata/ov012/0220ab2d.inc"
+;
+char data_ov012_0220ab33[] =
+#include "romdata/ov012/0220ab33.inc"
+;
 #pragma explicit_zero_data on
 u32 data_ov012_0220ab3c[2] = {0, 0};
 Ov012Fn Ov012Act_021ffa68_vtbl[41] = {

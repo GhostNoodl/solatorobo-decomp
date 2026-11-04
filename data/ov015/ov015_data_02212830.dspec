@@ -1,0 +1,27 @@
+# ov015 .data 0x02212830..0x0221298c: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212830  str     # data_ov015_02212830
+0x0221283b  str     # data_ov015_0221283b
+0x02212851  str     # data_ov015_02212851
+0x02212857  str     # data_ov015_02212857
+0x02212862  str     # data_ov015_02212862
+0x02212878  str     # data_ov015_02212878
+0x02212883  str     # data_ov015_02212883
+0x02212899  str     # data_ov015_02212899
+0x0221289f  str     # data_ov015_0221289f
+0x022128a5  str     # data_ov015_022128a5
+0x022128ab  str     # data_ov015_022128ab
+0x022128b5  str     # data_ov015_022128b5
+0x022128c1  str     # data_ov015_022128c1
+0x022128d5  str     # data_ov015_022128d5
+0x022128ec  ptr[]   # Ov015Result_vtbl
+0x022128fc  ptr[]   # Ov015Fish_vtbl
+0x0221290c  ptr[]   # Ov015List_vtbl
+0x0221291c  ptr[]   # Ov015Vt_0221291c_vtbl
+0x0221292c  ptr[]   # Ov015Obj292c_vtbl
+0x0221293c  ptr[]   # Ov015Hud_vtbl
+0x0221294c  ptr[]   # Ov015Vt_0221294c_vtbl
+0x0221295c  ptr[]   # Ov015Node_vtbl
+0x0221296c  ptr[]   # Ov015Game_vtbl

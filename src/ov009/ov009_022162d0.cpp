@@ -12,7 +12,9 @@ static const VecFx16 data_ov009_022161cc = {0, 0, 0};
 const VecFx32 data_ov009_022161d4 = {0, 0, FX32_ONE};
 static const VecFx32 data_ov009_022161e0 = {0, 0, 0};
 static const VecFx16 data_ov009_02218004 = data_ov009_022161cc;
-char data_ov009_0221800a[] = "nut00";
+char data_ov009_0221800a[] =
+#include "romdata/ov009/0221800a.inc"
+;
 static const VecFx32 data_ov009_02218010 = data_ov009_022161e0;
 
 // ---- merged from ov009_022143d8.cpp

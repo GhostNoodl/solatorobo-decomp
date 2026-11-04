@@ -32,6 +32,26 @@
 - The game is C++ (overlays have static initializers), but plain functions compile the same as C. Use `extern "C"` or `.c` files to keep `symbols.txt` names unmangled.
 - NitroSystem (NNS) and TwlSDK headers go in `include/nnsys/` and `include/nitro/`. Write declarations from scratch; don't copy SDK headers.
 
+## Game data: matched by build-time extraction, never committed
+
+The repository holds code, layout and type definitions, and tools, but no bytes of the game. Game data (string
+pools, name tables, the Lang and font tables, other overlay `.data`/`.rodata`) may be matched by extracting it from
+the user's own ROM at build time, the way finished decomps handle assets. The bytes are never written into a
+committed file: no hex dumps, no string literals copied from the ROM, no generated sources outside `build/`.
+
+- **Data no source file owns** gets a data spec, `data/<module>/<name>.dspec`, named in the module's `delinks.txt`
+  like a source file. `tools/extract_data.py` reads its ranges from `extract/<version>/`, checks the bytes against
+  the types in the spec and writes `build/<version>/data/<module>/<name>.o` with the `symbols.txt` symbols and the
+  `relocs.txt` relocations (round dxA has the details).
+- **Data inside a compiled translation unit** (a string that a matched TU defines) is declared in the source with
+  `#include "romdata/<module>/<address>.inc"` as its initializer and listed in `config/<version>/romdata_inc.txt`.
+  The build writes the `.inc` into `build/gen/<version>/`.
+- Tables that follow from a formula or a published definition are still written as source (`tools/gen_tables.py`,
+  the SDK tables). Code is never extracted: a function matches only from source.
+
+Notes from earlier rounds call the old rule (no ROM-derived data in the build at all) "the data rule"; data they
+left in a gap for that reason can now be matched this way.
+
 ## Permuting C++ drafts
 
 `tools/permuter/cxxperm.py` is a random permuter that works on source text, so it takes any draft `tools/match.py` takes: C++ classes, member and virtual calls, references and `extern "C"` blocks included. decomp-permuter (`tools/permuter/run.sh`) needs the draft lowered to C first, and that often fails on these drafts.
@@ -3922,7 +3942,7 @@ main has no `.rodata`: the SDK linker script puts every object's `.rodata` after
 
 - **Why asm blocks.** MWCC does put `const` data in `.text` with a three-name section (`#pragma define_section X ".text" ".bss" ".text"` and `#pragma section X begin`/`end`). The link is right, but objdiff then panics (`arch/arm.rs`, index out of bounds): a code section with no mapping symbol at all. A `force_active` `asm void name(void) { dcd ... }` block gets `$a`/`$d` at offset 0, and objdiff reads it as data. Use only `dcd`: a `dcb` makes the assembler emit `$a` again, and the rest of the block is diffed as ARM. Pack bytes and halfwords into words with a macro (`E2(a, b)`, `B4(a, b, c, d)`; the assembler takes `| << >> * / %` but not `?:`, and one value per `dcd`). A table that ends on a halfword ends on a word with the zero padding, and its `symbols.txt` size includes the padding (`FX_AtanTable_` `0x104`, `data_0207575c` `0xb4`), or objdiff scores it below 100%. `;` separates statements inside a macro, and `#include` works inside the asm body.
 - **`dsd delink -M`.** The delinked target objects only had mapping symbols for code and pool constants, so a table-only unit panicked on the target side too. `tools/configure.py` now runs `delink -M`, which gives every data symbol a `$d`. The only other unit this changed was `mi_dma_itcm` (`ITCMi_Pad`, written as `andeq` instructions, went to 0%). It is now `dcd 0` words and is back at 100%. The data-only gap pieces this round left behind report fine with `-M`. It should also lift the round mainbig5 limit on gaps that hold only data, but that case was not tested.
-- **Generated tables.** `tools/gen_tables.py` writes `build/gen/fx_sincos.inc` (`round(sin/cos(2*pi*i/4096) * 4096)`), `fx_atan.inc` (`round(atan(i/128) * 32768/pi)`, 129 entries) and `snd_decibel.inc` (`-32768`, then `round(200 * log10(i/127))`). Rounding is half away from zero. `configure.py` builds them before any compile (order-only) and adds `-i build/gen`. Nothing ROM-derived is in the repository.
+- **Generated tables.** `tools/gen_tables.py` writes `build/gen/fx_sincos.inc` (`round(sin/cos(2*pi*i/4096) * 4096)`), `fx_atan.inc` (`round(atan(i/128) * 32768/pi)`, 129 entries) and `snd_decibel.inc` (`-32768`, then `round(200 * log10(i/127))`). Rounding is half away from zero. `configure.py` builds them before any compile (order-only) and adds `-i build/gen`. These tables come from formulas, not from the ROM.
 - **False relocations.** dsd had turned three sin/cos words into pool loads of odd `.bss` addresses (`0x02071f10`, `0x020741ac`, `0x020741b0` in `relocs.txt`), so the target had relocations the table does not have. They are removed. The `data_020e0fde`/`0208f021`/`020ef022` symbols they made are still in `symbols.txt`.
 - **Gaps must stay referenced.** `-dead` strips a gap object that nothing references by symbol. Splitting the FS tables off would have left `0x02070ee4`..`0x02070f2c` referenced only by the absolute constants in `card_common_3.c` and `fs_overlay.c`. Those now use `data_02070ee4` and `data_02070eec` (the 0x40-byte overlay digest key, still in the gap). The code is the same, a pool word with a relocation. `fs_romfat_2.c` uses `&FSiArchiveRomFatInterface` instead of `0x02070f60`.
 - **Left in the gap.** `MATHi_SHA1PadLead`/`PadAlign`: `PadAlign` starts at `+1`, and an asm block cannot define a second global symbol (labels are local, there is no `entry`), while a separate block would be aligned to 4. `sVolumeTable`: `round(128 * 10^(dB/200) * 2^shift)` clamped to 127 gives 721 of the 724 entries. dB = -1, -61 and -121 are 126 in the ROM, so the formula is not exact and the table is skipped. `data_020751fc` (the `OS_GetBootType` table), the digest key, and the NNS G2D/GFD tables (`data_020755e4`..`020756e4`), whose object boundaries are unclear. Gap 60 (Mobiclip and game data) was not touched.
@@ -9396,3 +9416,87 @@ Readability only; every function stays byte-identical, and only symbol names cha
 - **Asset names:** `Ov015Fish_LoadModels`/`SetupModels`, `Ov015Hud_Setup`/`Update` and its OAM callbacks, `Ov015Result_StartCatchScene`/`StartEscapeScene` (the fish's jump and escape animations), the fish splash helpers (`Ov015FishState*_Step*`, `UpdateWake`), `ActorMarker_LoadIcons`, `Obj021efe4c_SetupBoxModels` (the tool box's lid animation), the slide loaders (`Ov002Stage_CreateSlide`/`SelectSlide`, `Ov002_MakeSlideName`/`MakeSlideFileName`, `Ov002StageFile_FindChunks`/`BuildScene`), `Ov002_MakeLangFileName`, `Ov008Caption_Update`, `Unk0214a418_LoadTitleWipe`, `Effect_SpawnRingBurst`, `EffectSetup_SetEmitterByName`.
 
 **Left unnamed:** the animation-name helpers inside actor states (the names give the animation, not the role), the `LangData` path builders (`func_0206dde4` and siblings), the remaining Param getters whose category is not certain, and the lang/font/name-table data ranges another round is extracting.
+
+## Round dxA (build-time data extraction): every initialized data gap matched from the user's ROM, data 1.29% -> 11.50%
+
+The project rule on game data changed (see "Game data" near the top of this file): data may be matched by extracting
+it from the user's own ROM at build time, and the bytes are never committed. This round adds the tooling and uses it
+on every initialized data gap. No code changed: every object that has code is byte-identical, and the ROM still
+matches module by module.
+
+**Mechanism.**
+- `tools/extract_data.py` builds a relocatable ELF object from a *data spec*. A spec is a committed text file,
+  `data/<module>/<name>.dspec`, named in the module's `delinks.txt` like a source file (`complete`, one line per
+  section range). The ranges come from that entry, the symbol names and addresses from `symbols.txt`, the pointers
+  from `relocs.txt`, and the bytes from `extract/<version>/` (`arm9/arm9.bin`, `itcm.bin`, `dtcm.bin`,
+  `arm9_overlays/ovNNN.bin`, at the `base_address` in their `.yaml`). The object has one section per range (main's
+  `.text` data as `AX` with a `$d` at every symbol, `.rodata` `A`, `.data` `WA`), one symbol per `symbols.txt`
+  entry (size up to the next symbol, `local`/`weak` kept), and one `R_ARM_ABS32` per relocation with the field
+  zeroed (RELA), against the destination's `symbols.txt` symbol. That is what `dsd delink` makes of the same range,
+  so objdiff compares the two symbol by symbol.
+- The spec gives each symbol a type, and the build checks the ROM bytes against it: `u8`..`s32`/`fx32` (no
+  relocation may fall inside), `ptr` (0 or relocated), `str` (no relocation, ends in a NUL), `raw`, C structs with
+  natural alignment, and arrays `T[N]`/`T[]`. A typed symbol may be followed by up to 3 zero bytes of padding.
+  Spec lines and `romdata_inc.txt` lines name the symbol by address (`0x02082bf8 ptr[3]  # data_02082bf8`), so a
+  rename round needs to touch neither; the name is a comment. (A first version keyed them by name, and round nmM's
+  renames, merged during this round, broke 16 lines.)
+  A wrong layout or a pointer without a relocation fails the build and prints the `relocs.txt` line that is
+  missing. `extract_data.py check --config config/usa/arm9 --extract extract/usa` runs the checks on every spec.
+- Objects inside a compiled TU: `config/usa/romdata_inc.txt` lists `MODULE 0xADDR TYPE`, `extract_data.py inc`
+  writes `build/gen/usa/romdata/MODULE/ADDR.inc` (a `{ 0x.., ... }` initializer), and the source defines the
+  object with `#include "romdata/MODULE/ADDR.inc"` as its initializer. The compiled object is the same as with
+  the literal.
+- `configure.py`: an `extract_data` edge per spec (inputs: the spec, `extract_data.py`, every dsd config file and
+  `extract/usa/config.yaml`, so it runs after the extract step), one `extract_data_inc` edge for the `.inc` files
+  (order-only before every compile, like `gen_tables`), `-i build/gen/usa`, and the spec objects in the report's
+  inputs. A plain clone with the user's ROM builds with `configure.py usa` and `ninja` as before.
+- `-dead` strips an object nothing references (round tables2). Every spec object here is referenced; a future one
+  that is not needs `-force_active` on one of its symbols in `ARM9_LD_FLAGS`.
+
+**What is now matched.** 118 specs, 124,944 bytes: main 12 (45,192 bytes, including all of `0x02082254..0x0208aa00`
+and all main `.data` gaps), dtcm 1, and every `.data`/`.rodata` gap of ov000, ov002-ov004 and ov006-ov015. Named
+in the task:
+- **The main Lang/font tables** (`data/main/main_rodata_02082254.dspec`, `0x02082254..0x0208aa00`, in `.text`):
+  `data_02082254`, the `0x020823d4..0x02082bf8` range and `data_02082bf8`, typed from the code that reads them
+  (`GfxFontEntry[9]`, `SceneEntry[2]`, `ShakeEntry[8]`, the Mobiclip ADPCM tables `s8[16]`/`s16[89]`, the edge
+  colour table, `VecFx32`, ...). `data_02082bf8` was one 0x7e08-byte symbol; it is now the 3-pointer Lang path table
+  (`ptr[3]`, as `LangData.h` declares it) followed by 68 new symbols at the addresses main's `.data` pointer tables
+  give: the 13 item tables of `data_0208d268`, the data and range arrays of the 8 `TblCat`s of `data_0208d6d0`, and
+  the shapes of `data_0208d730`. Their record layouts differ per category, so they stay `raw`.
+- **The name-table pools**: ov006 `0x021ec464` (`data/ov006/ov006_data_021ec464.dspec`, five strings), ov015's fish
+  data from `0x02212db8` (`data_ov015_02212db8`, two words, the second a pointer to the name pool at `0x02212dc0`;
+  then the strings and the fish state vtables), and ov003: the rest of the `ov003_021f7764.cpp` TU's name table
+  (`0x021f7a38..0x021f7cb0`), plus the TU's own ten names from `0x021f79d0`, which were string literals in the
+  source and are now ROM initializers.
+- **Everything else** dsd had left as gap data: the main `.text` pieces `0x02005030` (SDK version strings),
+  `0x02070eec` (the overlay digest key) and `0x02075654`, main's `.data` (SDK and MSL data, vtables, string pools,
+  the Lang pointer tables), and the overlay pools, vtables and tables. The generic specs say `default raw`, with
+  `str` for 1,228 symbols that are NUL-terminated text and `ptr`/`ptr[]` for 564 that are all pointers (vtables,
+  pointer tables); the build checks each.
+
+**Config changes** (additions only): `symbols.txt` gets 98 data symbols, all fresh names in the `data_*` style: 25 at
+gap starts that had none (dsd's gap objects did not need one), `data_0208be8c` (8 zero bytes before
+`MainVt_0208be94_vtbl`), `data_02082884`, `data_02082910`/`data_02082934` (the display lists that `data_0208b3d0`
+points to inside `data_02082900`), `data_0208d7ec` (`data_0208d730` holds 47 pointers, then 0x14 other bytes) and the
+68 `data_02082bf8` pieces. `relocs.txt` (main) gets 78 relocations dsd had missed, found by the `ptr` checks: the
+`SceneEntry` callbacks into ov000 (`Field_Create`/`Update`/`Draw`/`Destroy`), `data_0208b3d0` -> the display lists,
+and the item, `TblCat` and shape pointers into main's `.text`. `TblRange`/`TblCat` and `data_0208d6d0` moved from
+`TblEntry.cpp`/`TblRes.cpp` into `include/Main/Lang/TblRes.h`.
+
+**String literals in the source.** 105 more `char data_...[] = "..."` definitions in 18 files (ov000, ov003, ov009-ov014)
+held asset names copied from the ROM by earlier rounds. They are now ROM initializers too (`romdata_inc.txt`: 115 objects in 19 files with the ov003 names above); each
+literal was compared with the ROM in memory before it was replaced. About 240 anonymous literals (call arguments
+like model and texture paths, and pointer tables of literals) are still in the source; they need named objects
+first, which changes the code, so they are left for a later round.
+
+**Numbers.** `ninja report`: matched data 11,368 -> 101,408 bytes (1.29% -> 11.50% of 881,468; the rest is `.bss`,
+776,276 bytes, and the 24 zero bytes at the end of ov006 `.data`). Code 95.86% -> 97.49%, and matched entries
+8,115 of 8,216 -> 8,215 of 8,287: objdiff counts every symbol in main's `.text` as a function, so the 100 data
+symbols there (the 71 new ones included) count as functions and as code. The code functions are unchanged at 8,115.
+
+**Not done.** `.bss` gaps (no ROM bytes; they only need symbols and sizes, and the spec format accepts `.bss`
+ranges), the ov002 `.init`/`.ctor` of `__sinit_ov002_021ef1f0`, the anonymous literals above, and types for the
+`raw` symbols (the item tables, the Tbl data, most overlay tables).
+
+Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK; `check_drafts.py --score` and `honesty_scan.py` exit 0; a
+fresh copy of the tree (no `build/`, no `extract/usa/`) with the ROM builds with `configure.py usa` and `ninja`.

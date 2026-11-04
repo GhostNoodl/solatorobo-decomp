@@ -1,0 +1,18 @@
+# main .data 0x0208ae8c..0x0208af54: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x0208ae8c  ptr[]   # thandler
+0x0208ae94  ptr[]   # data_0208ae94
+0x0208ae9c  ptr[]   # data_0208ae9c
+0x0208aea8  ptr[]   # data_0208aea8
+0x0208aecc  ptr[]   # data_0208aecc
+0x0208aedc  ptr[]   # data_0208aedc
+0x0208aee4  str     # data_0208aee4
+0x0208af08  str     # data_0208af08
+0x0208af38  str     # data_0208af38
+0x0208af3c  str     # data_0208af3c
+0x0208af40  str     # data_0208af40
+0x0208af44  str     # data_0208af44
+0x0208af48  str     # data_0208af48
+0x0208af4c  str     # data_0208af4c

@@ -433,6 +433,7 @@ data_ov014_022173ce kind:data(any) addr:0x022173ce
 data_ov014_022173d9 kind:data(any) addr:0x022173d9
 data_ov014_022173e0 kind:data(any) addr:0x022173e0
 data_ov014_022173e8 kind:data(byte[0xc]) addr:0x022173e8 weak
+data_ov014_022173f4 kind:data(any) addr:0x022173f4
 Ov014Act_02201b94_vtbl kind:data(any) addr:0x02217430
 data_ov014_0221743c kind:data(any) addr:0x0221743c ambiguous
 Ov014Act_0220011c_vtbl kind:data(any) addr:0x022174dc

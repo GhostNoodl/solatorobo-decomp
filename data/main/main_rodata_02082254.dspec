@@ -1,0 +1,66 @@
+# main's read-only tables after the Mobiclip decoder (0x02082254..0x0208aa00, in .text).
+#
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py), never
+# from the repository. Each line gives a symbols.txt symbol its type; the build checks the ROM
+# bytes and relocations against it. The types are the ones the code that reads each table uses.
+
+struct GfxFontEntry {       # include/Main/Gfx/GfxMgr.h
+    s32 index;
+    s32 mode;
+    ptr name;
+}
+
+struct SceneEntry {         # include/Main/Sys/Scene.h (SceneEntry with its SceneDesc)
+    s32 valid;
+    s32 overlay;
+    ptr onEnter;
+    ptr update;
+    ptr draw;
+    ptr onExit;
+}
+
+struct ShakeEntry {         # include/Main/Sys/GameScene.h
+    s32 unk_0;
+    s32 value;
+}
+
+struct VecFx32 {
+    s32 x;
+    s32 y;
+    s32 z;
+}
+
+0x02082254  u8[]              # data_02082254: Mobiclip: copied to fast memory by MoMem (MO_CODE_1C)
+0x020823d4  u8[]              # data_020823d4: Mobiclip: MO_CODE_00
+0x020826d4  s8[16]            # data_020826d4: Mobiclip ADPCM index adjustment
+0x020826e4  s16[89]           # data_020826e4: Mobiclip ADPCM step sizes
+0x02082798  u8[0x60]          # data_02082798
+0x020827f8  GfxFontEntry[9]   # data_020827f8: GfxMgr font list
+0x02082864  u16[16]           # data_02082864
+0x02082884  s32[2]            # data_02082884: Gfx3D colour-mode formats
+0x0208288c  u8[]              # data_0208288c
+0x02082898  s32[12]           # data_02082898: int [][4] rows, written out as words
+0x020828c8  s32[12]           # data_020828c8
+0x020828f8  u32[2]            # data_020828f8: sizes of the two display lists below
+0x02082900  u16[8]            # data_02082900: edge colour table (G3X_SetEdgeColorTable)
+0x02082910  u32[9]            # data_02082910: display list 1 (data_0208b3d0[1])
+0x02082934  u32[9]            # data_02082934: display list 0 (data_0208b3d0[0])
+0x02082958  u16[32]           # data_02082958
+0x02082998  SceneEntry[2]     # data_02082998
+0x020829c8  u16[3]            # data_020829c8: SlideCol3
+0x020829d0  ShakeEntry[8]     # data_020829d0: ShakeTable
+0x02082a10  u32[6]            # data_02082a10: BoxFaceAttr
+0x02082a28  u32[20]           # data_02082a28
+0x02082a78  u32[36]           # data_02082a78: BoxFaceIdx
+0x02082b08  u32[36]           # data_02082b08: BoxFaceIdx
+0x02082b98  VecFx32           # data_02082b98
+0x02082ba4  u8[0x38]          # data_02082ba4
+0x02082bdc  u16[4]            # data_02082bdc
+0x02082be4  u32[5]            # data_02082be4: StageFlagsInit
+0x02082bf8  ptr[3]            # data_02082bf8: Lang path strings (LangData.h)
+
+# Everything after the path table (item tables, the Tbl category data and ranges, the
+# ParamKind shapes) keeps the default type: the record layouts differ per category and are not
+# all clear from the code yet. Each piece has its own symbol, at the address the .data pointer
+# tables (data_0208d268, data_0208d6d0, data_0208d730) give it.
+default raw

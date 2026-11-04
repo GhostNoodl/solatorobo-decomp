@@ -1,0 +1,17 @@
+# ov000 .data 0x021cbac0..0x021cc0d8: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021cbac8  ptr[]   # Ov000Vt_021cbac8_vtbl
+0x021cbae0  ptr[]   # Task021cbae0_vtbl
+0x021cbb60  ptr[]   # Task021cbb60_vtbl
+0x021cbbe0  ptr[]   # PauseMenu_vtbl
+0x021cbc60  ptr[]   # Task021cbc60_vtbl
+0x021cbce0  ptr[]   # Task021cbce0_vtbl
+0x021cbd60  ptr[]   # ObjectiveMenu_vtbl
+0x021cbde0  ptr[]   # HelpMenu_vtbl
+0x021cbe60  ptr[]   # SellMenu_vtbl
+0x021cbee0  ptr[]   # StoreMenu_vtbl
+0x021cbf60  ptr[]   # DiscardMenu_vtbl
+0x021cbfe0  ptr[]   # Task021cbfe0_vtbl
+0x021cc060  ptr[]   # Task_vtbl

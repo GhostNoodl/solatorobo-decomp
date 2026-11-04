@@ -4,22 +4,10 @@
 
 extern "C" {
 
-typedef struct TblRange {
-    /* 0x0 */ u16 start;
-    /* 0x2 */ u16 base;
-} TblRange;
-
-typedef struct TblCat {
-    /* 0x0 */ u8 *data;
-    /* 0x4 */ TblRange *ranges;
-    /* 0x8 */ u32 unk_8;
-} TblCat;
-
 typedef struct TblEntry {
     /* 0x00 */ u32 offsets[6];
 } TblEntry;
 
-extern TblCat data_0208d6d0[];
 extern TblEntry *data_0214b164[];
 extern const char *Path_SkipDir(const char *path);
 

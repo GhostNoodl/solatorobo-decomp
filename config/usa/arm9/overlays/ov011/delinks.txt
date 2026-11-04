@@ -140,3 +140,27 @@ src/ov011/ov011_022077c0.cpp:
     .init       start:0x022077c0 end:0x02207808
     .ctor       start:0x02207874 end:0x02207878
     .data       start:0x022078a0 end:0x022078c0
+
+data/ov011/ov011_rodata_02207284.dspec:
+    complete
+    .rodata     start:0x02207284 end:0x02207418
+
+data/ov011/ov011_rodata_02207444.dspec:
+    complete
+    .rodata     start:0x02207444 end:0x02207500
+
+data/ov011/ov011_rodata_02207508.dspec:
+    complete
+    .rodata     start:0x02207508 end:0x022077c0
+
+data/ov011/ov011_data_022078c0.dspec:
+    complete
+    .data       start:0x022078c0 end:0x02207994
+
+data/ov011/ov011_data_022079a8.dspec:
+    complete
+    .data       start:0x022079a8 end:0x02207be0
+
+data/ov011/ov011_data_02207bfc.dspec:
+    complete
+    .data       start:0x02207bfc end:0x02207f00

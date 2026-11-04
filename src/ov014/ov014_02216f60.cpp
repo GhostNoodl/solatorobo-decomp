@@ -16,7 +16,9 @@ static const VecFx16 data_ov014_02216434 = {0, 0, 0};
 const fx16 data_ov014_0221643a[4] = {0x1800, 0x1800, 0x1800, 0x159a};
 const VecFx32 data_ov014_02216444 = {0, 0x4333, 0};
 const VecFx32 data_ov014_02216450 = {0, 0, 0};
-char data_ov014_022170c0[] = "nut00";
+char data_ov014_022170c0[] =
+#include "romdata/ov014/022170c0.inc"
+;
 static const VecFx16 data_ov014_022170c6 = data_ov014_02216434;
 static const VecFx32 data_ov014_022170cc = data_ov014_02216450;
 

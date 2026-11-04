@@ -2934,3 +2934,59 @@ src/ov000/ov000_021ca70c.cpp:
     .init       start:0x021ca70c end:0x021ca77c
     .ctor       start:0x021ca858 end:0x021ca85c
     .data       start:0x021cc0d8 end:0x021cc398
+
+data/ov000/ov000_rodata_021c9848.dspec:
+    complete
+    .rodata     start:0x021c9848 end:0x021c9bf4
+
+data/ov000/ov000_rodata_021c9c28.dspec:
+    complete
+    .rodata     start:0x021c9c28 end:0x021c9d44
+
+data/ov000/ov000_rodata_021c9d4c.dspec:
+    complete
+    .rodata     start:0x021c9d4c end:0x021c9d88
+
+data/ov000/ov000_rodata_021c9d9c.dspec:
+    complete
+    .rodata     start:0x021c9d9c end:0x021c9fbc
+
+data/ov000/ov000_rodata_021c9fd0.dspec:
+    complete
+    .rodata     start:0x021c9fd0 end:0x021c9fe8
+
+data/ov000/ov000_rodata_021c9ff8.dspec:
+    complete
+    .rodata     start:0x021c9ff8 end:0x021ca61c
+
+data/ov000/ov000_data_021ca8cc.dspec:
+    complete
+    .data       start:0x021ca8cc end:0x021cb9d8
+
+data/ov000/ov000_data_021cba0c.dspec:
+    complete
+    .data       start:0x021cba0c end:0x021cba18
+
+data/ov000/ov000_data_021cbac0.dspec:
+    complete
+    .data       start:0x021cbac0 end:0x021cc0d8
+
+data/ov000/ov000_data_021cc398.dspec:
+    complete
+    .data       start:0x021cc398 end:0x021cc440
+
+data/ov000/ov000_data_021cc454.dspec:
+    complete
+    .data       start:0x021cc454 end:0x021cc510
+
+data/ov000/ov000_data_021cc524.dspec:
+    complete
+    .data       start:0x021cc524 end:0x021cc994
+
+data/ov000/ov000_data_021cc998.dspec:
+    complete
+    .data       start:0x021cc998 end:0x021ccc64
+
+data/ov000/ov000_data_021ccc68.dspec:
+    complete
+    .data       start:0x021ccc68 end:0x021ccd20

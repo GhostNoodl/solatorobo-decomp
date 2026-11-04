@@ -1,0 +1,13 @@
+# ov000 .data 0x021cc398..0x021cc440: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021cc3a0  ptr[]   # FieldCam_vtbl
+0x021cc3b4  ptr[]   # Actor_vtbl
+0x021cc404  str     # data_ov000_021cc404
+0x021cc40c  str     # data_ov000_021cc40c
+0x021cc413  str     # data_ov000_021cc413
+0x021cc41d  str     # data_ov000_021cc41d
+0x021cc424  str     # data_ov000_021cc424
+0x021cc42b  str     # data_ov000_021cc42b
+0x021cc438  ptr[]   # Ov000Vt_021cc438_vtbl

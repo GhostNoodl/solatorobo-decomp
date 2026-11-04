@@ -28,8 +28,12 @@ static const VecFx16 data_ov010_0220ef78 = {0, 0, 0};
 const VecFx32 data_ov010_0220ef80 = {0, FX32_ONE, 0};
 const VecFx32 data_ov010_0220ef8c = {0, 0, 0};
 const VecFx16 data_ov010_0220fd70 = data_ov010_0220ef78;
-char data_ov010_0220fd76[] = "ef3di1cas10";
-char data_ov010_0220fd82[] = "ef3di1cas11";
+char data_ov010_0220fd76[] =
+#include "romdata/ov010/0220fd76.inc"
+;
+char data_ov010_0220fd82[] =
+#include "romdata/ov010/0220fd82.inc"
+;
 static const VecFx32 data_ov010_0220fd90 = data_ov010_0220ef8c;
 
 // ---- merged from ov010_021fff80.cpp

@@ -25,7 +25,9 @@ extern const VecFx32 data_ov010_0220f594;
 extern char data_ov010_02210204[];
 extern char data_ov010_02210210[];
 extern char data_ov010_02210228[];
-char data_ov010_02210210[] = "ef3di1zai03";
+char data_ov010_02210210[] =
+#include "romdata/ov010/02210210.inc"
+;
 static const char *const data_ov010_0220f538 = data_ov010_02210228;
 static const char *const data_ov010_0220f53c = data_ov010_02210210;
 const VecFx32 data_ov010_0220f57c = {0x2800, 0x2800, 0x2800};
@@ -37,7 +39,9 @@ const Ov010Blk12 data_ov010_0220f588 = {FX32_ONE, FX32_ONE, FX32_ONE};
 const VecFx32 data_ov010_0220f54c = {0, 0, FX32_ONE};
 const Ov010Blk12 data_ov010_0220f564 = {0, 0x4000, -0x3000};
 static const Ov010Ang3 data_ov010_0220f544 = {0, 0, 0};
-char data_ov010_02210204[] = "nut00";
+char data_ov010_02210204[] =
+#include "romdata/ov010/02210204.inc"
+;
 static const Ov010Ang3 data_ov010_0221020a = data_ov010_0220f544;
 const VecFx32 data_ov010_0220f594 = {0, 0, 0};
 static const VecFx32 data_ov010_0221021c = data_ov010_0220f594;

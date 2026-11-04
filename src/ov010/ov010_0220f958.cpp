@@ -69,26 +69,40 @@ extern const fx32 data_ov010_0220ff70[5];
 static inline fx32 K(fx32 v) { return v; }
 
 const Ov010Rot data_ov010_0220f062 = {0x0, 0x7fff, 0x0};
-char data_ov010_0220ff24[] = "nut02";
+char data_ov010_0220ff24[] =
+#include "romdata/ov010/0220ff24.inc"
+;
 const u16 data_ov010_0220f0a0[4] = {0x1800, 0x1800, 0x1800, 0x1733};
-char data_ov010_0220ff60[] = "ef/effect3dzai";
+char data_ov010_0220ff60[] =
+#include "romdata/ov010/0220ff60.inc"
+;
 const char *const data_ov010_0220f058 = data_ov010_0220ff00;
 const Ov010Rot data_ov010_0220f05c = {0, 0, 0};
 const Ov010Rot data_ov010_0220f07a = {0x0, 0x7fff, 0x0};
 const Ov010Rot data_ov010_0220ff3c = data_ov010_0220f05c;
 const Ov010Rot data_ov010_0220f092 = {0x0, 0xff, 0x0};
-char data_ov010_0220ff54[] = "ef3di1zai00";
+char data_ov010_0220ff54[] =
+#include "romdata/ov010/0220ff54.inc"
+;
 const Ov010Rot data_ov010_0220f086 = {0x10ce, 0x6c1c, 0x0};
-char data_ov010_0220ff36[] = "dmg13";
+char data_ov010_0220ff36[] =
+#include "romdata/ov010/0220ff36.inc"
+;
 const Ov010Rot data_ov010_0220f08c = {0xd73, 0x801c, 0x0};
 __declspec(weak) const VecFx32 data_ov010_0220f0a8 = {0, 0, 0};
 const u8 data_ov010_0220f098[8] = {0, 1, 2, 2, 2, 2, 2, 0};
-char data_ov010_0220ff06[] = "att00";
+char data_ov010_0220ff06[] =
+#include "romdata/ov010/0220ff06.inc"
+;
 const char *const data_ov010_0220f040 = data_ov010_0220ff12;
-char data_ov010_0220ff1e[] = "nut01";
+char data_ov010_0220ff1e[] =
+#include "romdata/ov010/0220ff1e.inc"
+;
 const Ov010Rot data_ov010_0220f074 = {0x0, 0x0, 0x0};
 __declspec(weak) const VecFx32 data_ov010_0220ff48 = data_ov010_0220f0a8;
-char data_ov010_0220ff12[] = "att10";
+char data_ov010_0220ff12[] =
+#include "romdata/ov010/0220ff12.inc"
+;
 const char *const data_ov010_0220f02c = data_ov010_0220ff06;
 const char *const data_ov010_0220f034 = data_ov010_0220ff42;
 const char *const data_ov010_0220fefc = data_ov010_0220f058;
@@ -96,16 +110,28 @@ const char *const data_ov010_0220f050 = data_ov010_0220ff1e;
 const char *const data_ov010_0220f038 = data_ov010_0220ff36;
 const fx32 data_ov010_0220ff70[5] = {-0x3302, -0x82b0, 0x33d7, -0x1d37, K(-0xdb33)};
 const char *const data_ov010_0220f028 = data_ov010_0220ff30;
-char data_ov010_0220ff42[] = "att02";
+char data_ov010_0220ff42[] =
+#include "romdata/ov010/0220ff42.inc"
+;
 const char *const data_ov010_0220f03c = data_ov010_0220ff18;
 const char *const data_ov010_0220f04c = data_ov010_0220ff54;
-char data_ov010_0220ff0c[] = "att01";
+char data_ov010_0220ff0c[] =
+#include "romdata/ov010/0220ff0c.inc"
+;
 const s32 data_ov010_0220f024 = 0xff00;
-char data_ov010_0220ff18[] = "gun00";
+char data_ov010_0220ff18[] =
+#include "romdata/ov010/0220ff18.inc"
+;
 const char *const data_ov010_0220f030 = data_ov010_0220ff0c;
-char data_ov010_0220ff2a[] = "nut03";
-char data_ov010_0220ff30[] = "dwn00";
-char data_ov010_0220ff00[] = "run00";
+char data_ov010_0220ff2a[] =
+#include "romdata/ov010/0220ff2a.inc"
+;
+char data_ov010_0220ff30[] =
+#include "romdata/ov010/0220ff30.inc"
+;
+char data_ov010_0220ff00[] =
+#include "romdata/ov010/0220ff00.inc"
+;
 const char *const data_ov010_0220f044 = data_ov010_0220ff2a;
 const Ov010Rot data_ov010_0220f068 = {0x10e8, 0xd87e, 0x0};
 const Ov010Rot data_ov010_0220f080 = {0x0, 0x7fff, 0x0};

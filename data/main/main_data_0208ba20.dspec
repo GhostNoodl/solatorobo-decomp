@@ -1,0 +1,9 @@
+# main .data 0x0208ba20..0x0208bc80: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x0208ba20  str     # data_0208ba20
+0x0208ba30  ptr[]   # MainVt_0208ba30_vtbl
+0x0208ba70  ptr[]   # TextWin_vtbl
+0x0208bb1c  ptr[]   # TextWinEx_vtbl
+0x0208bbc8  ptr[]   # MainVt_0208bbc8_vtbl

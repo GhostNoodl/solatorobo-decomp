@@ -1,0 +1,31 @@
+# ov015 .data 0x02212db8..0x02212f84: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212db8  ptr[]   # data_ov015_02212db8
+0x02212dc0  str     # data_ov015_02212dc0
+0x02212dc6  str     # data_ov015_02212dc6
+0x02212dce  str     # data_ov015_02212dce
+0x02212dd9  str     # data_ov015_02212dd9
+0x02212def  str     # data_ov015_02212def
+0x02212df5  str     # data_ov015_02212df5
+0x02212e0d  str     # data_ov015_02212e0d
+0x02212e15  str     # data_ov015_02212e15
+0x02212e20  str     # data_ov015_02212e20
+0x02212e34  str     # data_ov015_02212e34
+0x02212e40  str     # data_ov015_02212e40
+0x02212e47  str     # data_ov015_02212e47
+0x02212e4e  str     # data_ov015_02212e4e
+0x02212e55  str     # data_ov015_02212e55
+0x02212e61  str     # data_ov015_02212e61
+0x02212e68  str     # data_ov015_02212e68
+0x02212e74  str     # data_ov015_02212e74
+0x02212e84  ptr[]   # Ov015FishInfo_vtbl
+0x02212e94  ptr[]   # Ov015FishState2c_vtbl
+0x02212eb0  ptr[]   # Ov015FishState_vtbl
+0x02212ecc  ptr[]   # Ov015FishState08_vtbl
+0x02212ee8  ptr[]   # Ov015FishState40_vtbl
+0x02212f04  ptr[]   # Ov015FishState1c_vtbl
+0x02212f20  ptr[]   # Ov015FishState18_vtbl
+0x02212f3c  ptr[]   # Ov015StageMdl_vtbl
+0x02212f64  ptr[]   # Ov015Vt_02212f64_vtbl

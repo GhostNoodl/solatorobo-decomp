@@ -119,3 +119,27 @@ src/ov013/ov013_0220b544.cpp:
     .init       start:0x0220b544 end:0x0220b58c
     .ctor       start:0x0220b594 end:0x0220b598
     .data       start:0x0220ba44 end:0x0220ba58
+
+data/ov013/ov013_rodata_0220ae48.dspec:
+    complete
+    .rodata     start:0x0220ae48 end:0x0220aedc
+
+data/ov013/ov013_rodata_0220afd0.dspec:
+    complete
+    .rodata     start:0x0220afd0 end:0x0220b290
+
+data/ov013/ov013_rodata_0220b2cc.dspec:
+    complete
+    .rodata     start:0x0220b2cc end:0x0220b410
+
+data/ov013/ov013_data_0220b5b8.dspec:
+    complete
+    .data       start:0x0220b5b8 end:0x0220b89c
+
+data/ov013/ov013_data_0220b998.dspec:
+    complete
+    .data       start:0x0220b998 end:0x0220ba44
+
+data/ov013/ov013_data_0220ba58.dspec:
+    complete
+    .data       start:0x0220ba58 end:0x0220c000

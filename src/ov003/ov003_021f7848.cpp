@@ -109,13 +109,21 @@ const char *const data_ov003_021f6a80 = data_ov003_021f90f8;
 static const char *const data_ov003_021f6a84 = data_ov003_021f90e6;
 const u16 data_ov003_021f6a96[4] = {0x5b, 0xb6, 0x16c, 0x2d8};
 const Ov003Blk12 data_ov003_021f6ab4 = {0xe66, 0xe66, 0xe66};
-char data_ov003_021f90f8[] = "act00";
+char data_ov003_021f90f8[] =
+#include "romdata/ov003/021f90f8.inc"
+;
 const VecFx32 data_ov003_021f6acc = {0, FX32_ONE, 0};
-char data_ov003_021f90e6[] = "run00";
-char data_ov003_021f90ec[] = "att00";
+char data_ov003_021f90e6[] =
+#include "romdata/ov003/021f90e6.inc"
+;
+char data_ov003_021f90ec[] =
+#include "romdata/ov003/021f90ec.inc"
+;
 const Ov003Blk12 data_ov003_021f6aa8 = {0x2000, 0x1000, 0x2000};
 const Ov003Blk12 data_ov003_021f6ac0 = {0x8cd, 0x8cd, 0x8cd};
-char data_ov003_021f90e0[] = "nut00";
+char data_ov003_021f90e0[] =
+#include "romdata/ov003/021f90e0.inc"
+;
 static const VecFx32 data_ov003_021f6ae4 = {0, 0, 0};
 static const Rot16 data_ov003_021f6a90 = {0, 0, 0};
 static const Rot16 data_ov003_021f90f2 = data_ov003_021f6a90;

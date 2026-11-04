@@ -1,0 +1,43 @@
+# ov015 .data 0x02212f88..0x022131f4: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212f88  str     # data_ov015_02212f88
+0x02212f8f  str     # data_ov015_02212f8f
+0x02212f96  str     # data_ov015_02212f96
+0x02212fa0  str     # data_ov015_02212fa0
+0x02212faa  str     # data_ov015_02212faa
+0x02212fb8  ptr[]   # data_ov015_02212fb8
+0x02212fc4  str     # data_ov015_02212fc4
+0x02212fd0  str     # data_ov015_02212fd0
+0x02212fdc  ptr[]   # data_ov015_02212fdc
+0x02212fe8  str     # data_ov015_02212fe8
+0x02212ff5  str     # data_ov015_02212ff5
+0x02213002  str     # data_ov015_02213002
+0x0221300f  str     # data_ov015_0221300f
+0x0221301c  str     # data_ov015_0221301c
+0x02213029  str     # data_ov015_02213029
+0x02213038  ptr[]   # data_ov015_02213038
+0x02213048  ptr[]   # data_ov015_02213048
+0x02213058  str     # data_ov015_02213058
+0x0221306e  str     # data_ov015_0221306e
+0x02213088  ptr[]   # data_ov015_02213088
+0x022130a0  str     # data_ov015_022130a0
+0x022130b8  str     # data_ov015_022130b8
+0x022130d0  ptr[]   # data_ov015_022130d0
+0x022130e8  str     # data_ov015_022130e8
+0x02213100  str     # data_ov015_02213100
+0x02213111  str     # data_ov015_02213111
+0x0221311c  str     # data_ov015_0221311c
+0x02213123  str     # data_ov015_02213123
+0x0221312a  str     # data_ov015_0221312a
+0x02213131  str     # data_ov015_02213131
+0x02213147  str     # data_ov015_02213147
+0x0221314d  str     # data_ov015_0221314d
+0x02213158  str     # data_ov015_02213158
+0x02213163  str     # data_ov015_02213163
+0x02213170  str     # data_ov015_02213170
+0x02213188  ptr[]   # Ov015ResultPanel_vtbl
+0x02213198  ptr[]   # Ov015MsgMgr_vtbl
+0x022131ac  ptr[]   # Ov015Vt_022131ac_vtbl
+0x022131c4  ptr[]   # Ov015Msg_vtbl

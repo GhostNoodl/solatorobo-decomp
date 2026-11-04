@@ -93,20 +93,44 @@ const VecFx32 data_ov014_0221660c = {0x0, -0x1000, 0x0};
 const VecFx32 data_ov014_02216618 = {0x0, 0x0, -0x1800};
 const VecFx32 data_ov014_02216624 = {0x0, 0x0, 0x1800};
 const VecFx32 data_ov014_02216630 = {0x0, 0x0, 0x0};
-char data_ov014_02217354[6] = "run00";
+char data_ov014_02217354[6] =
+#include "romdata/ov014/02217354.inc"
+;
 static const Rot16 data_ov014_0221735a = data_ov014_02216516;
-char data_ov014_02217360[] = "att00";
-char data_ov014_02217366[] = "nut00";
-char data_ov014_0221736c[] = "att01";
-char data_ov014_02217372[] = "ef3di1lcr11";
-char data_ov014_0221737e[] = "ef3di1lcr10";
+char data_ov014_02217360[] =
+#include "romdata/ov014/02217360.inc"
+;
+char data_ov014_02217366[] =
+#include "romdata/ov014/02217366.inc"
+;
+char data_ov014_0221736c[] =
+#include "romdata/ov014/0221736c.inc"
+;
+char data_ov014_02217372[] =
+#include "romdata/ov014/02217372.inc"
+;
+char data_ov014_0221737e[] =
+#include "romdata/ov014/0221737e.inc"
+;
 __declspec(weak) const VecFx32 data_ov014_0221738c = data_ov014_02216630;
-char data_ov014_02217398[] = "ef/effect3dlcr";
-char data_ov014_022173a7[] = "ef3di1lcr12.cceff";
-char data_ov014_022173b9[] = "ef/effect3dlcr";
-char data_ov014_022173c8[] = "nut01";
-char data_ov014_022173ce[] = "blt/b1sha1";
-char data_ov014_022173d9[] = "b1sha1";
+char data_ov014_02217398[] =
+#include "romdata/ov014/02217398.inc"
+;
+char data_ov014_022173a7[] =
+#include "romdata/ov014/022173a7.inc"
+;
+char data_ov014_022173b9[] =
+#include "romdata/ov014/022173b9.inc"
+;
+char data_ov014_022173c8[] =
+#include "romdata/ov014/022173c8.inc"
+;
+char data_ov014_022173ce[] =
+#include "romdata/ov014/022173ce.inc"
+;
+char data_ov014_022173d9[] =
+#include "romdata/ov014/022173d9.inc"
+;
 Ov014Res data_ov014_022173e0 = {data_ov014_02217398, 0x37};
 __declspec(weak) const VecFx32 data_ov014_022173e8 = data_ov014_02216564;
 

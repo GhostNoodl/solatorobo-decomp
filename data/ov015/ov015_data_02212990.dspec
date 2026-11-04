@@ -1,0 +1,15 @@
+# ov015 .data 0x02212990..0x02212c80: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212990  str     # data_ov015_02212990
+0x0221299d  str     # data_ov015_0221299d
+0x022129ac  str     # data_ov015_022129ac
+0x022129c0  ptr[]   # Ov015MsgBox_vtbl
+0x022129d0  ptr[]   # Ov015Shadow_vtbl
+0x022129e0  ptr[]   # Ov015SceneSeq_vtbl
+0x02212a08  ptr[]   # Ov015FishingMenu_vtbl
+0x02212a88  ptr[]   # Ov015Scene2a88_vtbl
+0x02212b08  ptr[]   # Ov015PointShop_vtbl
+0x02212b88  ptr[]   # Ov015SpotSelect_vtbl
+0x02212c08  ptr[]   # Ov015HarpoonSelect_vtbl

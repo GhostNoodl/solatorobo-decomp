@@ -1,0 +1,19 @@
+# ov008 .data 0x021d0360..0x021d0500: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021d0368  ptr[]   # Ov008Menu_vtbl
+0x021d0458  str     # data_ov008_021d0458
+0x021d0462  str     # data_ov008_021d0462
+0x021d0470  str     # data_ov008_021d0470
+0x021d047c  str     # data_ov008_021d047c
+0x021d0487  str     # data_ov008_021d0487
+0x021d049b  str     # data_ov008_021d049b
+0x021d04a7  str     # data_ov008_021d04a7
+0x021d04b3  str     # data_ov008_021d04b3
+0x021d04c5  str     # data_ov008_021d04c5
+0x021d04d1  str     # data_ov008_021d04d1
+0x021d04d9  str     # data_ov008_021d04d9
+0x021d04e1  str     # data_ov008_021d04e1
+0x021d04f0  str     # data_ov008_021d04f0
+0x021d04f4  str     # data_ov008_021d04f4

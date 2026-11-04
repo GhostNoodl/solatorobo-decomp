@@ -40,45 +40,79 @@ extern char data_ov009_02216b4f[];
 static const char *const data_ov009_02215d44 = data_ov009_02216b17;
 static const char *const data_ov009_02215d40 = data_ov009_02216b1e;
 static const char *const data_ov009_02215d10 = data_ov009_02216b25;
-char data_ov009_02216afe[] = "dmg12";
+char data_ov009_02216afe[] =
+#include "romdata/ov009/02216afe.inc"
+;
 const char *const data_ov009_02215d0c = data_ov009_02216ae0;
 static const char *const data_ov009_02215d38 = data_ov009_02216b39;
-char data_ov009_02216b2f[] = "en/e1hun1";
+char data_ov009_02216b2f[] =
+#include "romdata/ov009/02216b2f.inc"
+;
 static const char *const data_ov009_02215d48 = data_ov009_02216b2f;
 static const char *const data_ov009_02215d18 = data_ov009_02216aec;
 const s32 data_ov009_02215d54[2] = {0xe02, 0xf02};
-char data_ov009_02216b4f[] = "ef3di1hdi10";
+char data_ov009_02216b4f[] =
+#include "romdata/ov009/02216b4f.inc"
+;
 const s16 data_ov009_02215d64[4] = {0x1000, 0x1000, 0x2000, 0x1000};
-char data_ov009_02216b0a[] = "run00";
+char data_ov009_02216b0a[] =
+#include "romdata/ov009/02216b0a.inc"
+;
 static const char *const data_ov009_02215d34 = data_ov009_02216af2;
-char data_ov009_02216ada[] = "nut10";
+char data_ov009_02216ada[] =
+#include "romdata/ov009/02216ada.inc"
+;
 static const char *const data_ov009_02215d28 = data_ov009_02216ada;
-char data_ov009_02216b43[] = "ef3di1hdi11";
-char data_ov009_02216b17[] = "e1hun1";
+char data_ov009_02216b43[] =
+#include "romdata/ov009/02216b43.inc"
+;
+char data_ov009_02216b17[] =
+#include "romdata/ov009/02216b17.inc"
+;
 const Ov009Blk12 data_ov009_02215d6c = {0x02520000, 0, 0xffff};
-char data_ov009_02216ae6[] = "att01";
-char data_ov009_02216af2[] = "dmg00";
+char data_ov009_02216ae6[] =
+#include "romdata/ov009/02216ae6.inc"
+;
+char data_ov009_02216af2[] =
+#include "romdata/ov009/02216af2.inc"
+;
 static const char *const data_ov009_02215d1c = data_ov009_02216ae6;
 const VecFx32 data_ov009_02215d84 = {0, 0x2f33, 0x2733};
-char data_ov009_02216b1e[] = "e1top1";
+char data_ov009_02216b1e[] =
+#include "romdata/ov009/02216b1e.inc"
+;
 static const VecFx32 data_ov009_02215d90 = {0, 0, 0};
-char data_ov009_02216b39[] = "en/e1top1";
+char data_ov009_02216b39[] =
+#include "romdata/ov009/02216b39.inc"
+;
 const s32 data_ov009_02215d5c[2] = {0xd02, 0x1002};
 static const VecFx16 data_ov009_02215d4c = {0, 0, 0};
-char data_ov009_02216ad4[] = "nut00";
-char data_ov009_02216b10[] = "e1hdi2";
-char data_ov009_02216b25[] = "en/e1hdi2";
+char data_ov009_02216ad4[] =
+#include "romdata/ov009/02216ad4.inc"
+;
+char data_ov009_02216b10[] =
+#include "romdata/ov009/02216b10.inc"
+;
+char data_ov009_02216b25[] =
+#include "romdata/ov009/02216b25.inc"
+;
 static const char *const data_ov009_02215d30 = data_ov009_02216ad4;
 static const VecFx16 data_ov009_02216af8 = data_ov009_02215d4c;
 static const char *const data_ov009_02215d3c = data_ov009_02216b04;
 static const char *const data_ov009_02215d20 = data_ov009_02216afe;
 static const char *const data_ov009_02215d2c = data_ov009_02216b0a;
-char data_ov009_02216ae0[] = "att00";
-char data_ov009_02216aec[] = "att10";
+char data_ov009_02216ae0[] =
+#include "romdata/ov009/02216ae0.inc"
+;
+char data_ov009_02216aec[] =
+#include "romdata/ov009/02216aec.inc"
+;
 static const char *const data_ov009_02215d14 = data_ov009_02216b10;
 static const char *const data_ov009_02215d24 = data_ov009_02216ad4;
 const VecFx32 data_ov009_02215d78 = {0, 0x3800, 0};
-char data_ov009_02216b04[] = "nut01";
+char data_ov009_02216b04[] =
+#include "romdata/ov009/02216b04.inc"
+;
 static const VecFx32 data_ov009_02216b5c = data_ov009_02215d90;
 
 // ---- merged from ov009_021ff730.cpp

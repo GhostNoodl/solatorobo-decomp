@@ -207,6 +207,7 @@ data_ov012_0220a59a kind:data(any) addr:0x0220a59a
 data_ov012_0220a5a2 kind:data(any) addr:0x0220a5a2
 data_ov012_0220a5ac kind:data(any) addr:0x0220a5ac
 data_ov012_0220a5d0 kind:data(byte[0xc]) addr:0x0220a5d0 weak
+data_ov012_0220a5dc kind:data(any) addr:0x0220a5dc
 data_ov012_0220a5e8 kind:data(any) addr:0x0220a5e8
 data_ov012_0220a5f4 kind:data(any) addr:0x0220a5f4
 data_ov012_0220a600 kind:data(any) addr:0x0220a600
@@ -267,6 +268,7 @@ data_ov012_0220ad40 kind:data(byte[0x1b0]) addr:0x0220ad40
 data_ov012_0220aef0 kind:data(any) addr:0x0220aef0 local
 data_ov012_0220aef6 kind:data(any) addr:0x0220aef6
 data_ov012_0220aefc kind:data(byte[0xc]) addr:0x0220aefc local
+data_ov012_0220af08 kind:data(any) addr:0x0220af08
 Ov012ActExVt_0220af10_vtbl kind:data(any) addr:0x0220af10 ambiguous
 data_ov012_0220afa0 kind:data(any) addr:0x0220afa0
 data_ov012_0220afa6 kind:data(any) addr:0x0220afa6

@@ -308,3 +308,43 @@ src/ov009/ov009_02216240.cpp:
     .init       start:0x02216240 end:0x02216288
     .ctor       start:0x0221631c end:0x02216320
     .data       start:0x02217278 end:0x0221729c
+
+data/ov009/ov009_rodata_02215cc4.dspec:
+    complete
+    .rodata     start:0x02215cc4 end:0x02215d0c
+
+data/ov009/ov009_rodata_02215d9c.dspec:
+    complete
+    .rodata     start:0x02215d9c end:0x02215ee4
+
+data/ov009/ov009_rodata_02215f2c.dspec:
+    complete
+    .rodata     start:0x02215f2c end:0x02216004
+
+data/ov009/ov009_rodata_02216040.dspec:
+    complete
+    .rodata     start:0x02216040 end:0x022161c8
+
+data/ov009/ov009_rodata_022161ec.dspec:
+    complete
+    .rodata     start:0x022161ec end:0x022161f8
+
+data/ov009/ov009_data_02216340.dspec:
+    complete
+    .data       start:0x02216340 end:0x02216ad4
+
+data/ov009/ov009_data_02216b68.dspec:
+    complete
+    .data       start:0x02216b68 end:0x02217278
+
+data/ov009/ov009_data_0221729c.dspec:
+    complete
+    .data       start:0x0221729c end:0x02217994
+
+data/ov009/ov009_data_022179a8.dspec:
+    complete
+    .data       start:0x022179a8 end:0x02218004
+
+data/ov009/ov009_data_0221801c.dspec:
+    complete
+    .data       start:0x0221801c end:0x022183c0

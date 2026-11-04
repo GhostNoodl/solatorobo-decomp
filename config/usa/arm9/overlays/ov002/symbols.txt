@@ -630,6 +630,7 @@ Ov002Vt_021f0e4c_DtorDelete kind:function(arm,size=0x4c) addr:0x021eee4c
 Ov002Vt_021f0e4c_Dtor kind:function(arm,size=0x44) addr:0x021eee98
 Ov002Vt_021f0ef4_Dtor kind:function(arm,size=0x28) addr:0x021eeedc
 Ov002Vt_021f0f2c_Dtor kind:function(arm,size=0x44) addr:0x021eef04
+data_ov002_021eef48 kind:data(any) addr:0x021eef48
 data_ov002_021eef4c kind:data(any) addr:0x021eef4c
 data_ov002_021eef54 kind:data(any) addr:0x021eef54
 data_ov002_021eef74 kind:data(any) addr:0x021eef74

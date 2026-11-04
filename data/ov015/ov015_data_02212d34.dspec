@@ -1,0 +1,5 @@
+# ov015 .data 0x02212d34..0x02212db0: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212d3c  ptr[]   # Ov015Vt_02212d3c_vtbl

@@ -14,7 +14,9 @@ const VecFx32 data_ov012_0220a51c = {0, 0, 4 * FX32_ONE};
 const VecFx32 data_ov012_0220a528 = {0, -2 * FX32_ONE, 4 * FX32_ONE};
 static const VecFx32 data_ov012_0220a534 = {0, 0, 0};
 static const VecFx16 data_ov012_0220aef0 = data_ov012_0220a514;
-char data_ov012_0220aef6[] = "nut00";
+char data_ov012_0220aef6[] =
+#include "romdata/ov012/0220aef6.inc"
+;
 static const VecFx32 data_ov012_0220aefc = data_ov012_0220a534;
 
 // ---- merged from ov012_02201c70.cpp

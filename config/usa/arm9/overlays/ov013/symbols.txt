@@ -302,6 +302,7 @@ data_ov013_0220b8e4 kind:data(any) addr:0x0220b8e4
 data_ov013_0220b8f0 kind:data(any) addr:0x0220b8f0
 data_ov013_0220b900 kind:data(any) addr:0x0220b900
 data_ov013_0220b930 kind:data(byte[0x68]) addr:0x0220b930
+data_ov013_0220b998 kind:data(any) addr:0x0220b998
 Ov013Act_021fea8c_vtbl kind:data(any) addr:0x0220b9a0
 data_ov013_0220ba44 kind:data(any) addr:0x0220ba44 local
 data_ov013_0220ba4c kind:data(byte[0xc]) addr:0x0220ba4c local

@@ -33,8 +33,12 @@ const char *const data_ov000_021c9bf8 = data_ov000_021cb9f8;
 const Ov000Rot data_ov000_021cb9e0 = data_ov000_021c9c00;
 const VecFx32 data_ov000_021c9c10 = {0x60000, 0x60000, FX32_ONE};
 const fx32 data_ov000_021c9bf4 = FX32_ONE;
-char data_ov000_021cb9f8[8] = "photo00";
+char data_ov000_021cb9f8[8] =
+#include "romdata/ov000/021cb9f8.inc"
+;
 const char *const data_ov000_021cb9dc = data_ov000_021c9bfc;
-char data_ov000_021cb9e6[8] = "photo01";
+char data_ov000_021cb9e6[8] =
+#include "romdata/ov000/021cb9e6.inc"
+;
 const char *const data_ov000_021cb9f0[2] = {data_ov000_021c9bf8, data_ov000_021c9bfc};
 }

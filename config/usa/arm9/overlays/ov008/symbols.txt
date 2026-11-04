@@ -46,6 +46,7 @@ data_ov008_021d02d0 kind:data(any) addr:0x021d02d0
 data_ov008_021d02dc kind:data(any) addr:0x021d02dc
 data_ov008_021d02e8 kind:data(any) addr:0x021d02e8
 data_ov008_021d02fc kind:data(any) addr:0x021d02fc
+data_ov008_021d0360 kind:data(any) addr:0x021d0360
 Ov008Menu_vtbl kind:data(any) addr:0x021d0368
 data_ov008_021d0458 kind:data(any) addr:0x021d0458
 data_ov008_021d0462 kind:data(any) addr:0x021d0462

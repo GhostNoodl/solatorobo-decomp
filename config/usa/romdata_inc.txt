@@ -1,0 +1,160 @@
+# Objects inside compiled translation units whose initializers come from the user's ROM.
+# tools/extract_data.py writes build/gen/<version>/romdata/MODULE/ADDR.inc for each line, and the
+# source defines the object with `#include "romdata/MODULE/ADDR.inc"` as its initializer.
+# Format: MODULE 0xADDR TYPE (str: the NUL-terminated string at ADDR; u8[N]: N bytes). The
+# address keys the line, so renaming the symbol changes nothing here; the comment gives the name.
+
+# src/ov003/ov003_021f7764.cpp: the TU's name strings
+ov003 0x021f79d0 str  # data_ov003_021f79d0
+ov003 0x021f79d6 str  # data_ov003_021f79d6
+ov003 0x021f79dc str  # data_ov003_021f79dc
+ov003 0x021f79e2 str  # data_ov003_021f79e2
+ov003 0x021f79e8 str  # data_ov003_021f79e8
+ov003 0x021f79ee str  # data_ov003_021f79ee
+ov003 0x021f79f4 str  # data_ov003_021f79f4
+ov003 0x021f79fa str  # data_ov003_021f79fa
+ov003 0x021f7a00 str  # data_ov003_021f7a00
+ov003 0x021f7a06 str  # data_ov003_021f7a06
+
+# src/ov000/ov000_021ca70c.cpp
+ov000 0x021cc0f8 str  # data_ov000_021cc0f8
+ov000 0x021cc105 str  # data_ov000_021cc105
+ov000 0x021cc111 str  # data_ov000_021cc111
+ov000 0x021cc119 str  # data_ov000_021cc119
+ov000 0x021cc121 str  # data_ov000_021cc121
+ov000 0x021cc130 str  # data_ov000_021cc130
+ov000 0x021cc138 str  # data_ov000_021cc138
+ov000 0x021cc147 str  # data_ov000_021cc147
+
+# src/ov003/ov003_021f7848.cpp
+ov003 0x021f90f8 str  # data_ov003_021f90f8
+ov003 0x021f90e6 str  # data_ov003_021f90e6
+ov003 0x021f90ec str  # data_ov003_021f90ec
+ov003 0x021f90e0 str  # data_ov003_021f90e0
+
+# src/ov009/ov009_022161f8.cpp
+ov009 0x02216afe str  # data_ov009_02216afe
+ov009 0x02216b2f str  # data_ov009_02216b2f
+ov009 0x02216b4f str  # data_ov009_02216b4f
+ov009 0x02216b0a str  # data_ov009_02216b0a
+ov009 0x02216ada str  # data_ov009_02216ada
+ov009 0x02216b43 str  # data_ov009_02216b43
+ov009 0x02216b17 str  # data_ov009_02216b17
+ov009 0x02216ae6 str  # data_ov009_02216ae6
+ov009 0x02216af2 str  # data_ov009_02216af2
+ov009 0x02216b1e str  # data_ov009_02216b1e
+ov009 0x02216b39 str  # data_ov009_02216b39
+ov009 0x02216ad4 str  # data_ov009_02216ad4
+ov009 0x02216b10 str  # data_ov009_02216b10
+ov009 0x02216b25 str  # data_ov009_02216b25
+ov009 0x02216ae0 str  # data_ov009_02216ae0
+ov009 0x02216aec str  # data_ov009_02216aec
+ov009 0x02216b04 str  # data_ov009_02216b04
+
+# src/ov009/ov009_02216240.cpp
+ov009 0x0221727e str  # data_ov009_0221727e
+ov009 0x0221728a str  # data_ov009_0221728a
+ov009 0x02217284 str  # data_ov009_02217284
+
+# src/ov009/ov009_022162d0.cpp
+ov009 0x0221800a str  # data_ov009_0221800a
+
+# src/ov010/ov010_0220f5dc.cpp
+ov010 0x0220fa2c str  # data_ov010_0220fa2c
+ov010 0x0220fa44 str  # data_ov010_0220fa44
+ov010 0x0220fa4a str  # data_ov010_0220fa4a
+ov010 0x0220fa5c str  # data_ov010_0220fa5c
+ov010 0x0220fa56 str  # data_ov010_0220fa56
+ov010 0x0220fa50 str  # data_ov010_0220fa50
+ov010 0x0220fa32 str  # data_ov010_0220fa32
+ov010 0x0220fa38 str  # data_ov010_0220fa38
+
+# src/ov010/ov010_0220f828.cpp
+ov010 0x0220fd76 str  # data_ov010_0220fd76
+ov010 0x0220fd82 str  # data_ov010_0220fd82
+
+# src/ov010/ov010_0220f958.cpp
+ov010 0x0220ff24 str  # data_ov010_0220ff24
+ov010 0x0220ff60 str  # data_ov010_0220ff60
+ov010 0x0220ff54 str  # data_ov010_0220ff54
+ov010 0x0220ff36 str  # data_ov010_0220ff36
+ov010 0x0220ff06 str  # data_ov010_0220ff06
+ov010 0x0220ff1e str  # data_ov010_0220ff1e
+ov010 0x0220ff12 str  # data_ov010_0220ff12
+ov010 0x0220ff42 str  # data_ov010_0220ff42
+ov010 0x0220ff0c str  # data_ov010_0220ff0c
+ov010 0x0220ff18 str  # data_ov010_0220ff18
+ov010 0x0220ff2a str  # data_ov010_0220ff2a
+ov010 0x0220ff30 str  # data_ov010_0220ff30
+ov010 0x0220ff00 str  # data_ov010_0220ff00
+
+# src/ov010/ov010_0220f9b4.cpp
+ov010 0x02210210 str  # data_ov010_02210210
+ov010 0x02210204 str  # data_ov010_02210204
+
+# src/ov011/ov011_022077c0.cpp
+ov011 0x022078ac str  # data_ov011_022078ac
+ov011 0x022078a0 str  # data_ov011_022078a0
+
+# src/ov012/ov012_0220a8d8.cpp
+ov012 0x0220aaa6 str  # data_ov012_0220aaa6
+ov012 0x0220aaac str  # data_ov012_0220aaac
+ov012 0x0220aab2 str  # data_ov012_0220aab2
+ov012 0x0220aabe str  # data_ov012_0220aabe
+ov012 0x0220aad8 str  # data_ov012_0220aad8
+ov012 0x0220aae7 str  # data_ov012_0220aae7
+ov012 0x0220aaf9 str  # data_ov012_0220aaf9
+ov012 0x0220ab08 str  # data_ov012_0220ab08
+ov012 0x0220ab10 str  # data_ov012_0220ab10
+ov012 0x0220ab1b str  # data_ov012_0220ab1b
+ov012 0x0220ab21 str  # data_ov012_0220ab21
+ov012 0x0220ab27 str  # data_ov012_0220ab27
+ov012 0x0220ab2d str  # data_ov012_0220ab2d
+ov012 0x0220ab33 str  # data_ov012_0220ab33
+
+# src/ov012/ov012_0220a99c.cpp
+ov012 0x0220aef6 str  # data_ov012_0220aef6
+
+# src/ov012/ov012_0220a9e4.cpp
+ov012 0x0220afa6 str  # data_ov012_0220afa6
+ov012 0x0220afac str  # data_ov012_0220afac
+ov012 0x0220afb2 str  # data_ov012_0220afb2
+
+# src/ov013/ov013_0220b444.cpp
+ov013 0x0220b8f0 str  # data_ov013_0220b8f0
+ov013 0x0220b8b4 str  # data_ov013_0220b8b4
+ov013 0x0220b8c0 str  # data_ov013_0220b8c0
+ov013 0x0220b89c str  # data_ov013_0220b89c
+ov013 0x0220b8d2 str  # data_ov013_0220b8d2
+ov013 0x0220b8a8 str  # data_ov013_0220b8a8
+ov013 0x0220b8ba str  # data_ov013_0220b8ba
+ov013 0x0220b8e4 str  # data_ov013_0220b8e4
+ov013 0x0220b8c6 str  # data_ov013_0220b8c6
+ov013 0x0220b8ae str  # data_ov013_0220b8ae
+ov013 0x0220b8a2 str  # data_ov013_0220b8a2
+
+# src/ov014/ov014_02216f60.cpp
+ov014 0x022170c0 str  # data_ov014_022170c0
+
+# src/ov014/ov014_02216fa8.cpp
+ov014 0x022171be str  # data_ov014_022171be
+
+# src/ov014/ov014_02216ff0.cpp
+ov014 0x02217360 str  # data_ov014_02217360
+ov014 0x02217366 str  # data_ov014_02217366
+ov014 0x0221736c str  # data_ov014_0221736c
+ov014 0x02217372 str  # data_ov014_02217372
+ov014 0x0221737e str  # data_ov014_0221737e
+ov014 0x02217398 str  # data_ov014_02217398
+ov014 0x022173a7 str  # data_ov014_022173a7
+ov014 0x022173b9 str  # data_ov014_022173b9
+ov014 0x022173c8 str  # data_ov014_022173c8
+ov014 0x022173ce str  # data_ov014_022173ce
+ov014 0x022173d9 str  # data_ov014_022173d9
+
+# src/ov000/ov000_021ca6a0.cpp
+ov000 0x021cb9f8 str  # data_ov000_021cb9f8
+ov000 0x021cb9e6 str  # data_ov000_021cb9e6
+
+# src/ov014/ov014_02216ff0.cpp
+ov014 0x02217354 str  # data_ov014_02217354

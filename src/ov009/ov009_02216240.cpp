@@ -21,10 +21,16 @@ static const VecFx16 data_ov009_02215ef6 = {0, 0, 0};
 static const VecFx16 data_ov009_02217278 = data_ov009_02215ef6;
 static const char *const data_ov009_02215ee8 = data_ov009_02217284;
 const char *const data_ov009_02215ee4 = data_ov009_0221727e;
-char data_ov009_0221727e[] = "nut00";
-char data_ov009_0221728a[] = "att00";
+char data_ov009_0221727e[] =
+#include "romdata/ov009/0221727e.inc"
+;
+char data_ov009_0221728a[] =
+#include "romdata/ov009/0221728a.inc"
+;
 const VecFx32 data_ov009_02215f14 = {0, 0x1800, -0xa000};
-char data_ov009_02217284[] = "run00";
+char data_ov009_02217284[] =
+#include "romdata/ov009/02217284.inc"
+;
 static const char *const data_ov009_02215eec = data_ov009_0221728a;
 const VecFx32 data_ov009_02215f08 = {0, 0, 0x3000};
 static const VecFx32 data_ov009_02215f20 = {0, 0, 0};

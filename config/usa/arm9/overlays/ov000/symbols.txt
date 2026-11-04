@@ -1736,6 +1736,7 @@ data_ov000_021cb9f8 kind:data(any) addr:0x021cb9f8
 data_ov000_021cba00 kind:data(any) addr:0x021cba00 weak
 data_ov000_021cba0c kind:data(any) addr:0x021cba0c
 @stringBase0 kind:data(byte[0xa8]) addr:0x021cba18 local
+data_ov000_021cbac0 kind:data(any) addr:0x021cbac0
 Ov000Vt_021cbac8_vtbl kind:data(any) addr:0x021cbac8
 Task021cbae0_vtbl kind:data(any) addr:0x021cbae0
 Task021cbb60_vtbl kind:data(any) addr:0x021cbb60
@@ -1761,6 +1762,7 @@ data_ov000_021cc147 kind:data(any) addr:0x021cc147
 data_ov000_021cc150 kind:data(any) addr:0x021cc150
 Ov000Vt_021cc158_vtbl kind:data(any) addr:0x021cc158
 SceneCmd_Table kind:data(byte[0x1f8]) addr:0x021cc1a0 weak
+data_ov000_021cc398 kind:data(any) addr:0x021cc398
 FieldCam_vtbl kind:data(any) addr:0x021cc3a0
 Actor_vtbl kind:data(any) addr:0x021cc3b4
 data_ov000_021cc404 kind:data(any) addr:0x021cc404

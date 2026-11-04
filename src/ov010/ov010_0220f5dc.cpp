@@ -144,17 +144,33 @@ extern const Ov010Rec data_ov010_0220fb9c;
 // inline identity reproduces that.
 static inline fx32 K(fx32 v) { return v; }
 const Rot16 data_ov010_0220fa3e = data_ov010_0220ebe4;
-char data_ov010_0220fa2c[] = "nut00";
-char data_ov010_0220fa44[] = "nut01";
-char data_ov010_0220fa4a[] = "nut02";
+char data_ov010_0220fa2c[] =
+#include "romdata/ov010/0220fa2c.inc"
+;
+char data_ov010_0220fa44[] =
+#include "romdata/ov010/0220fa44.inc"
+;
+char data_ov010_0220fa4a[] =
+#include "romdata/ov010/0220fa4a.inc"
+;
 const VecFx32 data_ov010_0220fa88 = data_ov010_0220ec20;
-char data_ov010_0220fa5c[] = "nut05";
-char data_ov010_0220fa56[] = "nut04";
-char data_ov010_0220fa50[] = "nut03";
+char data_ov010_0220fa5c[] =
+#include "romdata/ov010/0220fa5c.inc"
+;
+char data_ov010_0220fa56[] =
+#include "romdata/ov010/0220fa56.inc"
+;
+char data_ov010_0220fa50[] =
+#include "romdata/ov010/0220fa50.inc"
+;
 const VecFx32 data_ov010_0220fa64 = {K(0x1000), K(0), K(0)};
 const VecFx32 data_ov010_0220fa70 = data_ov010_0220ec2c;
-char data_ov010_0220fa32[] = "run00";
-char data_ov010_0220fa38[] = "gun00";
+char data_ov010_0220fa32[] =
+#include "romdata/ov010/0220fa32.inc"
+;
+char data_ov010_0220fa38[] =
+#include "romdata/ov010/0220fa38.inc"
+;
 const VecFx32 data_ov010_0220fa7c = {K(0xf619), 0x16000, K(-0x67aa)};
 const Ov010ShakeParam data_ov010_0220fa94 = {data_ov010_0220ed04, 0x300, 0x20, 0x1e, 0x10, 0x8, 0xf80, 0x60, 0x10};
 const Ov010ShakeParam data_ov010_0220fab0 = {data_ov010_0220ed04, 0x180, 0x8, 0x1e, 0xa, 0x4, 0xf60, 0x40, 0xa};

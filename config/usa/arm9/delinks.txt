@@ -1597,8 +1597,56 @@ libs/mobiclip/mobiclip_video_0207bcb8.c:
     complete
     .text       start:0x0207bcb8 end:0x02082254
 
+data/main/main_rodata_02082254.dspec:
+    complete
+    .text       start:0x02082254 end:0x0208aa00
+
 src/Main/Lang/LangHandle.cpp:
     complete
     .init       start:0x0208aa24 end:0x0208aa68
     .ctor       start:0x0208aa6c end:0x0208aa70
     .bss        start:0x0214b0a8 end:0x0214b104
+
+data/main/main_text_02005030.dspec:
+    complete
+    .text       start:0x02005030 end:0x02005090
+
+data/main/main_text_02070eec.dspec:
+    complete
+    .text       start:0x02070eec end:0x02070f2c
+
+data/main/main_text_02075654.dspec:
+    complete
+    .text       start:0x02075654 end:0x02075660
+
+data/main/main_data_0208aa80.dspec:
+    complete
+    .data       start:0x0208aa80 end:0x0208ad80
+
+data/main/main_data_0208ae8c.dspec:
+    complete
+    .data       start:0x0208ae8c end:0x0208af54
+
+data/main/main_data_0208afc8.dspec:
+    complete
+    .data       start:0x0208afc8 end:0x0208afd0
+
+data/main/main_data_0208b274.dspec:
+    complete
+    .data       start:0x0208b274 end:0x0208b9dc
+
+data/main/main_data_0208ba20.dspec:
+    complete
+    .data       start:0x0208ba20 end:0x0208bc80
+
+data/main/main_data_0208be8c.dspec:
+    complete
+    .data       start:0x0208be8c end:0x0208cb88
+
+data/main/main_data_0208cb8c.dspec:
+    complete
+    .data       start:0x0208cb8c end:0x0208d29c
+
+data/main/main_data_0208d2b4.dspec:
+    complete
+    .data       start:0x0208d2b4 end:0x0208d940

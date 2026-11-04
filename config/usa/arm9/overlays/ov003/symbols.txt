@@ -668,6 +668,7 @@ data_ov003_021f4374 kind:data(any) addr:0x021f4374 local
 data_ov003_021f437c kind:data(any) addr:0x021f437c
 data_ov003_021f4388 kind:data(any) addr:0x021f4388 weak
 data_ov003_021f4394 kind:data(byte[0xc]) addr:0x021f4394 weak
+data_ov003_021f43a0 kind:data(any) addr:0x021f43a0
 data_ov003_021f43ac kind:data(any) addr:0x021f43ac
 data_ov003_021f43bc kind:data(any) addr:0x021f43bc
 data_ov003_021f43cc kind:data(any) addr:0x021f43cc
@@ -699,6 +700,7 @@ Ov003Actor_StateTable kind:data(any) addr:0x021f4750
 data_ov003_021f484c kind:data(any) addr:0x021f484c
 data_ov003_021f4980 kind:data(any) addr:0x021f4980
 data_ov003_021f4988 kind:data(byte[0xc]) addr:0x021f4988
+data_ov003_021f4994 kind:data(any) addr:0x021f4994
 data_ov003_021f49a6 kind:data(any) addr:0x021f49a6
 data_ov003_021f49ba kind:data(any) addr:0x021f49ba
 data_ov003_021f49c4 kind:data(any) addr:0x021f49c4
@@ -899,6 +901,7 @@ Ov003Vt_021f7974_vtbl kind:data(any) addr:0x021f7974
 Ov003Track_vtbl kind:data(any) addr:0x021f7984
 data_ov003_021f798c kind:data(any) addr:0x021f798c local
 data_ov003_021f7994 kind:data(byte[0xc]) addr:0x021f7994 local
+data_ov003_021f79a0 kind:data(any) addr:0x021f79a0
 Ov003Vt_021f79a8_vtbl kind:data(any) addr:0x021f79a8
 data_ov003_021f79bc kind:data(any) addr:0x021f79bc local
 data_ov003_021f79c4 kind:data(byte[0xc]) addr:0x021f79c4 local
@@ -936,6 +939,7 @@ Ov003ActVt_021f7c0c_vtbl kind:data(any) addr:0x021f7c0c
 @stringBase0 kind:data(byte[0xc]) addr:0x021f7cb0 local
 data_ov003_021f7cbc kind:data(any) addr:0x021f7cbc local
 data_ov003_021f7cc4 kind:data(byte[0xc]) addr:0x021f7cc4
+data_ov003_021f7cd0 kind:data(any) addr:0x021f7cd0
 Ov003Vt_021f7cd8_vtbl kind:data(any) addr:0x021f7cd8
 Ov003Vt_021f7cf4_vtbl kind:data(any) addr:0x021f7cf4
 Ov003Vt_021f7d10_vtbl kind:data(any) addr:0x021f7d10
@@ -990,6 +994,7 @@ data_ov003_021f90e6 kind:data(any) addr:0x021f90e6
 data_ov003_021f90ec kind:data(any) addr:0x021f90ec
 data_ov003_021f90f8 kind:data(any) addr:0x021f90f8
 data_ov003_021f9100 kind:data(byte[0xc]) addr:0x021f9100 local
+data_ov003_021f910c kind:data(any) addr:0x021f910c
 Ov003ActVt_021f9114_vtbl kind:data(any) addr:0x021f9114
 Ov003ActVt_021f91ac_vtbl kind:data(any) addr:0x021f91ac
 Ov003ActVt_021f9244_vtbl kind:data(any) addr:0x021f9244

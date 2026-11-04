@@ -1,0 +1,8 @@
+# ov011 .data 0x022078c0..0x02207994: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x022078c0  str     # data_ov011_022078c0
+0x022078cf  str     # data_ov011_022078cf
+0x022078e1  str     # data_ov011_022078e1
+0x022078f0  ptr[]   # Ov011SceneActor_vtbl

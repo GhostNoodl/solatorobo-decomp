@@ -423,6 +423,7 @@ Ov009ActExVt_022181f4_Dtor kind:function(arm,size=0x14) addr:0x02215c64
 Ov009ActExVt_022181f4_DtorDelete kind:function(arm,size=0x1c) addr:0x02215c78
 Ov009ActVt_0221815c_Dtor kind:function(arm,size=0x14) addr:0x02215c94
 Ov009ActVt_0221815c_DtorDelete kind:function(arm,size=0x1c) addr:0x02215ca8
+data_ov009_02215cc4 kind:data(any) addr:0x02215cc4
 data_ov009_02215cd0 kind:data(any) addr:0x02215cd0
 data_ov009_02215cdc kind:data(any) addr:0x02215cdc
 data_ov009_02215ce8 kind:data(any) addr:0x02215ce8
@@ -496,6 +497,7 @@ __sinit_ov009_022162d0.cpp kind:function(arm,size=0x48) addr:0x022162d0 local
 .p__sinit_ov009_02216240.cpp kind:data(word) addr:0x0221631c local
 .p__sinit_ov009_02216288.cpp kind:data(word) addr:0x02216320 local
 .p__sinit_ov009_022162d0.cpp kind:data(word) addr:0x02216324 local
+data_ov009_02216340 kind:data(any) addr:0x02216340
 Ov009ActVt_02216348_vtbl kind:data(any) addr:0x02216348
 Ov009ActVt_022163f4_vtbl kind:data(any) addr:0x022163f4
 Ov009ActVt_022164a0_vtbl kind:data(any) addr:0x022164a0 ambiguous

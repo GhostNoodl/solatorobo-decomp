@@ -1,0 +1,5 @@
+# ov003 .rodata 0x021f4c6c..0x021f6a80: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021f5fac  ptr[]   # data_ov003_021f5fac

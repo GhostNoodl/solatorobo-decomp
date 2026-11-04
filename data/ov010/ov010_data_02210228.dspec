@@ -1,0 +1,12 @@
+# ov010 .data 0x02210228..0x02210420: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02210228  str     # data_ov010_02210228
+0x02210240  ptr[]   # Ov010Vt_02210240_vtbl
+0x02210260  ptr[]   # Ov010Vt_02210260_vtbl
+0x02210280  ptr[]   # Ov010Vt_02210280_vtbl
+0x022102a0  ptr[]   # Ov010Vt_022102a0_vtbl
+0x022102c0  ptr[]   # Ov010Vt_022102c0_vtbl
+0x022102e0  ptr[]   # Ov010ActVt_022102e0_vtbl
+0x02210378  ptr[]   # Ov010ActVt_02210378_vtbl

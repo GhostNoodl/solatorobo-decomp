@@ -21,7 +21,7 @@
 
 This project rebuilds *Solatorobo: Red the Hunter* (Nintendo DS, DSi-enhanced, USA) from C and C++ source that compiles to the exact same machine code as the original game. Every matched function is checked byte for byte against the retail cartridge.
 
-This repository contains no game code or assets. To build it, you need your own legally dumped copy of the game.
+This repository contains no game code or assets. To build it, you need your own legally dumped copy of the game. Game data that the project matches (string pools, name tables, the Lang tables, overlay data) is described in the repository only by its layout and types; the build extracts the bytes from your ROM into `build/` (see [Building](#building)).
 
 <details>
 <summary><b>Progress by module</b></summary>
@@ -54,7 +54,7 @@ The game was built with CodeWarrior for DSi, somewhere between `dsi/1.2` and `ds
 4. Put the Metrowerks compilers in `tools/mwccarm/`.
 5. `python tools/configure.py usa`, then `ninja`.
 
-The first `ninja` run builds the patched dsd, which takes a few minutes.
+The first `ninja` run builds the patched dsd, which takes a few minutes. It then extracts your ROM into `extract/usa/`, and `tools/extract_data.py` builds the game's data objects from it: every `data/<module>/*.dspec` named in a `delinks.txt` becomes `build/usa/data/<module>/*.o`, and every object listed in `config/usa/romdata_inc.txt` gets its initializer in `build/gen/usa/romdata/`. These outputs hold bytes of the game, so they stay in `build/` (git-ignored) and must never be committed. `python tools/extract_data.py check --config config/usa/arm9 --extract extract/usa` checks every data spec against your ROM without writing anything.
 
 ## Contributing
 

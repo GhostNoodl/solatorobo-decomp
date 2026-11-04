@@ -1,0 +1,20 @@
+# ov015 .data 0x02212c84..0x02212d08: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x02212c84  str     # data_ov015_02212c84
+0x02212c8a  str     # data_ov015_02212c8a
+0x02212c90  str     # data_ov015_02212c90
+0x02212c96  str     # data_ov015_02212c96
+0x02212c9c  str     # data_ov015_02212c9c
+0x02212ca3  str     # data_ov015_02212ca3
+0x02212cac  ptr[]   # data_ov015_02212cac
+0x02212cb4  ptr[]   # data_ov015_02212cb4
+0x02212cbc  ptr[]   # data_ov015_02212cbc
+0x02212cc4  ptr[]   # data_ov015_02212cc4
+0x02212ccc  str     # data_ov015_02212ccc
+0x02212cd6  str     # data_ov015_02212cd6
+0x02212ce0  str     # data_ov015_02212ce0
+0x02212cea  str     # data_ov015_02212cea
+0x02212cf4  str     # data_ov015_02212cf4
+0x02212cfe  str     # data_ov015_02212cfe

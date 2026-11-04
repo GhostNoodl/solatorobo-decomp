@@ -1,8 +1,9 @@
 # Unmatched functions
 
-This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,115 of
-8,216 entries in `ninja report`. The other entries are not on this list: the BIOS stubs in `_dsd_gap@main_0`
-(`CpuSet`, `Div`, `Sqrt`, ...), the data gaps (`data_...`), and `__sinit_ov002_021ef1f0`.
+This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,215 of
+8,287 entries in `ninja report`: 8,115 code functions and the 100 data symbols in main's `.text` (objdiff counts every
+symbol of a code section as a function), which round dxA builds from the user's ROM. The other entries are not on this
+list: the BIOS stubs in `_dsd_gap@main_0` (`CpuSet`, `Div`, `Sqrt`, ...) and `__sinit_ov002_021ef1f0`.
 
 Each function has its best clean draft in the tree. The draft sits in an `#ifdef NONMATCHING` block in the file
 named below. It is either in the file whose `.text` range in `delinks.txt` ends where the function starts, or in

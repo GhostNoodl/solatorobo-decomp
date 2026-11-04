@@ -1,0 +1,14 @@
+# ov006 .data 0x021ebc68..0x021ebfe0: data that no source file owns yet.
+# A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
+default raw
+
+0x021ebc70  ptr[]   # ov006_MsgBox_vtbl
+0x021ebc80  ptr[]   # Ov006Vt_021ebc80_vtbl
+0x021ebc98  ptr[]   # Ov006Vt_021ebc98_vtbl
+0x021ebcc0  ptr[]   # ov006_GroupSelect_vtbl
+0x021ebd40  ptr[]   # ov006_ModeMenu_vtbl
+0x021ebdc0  ptr[]   # ov006_CourseSelect_vtbl
+0x021ebe40  ptr[]   # ov006_Emblem_vtbl
+0x021ebec0  ptr[]   # ov006_CraftSelect_vtbl
+0x021ebf40  ptr[]   # ov006_EntryWait_vtbl
+0x021ebfc0  ptr[]   # Ov006Vt_021ebfc0_vtbl

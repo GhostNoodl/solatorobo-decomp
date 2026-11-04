@@ -717,3 +717,35 @@ src/ov006/ov006_021ebafc.cpp:
     .init       start:0x021ebafc end:0x021ebb18
     .ctor       start:0x021ebb20 end:0x021ebb24
     .data       start:0x021ec484 end:0x021ec48c
+
+data/ov006/ov006_rodata_021eb6d8.dspec:
+    complete
+    .rodata     start:0x021eb6d8 end:0x021eb6fc
+
+data/ov006/ov006_rodata_021eb708.dspec:
+    complete
+    .rodata     start:0x021eb708 end:0x021ebabc
+
+data/ov006/ov006_data_021ebb40.dspec:
+    complete
+    .data       start:0x021ebb40 end:0x021ebba8
+
+data/ov006/ov006_data_021ebc68.dspec:
+    complete
+    .data       start:0x021ebc68 end:0x021ebfe0
+
+data/ov006/ov006_data_021ec038.dspec:
+    complete
+    .data       start:0x021ec038 end:0x021ec080
+
+data/ov006/ov006_data_021ec094.dspec:
+    complete
+    .data       start:0x021ec094 end:0x021ec44c
+
+data/ov006/ov006_data_021ec464.dspec:
+    complete
+    .data       start:0x021ec464 end:0x021ec484
+
+data/ov006/ov006_data_021ec48c.dspec:
+    complete
+    .data       start:0x021ec48c end:0x021ec83c

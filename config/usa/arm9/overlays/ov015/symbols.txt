@@ -410,6 +410,7 @@ __sinit_ov015_0221276c.cpp kind:function(arm,size=0x20) addr:0x0221276c local
 .p__sinit_ov015_0221274c.cpp kind:data(word) addr:0x022127a4 local
 .p__sinit_ov015_0221276c.cpp kind:data(word) addr:0x022127a8 local
 data_ov015_022127c0 kind:data(word) addr:0x022127c0 local
+data_ov015_022127c4 kind:data(any) addr:0x022127c4
 Ov015Main_vtbl kind:data(any) addr:0x022127cc
 Ov015Obj34_vtbl kind:data(any) addr:0x022127dc
 Ov015Obj30_vtbl kind:data(any) addr:0x022127ec
@@ -470,6 +471,7 @@ data_ov015_02212cf4 kind:data(any) addr:0x02212cf4
 data_ov015_02212cfe kind:data(any) addr:0x02212cfe
 @stringBase0 kind:data(byte[0x28]) addr:0x02212d08 local
 data_ov015_02212d30 kind:data(word) addr:0x02212d30 local
+data_ov015_02212d34 kind:data(any) addr:0x02212d34
 Ov015Vt_02212d3c_vtbl kind:data(any) addr:0x02212d3c
 data_ov015_02212db0 kind:data(any) addr:0x02212db0
 data_ov015_02212db8 kind:data(any) addr:0x02212db8
@@ -541,6 +543,7 @@ Ov015MsgMgr_vtbl kind:data(any) addr:0x02213198
 Ov015Vt_022131ac_vtbl kind:data(any) addr:0x022131ac
 Ov015Msg_vtbl kind:data(any) addr:0x022131c4
 data_ov015_022131f4 kind:data(word) addr:0x022131f4 local
+data_ov015_022131f8 kind:data(any) addr:0x022131f8
 Ov015Vt_02213200_vtbl kind:data(any) addr:0x02213200
 data_ov015_02213208 kind:data(any) addr:0x02213208
 data_ov015_02213210 kind:data(any) addr:0x02213210

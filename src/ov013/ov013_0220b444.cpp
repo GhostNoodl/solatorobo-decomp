@@ -90,11 +90,15 @@ const VecFx32 data_ov013_0220af58[3] = {{0, 0, -0x7000}, {-0x1464a, 0x2000, -0xa
 const VecFx32 data_ov013_0220b8d8 = data_ov013_0220af28;
 const VecFx32 data_ov013_0220af40[2] = {{0, 0x2000, -0x2666}, {-0x14d1, 0x4cd, 0}};
 const char *const data_ov013_0220aefc = data_ov013_0220b8c0;
-char data_ov013_0220b8f0[] = "ef/effect3dhsn";
+char data_ov013_0220b8f0[] =
+#include "romdata/ov013/0220b8f0.inc"
+;
 const char *const data_ov013_0220aee0 = data_ov013_0220b89c;
 const Ov013SpotBlock data_ov013_0220b930 = {"SHR2", {(Ov013Fn)func_ov013_02204450, (Ov013Fn)Ov013Cam_Delete, (Ov013Fn)func_ov013_02204448, (Ov013Fn)func_ov013_02204444, (Ov013Fn)Ov013Cam_Follow, (Ov013Fn)Ov013Cam_SetOffsetY}, {{data_ov013_0220afa0, 0xde4e}, {data_ov013_0220afac, 0x1b00}, {data_ov013_0220afb8, 0xaa65}, {data_ov013_0220afc4, 0x6b00}}};
 const char *const data_ov013_0220aef4 = data_ov013_0220b8ae;
-char data_ov013_0220b8b4[] = "att01";
+char data_ov013_0220b8b4[] =
+#include "romdata/ov013/0220b8b4.inc"
+;
 const char *const data_ov013_0220aee8 = data_ov013_0220b8e4;
 const s32 data_ov013_0220aedc = 0xff00;
 const Ov013Spot data_ov013_0220b900[3] = {{data_ov013_0220af94, 0}, {data_ov013_0220afa0, 0xde4e}, {data_ov013_0220afac, 0x1b00}};
@@ -102,23 +106,41 @@ const VecFx32 data_ov013_0220af34 = {0, 0, -0x3000};
 const s32 data_ov013_0220af0c = 0x2000;
 const char *const data_ov013_0220af10 = data_ov013_0220b8a2;
 const char *const data_ov013_0220aef0 = data_ov013_0220b8d2;
-char data_ov013_0220b8c0[] = "att10";
+char data_ov013_0220b8c0[] =
+#include "romdata/ov013/0220b8c0.inc"
+;
 const char *const data_ov013_0220af04 = data_ov013_0220b8a8;
-char data_ov013_0220b89c[] = "nut00";
-char data_ov013_0220b8d2[] = "nut01";
-char data_ov013_0220b8a8[] = "run00";
+char data_ov013_0220b89c[] =
+#include "romdata/ov013/0220b89c.inc"
+;
+char data_ov013_0220b8d2[] =
+#include "romdata/ov013/0220b8d2.inc"
+;
+char data_ov013_0220b8a8[] =
+#include "romdata/ov013/0220b8a8.inc"
+;
 const char *const data_ov013_0220aee4 = data_ov013_0220b8f0;
 const VecFx32 data_ov013_0220af28 = {0, 0, 0};
-char data_ov013_0220b8ba[] = "att02";
+char data_ov013_0220b8ba[] =
+#include "romdata/ov013/0220b8ba.inc"
+;
 const s32 data_ov013_0220aef8 = 8;
-char data_ov013_0220b8e4[] = "ef3di1hsn00";
+char data_ov013_0220b8e4[] =
+#include "romdata/ov013/0220b8e4.inc"
+;
 const char *const data_ov013_0220af00 = data_ov013_0220b8c6;
 const s16 data_ov013_0220af1e[4] = {0x1800, 0x1800, 0x1800, 0x1800};
 const char *const data_ov013_0220af08 = data_ov013_0220b8b4;
-char data_ov013_0220b8c6[] = "dmg00";
-char data_ov013_0220b8ae[] = "att00";
+char data_ov013_0220b8c6[] =
+#include "romdata/ov013/0220b8c6.inc"
+;
+char data_ov013_0220b8ae[] =
+#include "romdata/ov013/0220b8ae.inc"
+;
 const char *const data_ov013_0220aeec = data_ov013_0220b89c;
-char data_ov013_0220b8a2[] = "nut10";
+char data_ov013_0220b8a2[] =
+#include "romdata/ov013/0220b8a2.inc"
+;
 
 static asm void ov013_0220b444_order() {
 }

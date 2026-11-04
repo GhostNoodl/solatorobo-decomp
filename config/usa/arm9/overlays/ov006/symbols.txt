@@ -474,6 +474,7 @@ __sinit_ov006_021ebafc.cpp kind:function(arm,size=0x1c) addr:0x021ebafc local
 .p__sinit_ov006_021ce374.cpp kind:data(word) addr:0x021ebb18 local
 .p__sinit_ov006_021ebadc.cpp kind:data(word) addr:0x021ebb1c local
 .p__sinit_ov006_021ebafc.cpp kind:data(word) addr:0x021ebb20 local
+data_ov006_021ebb40 kind:data(any) addr:0x021ebb40
 Ov006Vt_021ebb48_vtbl kind:data(any) addr:0x021ebb48
 ov006_Task_vtbl kind:data(any) addr:0x021ebb58
 data_ov006_021ebb78 kind:data(any) addr:0x021ebb78
@@ -486,6 +487,7 @@ data_ov006_021ebba8 kind:data(word) addr:0x021ebba8 local
 data_ov006_021ebbac kind:data(word) addr:0x021ebbac local
 @stringBase0 kind:data(byte[0x54]) addr:0x021ebbb0 local
 @stringBase0 kind:data(byte[0x64]) addr:0x021ebc04 local
+data_ov006_021ebc68 kind:data(any) addr:0x021ebc68
 ov006_MsgBox_vtbl kind:data(any) addr:0x021ebc70
 Ov006Vt_021ebc80_vtbl kind:data(any) addr:0x021ebc80
 Ov006Vt_021ebc98_vtbl kind:data(any) addr:0x021ebc98
@@ -498,6 +500,7 @@ ov006_EntryWait_vtbl kind:data(any) addr:0x021ebf40
 Ov006Vt_021ebfc0_vtbl kind:data(any) addr:0x021ebfc0
 @stringBase0 kind:data(byte[0x54]) addr:0x021ebfe0 local
 data_ov006_021ec034 kind:data(word) addr:0x021ec034 local
+data_ov006_021ec038 kind:data(any) addr:0x021ec038
 Ov006Vt_021ec040_vtbl kind:data(any) addr:0x021ec040
 Ov006Vt_021ec068_vtbl kind:data(any) addr:0x021ec068
 ov006_Slot_vtbl kind:data(any) addr:0x021ec078
