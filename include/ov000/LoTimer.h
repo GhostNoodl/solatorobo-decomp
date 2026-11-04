@@ -4,7 +4,7 @@
 // The field's stage timer (0x54 bytes, ctor LoTimer_Init; ListBuffer021cb940::unk_54, made by
 // MessageQueue021cb980_HandleMsg). LoTimer_Setup starts it counting up to `limit` (mode 1) or down from it
 // to 0 (mode 2); LoTimer_Update runs it (state 0..9), LoTimer_Draw draws it with its two
-// models (built by func_ov000_0216e67c, freed by LoTimer_FreeModels). Times are in frames
+// models (built by LoTimer_LoadModels, freed by LoTimer_FreeModels). Times are in frames
 // (0x57e40: 99:59.99).
 
 #include "types.h"
@@ -15,7 +15,7 @@ typedef struct LoTimer {
         u32 flags;
         struct {
             u32 b0 : 1; // set by the field task to stop it
-            u32 built : 1; // the models were made (func_ov000_0216e67c)
+            u32 built : 1; // the models were made (LoTimer_LoadModels)
             u32 b2 : 1;
             u32 b3 : 1;
             u32 b4 : 1;
@@ -69,7 +69,7 @@ void LoTimer_Setup(LoTimer *self, s32 mode, s32 limit, s32 c);
 BOOL LoTimer_Update(LoTimer *self);
 void LoTimer_Draw(LoTimer *self);
 void LoTimer_FreeModels(LoTimer *self);
-void func_ov000_0216e67c(LoTimer *self);
+void LoTimer_LoadModels(LoTimer *self);
 void LoTimer_Finish(LoTimer *self);
 void func_ov000_0216e968(LoTimer *self);
 void func_ov000_0216eaf8(LoTimer *self);

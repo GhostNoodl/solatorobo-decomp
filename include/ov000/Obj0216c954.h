@@ -8,8 +8,8 @@
 struct ActorRes;      // ov000/ActorParts.h
 struct Model;         // Main/Gfx/Model.h
 
-// The 0x54-byte 3D effect of Obj0216c954 (ctor func_ov000_021c2114, release func_ov000_021c216c,
-// update func_ov000_021c194c, draw func_ov000_021c1e78; the update is a NONMATCHING draft, see
+// The 0x54-byte 3D effect of Obj0216c954 (ctor Obj021c2114_Ctor, release Obj021c2114_Release,
+// update Obj021c2114_Update, draw Obj021c2114_Draw; the update is a NONMATCHING draft, see
 // docs/UNMATCHED.md). Once active it loads its own model,
 // turns from pos toward target and fades in; while it is shown its alpha pulses.
 typedef struct Obj021c2114 {
@@ -27,7 +27,7 @@ typedef struct Obj021c2114 {
     struct ActorRes *res; // 0x08 ctor ResSet_Init
     Model0218fe1c *model; // 0x0c
     VecFx32 pos; // 0x10
-    u16 rx; // 0x1c the model's turn toward target (func_ov000_021c194c)
+    u16 rx; // 0x1c the model's turn toward target (Obj021c2114_Update)
     u16 ry;
     u16 rz;
     u16 unk_22;
@@ -42,10 +42,10 @@ typedef struct Obj021c2114 {
 } Obj021c2114;
 SIZE_ASSERT(Obj021c2114, 0x54);
 
-// The 0x3c-byte object of ListBuffer021cb940::unk_50 (ctor func_ov000_0216c954, update
-// func_ov000_0216ca70, draw func_ov000_0216d14c, release Obj0216c9b0_Release). Field message 11
+// The 0x3c-byte object of ListBuffer021cb940::unk_50 (ctor Obj0216c954_Init, update
+// Obj0216c954_Update, draw Obj0216c954_Draw, release Obj0216c9b0_Release). Field message 11
 // makes it (kind and mode), message 12 stops it. While the field is idle it slides a 2D model in
-// that shows count and total as two-digit numbers (func_ov000_0216c800), and its effect points at
+// that shows count and total as two-digit numbers (Obj0216c954_OamCallback), and its effect points at
 // the nearest spawn position of kind.
 typedef struct Obj0216c954 {
     union {
@@ -66,7 +66,7 @@ typedef struct Obj0216c954 {
     s32 unk_18;
     u16 kind; // 0x1c
     u8 unk_1e[0x2];
-    s32 count; // 0x20 shown by func_ov000_0216c800 (Obj0216c954_SetCount sets both)
+    s32 count; // 0x20 shown by Obj0216c954_OamCallback (Obj0216c954_SetCount sets both)
     s32 total; // 0x24
     u16 part; // 0x28 model part played between parts 13 and 14 (0xffff: no model)
     u16 findKind; // 0x2a the kind whose spawn positions are searched
@@ -81,15 +81,15 @@ SIZE_ASSERT(Obj0216c954, 0x3c);
 extern "C" {
 #endif
 
-void func_ov000_0216c954(Obj0216c954 *self, u16 kind, s32 mode);
+void Obj0216c954_Init(Obj0216c954 *self, u16 kind, s32 mode);
 void Obj0216c9b0_Release(Obj0216c954 *self);
 void Obj0216c954_SetCount(Obj0216c954 *self, s32 count, s32 total);
-BOOL func_ov000_0216ca70(Obj0216c954 *self);
-void func_ov000_0216d14c(Obj0216c954 *self);
+BOOL Obj0216c954_Update(Obj0216c954 *self);
+void Obj0216c954_Draw(Obj0216c954 *self);
 void func_ov000_0216d474(Obj0216c954 *self);
-void func_ov000_021c1e78(Obj021c2114 *self);
-void func_ov000_021c2114(Obj021c2114 *self);
-void func_ov000_021c216c(Obj021c2114 *self);
+void Obj021c2114_Draw(Obj021c2114 *self);
+void Obj021c2114_Ctor(Obj021c2114 *self);
+void Obj021c2114_Release(Obj021c2114 *self);
 
 #ifdef __cplusplus
 }

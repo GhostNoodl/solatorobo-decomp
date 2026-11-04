@@ -3,7 +3,7 @@
 extern "C" {
 
 s32 SndMgr_PlayPan(void *a, int b, int c);
-void *func_ov002_021dd6a4(Obj021eff10 *self, char *text, u16 msgId);
+void *Obj021eff10_NewMsgList(Obj021eff10 *self, char *text, u16 msgId);
 void Obj021eff10_ShowCellInfo(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
@@ -80,7 +80,7 @@ void Obj021eff10_Step10(Obj021eff10 *self) {
             Obj021efed4 *o = (Obj021efed4 *)cell->obj;
             if (((u16)w->unk_8a) >= o->unk_a8) {
                 self->unk_2c = o;
-                func_ov002_021dd6a4(self, (char *)MsgRes_GetString(gMsgRes, 0x1f), 0x8d);
+                Obj021eff10_NewMsgList(self, (char *)MsgRes_GetString(gMsgRes, 0x1f), 0x8d);
                 self->unk_18 = 0x1e;
                 return;
             }
@@ -119,7 +119,7 @@ void Obj021eff10_Step10(Obj021eff10 *self) {
         return;
     }
     if (trig & 0x400) {
-        func_ov002_021dd6a4(self, (char *)MsgRes_GetString(msg, 0x20), 0x8d);
+        Obj021eff10_NewMsgList(self, (char *)MsgRes_GetString(msg, 0x20), 0x8d);
         self->unk_18 = 0x32;
         return;
     }
@@ -129,7 +129,7 @@ void Obj021eff10_Step10(Obj021eff10 *self) {
             return;
         }
         self->unk_30 = (Obj021efe9c *)cell->obj;
-        func_ov002_021dd6a4(self, (char *)MsgRes_GetString(gMsgRes, 0x21), 0x8d);
+        Obj021eff10_NewMsgList(self, (char *)MsgRes_GetString(gMsgRes, 0x21), 0x8d);
         self->unk_18 = 0x28;
         return;
     }
@@ -148,7 +148,7 @@ void Obj021eff10_Step10(Obj021eff10 *self) {
         } else if (rep & 0x80) {
             np.y++;
         }
-        if (!func_ov002_021e3dac(&np, map, v, NULL)) {
+        if (!Ov002Shape_FitInMap(&np, map, v, NULL)) {
             Vec2 old;
             Obj021efe6c *c;
             s32 d;

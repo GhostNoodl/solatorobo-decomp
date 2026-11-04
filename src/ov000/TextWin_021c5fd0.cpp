@@ -12,7 +12,7 @@ static inline TextWin *TextWin_New(void) {
     return win;
 }
 
-void func_ov000_021c5fd0(ListRowLabel *self, u32 text) {
+void ListRowLabel_SetText(ListRowLabel *self, u32 text) {
     TextWin *win;
     {
         void *saved = gSysState->cur;

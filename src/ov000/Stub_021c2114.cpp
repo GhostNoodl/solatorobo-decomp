@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021c2114(Obj021c2114 *self) {
+void Obj021c2114_Ctor(Obj021c2114 *self) {
     self->flags = 0;
     self->state = 1;
     self->res = NULL;

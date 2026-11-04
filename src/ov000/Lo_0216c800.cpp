@@ -13,9 +13,9 @@ typedef struct {
 
 extern "C" {
 
-// The OAM callback of Obj0216c954's model (entry 6, registered by func_ov000_0216ca70 with the
+// The OAM callback of Obj0216c954's model (entry 6, registered by Obj0216c954_Update with the
 // object as the entry's argument): draws count and total as two digits each.
-Glyph0216c800 *func_ov000_0216c800(TexObj *self, TexObjEntry *e, Glyph0216c800 *arr, u16 *count) {
+Glyph0216c800 *Obj0216c954_OamCallback(TexObj *self, TexObjEntry *e, Glyph0216c800 *arr, u16 *count) {
     u16 n = *count;
     Glyph0216c800 *last = &arr[n - 1];
     if (e->index == 6) {

@@ -14,9 +14,9 @@ extern "C" {
 
 extern u8 Ov000Vt_021cb980_vtbl[];
 extern u8 Ov000Vt_021cb9b0_vtbl[];
-extern const char *data_0208cc94;
-extern const char *data_0208cca0;
-extern char data_0214b105[];
+extern const char *ArcPath_MenuBattle;
+extern const char *ArcPath_Menu;
+extern char gCommonTextPath[];
 void func_ov000_021bd09c(void);
 
 static inline void LoMessageQueueDtor(MessageQueue *self) {
@@ -69,9 +69,9 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
         } \
         self->unk_118 = NULL; \
         func_ov000_021bd09c(); \
-        ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0); \
-        ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0); \
-        ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0); \
         LoMessageQueueDtor(self); \
     } while (0)
 

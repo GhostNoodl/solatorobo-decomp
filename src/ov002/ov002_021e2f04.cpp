@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void *func_ov002_021e2f04(TexObj *self, void *unused, u8 *entries, u16 *count) {
+void *Obj021f002c_OamCallback(TexObj *self, void *unused, u8 *entries, u16 *count) {
     u16 n = *count;
     int i;
     for (i = 0; i < n; i++) {

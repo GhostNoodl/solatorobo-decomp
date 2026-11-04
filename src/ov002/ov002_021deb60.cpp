@@ -62,7 +62,7 @@ extern Fn021dec74 data_ov002_021eef8c[];
 
 extern Id021dec74 data_ov002_021eef90[];
 
-void func_0206ecd4(int a, void *b, u16 c);
+void Param_FormatName(int a, void *b, u16 c);
 
 void LoBase021ccb54_021ccbe0_SortRows(void *self, s32 (*cmp)(void *, void *));
 
@@ -85,7 +85,7 @@ void func_ov002_021dec74(Obj021efef0 *self) {
         Obj021f002c *t = (Obj021f002c *)self->unk_0c->unk_a0;
         if (t != NULL) {
             Obj021eff50 *w;
-            func_0206ecd4(0x100, self->unk_38, t->id);
+            Param_FormatName(0x100, self->unk_38, t->id);
             w = self->owner;
             Obj0215bb14_SetText(w->unk_20, self->unk_38);
             w->unk_20->vfunc_70();

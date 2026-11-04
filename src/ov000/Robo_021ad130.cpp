@@ -33,7 +33,7 @@ const u8 data_ov000_021c9fe8[3] = {0x11, 0, 0};
 const Ids16_021ad130 data_ov000_021c9ff2 = {{0x127, 0x310, 0}};
 extern Ids021ad130 data_ov000_021ca018;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
-u8 func_0206d204(void *p, s32 a);
+u8 StageFlags_UseReviveItems(void *p, s32 a);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 u8 *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 max);
@@ -89,7 +89,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
     case 0: {
         s32 r;
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc6de, 0x400, 0);
-        r = func_0206d204(gStageFlags, 1);
+        r = StageFlags_UseReviveItems(gStageFlags, 1);
         if (r != 0) {
             u8 *p;
             ((St021ad130 *)self->fsm)->state = 10;

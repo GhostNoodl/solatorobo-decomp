@@ -83,7 +83,7 @@ static inline void Draw0215a8c8(s32 x, s32 y, s32 z, const Oam0215a8c8 *oam, con
     NNS_G3dGeBufferOP_N(0x12, &one, 1);
 }
 
-void func_ov000_0215a8c8(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam0215a8c8 *oam,
+void Lo021cb5a8_DrawFrameOam(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam0215a8c8 *oam,
                          const ImgAttr0215a8c8 *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx) {
     if (skip) {
         return;

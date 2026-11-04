@@ -76,7 +76,7 @@ void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void HitSphere_Unlink_0203f364(Body *self);
 void HitSphere_Link(Body *self);
-s32 func_0203f3d0(Body *self);
+s32 HitSphere_Collide(Body *self);
 void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel);
 
 static inline void VEC_Copy(VecFx32 *d, const VecFx32 *s) {
@@ -133,7 +133,7 @@ void Body_Update(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *rot) {
         self->unk_44 = t;
     }
     self->unk_25 = 1;
-    hit = func_0203f3d0(self);
+    hit = HitSphere_Collide(self);
     if (hit != 0) {
         if ((hit & 1) && gHitSphereNearest != NULL) {
             self->unk_58 |= gHitSphereGroups;

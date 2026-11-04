@@ -15,7 +15,7 @@ extern "C" {
 void UiList021cb4a8_Setup(Obj0214dcc4 *self);
 BOOL Obj02152e5c_LoadModel(Obj0214dcc4 *self);
 void TexObj_SetOamFunc(void *obj, s32 a, void (*cb)(void), void *arg);
-void *func_ov000_0214db04(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *Lo021caac8_OamCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void Lo021caac8_Setup(Obj0214dcc4 *self) {
     UiList021cb4a8_Setup(self);
@@ -25,7 +25,7 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
     }
     if (self->unk_b4 != NULL) {
         TexObj_SelectImage(self->unk_b4, 0, 0x1e);
-        TexObj_SetOamFunc(self->unk_b4, 0x1e, (void (*)(void))func_ov000_0214db04, self);
+        TexObj_SetOamFunc(self->unk_b4, 0x1e, (void (*)(void))Lo021caac8_OamCallback, self);
     }
 }
 

@@ -38,7 +38,7 @@ void Obj021eff10_Draw(Obj021eff10 *self, Obj021eff50 *ev) {
         self->unk_0c->vfunc_20();
     }
     self->unk_08->unk_1d4 = self->unk_18 == 20;
-    func_ov002_021d7988(self->unk_08);
+    Obj021efe5c_Draw(self->unk_08);
 }
 
 

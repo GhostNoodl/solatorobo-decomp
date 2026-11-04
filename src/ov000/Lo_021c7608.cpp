@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-Glyph02160e28 *func_ov000_021c7608(u8 *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
+Glyph02160e28 *Hud021cca10_OamCallback(u8 *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
     u16 n = *count;
     u32 base = arr[n - 1].chr;
     s32 v;

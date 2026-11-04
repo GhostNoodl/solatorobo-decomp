@@ -110,7 +110,7 @@ void Obj021eff30_Step01(Obj021eff30 *self) {
         p = *(Vec2 *)&g->unk_54;
         p.x += d.x;
         p.y += d.y;
-        func_ov002_021e3dac(&p, map, &g->shape, &out);
+        Ov002Shape_FitInMap(&p, map, &g->shape, &out);
         if (out.x < map->w) {
             return;
         }

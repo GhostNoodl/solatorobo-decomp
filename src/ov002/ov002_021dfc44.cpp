@@ -19,7 +19,7 @@ void Obj021eff30_Draw(Obj021eff30 *self, Obj021eff50 *arg) {
     }
     func_ov002_021e0280(self);
     self->unk_0c->unk_1d4 = self->unk_18 == 0xa;
-    func_ov002_021d7988(self->unk_0c);
+    Obj021efe5c_Draw(self->unk_0c);
     self->owner = NULL;
 }
 

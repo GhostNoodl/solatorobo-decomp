@@ -16,7 +16,7 @@ struct Obj0214db04 {
     s32 unk_70;
 };
 
-Glyph0214db04 *func_ov000_0214db04(Obj0214db04 *self, u16 *cmd, Glyph0214db04 *arr, u16 *count) {
+Glyph0214db04 *Lo021caac8_OamCallback(Obj0214db04 *self, u16 *cmd, Glyph0214db04 *arr, u16 *count) {
     u16 n = *count;
     Glyph0214db04 *last = &arr[n - 1];
     u32 base;

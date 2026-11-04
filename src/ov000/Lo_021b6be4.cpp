@@ -4,7 +4,7 @@
 #include "ov000/FieldMgr.h"
 
 extern "C" {
-void func_0204b924(Camera *cam, s32 speed);
+void Camera_StepAnim(Camera *cam, s32 speed);
 
 static inline BOOL IsBusy021b6be4(FieldState *m) {
     return m->head != m->tail ? TRUE : FALSE;
@@ -43,7 +43,7 @@ void FieldMgr_StepCameraAnim(FieldMgr *self) {
         if (!IsIdle021b6be4(m)) {
             v = 0;
         }
-        func_0204b924(s, v);
+        Camera_StepAnim(s, v);
     }
 }
 }

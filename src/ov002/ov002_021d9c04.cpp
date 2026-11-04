@@ -8,7 +8,7 @@ BOOL StageFlags_AddEntry(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
 
 u8 StageFlags_CountEntries(void *a, u16 id);
 
-void func_0206f3f0(u16 id, u8 v);
+void Item_SetCount(u16 id, u8 v);
 
 void StageFlags_SetGridBit(void *a, int b, u8 x, u8 y, s32 *org);
 
@@ -16,7 +16,7 @@ void StageFlags_SetCounter(void *a, u8 b, u8 c);
 
 u16 StageFlags_CountItems(void *a);
 
-void func_ov002_021d9c04(Obj021efe6c *self) {
+void Obj021efe6c_CommitToFlags(Obj021efe6c *self) {
     u16 id;
     u8 *p;
     u16 i;
@@ -34,7 +34,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
         p = (u8 *)self + i;
         id = i | 0x2000;
         if (p[8] != 0 || StageFlags_CountEntries(gStageFlags, id)) {
-            func_0206f3f0(id, p[8]);
+            Item_SetCount(id, p[8]);
         }
     }
     {

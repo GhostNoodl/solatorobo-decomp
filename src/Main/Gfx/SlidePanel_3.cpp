@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_020554e4(SlidePanel *panel);
+void SlidePanel_Release(SlidePanel *panel);
 
 void Model_SetPartPos(Model *model, int idx, ModelPos *pos) {
     ((ModelPos *)&model->x)[idx] = *pos;

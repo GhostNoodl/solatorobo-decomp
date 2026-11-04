@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_0216c954(Obj0216c954 *self, u16 kind, s32 mode) {
+void Obj0216c954_Init(Obj0216c954 *self, u16 kind, s32 mode) {
     self->flags = 0;
     self->show = 0;
     self->state = 2;

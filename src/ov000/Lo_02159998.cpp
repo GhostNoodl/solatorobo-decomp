@@ -21,17 +21,17 @@ extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Ov000Vt_021cb1b0_vtbl[];
 extern u8 Ov000Vt_021cb0b8_vtbl[];
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 
 struct Obj02159998 {
     u8 unk_00[0x70];
     u32 unk_70;
 };
 
-LoGlyphEnt *func_ov000_02159998(Obj02159998 *self, u16 *msg, LoGlyphEnt *arr, u16 *cnt) {
+LoGlyphEnt *Lo021cb5a8_OamCallback(Obj02159998 *self, u16 *msg, LoGlyphEnt *arr, u16 *cnt) {
     u16 n = *cnt;
     LoGlyphEnt *e = &arr[n - 1];
     if (*msg == 2) {

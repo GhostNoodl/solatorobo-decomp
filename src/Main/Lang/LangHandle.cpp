@@ -19,6 +19,6 @@ struct ResHandle {
 
 static asm void LangHandle_order() {}
 
-extern "C" void *data_0214b0a8;
-void *data_0214b0a8;
-__declspec(weak) ResHandle data_0214b0b8;
+extern "C" void *gWorldInfo;
+void *gWorldInfo;
+__declspec(weak) ResHandle gWorldInfoRes;

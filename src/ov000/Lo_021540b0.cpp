@@ -42,7 +42,7 @@ static inline BOOL LoIsLoaded24(void) {
 
 // The OAM callback of a UiList's frame model (UiList_Setup registers it with the list as the
 // argument of entries 2 and 6): entry 2 places the bottom edge by the list's height.
-LoOam *func_ov000_021540b0(TexObj *self, TexObjEntry *msg, LoOam *g, u16 *count) {
+LoOam *UiList_OamCallback(TexObj *self, TexObjEntry *msg, LoOam *g, u16 *count) {
     u16 n = *count;
     if (msg->index == 2) {
         s32 v = ((UiList *)msg->unk_08)->height - 8;

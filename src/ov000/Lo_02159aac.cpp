@@ -7,15 +7,15 @@
 
 extern "C" {
 
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
-void func_ov000_0215a088(void *self);
-void *func_ov000_02159998(void *self, u16 *msg, void *arr, u16 *cnt);
+void Lo021cb5a8_BuildFrameDL(void *self);
+void *Lo021cb5a8_OamCallback(void *self, u16 *msg, void *arr, u16 *cnt);
 
 typedef s32 (*VFn9aac)(void *);
 
@@ -25,9 +25,9 @@ static inline BOOL LoadModel9aac(Lo021cb5a8 *self) {
         return TRUE;
     }
     if (self->flag6 ? TRUE : FALSE) {
-        MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
+        MODEL_NEW(self->model, ResName_WifiCells, ArcPath_MenuWifi);
     } else {
-        MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
+        MODEL_NEW(self->model, ResName_CommonCells, ArcPath_Menu);
     }
     {
         ResList *a = ResMgr_GetArcList(self->model->name);
@@ -98,11 +98,11 @@ void Lo021cb5a8_Setup(Lo021cb5a8 *self) {
     if (LoadModel9aac(self)) {
         TexObj_SelectImage(self->model, 0, 8);
         TexObj_SelectImage(self->model, 0, 2);
-        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_02159998);
+        TexObj_SetAllOamFuncs(self->model, (void *)Lo021cb5a8_OamCallback);
         TexObj_SetOamFuncArg(self->model, 8, self);
         TexObj_SetOamFuncArg(self->model, 2, self);
     }
-    func_ov000_0215a088(self);
+    Lo021cb5a8_BuildFrameDL(self);
     fl = self->flags;
     if (fl & 0x10000000) {
         self->posX = 2;

@@ -21,19 +21,19 @@ extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Ov000Vt_021cb1b0_vtbl[];
 extern u8 Ov000Vt_021cb0b8_vtbl[];
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 
 BOOL Obj02152e5c_LoadModel(UiObj *self) {
     if (self->model) {
         return TRUE;
     }
     if (self->flag6 ? TRUE : FALSE) {
-        MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
+        MODEL_NEW(self->model, ResName_WifiCells, ArcPath_MenuWifi);
     } else {
-        MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
+        MODEL_NEW(self->model, ResName_CommonCells, ArcPath_Menu);
     }
     {
         ResList *a = ResMgr_GetArcList(self->model->name);

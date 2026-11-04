@@ -9,14 +9,14 @@ typedef struct {
 
 extern "C" {
 
-Info021c308c *func_0206eed0(u32 id);
-u16 func_0206f788(u32 v);
+Info021c308c *Param_GetPictureInfo(u32 id);
+u16 Item_GetPictureChipMask(u32 v);
 u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 u32 DataRes_GetCount(DataRes *res, u32 idx);
 SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
 
 void ListRow021cca70_SetPhotoItem(ListRow021cca70 *self, u32 id) {
-    Info021c308c *info = func_0206eed0(id);
+    Info021c308c *info = Param_GetPictureInfo(id);
     ListRowItem *sub;
     s32 i;
     SaveLayout *layout;
@@ -25,7 +25,7 @@ void ListRow021cca70_SetPhotoItem(ListRow021cca70 *self, u32 id) {
     self->name = info->unk_08;
     sub = &self->item;
     sub->id = id;
-    sub->mask = func_0206f788(id);
+    sub->mask = Item_GetPictureChipMask(id);
     sub->n = 4;
     sub->count = 0;
     for (i = 0; i < sub->n; i++) {

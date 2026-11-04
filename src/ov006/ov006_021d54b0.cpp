@@ -72,7 +72,7 @@ ov006_Task0 *Ov006Vt_021ebc98_Ctor(ov006_Task0 *self) {
 static inline void ov006_Task0_Dtor(ov006_Task0 *self) {
     *(void **)self = &Ov006Vt_021ebc98_vtbl;
     TaskHost_Destroy();
-    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
     ResMgr_ReleaseByName(gResMgr, data_ov006_021ec864, 7, 0);
     func_ov006_021ccddc(self);
 }
@@ -106,13 +106,13 @@ BOOL Ov006Vt_021ebc98_Load(void) {
             p->unk8 = 10;
         }
     }
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
     ResMgr_Load(data_ov006_021ec864, 7, 0);
     return TRUE;
 }
 
 BOOL Ov006Vt_021ebc98_IsLoaded(void) {
-    return ((ResMgr_IsLoaded(data_0208cc94, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ec864, 7)) != 0;
+    return ((ResMgr_IsLoaded(ArcPath_MenuBattle, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ec864, 7)) != 0;
 }
 
 BOOL Ov006Vt_021ebc98_Start(ov006_Task0 *self) {

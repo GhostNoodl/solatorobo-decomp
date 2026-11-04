@@ -9,8 +9,8 @@ typedef struct {
 } DLRef021bbf78;
 
 extern "C" {
-extern DLRef021bbf78 data_0208b3d0;
-extern DLRef021bbf78 data_020828f8;
+extern DLRef021bbf78 Gfx3D_PrimDLs;
+extern DLRef021bbf78 Gfx3D_PrimDLSizes;
 s32 Gfx3DState_NextPolyIdB(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
@@ -44,7 +44,7 @@ struct Obj021bbf78 {
     s32 unk_70;
 };
 
-void func_ov000_021bbf78(Obj021bbf78 *self) {
+void Obj021bbf78_Draw(Obj021bbf78 *self) {
     GfxSys *g;
     s32 alpha;
     s32 t;
@@ -59,7 +59,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     G3_Cmd1(0x20, 0);
     G3_Cmd1(0x2a, 0x20000000);
     G3_Vec(0x1b, 0x100000, 0xc0000, 0x1000);
-    NNS_G3dGeSendDL(data_0208b3d0.unk_04, (u32)data_020828f8.unk_04);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs.unk_04, (u32)Gfx3D_PrimDLSizes.unk_04);
     G3_Cmd1(0x12, 1);
     MODEL_FLAGS(self->unk_58)->unk_19 = 1;
     MODEL_FLAGS(self->unk_58)->alpha = (u8)alpha;

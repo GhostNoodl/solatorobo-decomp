@@ -11,7 +11,7 @@ extern "C" {
 
 void *ResMgr_FindArcType2(const char *file, const char *name);
 void TexObj_SetOamFunc(void *a, int b, void *c, int d);
-void *func_ov002_021e0488(void *a, void *b, void *c, u16 *d);
+void *Obj021eff10_OamCallback(void *a, void *b, void *c, u16 *d);
 
 static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
     c->unk_90 = 15;
@@ -88,18 +88,18 @@ void Obj021eff10_Enter(Obj021eff10 *self, Obj021eff50 *owner) {
     {
         Model *mdl = (Model *)Heap_Alloc(sizeof(Model));
         if (mdl != NULL) {
-            const char *file = data_0208cc94;
-            const char *nm = data_0208cc88;
+            const char *file = ArcPath_MenuBattle;
+            const char *nm = ResName_BattleCells;
             PlttRes_Init_02041218(&mdl->pltt);
             TexObj_Init(mdl, nm, 0);
             STD_CopyString(mdl->name, file);
         }
         self->unk_10 = mdl;
     }
-    TexObj_SetRes(self->unk_10, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk_10, ResMgr_FindArcType2(ArcPath_MenuBattle, ResName_BattleCells));
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x2000;
-    TexObj_SetOamFunc(self->unk_10, 6, (void *)func_ov002_021e0488, 0);
+    TexObj_SetOamFunc(self->unk_10, 6, (void *)Obj021eff10_OamCallback, 0);
     TexObj_SelectImage(self->unk_10, 0, 6);
     {
         Obj021efe8c *c = (Obj021efe8c *)Heap_Alloc(sizeof(Obj021efe8c));

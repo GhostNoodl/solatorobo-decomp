@@ -370,8 +370,8 @@ void Ov015Msg_LoadRes(Ov015Msg *self) {
 }
 
 
-extern void *data_0208cc88;
-extern void *data_0208cc94;
+extern void *ResName_BattleCells;
+extern void *ArcPath_MenuBattle;
 extern void *gMsgRes;
 extern u8 TextWin_vtbl[];
 extern u8 UiObj_vtbl[];
@@ -385,7 +385,7 @@ void *MsgRes_GetString(void *a, s32 b);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 void TextWin_RenderToVram(void *p);
 void Ov015UiText_ClearText(Ov015UiText *self);
-s32 func_0204c2f4(void *p, s32 n, void *src);
+s32 Text_WrapLines(void *p, s32 n, void *src);
 void Obj0215bb14_SetText(void *a, void *b);
 void Ov015UiText_SetText(Ov015UiText *self, void *msg);
 
@@ -408,14 +408,14 @@ BOOL Ov015Msg_Setup(Ov015Msg *self) {
     self->pageCount = MsgRes_GetLines(self->msgRes, self->msgIdx, self->pages, 0x20);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        void *file = data_0208cc94;
-        void *name = data_0208cc88;
+        void *file = ArcPath_MenuBattle;
+        void *name = ResName_BattleCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, (char *)name, 0);
         STD_CopyString(m->name, (char *)file);
     }
     self->model = m;
-    TexObj_SetRes(self->model, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->model, ResMgr_FindArcType2(ArcPath_MenuBattle, ResName_BattleCells));
     self->model->flags |= 2;
     TexObj_SelectImage((Model *)(self->model), 0, 0x1d);
     self->model->unk_150 = -0xccd;
@@ -475,7 +475,7 @@ BOOL Ov015Msg_Setup(Ov015Msg *self) {
     self->textBox->vfunc_08();
     if (self->label != NULL && self->pages[0] != NULL) {
         Lo021cadcc *o;
-        func_0204c2f4(self->text, 0x80, self->pages[0]);
+        Text_WrapLines(self->text, 0x80, self->pages[0]);
         Obj0215bb14_SetText(self->label, self->text);
         self->label->vfunc_70();
         FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;

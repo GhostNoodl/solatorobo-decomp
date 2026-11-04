@@ -1953,7 +1953,7 @@ BOOL Ov002Obj021f06e4_Update(Ov002Obj021f06e4 *self) {
     BOOL r = TRUE;
     if (self->unk_18 > ctx->unk_d4 && self->unk_18 <= ctx->unk_d0) {
         Gfx3DState *g;
-        func_0206e3a0(&self->unk_4c, self->unk_50);
+        LangSec_ApplyGfxEnv(&self->unk_4c, self->unk_50);
         g = (Gfx3DState *)gGfxSys->unk_8b0;
         if (!self->unk_4c_2) {
             g->edgeMarking = 0;
@@ -1978,7 +1978,7 @@ BOOL Ov002Vt_021f0694_Update(Ov002Obj *self) {
     return r;
 }
 
-Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count) {
+Oam021e7ab8 *Ov002Stage_OamCallback(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count) {
     u16 n = *count;
     if (entry->index == 0) {
         u8 pal = obj->unk_070;
@@ -2404,7 +2404,7 @@ BOOL SndMgr_IsLoadDone(void *a);
 
 void Ov002StageFile_BuildScene(Ov002StageFile *self);
 
-Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count);
+Oam021e7ab8 *Ov002Stage_OamCallback(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count);
 
 void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c);
 
@@ -2428,12 +2428,12 @@ BOOL Ov002Stage_State2(Ov002Stage *self) {
         TexObj_SetRes(self->unk_124, ResList_FindType2(res, tbl[2]));
         self->unk_124->flags |= 2;
         self->unk_124->unk_150 = -9;
-        TexObj_SetOamFunc(self->unk_124, 0, func_ov002_021e7ab8, 0);
+        TexObj_SetOamFunc(self->unk_124, 0, Ov002Stage_OamCallback, 0);
         TexObj_SelectImage(self->unk_124, 0, 0);
         self->unk_124->flags |= 0x80000;
         self->unk_124->flags |= 0x200000;
         self->unk_124->flags = (self->unk_124->flags & ~0x7c) | 0x78;
-        func_0204aad0(gSndQueue.queue);
+        SndMgr_ClearSeqArc(gSndQueue.queue);
         if (self->unk_68 != NULL) {
             Ov002StageFile_Open(&self->file, *self->unk_68, self->unk_44, 1);
             Ov002StageFile_BuildScene(&self->file);

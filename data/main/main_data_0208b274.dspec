@@ -2,7 +2,7 @@
 # A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
 default raw
 
-0x0208b3d0  ptr[2]          # data_0208b3d0: the two display lists in data_02082900 (sizes: data_020828f8)
+0x0208b3d0  ptr[2]          # Gfx3D_PrimDLs: the two display lists in Gfx3D_EdgeColorTable (sizes: Gfx3D_PrimDLSizes)
 
 0x0208b274  ptr[]   # data_0208b274
 0x0208b27c  str     # data_0208b27c
@@ -43,7 +43,7 @@ default raw
 0x0208b6cc  str     # data_0208b6cc
 0x0208b6e0  str     # data_0208b6e0
 0x0208b704  str     # data_0208b704
-0x0208b778  str     # data_0208b778
+0x0208b778  str     # SndMgr_SeqVolumeTable
 0x0208b8c0  ptr[]   # Camera_vtbl
 0x0208b8cd  str     # data_0208b8cd
 0x0208b8d9  str     # data_0208b8d9
@@ -66,4 +66,4 @@ default raw
 0x0208b9a5  str     # data_0208b9a5
 0x0208b9b1  str     # data_0208b9b1
 0x0208b9bd  str     # data_0208b9bd
-0x0208b9cc  ptr[]   # data_0208b9cc
+0x0208b9cc  ptr[]   # SlideWin_FaceNames

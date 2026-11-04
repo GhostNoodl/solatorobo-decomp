@@ -5,10 +5,10 @@
 
 extern "C" {
 
-BOOL func_ov000_021b75e0(FieldPropModel *p);
+BOOL FieldProp_DrawModel(FieldPropModel *p);
 
 void FieldProp_Draw(FieldProp *self) {
-    self->visible = func_ov000_021b75e0(&self->model);
+    self->visible = FieldProp_DrawModel(&self->model);
 }
 
 void FieldProp_SetViewScale(FieldProp *self, s32 x) {

@@ -12,20 +12,20 @@ extern "C" {
 extern MessageQueue021cb980 *gMessageQueue;
 extern s32 gFadeState[5];
 extern VecFx32 data_ov000_021c9af8;
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 extern void *gGroup;
 BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL MessageQueue_GetById(MessageQueue *mgr, s32 a);
 BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
 void TexObj_SetOamFunc(void *a, int b, void *c, void *d);
 BOOL Model_IsReady(void *a, s32 b);
-void *func_ov000_0216c800(void);
+void *Obj0216c954_OamCallback(void);
 s32 FX_Div(s32 a, s32 b);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 s32 Math_ProjectToScreen(s32 *out, const VecFx32 *pos);
-void func_ov000_021c194c(Obj021c2114 *self);
+void Obj021c2114_Update(Obj021c2114 *self);
 
 static inline BOOL LoGBusy(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -63,7 +63,7 @@ static inline s32 DistSq(const VecFx32 *a, const VecFx32 *b) {
     return (s32)((((s64)dx * dx + (s64)dy * dy + (s64)dz * dz) + 0x800) >> 12);
 }
 
-BOOL func_ov000_0216ca70(Obj0216c954 *self) {
+BOOL Obj0216c954_Update(Obj0216c954 *self) {
     VecFx32 pts[0x20];
     s32 i;
     s32 scr[2];
@@ -135,17 +135,17 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
                 VecFx32 ofs = data_ov000_021c9af8;
                 e = (Obj021c2114 *)Heap_Alloc(sizeof(Obj021c2114));
                 if (e) {
-                    func_ov000_021c2114(e);
+                    Obj021c2114_Ctor(e);
                 }
                 self->effect = e;
                 e->useOfs = 1;
                 self->effect->ofs = ofs;
             }
             if (self->part != 0xffff) {
-                res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+                res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
                 m = (Model *)Heap_Alloc(sizeof(Model));
                 if (m) {
-                    const char *name = data_0208cc88;
+                    const char *name = ResName_BattleCells;
                     PlttRes_Init_02041218((struct PlttRes *)((u8 *)m + 0x88));
                     TexObj_Init(m, name, 0);
                 }
@@ -157,7 +157,7 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
                 TexObj_SelectImage(self->model, 0, self->part);
                 TexObj_SelectImage(self->model, 0, 6);
                 TexObj_SelectImage(self->model, 0, 8);
-                TexObj_SetOamFunc(self->model, 6, (void *)func_ov000_0216c800, self);
+                TexObj_SetOamFunc(self->model, 6, (void *)Obj0216c954_OamCallback, self);
             }
             func_ov000_0216d474(self);
         }
@@ -243,7 +243,7 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
         } else {
             self->effect->active = 0;
         }
-        func_ov000_021c194c(self->effect);
+        Obj021c2114_Update(self->effect);
     }
     return TRUE;
 }

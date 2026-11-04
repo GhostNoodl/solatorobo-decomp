@@ -642,7 +642,7 @@ VObj *Task021cbce0_New(void) {
 }
 
 void Task021cbce0_Load(void *a) {
-    func_ov000_0214c1ac();
+    FaceIcon_LoadPlayer();
 }
 
 BOOL Task021cbce0_IsReady(void) {
@@ -664,8 +664,8 @@ namespace m_Lo_021738d4 {
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern void *data_0208cca0;
-extern void *data_0208ccc0;
+extern void *ArcPath_Menu;
+extern void *ResName_CommonModel2;
 void *Heap_Alloc(u32 size);
 void TexObj_Init(void *p, void *name, s32 c);
 void *ResMgr_GetArcList(void *a);
@@ -690,10 +690,10 @@ void Task021cbce0_Start(Task021cbce0 *self) {
     if (self->vfunc_28() != 0) {
         return;
     }
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonModel2);
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
-        Init(m, data_0208cca0, data_0208ccc0);
+        Init(m, ArcPath_Menu, ResName_CommonModel2);
     }
     self->unk_4c = (Model *)m;
     TexObj_SetRes(m, res);
@@ -729,7 +729,7 @@ void Task021cbce0_Init(Task021cbce0 *self) {
 void Task021cbce0_Release(Task021cbce0 *self) {
     void *saved;
     Model *model;
-    func_ov000_0214c210();
+    FaceIcon_ReleasePlayer();
     saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
     model = self->unk_4c;
@@ -1023,7 +1023,7 @@ void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(Task021cbbe0 *self);
+void PauseMenu_DrawBody(Task021cbbe0 *self);
 
 VObj *PauseMenu_New(void) {
     Task021cbbe0 *obj = (Task021cbbe0 *)Heap_Alloc(0x4b0);
@@ -1071,7 +1071,7 @@ extern "C" {
 
 // The OAM callback of PauseMenu_Start's model (TexObj_SetAllOamFuncs sets it on every entry):
 // entry 6 draws the model's unk_070 as entry->unk_08 digits.
-Glyph02174168 *func_ov000_02174168(TexObj *self, TexObjEntry *cmd, Glyph02174168 *arr, u16 *count) {
+Glyph02174168 *PauseMenu_OamCallback(TexObj *self, TexObjEntry *cmd, Glyph02174168 *arr, u16 *count) {
     u16 n = *count;
     Glyph02174168 *last = &arr[n - 1];
     if (cmd->index == 6) {
@@ -1147,7 +1147,7 @@ typedef struct {
 extern "C" {
 
 
-BOOL func_ov000_0214c270(void);
+BOOL FaceIcon_IsPlayerLoaded(void);
 
 void PauseMenu_List40OnState(Obj021742b4 *self) {
     Sub021742b4 *sub = (Sub021742b4 *)self->unk_08;
@@ -1208,7 +1208,7 @@ typedef struct {
 extern "C" {
 
 
-BOOL func_ov000_0214c270(void);
+BOOL FaceIcon_IsPlayerLoaded(void);
 
 void PauseMenu_Load(void) {
 }
@@ -1218,7 +1218,7 @@ BOOL PauseMenu_IsLoaded(void) {
     if (!gTaskHost->res.vfunc_2c()) {
         ret = FALSE;
     }
-    if (!func_ov000_0214c270()) {
+    if (!FaceIcon_IsPlayerLoaded()) {
         ret = FALSE;
     }
     return ret;
@@ -1369,10 +1369,10 @@ extern u8 Lo021cb5a8_vtbl[];
 extern u8 Menu021ca94c_vtbl[];
 extern u8 TextWin_vtbl[];
 extern u8 data_ov000_021c9c28[];
-extern void *data_0208ccc8;
+extern void *ArcPath_Menu3D;
 extern u8 data_ov000_021cba0c[];
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern void *ArcPath_MenuBattle;
+extern void *ResName_BattleCells;
 extern s32 gFadeState[];
 void *MsgRes_GetString(void *g, s32 id);
 UiListItem *UiList_GetItemById(void *p, u16 a);
@@ -1394,7 +1394,7 @@ void TextWin_RenderToVram(void *p);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void PauseMenu_List40OnState(Obj021742b4 *self);
 BOOL PauseMenu_List40OnDecide(Obj021742b4 *self, Msg021742c8 *msg);
-struct Glyph02174168 *func_ov000_02174168(TexObj *self, TexObjEntry *cmd, struct Glyph02174168 *arr, u16 *count);
+struct Glyph02174168 *PauseMenu_OamCallback(TexObj *self, TexObjEntry *cmd, struct Glyph02174168 *arr, u16 *count);
 
 static inline BOOL IsMode4_021743bc(void) {
     BOOL r;
@@ -1534,10 +1534,10 @@ found:
         s_3->shape = (VecFx16 *)data_ov000_021c9c28;
         s_3->shapeCount = 5;
     }
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208ccc8), data_ov000_021cba0c);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu3D), data_ov000_021cba0c);
     m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
-        void *file = data_0208ccc8;
+        void *file = ArcPath_Menu3D;
         void *nm = data_ov000_021cba0c;
         PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
         TexObj_Init(m, nm, 0);
@@ -1548,11 +1548,11 @@ found:
     self->unk_58->flags |= 2;
     TexObj_SelectImage(self->unk_58, 0, 0xffff);
     self->unk_58->unk_150 = -0x1cbd;
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     m2 = (u8 *)Heap_Alloc(0x160);
     if (m2 != NULL) {
-        void *file = data_0208cc94;
-        void *nm = data_0208cc88;
+        void *file = ArcPath_MenuBattle;
+        void *nm = ResName_BattleCells;
         PlttRes_Init_02041218((struct PlttRes *)(m2 + 0x88));
         TexObj_Init(m2, nm, 0);
         STD_CopyString(m2 + 0x2c, file);
@@ -1566,7 +1566,7 @@ found:
     self->unk_5c->flags |= 0x80000;
     self->unk_5c->flags = (self->unk_5c->flags & ~0x7c) | 0x78;
     self->unk_5c->unk_150 = -0x1c9d;
-    TexObj_SetAllOamFuncs(self->unk_5c, (int)func_ov000_02174168);
+    TexObj_SetAllOamFuncs(self->unk_5c, (int)PauseMenu_OamCallback);
     InitWin021743bc((u8 *)self + 0x60, MsgRes_GetString(g, 0xba));
     InitWin021743bc((u8 *)self + 0x118, MsgRes_GetString(g, 0x48));
     InitWin021743bc((u8 *)self + 0x1d0, MsgRes_GetString(g, 0x49));
@@ -1612,7 +1612,7 @@ void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(Task021cbbe0 *self);
+void PauseMenu_DrawBody(Task021cbbe0 *self);
 
 void PauseMenu_Init(Task021cbbe0 *self) {
     self->fadeLen = 0x10000;
@@ -1700,7 +1700,7 @@ void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(Task021cbbe0 *self);
+void PauseMenu_DrawBody(Task021cbbe0 *self);
 
 void PauseMenu_PreUpdate(Task021cbbe0 *self) {
     switch (self->state) {
@@ -1783,7 +1783,7 @@ void PauseMenu_Draw(Task021cbbe0 *self) {
     if (self->unk_44 != NULL) {
         self->unk_44->vfunc_20();
     }
-    func_ov000_0217558c(self);
+    PauseMenu_DrawBody(self);
     if (self->unk_48 != NULL) {
         self->unk_48->vfunc_20();
     }
@@ -1800,7 +1800,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 u8 Gfx3DState_NextPolyId(void *p);
 void TexObj_SetOamFuncArg(Model *m, s32 a, s32 b);
 void func_02041c18(Model *m, s32 v);
-void func_ov000_021c95fc(void *p);
+void StageFlags_SumPartStats(void *p);
 
 typedef struct {
     s16 a[5];
@@ -1877,7 +1877,7 @@ static inline void Model_PlayPartChk(Model *model, s32 idx) {
     TexObj_DrawCell(model, anim, part, 0);
 }
 
-void func_ov000_0217558c(Task021cbbe0 *self) {
+void PauseMenu_DrawBody(Task021cbbe0 *self) {
     Model *m;
     s32 x;
     u8 *g;
@@ -1925,7 +1925,7 @@ void func_ov000_0217558c(Task021cbbe0 *self) {
     Model_SetPos(((Model *)self->unk_5c), x << 12, 0x20000);
     ((Model *)self->unk_5c)->x += 0x15000;
     Model_PlayPart(((Model *)self->unk_5c), 10);
-    func_ov000_021c95fc(&c);
+    StageFlags_SumPartStats(&c);
     func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[0] + c.b[0]));
     Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, -0x21000);
     Model_PlayPartChk(((Model *)self->unk_5c), 6);
@@ -1982,9 +1982,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2058,9 +2058,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2106,9 +2106,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2207,9 +2207,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2277,9 +2277,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2296,12 +2296,12 @@ void func_ov000_021762e4(void *a, s32 mode) {
     Task021cbee0 *t = (Task021cbee0 *)LoFindTask(4);
     UiList021cb4a8 *m;
     UiListItem *r;
-    if (mode == 1 && func_0206f66c(a)) {
+    if (mode == 1 && Item_IsOwned(a)) {
         return;
     }
     m = t->unk_4c;
-    r = (UiListItem *)m->vfunc_74(Param_Get(a), a, (u16)func_0206f080(a), Param_GetValue(a));
-    if (mode == 1 && func_0206f66c(a)) {
+    r = (UiListItem *)m->vfunc_74(Param_Get(a), a, (u16)Param_GetIconId(a), Param_GetValue(a));
+    if (mode == 1 && Item_IsOwned(a)) {
         mode = 0;
         r->unk_10 = mode;
         r->unk_0c = -1;
@@ -2330,7 +2330,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
@@ -2369,9 +2369,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2444,7 +2444,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
@@ -2483,9 +2483,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -2518,7 +2518,7 @@ namespace m_Lo_02176714 {
 
 extern "C" {
 extern void *gMsgRes;
-extern void *data_0208ccc8;
+extern void *ArcPath_Menu3D;
 extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Lo021cb5a8_vtbl[];
@@ -2539,7 +2539,7 @@ u8 *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, int d, u16 e);
 void *Param_Get(u32 id);
-s32 func_0206f080(u32 id);
+s32 Param_GetIconId(u32 id);
 u32 Param_GetValue(u32 id);
 BOOL StoreMenu_List4cOnDecide(void);
 s32 StoreMenu_List4cOnCursor(void);
@@ -2702,7 +2702,7 @@ void StoreMenu_Start(Task021cbee0 *self) {
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa1));
         UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
-        UiList_SetIconModel(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
+        UiList_SetIconModel(self->unk_4c, ArcPath_Menu3D, "cem3d1icn00", 0xffff);
         break;
     case 1:
         o = (VObj *)Heap_Alloc(0xe0);
@@ -2732,7 +2732,7 @@ void StoreMenu_Start(Task021cbee0 *self) {
                 if ((a & b) ? TRUE : FALSE) {
                     u16 id = ((Pair02176714 *)o)[i].b;
                     void *x = Param_Get(id);
-                    s32 y = func_0206f080(id);
+                    s32 y = Param_GetIconId(id);
                     self->unk_4c->vfunc_74(x, ((Pair02176714 *)o)[i].b, (u16)y, Param_GetValue(id));
                 }
             }
@@ -2753,7 +2753,7 @@ void StoreMenu_Start(Task021cbee0 *self) {
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa6));
         UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
-        UiList_SetIconModel(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
+        UiList_SetIconModel(self->unk_4c, ArcPath_Menu3D, "cem3d1icn00", 0xffff);
         break;
     }
     data_02fe1534.unk_7a = self->param;
@@ -2799,9 +2799,9 @@ extern u8 SaveBase_vtbl[];
 extern u8 MainVt_0208ca9c_vtbl[];
 extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
-BOOL func_0206f66c(void *p);
+BOOL Item_IsOwned(void *p);
 s32 Param_Get(void *p);
-s32 func_0206f080(void *p);
+s32 Param_GetIconId(void *p);
 s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -3078,7 +3078,7 @@ extern "C" {
 extern void *gMsgRes;
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 
 
 s32 StoreMenu_List4cOnCursor(UiList *self, UiListItem *item) {
@@ -3088,7 +3088,7 @@ s32 StoreMenu_List4cOnCursor(UiList *self, UiListItem *item) {
         if (item != NULL) {
             u16 id;
             Lo021cae48 *a;
-            func_0206ecd4(0x100, o->unk_5c, item->id);
+            Param_FormatName(0x100, o->unk_5c, item->id);
             Obj0215bb14_SetText(t, o->unk_5c);
             t->vfunc_70();
             id = item->id;
@@ -3313,7 +3313,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
@@ -3397,7 +3397,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
@@ -3413,7 +3413,7 @@ BOOL SellMenu_List3cOnCursor(UiList *self, UiListItem *msg) {
     } else {
         Lo021cadcc *p = o->unk_40;
         Lo021cae48 *n;
-        func_0206ecd4(0x100, o->unk_58, msg->id);
+        Param_FormatName(0x100, o->unk_58, msg->id);
         Obj0215bb14_SetText(p, o->unk_58);
         p->vfunc_70();
         if (o->unk_48 != NULL) {
@@ -3439,11 +3439,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -3499,7 +3499,7 @@ namespace m_Lo_021782e0 {
 
 extern "C" {
 extern void *gMsgRes;
-extern void *data_0208ccc8;
+extern void *ArcPath_Menu3D;
 extern u8 UiObj_vtbl[];
 extern u8 Lo021cadcc_vtbl[];
 extern u8 Lo021cae48_vtbl[];
@@ -3518,7 +3518,7 @@ void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, void *arg);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
 s32 Param_Get(u16 id);
-s32 func_0206f080(u16 id);
+s32 Param_GetIconId(u16 id);
 u32 Param_GetValue(u16 id);
 u8 *Param_GetEntry(u16 id);
 void SellMenu_Count54OnDone(Lo021cacd8 *self, BOOL add);
@@ -3722,13 +3722,13 @@ void SellMenu_Start(Task021cbe60 *self, void *g) {
     self->unk_3c->onDecide = (UiItemFn)SellMenu_List3cOnDecide;
     self->unk_3c->onCursor = (UiItemFn)SellMenu_List3cOnCursor;
     self->unk_3c->owner = self;
-    UiList_SetIconModel(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
+    UiList_SetIconModel(self->unk_3c, ArcPath_Menu3D, "cem3d1icn00", 0xffff);
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
         if (gStageFlags->items[ItemIdx021782e0(id)] != 0) {
             o = ((Task021cbe60 *)LoFindTask(10))->unk_3c;
             a = Param_Get(id);
-            b = func_0206f080(id);
+            b = Param_GetIconId(id);
             e = (UiListItem *)o->vfunc_74(a, id, (u16)b, Param_GetValue(id) >> 2);
             e->unk_10 = *Param_GetEntry(id);
         }
@@ -3761,7 +3761,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
@@ -3868,12 +3868,12 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_0206f3f0(u16 id, s32 v);
+void Item_SetCount(u16 id, s32 v);
 u16 StageFlags_CountItems(void *a);
 
 void SellMenu_Draw(Task021cbe60 *self) {
@@ -3934,7 +3934,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             if (c < 0) {
                 c = 0;
             }
-            func_0206f3f0(node->id, c);
+            Item_SetCount(node->id, c);
             StageFlags_CountItems(gStageFlags);
         }
         if (self->unk_48 != NULL) {
@@ -4323,7 +4323,7 @@ namespace m_Lo_0217987c {
 
 extern "C" {
 
-void func_ov000_0216f23c(void *p, s32 a);
+void BufferList_Run(void *p, s32 a);
 
 void HelpMenu_Draw(Task021cbde0 *self) {
     s32 s;
@@ -4790,7 +4790,7 @@ void Task021cbc60_IsLoaded(void) {
 // ---- Lo_0217a1f8
 namespace m_Lo_0217a1f8 {
 
-// The text argument of func_ov000_0217a328 is a string id, -1 (all bits set) for "no text"
+// The text argument of Task021cbc60_OpenMsg is a string id, -1 (all bits set) for "no text"
 // (it tests b != -1). It is built as the complement of an empty id mask: the backend folds
 // the `mvn` of the known zero into `mvn r2, #0` only after the local CSE, so the -1 is not
 // derived from the 0x78 before it (a literal -1 gives sub r2, r1, #0x79). See round pmB.
@@ -4798,7 +4798,7 @@ typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
 
 extern "C" {
 GameSave *MainVt_0208ca18_New(void);
-void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
+void Task021cbc60_OpenMsg(Task021cbc60 *self, s32 a, s32 b);
 void TaskList_Insert(VObj *self);
 
 void Task021cbc60_Start(Task021cbc60 *self) {
@@ -4809,7 +4809,7 @@ void Task021cbc60_Start(Task021cbc60 *self) {
         return;
     }
     mask = LO_TEXT_MASK_EMPTY;
-    func_ov000_0217a328(self, 0x78, ~mask);
+    Task021cbc60_OpenMsg(self, 0x78, ~mask);
     {
         LoCreateFn fn = data_ov000_021ccd4c;
         if (fn == NULL) {
@@ -4866,7 +4866,7 @@ void *MsgRes_GetString(void *p, u16 a);
 void Obj0215c1bc_SetText(void *a, s32 b, void *c);
 void Obj0215c1bc_SetMsg(void *a, s32 b);
 
-void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
+void Task021cbc60_OpenMsg(Task021cbc60 *self, s32 a, s32 b) {
     if (self->unk_48 == NULL) {
         VObj *o = (VObj *)Heap_Alloc(0xe8);
         if (o != NULL) {
@@ -4923,9 +4923,9 @@ void Task021cbc60_PreUpdate(void) {
 namespace m_Lo_0217a480 {
 
 extern "C" {
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 void StageFlags_Commit(void *p);
-void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
+void Task021cbc60_OpenMsg(Task021cbc60 *self, s32 a, s32 b);
 BOOL Task021cbc60_Task3Callback(void *self, s32 msg);
 
 static inline u8 Raw0217a480(StageFlags *g) {
@@ -4983,7 +4983,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         gSysState->unk_31 = 1;
         self->unk_40 = 0;
         if (self->param == 0) {
-            func_0206c620(gStageFlags);
+            StageFlags_Save(gStageFlags);
         } else if (self->param == 1) {
             StageFlags_Commit(gStageFlags);
         }
@@ -5001,7 +5001,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
             q->flags |= 0x200;
             q->curSlot = n;
         }
-        func_ov000_0217a328(self, 0x79, -1);
+        Task021cbc60_OpenMsg(self, 0x79, -1);
         self->unk_3c = 3;
         break;
     }
@@ -5017,7 +5017,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
             if (!IsB2_0217a480(self->unk_44)) {
                 return;
             }
-            func_ov000_0217a328(self, 0x8000, 0x77);
+            Task021cbc60_OpenMsg(self, 0x8000, 0x77);
             self->unk_3c = 5;
         }
         break;
@@ -5027,7 +5027,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         }
         if (self->param == 0) {
             SndMgr_PlayVolume(gSndMgr, 0x85, -1, -1, -1);
-            func_ov000_0217a328(self, 0x7a, -1);
+            Task021cbc60_OpenMsg(self, 0x7a, -1);
         }
         self->unk_3c = 5;
         break;
@@ -5205,11 +5205,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -5224,7 +5224,7 @@ void Task021cbb60_Load(Task021cbb60 *self) {
     }
     self->unk_3c = obj;
     LFLD(s32, obj, 0x44) = 7;
-    self->unk_3c->vfunc_1c(data_0208cc9c);
+    self->unk_3c->vfunc_1c(ArcPath_MenuLoad);
 }
 
 BOOL Task021cbb60_IsLoaded(Task021cbb60 *self) {
@@ -5246,12 +5246,12 @@ BOOL Task021cbb60_IsLoaded(Task021cbb60 *self) {
 namespace m_Lo_0217abd8 {
 
 extern "C" {
-extern void *data_0208cb84;
-extern void *data_0208cc8c;
-extern void *data_0208cb74;
-extern void *data_0208cca0;
-extern void *data_0208cb78;
-extern void *data_0208cc9c;
+extern void *ResName_WifiCells;
+extern void *ArcPath_MenuWifi;
+extern void *ResName_CommonCells;
+extern void *ArcPath_Menu;
+extern void *ResName_CommonModel;
+extern void *ArcPath_MenuLoad;
 void TexObj_Init(void *p, void *name, s32 c);
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
@@ -5284,7 +5284,7 @@ void Task021cbb60_Start(Task021cbb60 *self) {
     o->Setup();
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
-        ModelInit(m, data_0208cc9c, data_0208cb78);
+        ModelInit(m, ArcPath_MenuLoad, ResName_CommonModel);
     }
     self->unk_a0 = (Model *)m;
     TexObj_SetRes((u8 *)self->unk_a0, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->unk_a0 + 0x4c));
@@ -5316,11 +5316,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -5478,7 +5478,7 @@ void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void TextWin_RenderToVram(void *p);
 
-Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
+Obj0217b230 *Task021cbb60_NewLabel(void *unused, s32 a1, s32 a2) {
     Obj0217b230 *o = (Obj0217b230 *)Heap_Alloc(0xb8);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, TextWin_vtbl);
@@ -5590,7 +5590,7 @@ int sprintf(char *dst, const char *fmt, ...);
 void OS_GetOwnerInfo(OwnerInfo *info);
 void Str_Utf16ToUtf8Filtered(char *dst, s32 *dstLen, const u16 *src, s32 *srcLen);
 BOOL OS_IsRunOnTwl(void);
-Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
+Item *Task021cbb60_NewLabel(Self *self, const char *str, s32 a2);
 
 #define FREE_SLOT(f)                         \
     do {                                     \
@@ -5607,7 +5607,7 @@ Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
     } while (0)
 
 #define ADD_ITEM(id, str)                                                                  \
-    self->items[self->count] = func_ov000_0217b230(self, MsgRes_GetString(msg, id), 4);       \
+    self->items[self->count] = Task021cbb60_NewLabel(self, MsgRes_GetString(msg, id), 4);       \
     STD_CopyString(self->items[self->count]->name, str);                                   \
     self->items[self->count]->unk_74 = 0x7fff;                                             \
     self->items[self->count]->unk_76 = 0x7fff;                                             \
@@ -5618,7 +5618,7 @@ Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
 // not forwarded into the calls, so the division is listed before the num/format arguments, as in the ROM
 // (round pmA). STD_CopyString is void in this TU; its char * form adds a result copy that moves the
 // automatic 100-instruction block split from before OS_GetOwnerInfo to after it.
-void func_ov000_0217b324(Self *self, s32 idx) {
+void Task021cbb60_BuildSlotInfo(Self *self, s32 idx) {
     char buf[0x80];
     char tmp[0x80];
     OwnerInfo info;
@@ -5681,25 +5681,25 @@ void func_ov000_0217b324(Self *self, s32 idx) {
             STD_CopyString(tmp, MsgRes_GetString(msg, 0xb5));
         }
         STD_ConcatenateString(buf, tmp);
-        self->slots[idx].p74 = (VObj *)func_ov000_0217b230(self, buf, 4);
+        self->slots[idx].p74 = (VObj *)Task021cbb60_NewLabel(self, buf, 4);
         STD_CopyString(buf, StageTbl_GetMissionName(lv));
-        self->slots[idx].p78 = (VObj *)func_ov000_0217b230(self, buf, 8);
+        self->slots[idx].p78 = (VObj *)Task021cbb60_NewLabel(self, buf, 8);
     }
     sprintf(buf, "%d", rec->lo);
-    self->slots[idx].p80 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p7c = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xae), 4);
+    self->slots[idx].p80 = (VObj *)Task021cbb60_NewLabel(self, buf, 4);
+    self->slots[idx].p7c = (VObj *)Task021cbb60_NewLabel(self, MsgRes_GetString(msg, 0xae), 4);
     sprintf(buf, "%d", rec->unk_0c);
-    self->slots[idx].p88 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p84 = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xaf), 4);
+    self->slots[idx].p88 = (VObj *)Task021cbb60_NewLabel(self, buf, 4);
+    self->slots[idx].p84 = (VObj *)Task021cbb60_NewLabel(self, MsgRes_GetString(msg, 0xaf), 4);
     {
         u8 b = rec->b16;
         if (b == 0xff) {
-            self->slots[idx].p90 = (VObj *)func_ov000_0217b230(self, "DEBUG", 4);
+            self->slots[idx].p90 = (VObj *)Task021cbb60_NewLabel(self, "DEBUG", 4);
         } else {
-            self->slots[idx].p90 = (VObj *)func_ov000_0217b230(self, StageTbl_GetSavePos(b), 4);
+            self->slots[idx].p90 = (VObj *)Task021cbb60_NewLabel(self, StageTbl_GetSavePos(b), 4);
         }
     }
-    self->slots[idx].p8c = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xb0), 4);
+    self->slots[idx].p8c = (VObj *)Task021cbb60_NewLabel(self, MsgRes_GetString(msg, 0xb0), 4);
     STD_CopyString(buf, MsgRes_GetString(msg, 0xb2));
     n = rec->time / 216000;
     sprintf(num, "%.2d", n);
@@ -5710,13 +5710,13 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     n = rec->time % 216000 % 3600 / 60;
     sprintf(num, "%.2d", n);
     Tbl_Format_02070874(buf, buf, num);
-    self->slots[idx].p98 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p94 = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xb1), 4);
+    self->slots[idx].p98 = (VObj *)Task021cbb60_NewLabel(self, buf, 4);
+    self->slots[idx].p94 = (VObj *)Task021cbb60_NewLabel(self, MsgRes_GetString(msg, 0xb1), 4);
     OS_GetOwnerInfo(&info);
     max = 0x80;
     len = info.nickNameLength;
     Str_Utf16ToUtf8Filtered(buf, &max, info.nickName, &len);
-    self->slots[idx].p9c = (VObj *)func_ov000_0217b230(self, buf, 4);
+    self->slots[idx].p9c = (VObj *)Task021cbb60_NewLabel(self, buf, 4);
     ((Item *)self->slots[idx].p9c)->unk_70 = -0x1c4d;
     self->count = 0;
     for (i = 0; i < 4; i++) {
@@ -5820,8 +5820,8 @@ extern "C" {
 
 u32 Rand_GetGlobal(void);
 void Obj0215fdfc_SetRange(void *self, s32 a, s32 b);
-void func_ov000_021c216c(void *p);
-void func_ov000_0216c954(Obj0216c954 *self, u16 a, s32 b);
+void Obj021c2114_Release(void *p);
+void Obj0216c954_Init(Obj0216c954 *self, u16 a, s32 b);
 
 BOOL Task021cbb60_UpdateMsg(Task021cbb60 *self) {
     VObj *o = self->unk_64;
@@ -6603,7 +6603,7 @@ namespace m_Lo_0217d66c {
 extern "C" {
 
 BOOL Vram_IsIdle(void);
-void func_ov000_0217b324(void *self, s32 a);
+void Task021cbb60_BuildSlotInfo(void *self, s32 a);
 BOOL Task021cbb60_ShowMsg(Task021cbb60 *self, s32 a, s32 b);
 
 static inline BOOL Ready0217d66c(Lo021cad50 *o) {
@@ -6659,7 +6659,7 @@ void Task021cbb60_Mode04(Task021cbb60 *self) {
         }
         self->unk_5c->vf74();
         SaveBase_SetState_020473ac(self->unk_5c, 4);
-        func_ov000_0217b324(self, 0);
+        Task021cbb60_BuildSlotInfo(self, 0);
         self->unk_48 = 1;
         break;
     }
@@ -6905,11 +6905,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -6980,7 +6980,7 @@ namespace m_Lo_0217df5c {
 
 extern "C" {
 
-extern u8 data_0208b3d0[];
+extern u8 Gfx3D_PrimDLs[];
 extern VecFx32 data_ov000_021c9c10;
 u8 Gfx3DState_NextPolyId(void *p);
 void Gfx3D_SendDL(void *p, s32 a);
@@ -6990,7 +6990,7 @@ void TexObj_DrawCell(void *a, void *b, void *c, int d);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 s32 func_ov000_0214b8ec(void *p);
-void func_ov000_0214b1a0(VecFx32 *pos, VecFx32 *col, s32 a, s32 b);
+void Gfx_DrawTexQuad(VecFx32 *pos, VecFx32 *col, s32 a, s32 b);
 
 // Model_SetPos from a vector, storing each coordinate as it is read.
 static inline void SetPosV0217df5c(Model *m, VecFx32 *p) {
@@ -7049,34 +7049,34 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
     G3_Vec(0x1c, pos->x + 0x80000, pos->y + 0x16000, -0x1c8d);
     G3_Vec(0x1b, 0xea000, 0xc000, 0x1000);
     size = *(u32 *)0x020828f8;
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 0), size);
     G3_Cmd1(0x12, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos->x + 0xc000, pos->y + 0x60000, -0x1c8d);
     G3_Vec(0x1b, 0x2000, 0xa0000, 0x1000);
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 0), size);
     G3_Cmd1(0x12, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos->x + 0xf4000, pos->y + 0x60000, -0x1c8d);
     G3_Vec(0x1b, 0x2000, 0xa0000, 0x1000);
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 0), size);
     G3_Cmd1(0x12, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos->x + 0x80000, pos->y + 0xaf000, -0x1c8d);
     G3_Vec(0x1b, 0xea000, 0x2000, 0x1000);
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 0), size);
     G3_Cmd1(0x12, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos->x + 0xbe000, pos->y + 0x74000, -0x1c8d);
     G3_Vec(0x1b, 0x66000, 0x71000, 0x1000);
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 0), size);
     G3_Cmd1(0x12, 1);
     {
     VecFx32 c = data_ov000_021c9c10;
     v.x = pos->x + 0xbe000;
     v.y = pos->y + 0x6e000;
     v.z = -0x1c4d;
-    func_ov000_0214b1a0(&v, &c, 0x1f, func_ov000_0214b8ec(self->unk_6c));
+    Gfx_DrawTexQuad(&v, &c, 0x1f, func_ov000_0214b8ec(self->unk_6c));
     }
 }
 
@@ -7096,7 +7096,7 @@ void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void TexObj_DrawCell(void *a, void *b, void *c, int d);
 
-// The menu items (func_ov000_0217b230) are 0xb8-byte TextWins. Main/Gfx/TextWin.h clashes with
+// The menu items (Task021cbb60_NewLabel) are 0xb8-byte TextWins. Main/Gfx/TextWin.h clashes with
 // LoCommon.h, so this is its vtable up to Render (0x90). SetPos (0x20) and Render return void.
 struct LoTextWin {
     virtual void unk_vf00();
@@ -7381,11 +7381,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -7770,11 +7770,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -7822,7 +7822,7 @@ BOOL DiscardMenu_List3cOnDecide(UiList *self, UiListItem *msg) {
 BOOL DiscardMenu_List3cOnCursor(UiList *self, UiListItem *msg) {
     if (msg != NULL) {
         Task021cbf60 *o = (Task021cbf60 *)self->owner;
-        func_0206ecd4(0x100, o->unk_5f, msg->id);
+        Param_FormatName(0x100, o->unk_5f, msg->id);
         if (o->unk_40 != NULL) {
             Obj0215bb14_SetText(o->unk_40, o->unk_5f);
             o->unk_40->vfunc_70();
@@ -7876,8 +7876,8 @@ namespace m_Heap_0217fb44 {
 extern "C" {
 
 extern void *gResMgr;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 void ResMgr_ReleaseByName(void *a, void *b, s32 c, s32 d);
 
 void DiscardMenu_FreeWindows(Task021cbf60 *self) {
@@ -7886,8 +7886,8 @@ void DiscardMenu_FreeWindows(Task021cbf60 *self) {
     HEAP_DELETE_VOBJ(self->unk_44);
     HEAP_DELETE_VOBJ(self->unk_48);
     HEAP_DELETE_MODEL(self->unk_4c);
-    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
 }
 
 }
@@ -7902,11 +7902,11 @@ extern "C" {
 extern u8 ResHandle_vtbl[];
 extern u8 Task_vtbl[];
 extern u8 DiscardMenu_vtbl[];
-extern void *data_0208cc9c;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern void *ArcPath_MenuLoad;
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 s32 UiList_GetItemById(void *p, s32 a);
-void func_0206ecd4(s32 a, void *b, u16 c);
+void Param_FormatName(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
@@ -7914,14 +7914,14 @@ s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL Task021cbb60_ShowMsg(Task021cbb60 *self, s32 a, s32 b);
 
 void DiscardMenu_Load(void) {
-    ResMgr_Load(data_0208cca0, 7, 0);
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(ArcPath_Menu, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
 }
 
 BOOL DiscardMenu_IsLoaded(void) {
     BOOL r = LoTaskObj()->vfunc_2c() ? TRUE : FALSE;
-    r = (r & ResMgr_IsLoaded(data_0208cca0, 7)) ? TRUE : FALSE;
-    return (r & ResMgr_IsLoaded(data_0208cc94, 7)) ? TRUE : FALSE;
+    r = (r & ResMgr_IsLoaded(ArcPath_Menu, 7)) ? TRUE : FALSE;
+    return (r & ResMgr_IsLoaded(ArcPath_MenuBattle, 7)) ? TRUE : FALSE;
 }
 
 }
@@ -7933,8 +7933,8 @@ namespace m_Lo_0217fd70 {
 
 extern "C" {
 extern void *gMsgRes;
-extern void *data_0208cb7c;
-extern u8 data_0214b105[];
+extern void *ResName_TextCells;
+extern u8 gCommonTextPath[];
 extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 UiList021cb4a8_vtbl[];
@@ -7952,7 +7952,7 @@ void UiList_SetMarkModel(void *a, void *b, void *c, int d);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
 s32 Param_Get(u16 id);
-s32 func_0206f080(u16 id);
+s32 Param_GetIconId(u16 id);
 u8 *Param_GetEntry(u16 id);
 BOOL DiscardMenu_List3cOnDecide(void);
 BOOL DiscardMenu_List3cOnCursor(void);
@@ -8007,7 +8007,7 @@ void DiscardMenu_Start(Task021cbf60 *self) {
     self->unk_3c->flags |= 0x800000;
     self->unk_3c->unk_c0 = 0x80;
     self->unk_3c->unk_c1 = 3;
-    UiList_SetMarkModel(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_3c, gCommonTextPath, ResName_TextCells, 0xb);
     UiList_SetIconModel(self->unk_3c, "menu/menu3d", "cem3d1icn00", 0xffff);
     if (self->param != 0) {
         self->unk_5c = self->param;
@@ -8015,7 +8015,7 @@ void DiscardMenu_Start(Task021cbf60 *self) {
     id = self->unk_5c;
     if (ItemCat0217fd70(id) == 1) {
         a = Param_Get(id);
-        b = func_0206f080(id);
+        b = Param_GetIconId(id);
         e = (UiListItem *)self->unk_3c->vfunc_74(a, id, (u16)b, 1);
         e->unk_10 = *Param_GetEntry(self->unk_5c);
         e->unk_0a = 0xb;
@@ -8028,7 +8028,7 @@ void DiscardMenu_Start(Task021cbf60 *self) {
             iid = i | 0x2000;
             if (n > 0) {
                 a = Param_Get(iid);
-                b = func_0206f080(iid);
+                b = Param_GetIconId(iid);
                 e = (UiListItem *)self->unk_3c->vfunc_74(a, iid, (u16)b, n);
                 e->unk_10 = *Param_GetEntry(self->unk_5c);
             }
@@ -8221,7 +8221,7 @@ extern VObj *gMessageQueue;
 void FieldMgr_DrawProps(void *p);
 void ActorMgr_Draw(void *p);
 void EffectMgr_Draw(void *p);
-void func_ov000_021bc6c0(void *p);
+void Obj021bc6c0_Draw(void *p);
 void func_0205a69c(void *p);
 
 void DiscardMenu_PostUpdate(Task021cbf60 *self) {
@@ -8439,7 +8439,7 @@ static inline Actor *FindActor2(u16 id) {
     return mgr != NULL ? MgrFind(mgr, id) : NULL;
 }
 
-extern void *data_0208ccc8;
+extern void *ArcPath_Menu3D;
 
 static inline BOOL LoTakeMode(TaskHost *self) {
     Task *cur = (Task *)gFinishingTask;
@@ -8474,7 +8474,7 @@ BOOL TaskHost_Update(TaskHost *self) {
         self->unk_04 = 3;
     case 3:
         self->unk_4c = 7;
-        self->res.vfunc_1c(data_0208ccc8);
+        self->res.vfunc_1c(ArcPath_Menu3D);
         self->unk_04 = 12;
         break;
     case 12:

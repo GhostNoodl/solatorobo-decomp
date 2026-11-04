@@ -9,7 +9,7 @@ void Ov002Vt_021efe9c_Draw(Obj021efe9c *self) {
     if (!Vram_IsTransferDone(self->unk_84) || self->unk_ac == 0) {
         return;
     }
-    func_ov002_021d83f0(self);
+    Obj021efe9c_Draw(self);
     if (self->unk_9c != 0x1000) {
         NNS_G3dMdlSetMdlPolygonIDAll(self->unk_7c, Gfx3DState_NextPolyId(gGfxSys->unk_8b0));
     }

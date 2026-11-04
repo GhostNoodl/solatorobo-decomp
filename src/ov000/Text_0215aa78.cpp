@@ -4,10 +4,10 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 void Obj02153c48_CreateText(UiListItem *item, s32 font, s32 b, s32 c, s32 d);
 
 // The list's highlight panel, made here with its reset values.
@@ -62,9 +62,9 @@ void LoBase021cafc0_021cb0b8_Setup(LoBase021cafc0_021cb0b8 *self) {
     self->height = self->vfunc_44();
     if (self->model == NULL) {
         if (self->flag6 ? TRUE : FALSE) {
-            self->model = new ModelObj(data_0208cb84, data_0208cc8c);
+            self->model = new ModelObj(ResName_WifiCells, ArcPath_MenuWifi);
         } else {
-            self->model = new ModelObj(data_0208cb74, data_0208cca0);
+            self->model = new ModelObj(ResName_CommonCells, ArcPath_Menu);
         }
         {
             ResList *a = ResMgr_GetArcList(self->model->name);

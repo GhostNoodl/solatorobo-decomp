@@ -10,14 +10,14 @@ void Obj0216c9b0_Release(Obj0216c954 *self) {
     p = self->effect;
     if (p) {
         if (p) {
-            func_ov000_021c216c(p);
+            Obj021c2114_Release(p);
             Heap_Free(p);
         }
         self->effect = NULL;
     }
     LO_HEAP_POP(saved);
     HEAP_DELETE_MODEL(self->model);
-    func_ov000_0216c954(self, 0, 0);
+    Obj0216c954_Init(self, 0, 0);
 }
 
 }

@@ -2,7 +2,7 @@
 # A data spec: the bytes come from the user's ROM at build time (tools/extract_data.py).
 default raw
 
-0x0208d268  ptr[13]         # data_0208d268: item table of each category (ItemGive.cpp, ItemDef)
+0x0208d268  ptr[13]         # Param_ItemTables: item table of each category (ItemGive.cpp, ItemDef)
 
 0x0208cb8c  str     # data_0208cb8c
 0x0208cb90  str     # data_0208cb90
@@ -31,23 +31,23 @@ default raw
 0x0208cc7b  str     # data_0208cc7b
 0x0208cc7f  str     # data_0208cc7f
 0x0208cc83  str     # data_0208cc83
-0x0208cc88  ptr     # data_0208cc88
-0x0208cc8c  ptr     # data_0208cc8c
-0x0208cc90  ptr     # data_0208cc90
-0x0208cc94  ptr     # data_0208cc94
+0x0208cc88  ptr     # ResName_BattleCells
+0x0208cc8c  ptr     # ArcPath_MenuWifi
+0x0208cc90  ptr     # ArcPath_FaceIcons
+0x0208cc94  ptr     # ArcPath_MenuBattle
 0x0208cc98  ptr     # data_0208cc98
-0x0208cc9c  ptr     # data_0208cc9c
-0x0208cca0  ptr     # data_0208cca0
-0x0208cca4  ptr     # data_0208cca4
-0x0208cca8  ptr     # data_0208cca8
+0x0208cc9c  ptr     # ArcPath_MenuLoad
+0x0208cca0  ptr     # ArcPath_Menu
+0x0208cca4  ptr     # ResName_GoParam
+0x0208cca8  ptr     # ResName_ItemParam
 0x0208ccac  ptr     # data_0208ccac
-0x0208ccb0  ptr     # data_0208ccb0
+0x0208ccb0  ptr     # ArcPath_GameParam
 0x0208ccb4  ptr     # data_0208ccb4
 0x0208ccb8  ptr     # data_0208ccb8
 0x0208ccbc  ptr     # data_0208ccbc
-0x0208ccc0  ptr     # data_0208ccc0
+0x0208ccc0  ptr     # ResName_CommonModel2
 0x0208ccc4  ptr     # data_0208ccc4
-0x0208ccc8  ptr     # data_0208ccc8
+0x0208ccc8  ptr     # ArcPath_Menu3D
 0x0208cccc  str     # data_0208cccc
 0x0208ccd0  str     # data_0208ccd0
 0x0208ccd7  str     # data_0208ccd7

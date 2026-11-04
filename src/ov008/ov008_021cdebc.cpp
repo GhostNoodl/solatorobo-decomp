@@ -49,7 +49,7 @@ void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void TexObj_TickAnim(void *a, int b);
@@ -82,8 +82,8 @@ s32 SceneResSet_Bind08(void);
 void TextWin_Init(TextWin *win);
 void SndQueue_Push_0204aab0(void *p);
 void Shared_ClearMark(void);
-void *func_ov008_021cd26c(void);
-void *func_ov008_021cd3dc(void);
+void *Ov008WorldMap_OamCallback0(void);
+void *Ov008WorldMap_OamCallback1(void);
 
 }
 
@@ -169,15 +169,15 @@ void Ov008WorldMap_Setup(Ov008Mgr *m) {
     m->unk_e8->unk_085 &= (u8)~4;
     m->unk_e8->unk_085 &= (u8)~1;
     func_02041c18(m->unk_e8, m);
-    TexObj_SetOamFunc(m->unk_e8, 2, (void *)func_ov008_021cd26c, 0);
+    TexObj_SetOamFunc(m->unk_e8, 2, (void *)Ov008WorldMap_OamCallback0, 0);
 
     {
     Model *q;
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
     q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
-        const char *file = data_0208cca0;
-        const char *nm = data_0208cb74;
+        const char *file = ArcPath_Menu;
+        const char *nm = ResName_CommonCells;
         PlttRes_Init_02041218(&q->pltt);
         TexObj_Init(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
@@ -190,11 +190,11 @@ void Ov008WorldMap_Setup(Ov008Mgr *m) {
 
     {
     Model *q;
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
-        const char *file = data_0208cc94;
-        const char *nm = data_0208cc88;
+        const char *file = ArcPath_MenuBattle;
+        const char *nm = ResName_BattleCells;
         PlttRes_Init_02041218(&q->pltt);
         TexObj_Init(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
@@ -206,7 +206,7 @@ void Ov008WorldMap_Setup(Ov008Mgr *m) {
     }
     m->unk_f0->flags |= 0x80000;
     MODEL_FLAGS(m->unk_f0)->alpha = 0x1e;
-    TexObj_SetAllOamFuncs(m->unk_f0, (void *)func_ov008_021cd3dc);
+    TexObj_SetAllOamFuncs(m->unk_f0, (void *)Ov008WorldMap_OamCallback1);
 
     c = (Ov008Caption *)Heap_Alloc(0x54);
     if (c != NULL) {

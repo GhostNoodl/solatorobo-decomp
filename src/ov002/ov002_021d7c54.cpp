@@ -44,7 +44,7 @@ void Obj021efe9c_SetRot(Obj021efe9c *self, u16 rot) {
 
 void Obj021efe9c_ClampToBoard(Obj021efe9c *self, Ov002Shape *b) {
     Vec2 out;
-    while (func_ov002_021e3dac((Vec2 *)&self->unk_54, b, &self->shape, &out)) {
+    while (Ov002Shape_FitInMap((Vec2 *)&self->unk_54, b, &self->shape, &out)) {
         if (out.x < 0) {
             self->unk_54 -= out.x;
         } else if (out.x >= b->w) {

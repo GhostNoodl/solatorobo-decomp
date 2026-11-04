@@ -21,7 +21,7 @@ extern "C" {
 
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
 
-void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
+void Ov014Act_02209280_SpawnShot(Ov014Act_02209280 *self, u16 a) {
     VecFx32 v;
     s32 spd;
     u16 ang;

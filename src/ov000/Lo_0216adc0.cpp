@@ -14,7 +14,7 @@ void *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 Gfx3DState_NextPolyIdB(void *a);
 
-void func_ov000_0216adc0(Obj0216ad04 *self, s32 a, s32 b) {
+void Obj0216ad04_Ask(Obj0216ad04 *self, s32 a, s32 b) {
     if (self->kind == a) {
         self->flags |= 6;
     } else {
@@ -34,8 +34,8 @@ void func_ov000_0216adc0(Obj0216ad04 *self, s32 a, s32 b) {
 extern "C" {
 extern MessageQueue021cb980 *gMessageQueue;
 extern s32 gFadeState[5];
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 BOOL Model_IsReady(void *m, s32 id);
 s32 FX_Div(s32 a, s32 b);
 
@@ -69,7 +69,7 @@ static inline BOOL SubFlag0216adf8(Lo021cb798 *o) {
     return o->unk_0c_1 ? TRUE : FALSE;
 }
 
-void func_ov000_0216adf8(Obj0216ad04 *self) {
+void Obj0216ad04_Update(Obj0216ad04 *self) {
     Lo021cb798 *o = GetObj0216adf8();
     if (o == NULL) {
         return;
@@ -101,10 +101,10 @@ void func_ov000_0216adf8(Obj0216ad04 *self) {
         void *res;
         Model *m;
         self->part = 0xc;
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            const char *nm = data_0208cc88;
+            const char *nm = ResName_BattleCells;
             PlttRes_Init_02041218((struct PlttRes *)((u8 *)m + 0x88));
             TexObj_Init(m, nm, 0);
         }

@@ -5,7 +5,7 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-char *func_0206e200(LangBlockB *b);
+char *LangBlockB_GetLangEntry(LangBlockB *b);
 void TextWin_InitLines(TextWin *win, s32 a);
 s32 FX_Div(s32 a, s32 b);
 
@@ -33,7 +33,7 @@ struct Obj02167d64 {
 };
 
 void func_ov000_02167d64(Obj02167d64 *self) {
-    char *str = func_0206e200(gFieldMgr->blockB);
+    char *str = LangBlockB_GetLangEntry(gFieldMgr->blockB);
     TextWin *win;
     switch (self->unk_44) {
     case 4:

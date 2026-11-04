@@ -101,7 +101,7 @@ static inline BOOL Bit2_021675ec(Robo021ca458 *pl) {
     return pl->unk_b28_2 == 1 ? TRUE : FALSE;
 }
 
-void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
+void Lo021cb6b0_DrawMarkers(Lo021cb6b0 *self, Ctx0216607c *w) {
     u16 k;
     VecFx32 pos;
     FieldProp *o;

@@ -30,7 +30,7 @@ SIZE_ASSERT(Obj021b8e80, 0x3c);
 
 extern "C" {
 
-void func_02042f40(s32 a);
+void Blend_Update(s32 a);
 
 void PlaceNameCard_Draw(Obj021b8db4 *self) {
     switch (self->state) {
@@ -51,7 +51,7 @@ void PlaceNameCard_Draw(Obj021b8db4 *self) {
     case 13:
     case 14: {
         Model *m;
-        func_02042f40(1);
+        Blend_Update(1);
         m = self->unk_30;
         if (m != NULL) {
             Model_PlayPart(m, 0);

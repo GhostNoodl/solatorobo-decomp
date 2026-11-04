@@ -15,11 +15,11 @@ void **ResList_FindType4(void *m, void *k);
 void Vram_FreeRes(void *p);
 void ResMgr_ReleaseByName(void *a, void *e, s32 b, s32 c);
 LangGroup *Lang_GetGroup(int id);
-void func_0206dedc(void *buf, u8 *p);
-void func_0206dde4(void *buf, u8 *p);
+void LangData_MakeRadarPath(void *buf, u8 *p);
+void LangData_MakeAreaInfoPath(void *buf, u8 *p);
 void ResMgr_ReleaseArchive(const char *name, void *buf, s32 b);
 
-void func_ov000_021b6994(FieldMgr *self, u8 arg) {
+void FieldMgr_LoadBlockArchives(FieldMgr *self, u8 arg) {
     u8 *e;
     s32 i;
     u8 *p;
@@ -58,9 +58,9 @@ void func_ov000_021b6994(FieldMgr *self, u8 arg) {
         p = gSceneCmd->unk_ca.c;
     }
     t = Lang_GetGroup(p[0]);
-    func_0206dedc(buf, p);
+    LangData_MakeRadarPath(buf, p);
     ResMgr_ReleaseArchive(t->unk_08, buf, 0);
-    func_0206dde4(buf, p);
+    LangData_MakeAreaInfoPath(buf, p);
     ResMgr_ReleaseArchive(t->unk_08, buf, 0);
     self->blockA = NULL;
     self->unk_0c = NULL;

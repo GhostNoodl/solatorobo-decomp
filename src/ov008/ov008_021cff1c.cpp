@@ -9,7 +9,7 @@ extern void *UiList_vtbl;
 extern void *UiObj_vtbl;
 BOOL Model_IsReady(Model *a, u32 b);
 BOOL Vram_IsTransferDone(void *p);
-BOOL func_ov008_021d01b0(Ov008Menu *self);
+BOOL Ov008Menu_AreModelsReady(Ov008Menu *self);
 
 }
 

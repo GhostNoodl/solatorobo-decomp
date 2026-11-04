@@ -17,7 +17,7 @@ struct Marker021becb4 : ActorMarker {
 
 extern "C" {
 
-void *func_ov000_021bec38(ActorMarkerWork *work, void *src, void *out, u16 *count);
+void *ActorMarker_OamCallback03(ActorMarkerWork *work, void *src, void *out, u16 *count);
 void TexObj_SetOamFunc(void *model, s32 a, void *cb, void *arg);
 
 static inline BOOL Obj021becb4_Wait(Marker021becb4 *self) {
@@ -53,7 +53,7 @@ void ActorMarker_UpdateKind03(Marker021becb4 *self) {
             self->unk_8c->flags |= 0x80000;
             self->unk_90->flags |= 0x200000;
             self->unk_90->flags |= 0x80000;
-            TexObj_SetOamFunc(self->unk_90, 2, (void *)func_ov000_021bec38, &self->work);
+            TexObj_SetOamFunc(self->unk_90, 2, (void *)ActorMarker_OamCallback03, &self->work);
             self->unk_94->flags |= 0x200000;
             self->unk_94->flags |= 0x80000;
         }

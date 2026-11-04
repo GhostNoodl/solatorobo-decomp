@@ -13,9 +13,9 @@ typedef struct {
 
 extern "C" {
 
-// The OAM callback of Obj0216ad04's model (entry 6, registered by func_ov000_0216b1b4 with the
+// The OAM callback of Obj0216ad04's model (entry 6, registered by Obj0216ad04_Draw with the
 // object as the entry's argument): draws value as one or two digits.
-LoGlyphEnt *func_ov000_0216ac14(TexObj *self, TexObjEntry *msg, LoGlyphEnt *arr, u16 *cnt) {
+LoGlyphEnt *Obj0216ad04_OamCallback(TexObj *self, TexObjEntry *msg, LoGlyphEnt *arr, u16 *cnt) {
     u16 n = *cnt;
     LoGlyphEnt *e = &arr[n - 1];
     if (msg->index == 6) {

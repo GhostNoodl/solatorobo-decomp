@@ -28,7 +28,7 @@ void Ov002_ScaleAlphaMatCb(NNSG3dRS *rs) {
     mat->prmPolygonAttr = (w & ~0x1f0000) | ((u8)v << 16);
 }
 
-// onDecide of func_ov002_021dd6a4's list: stores the chosen item's id (-1: cancelled) at the owner.
+// onDecide of Obj021eff10_NewMsgList's list: stores the chosen item's id (-1: cancelled) at the owner.
 BOOL func_ov002_021e046c(UiList *self, UiListItem *item) {
     s32 *out = (s32 *)self->owner;
     if (item != NULL) {
@@ -56,7 +56,7 @@ static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
 
 // The OAM callback of entry 6 of Obj021eff10::unk_10 (Obj021eff10_Enter): the entry argument is a
 // piece list; each kind 2 piece gets its unk_a8 drawn as up to two digits over its cell.
-Oam0488 *func_ov002_021e0488(TexObj *ctx, TexObjEntry *cell, Oam0488 *oam, u16 *num) {
+Oam0488 *Obj021eff10_OamCallback(TexObj *ctx, TexObjEntry *cell, Oam0488 *oam, u16 *num) {
     u16 n = *num;
     Oam0488 *last = &oam[n - 1];
     u32 chr = last->a23.chr;

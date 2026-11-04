@@ -11,7 +11,7 @@ void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 
 // The model matrix callback (Model::unk_15c, called by the TexObj draw for affine entries) that
 // LoTimer_Draw sets around part 0x1e: rotates entry 0x1e by the u16 angle at 0x44 of its argument.
-void func_ov000_0216d9dc(MtxFx43 *mtx, TexObj *obj, TexObjEntry *e) {
+void LoTimer_MtxFunc(MtxFx43 *mtx, TexObj *obj, TexObjEntry *e) {
     u16 type = e->index;
     void *p = (void *)e->unk_08;
     u16 ang;
@@ -147,7 +147,7 @@ BOOL LoTimer_Update(LoTimer *self) {
             break;
         }
     case 5:
-        func_ov000_0216e67c(self);
+        LoTimer_LoadModels(self);
         self->state = 6;
     case 6:
         if (!Ready0216dae4(self)) {

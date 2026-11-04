@@ -30,7 +30,7 @@ BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
 void Model0218fe1c_SetLoop(Model0218fe1c *model);
 BOOL History_SetState(ActorSub40 *w, u8 a, BOOL b);
 void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
-u16 func_ov000_02198da8(ActorSub48 *ctl, u16 angle);
+u16 Body_GetFaceAngle(ActorSub48 *ctl, u16 angle);
 Actor *Target_Get(ActorSub4c *t);
 u16 func_ov000_02199e94(ActorSub4c *t);
 u8 func_ov000_02199f08(ActorSub4c *t);
@@ -178,7 +178,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
         } else {
             ActorSub48 *ctl = self->hit;
             if ((ctl->unk_50 & 0x40000000) || ctl->unk_58 != 0) {
-                self->moveYaw = func_ov000_02198da8(ctl, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(ctl, self->moveYaw);
                 self->speed >>= 2;
                 if (self->speed < 0x8f) {
                     self->speed = 0x8f;

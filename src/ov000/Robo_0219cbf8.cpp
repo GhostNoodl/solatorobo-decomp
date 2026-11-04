@@ -85,7 +85,7 @@ void SndMgr_StopSeqArc(void *mgr, s32 id);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
 void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
+void ResSet_SetName3(void *p, s32 a, s32 b, s32 c, s32 d);
 void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
 
@@ -199,7 +199,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
             NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             ResSet_SetName0(&self->res1, t[0], t[1], 1, 1);
             ResSet_SetName1(&self->res1, t[2], t[3], 1, 1);
-            func_ov000_0218ef10(&self->res1, t[4], t[5], 1, 1);
+            ResSet_SetName3(&self->res1, t[4], t[5], 1, 1);
             if (LFLD(u8, t, 0x18) != 0) {
                 ResSet_SetName1(&self->res2, t[0], t[1], 1, 1);
             }

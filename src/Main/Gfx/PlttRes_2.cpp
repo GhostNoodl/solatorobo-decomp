@@ -11,7 +11,7 @@ extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
-u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
+u32 PlttRes_Transfer(PlttRes *res, int idx, u32 mask, int load);
 u16 PlttRes_AllocSlotsKind0(int count);
 u16 PlttRes_AllocSlotsKind2(int count);
 u16 PlttRes_AllocSlotsKind1(int count);
@@ -47,7 +47,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 // rule); as a `u32` it becomes a temp and the function is 1 / 36 off.
 typedef enum { PLTT_SIZE_16 = 0x20, PLTT_SIZE_256 = 0x200 } PlttSize;
 
-u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
+u32 PlttRes_Transfer(PlttRes *res, int idx, u32 mask, int load) {
     u16 tbl[16];
     u32 ret;
     u16 *orig;

@@ -1,16 +1,16 @@
 // Two Mobiclip video decoder lookup tables of 0x2100 bytes each (packed u16 entries).
-// func_020346d4 (mobiclip_mem.cpp) copies data_02077ab8 to fast memory; nothing in main
+// MoMem_GetCode04 (mobiclip_mem.cpp) copies MoMem_Code04 to fast memory; nothing in main
 // references data_02079bb8 directly. Data, so written as `dcd` words. dsd had read 256 of the
 // 0x0214 halfword pairs as pointers to .bss (data_02140214); those relocations are removed.
-// Generated with tools/asm2mw/asmblob.py main data_02077ab8:02077ab8:02079bb8:data
+// Generated with tools/asm2mw/asmblob.py main MoMem_Code04:02077ab8:02079bb8:data
 // data_02079bb8:02079bb8:0207bcb8:data
 
 #pragma force_active on
 
-void data_02077ab8(void);
+void MoMem_Code04(void);
 void data_02079bb8(void);
 
-asm void data_02077ab8(void) {
+asm void MoMem_Code04(void) {
     dcd 0x00010001
     dcd 0x00010001
     dcd 0x00010001

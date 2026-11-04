@@ -48,7 +48,7 @@ BOOL Blend_Tick(int ch) {
 // Built at optimization level 3 (round mtA); at level 4 the lerp and the FX_SinIdx index get other registers.
 #pragma push
 #pragma optimization_level 3
-void func_02042f40(int ch) {
+void Blend_Update(int ch) {
     int t;
     int ev1;
     int ev2;

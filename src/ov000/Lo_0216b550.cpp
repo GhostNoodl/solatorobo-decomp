@@ -9,8 +9,8 @@
 extern "C" {
 
 extern s32 gFadeState[5];
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 
@@ -37,7 +37,7 @@ static inline BOOL LoD78Idle(void) {
     return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0216b550(Lo0216b474 *self) {
+void Lo0216b474_Update(Lo0216b474 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         self->want = 0;
     }
@@ -57,10 +57,10 @@ void func_ov000_0216b550(Lo0216b474 *self) {
         self->state = 5;
         break;
     case 5: {
-        void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+        void *res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m) {
-            const char *nm = data_0208cc88;
+            const char *nm = ResName_BattleCells;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, nm, 0);
         }

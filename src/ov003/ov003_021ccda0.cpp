@@ -55,7 +55,7 @@ extern u8 Task_vtbl[];
 extern u8 Ov003TaskVt_021f78f4_vtbl[];
 extern u8 Ov003Vt_021f78e4_vtbl[];
 extern void *Heap_Alloc(u32 size);
-extern void func_ov000_021c2208(void *p);
+extern void Obj021c2208_Init(void *p);
 
 #pragma force_active on
 Ov003Scene *Ov003TaskVt_021f78f4_New(void) {
@@ -65,7 +65,7 @@ Ov003Scene *Ov003TaskVt_021f78f4_New(void) {
         p->Reset();
         *(void **)p = Ov003TaskVt_021f78f4_vtbl;
         *(void **)((u8 *)p + 0x60) = Ov003Vt_021f78e4_vtbl;
-        func_ov000_021c2208((u8 *)p + 0x60);
+        Obj021c2208_Init((u8 *)p + 0x60);
         p->Reset();
     }
     p->Start(0xd, 0xc8);

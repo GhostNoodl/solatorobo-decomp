@@ -110,7 +110,7 @@ void Ov010Sw_Update(Ov010Sw *self) {
     if (Ov010_PlayerBusy(p)) {
         return;
     }
-    func_ov000_0218a358(&gSceneCmd->cam, &self->unk_08, &self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
+    FieldCam_SetTarget(&gSceneCmd->cam, &self->unk_08, &self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
 u16 Ov010_PhaseAngle(s32 a, s32 b) {

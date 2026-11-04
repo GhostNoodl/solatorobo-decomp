@@ -129,7 +129,7 @@ void Ov012ActExVt_0220b150_Start(Ov012ActExVt_0220b150 *self) {
 }
 
 extern "C" {
-extern void func_ov012_02206bb0(Ov012ActExVt_0220b150 *self);
+extern void Ov012ActExVt_0220b150_UpdateThrown(Ov012ActExVt_0220b150 *self);
 extern void Ov012ActExVt_0220b150_HitNearby(Ov012ActExVt_0220b150 *self);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 
@@ -155,7 +155,7 @@ void Ov012ActExVt_0220b150_StateThrown(Ov012ActExVt_0220b150 *self) {
         }
     }
     if (m->kind == 0x1000) {
-        func_ov012_02206bb0(self);
+        Ov012ActExVt_0220b150_UpdateThrown(self);
         return;
     }
     switch (self->fsm->st) {
@@ -264,7 +264,7 @@ extern "C" {
 
 extern void Ov012ActExVt_0220b150_HitNearby(Ov012ActExVt_0220b150 *self);
 
-void func_ov012_02206bb0(Ov012ActExVt_0220b150 *self) {
+void Ov012ActExVt_0220b150_UpdateThrown(Ov012ActExVt_0220b150 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {

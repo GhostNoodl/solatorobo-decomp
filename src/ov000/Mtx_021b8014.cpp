@@ -41,7 +41,7 @@ static inline void RotZYX(MtxFx33 *m, const u16 *rot) {
     }
 }
 
-void func_ov000_021b8014(FieldProp *self, const FieldPropDef *def, s32 a, u8 b) {
+void FieldProp_Init(FieldProp *self, const FieldPropDef *def, s32 a, u8 b) {
     self->loader.flag0 = 1;
     self->loader.flag2 = 1;
     if (def->hit) {

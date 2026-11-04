@@ -81,7 +81,7 @@ void TexObj_SetOamFunc(void *a, int b, void *c, int d);
 
 
 
-void *func_ov002_021d8d00(void);
+void *Obj021efed4_OamCallback(void);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
     MIi_CpuClear32(0, dst, n);
@@ -127,18 +127,18 @@ void Obj021efed4_LoadPartModel(Obj021efed4 *self) {
     if (self->unk_94) {
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            const char *file = data_0208cc94;
-            const char *nm = data_0208cc88;
+            const char *file = ArcPath_MenuBattle;
+            const char *nm = ResName_BattleCells;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, nm, 0);
             STD_CopyString(m->name, file);
         }
         self->unk_90 = m;
-        TexObj_SetRes((Model *)self->unk_90, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
+        TexObj_SetRes((Model *)self->unk_90, ResMgr_FindArcType2(ArcPath_MenuBattle, ResName_BattleCells));
         ((Model *)self->unk_90)->flags |= 2;
         ((Model *)self->unk_90)->unk_150 = -0x2000;
         TexObj_SetOamFuncArg((Model *)self->unk_90, 6, self);
-        TexObj_SetOamFunc(self->unk_90, 6, (void *)func_ov002_021d8d00, 0);
+        TexObj_SetOamFunc(self->unk_90, 6, (void *)Obj021efed4_OamCallback, 0);
         TexObj_SelectImage((Model *)self->unk_90, 0, 6);
     }
     self->trans.y = 0;

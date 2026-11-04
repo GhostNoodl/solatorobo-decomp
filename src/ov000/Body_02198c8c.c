@@ -113,7 +113,7 @@ typedef struct {
 } Finder;
 
 GroupL *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
-BOOL func_ov000_02199684(Finder *self, ActorL *actor);
+BOOL Finder_TestActor(Finder *self, ActorL *actor);
 ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from);
 
 static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
@@ -232,7 +232,7 @@ void Body_SetPos(Body *self, VecFx32 *pos, u32 angle) {
     self->prev.z = tmp.z;
 }
 
-u16 func_ov000_02198da8(Body *self, u16 angle) {
+u16 Body_GetFaceAngle(Body *self, u16 angle) {
     u16 ret = angle;
     u16 d;
 
@@ -263,7 +263,7 @@ void Body_CalcReflectRot(Body *self, u16 *rot, VecFx32 *v, BOOL flag) {
     rot[2] = 0;
 }
 
-s32 func_ov000_02198efc(s32 count, SortLink *links, s32 *keys) {
+s32 Finder_SortByKey(s32 count, SortLink *links, s32 *keys) {
     s32 head;
     s32 i;
     s32 cur;
@@ -352,7 +352,7 @@ ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from) {
             }
             for (; actor != NULL; actor = actor->next) {
                 if (Query_MatchKind(self->query, actor)) {
-                    if (func_ov000_02199684(self, actor)) {
+                    if (Finder_TestActor(self, actor)) {
                         found = actor;
                         break;
                     }
@@ -396,7 +396,7 @@ static inline s32 DistSq9180(const VecFx32 *a, const VecFx32 *b) {
     return (s32)(((s64)x * x + (s64)y * y + (s64)z * z + 0x800) >> 12);
 }
 
-s32 func_ov000_02199180(Finder *self, Query *q, ActorL **out, s32 max) {
+s32 Finder_FindActors(Finder *self, Query *q, ActorL **out, s32 max) {
     ActorL *found[32];
     s32 dist[32];
     SortLink links[32];
@@ -421,7 +421,7 @@ s32 func_ov000_02199180(Finder *self, Query *q, ActorL **out, s32 max) {
                 dist[i] = 0x7fffffff;
             }
         }
-        cur = func_ov000_02198efc(n, links, dist);
+        cur = Finder_SortByKey(n, links, dist);
         for (i = 0; i < n; i++) {
             out[i] = found[cur];
             cur = links[cur].next;

@@ -10,11 +10,11 @@ typedef struct {
 extern "C" {
 
 Info021b4f28 *Lang_GetGroup(u32 id);
-void func_0206dfd4(char *buf, u8 *src);
+void LangData_MakeBlockPath(char *buf, u8 *src);
 void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
-void *func_ov000_021b7a7c(FieldProp *node);
+void *FieldProp_Release(FieldProp *node);
 void HitMesh_Detach(void *obj);
-void func_0206e6c0(void);
+void LangData_UnloadWorldInfo(void);
 
 static inline void FieldMgr_Delete(FieldMgr *o) {
     FieldProp *node;
@@ -22,7 +22,7 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
         FieldState *g = gSceneCmd;
         Info021b4f28 *info = Lang_GetGroup(g->unk_ca.c[0]);
         char buf[0x20];
-        func_0206dfd4(buf, &g->unk_ca.c[0]);
+        LangData_MakeBlockPath(buf, &g->unk_ca.c[0]);
         ResMgr_ReleaseArchive(info->unk_08, buf, 0);
         {
             FieldCam *sub = &gSceneCmd->cam;
@@ -32,12 +32,12 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
         o->blockB = NULL;
     }
     o->exits = NULL;
-    func_ov000_021b6994(o, 1);
+    FieldMgr_LoadBlockArchives(o, 1);
     while ((node = o->head) != NULL) {
         FieldProp *prev = node->prev;
         FieldProp *next = node->next;
         if (node != NULL) {
-            func_ov000_021b7a7c(node);
+            FieldProp_Release(node);
             Heap_Free(node);
         }
         if (prev != NULL) {
@@ -55,7 +55,7 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
     Heap_Free(o);
 }
 
-void func_ov000_021b4f28(void) {
+void FieldMgr_Destroy(void) {
     FieldMgr *p;
     void *saved;
     saved = gSysState->cur;
@@ -68,7 +68,7 @@ void func_ov000_021b4f28(void) {
         gFieldMgr = NULL;
     }
     gSysState->cur = saved;
-    func_0206e6c0();
+    LangData_UnloadWorldInfo();
 }
 
 }

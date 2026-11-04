@@ -32,7 +32,7 @@ static inline BOOL Effect_Prepare(EffectObj *obj) {
     return FALSE;
 }
 
-BOOL func_020637d0(EffectObj *obj) {
+BOOL EffectObj_Update(EffectObj *obj) {
     BOOL ret = TRUE;
     if (obj->paused) {
         return ret;
@@ -87,7 +87,7 @@ BOOL EffectObj_Loop(EffectObj *obj) {
     return TRUE;
 }
 
-void func_02063954(EffectObj *obj) {
+void EffectObj_Render(EffectObj *obj) {
     s32 v;
     if (obj->state != 3) {
         return;
@@ -758,7 +758,7 @@ extern "C" {
 
 extern EffectFile *ResList_FindType0(void *arc, const char *name);
 extern void EffectSetup_Init(struct EffectSetup *setup, void *data, VecFx32 *pos);
-extern EffectObj *func_02068544(struct EffectSetup *setup);
+extern EffectObj *EffectSetup_SpawnObjs(struct EffectSetup *setup);
 extern void EffectSetup_DtorBase(struct EffectSetup *setup);
 extern u32 EffectSetup_vtbl[];
 extern u32 EffectObj_vtbl[];
@@ -844,7 +844,7 @@ BOOL EffectGroup_Setup(EffectGroup *g) {
         }
         g->setup = setup;
         EffectSetup_Init(setup, file->data, &g->pos);
-        first = func_02068544(g->setup);
+        first = EffectSetup_SpawnObjs(g->setup);
         c = first;
         if (first != NULL) {
             do {
@@ -1251,7 +1251,7 @@ void EffectMgr_Update(EffectMgr *m) {
         }
         for (o = m->head; o != NULL; o = next) {
             next = o->next;
-            if (!func_020637d0(o)) {
+            if (!EffectObj_Update(o)) {
                 EFFECT_DELETE(o);
             }
         }
@@ -1332,14 +1332,14 @@ void EffectMgr_Draw(EffectMgr *m) {
     if (!m->drawFilter) {
         for (; o != NULL; o = next) {
             next = o->drawNext;
-            func_02063954(o);
+            EffectObj_Render(o);
         }
     } else {
         mask = gGfxSys->unk_a30_4 ? 1 : 2;
         for (; o != NULL;) {
             EffectObj *n2 = o->drawNext;
             if (mask & (u8)o->unk_d4) {
-                func_02063954(o);
+                EffectObj_Render(o);
             }
             o = n2;
         }

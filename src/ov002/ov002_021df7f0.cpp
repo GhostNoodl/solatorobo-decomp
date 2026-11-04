@@ -6,7 +6,7 @@ void Ov002_CopyVec2(Vec2 *dst, const Vec2 &src);
 void Ov002_MultVec33(void *a, void *b, void *c);
 s32 Ov002_FxMul(s32 a, s32 b);
 void Ov002_QuarterRotMtx33(s32 *m, int rot);
-void *func_ov002_021e3874(void *v, u8 a, u8 b);
+void *Ov002_SpawnEffect3D(void *v, u8 a, u8 b);
 void Ov002_PlaySe(int se);
 void Obj021eff30_Step10(Obj021eff30 *self);
 void Obj021eff30_Step01(Obj021eff30 *self);
@@ -58,7 +58,7 @@ void Obj021eff30_Update(Obj021eff30 *self, Obj021eff50 *a) {
         v.y = 0x266;
         v.x += off.x;
         v.z += off.z;
-        func_ov002_021e3874(&v, func_ov002_021d8b74(self->unk_10), m->w);
+        Ov002_SpawnEffect3D(&v, func_ov002_021d8b74(self->unk_10), m->w);
         Ov002_PlaySe(0x45);
         Obj021efe6c_AppendPiece(Obj021eff50_GetBoard(a), self->unk_10);
         self->unk_10 = NULL;

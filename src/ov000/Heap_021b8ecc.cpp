@@ -23,7 +23,7 @@ typedef struct {
 extern "C" {
 
 void SceneResSet_Close08(void);
-void func_ov000_0214c210(void);
+void FaceIcon_ReleasePlayer(void);
 
 void Obj021b8ecc_Release(Obj021b8ecc *self) {
     HEAP_DELETE_VOBJ(self->unk_18);
@@ -32,7 +32,7 @@ void Obj021b8ecc_Release(Obj021b8ecc *self) {
     HEAP_DELETE_MODEL(self->unk_20);
     HEAP_DELETE_VOBJ(self->unk_04);
     SceneResSet_Close08();
-    func_ov000_0214c210();
+    FaceIcon_ReleasePlayer();
 }
 
 }
@@ -72,11 +72,11 @@ extern u8 Menu021ca94c_vtbl[];
 extern void *gSndMgr;
 void LangData_LocalizePath(void *buf, const char *s);
 void SceneResSet_Open08(void);
-void func_ov000_0214c1ac(void);
-BOOL func_ov000_0214c270(void);
+void FaceIcon_LoadPlayer(void);
+BOOL FaceIcon_IsPlayerLoaded(void);
 BOOL SceneResSet_IsLoaded08(void);
 s32 SceneResSet_Bind08(void);
-void *func_02061d54(s32 id);
+void *StageId_Strip(s32 id);
 void *StageTbl_GetMissionName(u16 id);
 void *StageTbl_GetQuestName(u16 id);
 void *MsgRes_GetString(void *g, void *id);
@@ -87,7 +87,7 @@ BOOL ActorMgr_FindPlayer(void);
 void Robo021ca458_RestoreHp(void);
 BOOL Model_IsReady(void *m, s32 a);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
-void *func_ov000_0214c064(u16 id);
+void *SceneRes_GetString(u16 id);
 void Text_ScanTags(void *a, s32 b, void *c, void *fn);
 void func_ov000_0214c668(VObj *o, u16 a);
 BOOL func_ov000_0214c6a0(void *o);
@@ -143,12 +143,12 @@ BOOL MissionCard_Update(Obj021b9010 *self) {
         LFLD(s32, self->unk_04, 0x44) = 7;
         self->unk_04->vfunc_1c(buf);
         SceneResSet_Open08();
-        func_ov000_0214c1ac();
+        FaceIcon_LoadPlayer();
         self->state = 2;
         break;
     }
     case 2:
-        if (!func_ov000_0214c270()) {
+        if (!FaceIcon_IsPlayerLoaded()) {
             break;
         }
         if (!self->unk_04->vfunc_2c()) {
@@ -168,9 +168,9 @@ BOOL MissionCard_Update(Obj021b9010 *self) {
             break;
         }
         if (self->mode <= 1) {
-            text = func_02061d54(0x8a);
+            text = StageId_Strip(0x8a);
         } else {
-            text = func_02061d54(0x8b);
+            text = StageId_Strip(0x8b);
         }
         text1 = MsgRes_GetString(gMsgRes, text);
         self->unk_18 = NewTextWin_021b9010();
@@ -328,7 +328,7 @@ BOOL MissionCard_Update(Obj021b9010 *self) {
             tb.vals[1] = 0;
             tb.vals[2] = 0;
             tb.vals[3] = 0;
-            Text_ScanTags(func_ov000_0214c064(self->unk_10), 1, &tb, (void *)func_ov000_0214dc20);
+            Text_ScanTags(SceneRes_GetString(self->unk_10), 1, &tb, (void *)func_ov000_0214dc20);
             func_ov000_0214c668(self->unk_14, tb.vals[3]);
             self->unk_12 = 0x10;
             MsgEntry_Release(&tb);

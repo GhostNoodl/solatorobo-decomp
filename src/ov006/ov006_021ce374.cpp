@@ -26,7 +26,7 @@ namespace m_021ce374 {
 extern "C" {
 
 extern char data_ov006_021ec864[];
-extern char *data_0208ccc0;
+extern char *ResName_CommonModel2;
 
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
@@ -78,14 +78,14 @@ void ov006_Emblem_LoadModels(ov006_Emblem *self) {
     TexObj_SelectImage(self->unk3C, 2, 0xffff);
     model2 = (Model *)Heap_Alloc(sizeof(Model));
     if (model2 != NULL) {
-        const char *file = data_0208cca0;
-        const char *name = data_0208ccc0;
+        const char *file = ArcPath_Menu;
+        const char *name = ResName_CommonModel2;
         PlttRes_Init_02041218(&model2->pltt);
         TexObj_Init(model2, name, 0);
         STD_CopyString(model2->name, file);
     }
     self->unk40 = model2;
-    TexObj_SetRes(self->unk40, ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0));
+    TexObj_SetRes(self->unk40, ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonModel2));
     self->unk40->flags |= 2;
     TexObj_SelectImage(self->unk40, 0, 0);
     ov006_Model_SetPos(self->unk40, 0, 0, 0);
@@ -103,7 +103,7 @@ namespace m_021ce560 {
 extern "C" {
 
 extern char data_ov006_021ec864[];
-extern char *data_0208ccc0;
+extern char *ResName_CommonModel2;
 
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
@@ -302,7 +302,7 @@ void ov006_InitOwnerSlot(void);
 ov006_Entry021cec68 *ov006_GetPriceEntry(u32 id);
 void ListRow_Init(void *self);
 void ListRowLabel_Init(void *self);
-void func_ov000_021c5fd0(void *self, const void *s);
+void ListRowLabel_SetText(void *self, const void *s);
 void ov006_CaptionPanel_PlayText(ov006_CaptionPanel *self, const void *s);
 BOOL ov006_ModeMenu_List44OnDecide(UiList *list, UiListItem *arg);
 BOOL ov006_ModeMenu_List44OnCursor(UiList *list, UiListItem *arg);
@@ -401,7 +401,7 @@ void ov006_ModeMenu_Start(ov006_TaskCE *self) {
                         *(void **)item = &Ov000Vt_021cca28_vtbl;
                         ListRowLabel_Init(item);
                     }
-                    func_ov000_021c5fd0(item, MsgRes_GetString(res, e->name));
+                    ListRowLabel_SetText(item, MsgRes_GetString(res, e->name));
                     LoBase021ccb54_021ccbe0_AppendRow(self->unk50, item);
                 }
             }
@@ -1443,7 +1443,7 @@ extern void *gMsgRes;
 extern u8 gTaskSwitchPending;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-BOOL func_ov006_021e4bec(ov006_Menu *self, int a);
+BOOL ov006_Menu_SendEntry(ov006_Menu *self, int a);
 BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
 void ov006_Menu_ShowObj(ov006_Menu *self);
 void *MsgRes_GetString(void *a, int id);
@@ -1496,7 +1496,7 @@ void ov006_EntryWait_UpdateSeq(ov006_TaskD0C *self) {
         self->unk3C = 5;
     case 5:
         self->unk101 = 1;
-        func_ov006_021e4bec(gOv006Menu, 0);
+        ov006_Menu_SendEntry(gOv006Menu, 0);
         self->unk3C = 10;
         ov006_TaskD0C_ShowAll(self);
         break;

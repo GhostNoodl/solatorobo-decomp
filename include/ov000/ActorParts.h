@@ -75,7 +75,7 @@ typedef struct ActorHp {
 typedef struct ActorSub48 {
     VecFx32 pos;
     VecFx32 prev;
-    VecFx32 push; // push-out from other spheres and the map (func_0203f3d0)
+    VecFx32 push; // push-out from other spheres and the map (HitSphere_Collide)
     u8 active; // linked into the sphere list
     u8 unk_25;
     u8 unk_26[0x2];

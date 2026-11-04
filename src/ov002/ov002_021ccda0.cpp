@@ -27,9 +27,9 @@ void Ov002Session_Delete(void) {
     if (p != NULL) {
         if (p != NULL) {
             if (p->state >= 1) {
-                ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
-                ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
-                ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0);
             }
             Heap_Free(p);
         }
@@ -45,14 +45,14 @@ void Ov002Session_Update(Ov002Session *self) {
             gStageFlags->bits18.flag8 = 0;
             gStageFlags->bits18.flag9 = 0;
         }
-        ResMgr_Load(data_0208cca0, 7, 0);
-        ResMgr_Load(data_0208cc94, 7, 0);
-        ResMgr_Load(data_0214b105, 7, 0);
+        ResMgr_Load(ArcPath_Menu, 7, 0);
+        ResMgr_Load(ArcPath_MenuBattle, 7, 0);
+        ResMgr_Load(gCommonTextPath, 7, 0);
         self->state = 1;
     case 1:
-        ResMgr_IsLoaded(data_0208cca0, 7);
-        ResMgr_IsLoaded(data_0208cc94, 7);
-        if (ResMgr_IsLoaded(data_0214b105, 7) == 0) {
+        ResMgr_IsLoaded(ArcPath_Menu, 7);
+        ResMgr_IsLoaded(ArcPath_MenuBattle, 7);
+        if (ResMgr_IsLoaded(gCommonTextPath, 7) == 0) {
             return;
         }
         self->state = 2;
@@ -195,7 +195,7 @@ void AsmodeusMenu_Start(Task021ef530 *self) {
         VObj *mm = self->unk_40;
         mm->vfunc_a8(UiList_GetItemById(mm, self->unk_4c));
     }
-    UiList_SetMarkModel(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_40, gCommonTextPath, ResName_TextCells, 0xb);
     self->unk_40->vfunc_08();
     self->unk_40->flags &= ~0x10;
     o = (UiObj *)Heap_Alloc(0x8c);

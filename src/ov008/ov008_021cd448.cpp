@@ -11,7 +11,7 @@ void Camera_Dtor(void *p);
 void Ov008WorldMap_Init(Ov008Mgr *m);
 void Ov008WorldMap_FreeAll(Ov008Mgr *m);
 void SceneResSet_Close08(void);
-void func_ov000_0214c210(void);
+void FaceIcon_ReleasePlayer(void);
 extern void *ResHandle_vtbl;
 
 void Ov008WorldMap_Create(void) {
@@ -97,10 +97,10 @@ void Ov008WorldMap_FreeAll(Ov008Mgr *m) {
     OV008_FREE_V(m->menu, v04);
     OV008_FREE_V(m->dialog, v04);
     OV008_FREE_V(m->talk, v04);
-    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
     SceneResSet_Close08();
-    func_ov000_0214c210();
+    FaceIcon_ReleasePlayer();
 }
 
 extern void *UiList_vtbl;
@@ -124,9 +124,9 @@ void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
 void SceneResSet_Open08(void);
-void func_ov000_0214c1ac(void);
+void FaceIcon_LoadPlayer(void);
 BOOL SceneResSet_IsLoaded08(void);
-BOOL func_ov000_0214c270(void);
+BOOL FaceIcon_IsPlayerLoaded(void);
 
 Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {
     OV008_SET_VT(self, &UiList_vtbl);

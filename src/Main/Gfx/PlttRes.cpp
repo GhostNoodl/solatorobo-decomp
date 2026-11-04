@@ -28,14 +28,14 @@ extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
-u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
+u32 PlttRes_Transfer(PlttRes *res, int idx, u32 mask, int load);
 u16 PlttRes_AllocSlotsKind0(int count);
 u16 PlttRes_AllocSlotsKind2(int count);
 u16 PlttRes_AllocSlotsKind1(int count);
 u16 PlttRes_AllocSlotsKind3(int count);
 
 
-void func_02040dd8(PlttRes *res, int idx, bool load) {
+void PlttRes_LoadFor(PlttRes *res, int idx, bool load) {
     u32 addr;
     u16 *saved;
     u16 (*alloc)(int);
@@ -96,7 +96,7 @@ void func_02040dd8(PlttRes *res, int idx, bool load) {
     }
     res->table = saved;
     {
-        u32 t = func_02041080(res, idx, 0xffff, load);
+        u32 t = PlttRes_Transfer(res, idx, 0xffff, load);
         if (load) {
             res->transfer = t;
             res->sub.fmt = res->fmt;

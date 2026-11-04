@@ -3,13 +3,13 @@
 extern "C" {
 
 ListRow *LoBase021ccb54_021ccbe0_FindRow(LoBase021ccb54_021ccbe0 *list, int idx);
-void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, ListRow *item);
+void LoBase021ccb54_021ccbe0_SelectRow(LoBase021ccb54_021ccbe0 *list, ListRow *item);
 void LoBase021ccb54_021ccbe0_Select(LoBase021ccb54_021ccbe0 *list, int idx);
 void Obj021f002c_CreateText(Obj021f002c *self);
-Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind);
+Ov002RowList *Obj021efef0_BuildRowList(Obj021efef0 *self, u32 kind);
 Obj021f002c *Ov002_FindRow(LoBase021ccb54_021ccbe0 *self, u16 id);
 void func_ov002_021dec74(Obj021efef0 *self);
-void func_0206ecd4(int a, void *b, u16 c);
+void Param_FormatName(int a, void *b, u16 c);
 
 static inline bool isState5(UiObj *p) {
     return p->state == 5;
@@ -120,14 +120,14 @@ void Obj021efef0_Update(Obj021efef0 *self, Obj021eff50 *a) {
             DELETE_VOBJ(self->unk_0c);
             HEAP_POP(saved);
         }
-        self->unk_0c = func_ov002_021def98(self, self->unk_28);
+        self->unk_0c = Obj021efef0_BuildRowList(self, self->unk_28);
         if (self->unk_18 != 0xffff) {
-            func_ov000_021c414c(self->unk_0c, Ov002_FindRow(self->unk_0c, self->unk_18));
+            LoBase021ccb54_021ccbe0_SelectRow(self->unk_0c, Ov002_FindRow(self->unk_0c, self->unk_18));
             self->unk_18 = 0xffff;
         } else {
             LoBase021ccb54_021ccbe0_Select(self->unk_0c, 0);
         }
-        func_0206ecd4(0x100, self->unk_38, ((Obj021f002c *)self->unk_0c->unk_a0)->id);
+        Param_FormatName(0x100, self->unk_38, ((Obj021f002c *)self->unk_0c->unk_a0)->id);
         Obj0215bb14_SetText(a->unk_20, self->unk_38);
         a->unk_20->vfunc_70();
         self->unk_22 = 0;

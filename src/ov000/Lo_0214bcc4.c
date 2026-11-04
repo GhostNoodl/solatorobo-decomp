@@ -12,7 +12,7 @@ u32 Quest_GetOptFlags(u16 a);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 
-u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
+u16 Quest_GetAvailable(s32 kind, s32 idx) {
     u8 *base;
     u16 ret;
     s32 x;

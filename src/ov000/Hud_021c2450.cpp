@@ -9,13 +9,13 @@ typedef struct {
 } MdlFlags021c2450;
 
 extern "C" {
-extern char *data_0208cc88;
-extern char *data_0208cc94;
-extern char *data_0208cb7c;
-extern char data_0214b105[];
+extern char *ResName_BattleCells;
+extern char *ArcPath_MenuBattle;
+extern char *ResName_TextCells;
+extern char gCommonTextPath[];
 extern char data_ov000_021cc9bc[];
 void TexObj_SetAllOamFuncs(Model *m, void *fn);
-void *func_ov000_021c7608(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *Hud021cca10_OamCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 static inline BOOL Txt_IsVis021c2450(TextWin *t) {
     return t->rendering ? TRUE : FALSE;
@@ -54,8 +54,8 @@ void Hud021cca10_Update(Hud021cca10 *self) {
     if (self->built == 0) {
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            char *name = data_0208cc94;
-            char *a = data_0208cc88;
+            char *name = ArcPath_MenuBattle;
+            char *a = ResName_BattleCells;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, a, 0);
             STD_CopyString(m->name, name);
@@ -65,17 +65,17 @@ void Hud021cca10_Update(Hud021cca10 *self) {
         self->unk_30->flags |= 2;
         TexObj_SelectImage(self->unk_30, 0, 6);
         TexObj_SetOamFuncArg(self->unk_30, 6, (void *)self->unk_3c);
-        TexObj_SetAllOamFuncs(self->unk_30, (void *)func_ov000_021c7608);
+        TexObj_SetAllOamFuncs(self->unk_30, (void *)Hud021cca10_OamCallback);
         self->unk_30->flags |= 0x80000;
         ((MdlFlags021c2450 *)&self->unk_30->flags)->lay = 0x1e;
         self->unk_30->flags |= 0x100000;
 
         m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2 != NULL) {
-            char *a = data_0208cb7c;
+            char *a = ResName_TextCells;
             PlttRes_Init_02041218(&m2->pltt);
             TexObj_Init(m2, a, 0);
-            STD_CopyString(m2->name, data_0214b105);
+            STD_CopyString(m2->name, gCommonTextPath);
         }
         self->unk_34 = m2;
         TexObj_SetRes(self->unk_34, ResList_FindType2(ResMgr_GetArcList(m2->name), self->unk_34->unk_04c));

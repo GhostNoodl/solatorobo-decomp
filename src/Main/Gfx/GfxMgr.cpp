@@ -3,22 +3,22 @@
 
 extern "C" {
 
-extern u8 data_02097ce4[];
+extern u8 gGfxMgrPlttCopy[];
 
 
 extern void GfxMgr_Init(GfxMgr *mgr);
 extern void *GfxMgr_AllocCharBlock(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
-extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);
+extern void *GfxMgr_DrawBlocksOam(GfxMgr *mgr, void *arg1, void *arg2);
 extern VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block);
 extern ResList *ResMgr_LoadArcListSync(const char *name);
 extern void *ResList_FindType1(ResList *list, const char *name);
 
 void *func_02039720(void) {
-    return data_02097ce4;
+    return gGfxMgrPlttCopy;
 }
 
-void *func_0203972c(void *arg1, void *arg2) {
-    return func_0203a984(gGfxMgr, arg1, arg2);
+void *GfxMgr_DrawBlocks(void *arg1, void *arg2) {
+    return GfxMgr_DrawBlocksOam(gGfxMgr, arg1, arg2);
 }
 
 void GfxMgr_Create(void) {
@@ -34,8 +34,8 @@ void GfxMgr_Create(void) {
     for (i = 0; i < 10; i++) {
         mgr->fonts[i] = NULL;
         for (j = 0; j < 9; j++) {
-            if (i == data_020827f8[j].index) {
-                mgr->fonts[i] = (GfxFont *)ResList_FindType1(ResMgr_LoadArcListSync(data_020827f8[j].name), data_020827f8[j].name);
+            if (i == GfxMgr_FontTable[j].index) {
+                mgr->fonts[i] = (GfxFont *)ResList_FindType1(ResMgr_LoadArcListSync(GfxMgr_FontTable[j].name), GfxMgr_FontTable[j].name);
                 mgr->fontHeights[i] = mgr->fonts[i]->res->info[6];
             }
         }

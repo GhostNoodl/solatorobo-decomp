@@ -55,14 +55,14 @@ static inline BOOL Ready021c194c(ActorRes *o) {
 #define SIN021c194c(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS021c194c(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov000_021c194c(Obj021c2114 *self);
+void Obj021c2114_Update(Obj021c2114 *self);
 
 #ifdef NONMATCHING
 // Status (round auA): demoted in the honesty audit. The match declared the locals flag and p as two unused trailing
 // parameters (callers pass only self); as locals at every position the registers differ. This file is the function's
 // whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
-void func_ov000_021c194c(Obj021c2114 *self) {
+void Obj021c2114_Update(Obj021c2114 *self) {
     BOOL flag;
     ActorRes *p;
     MtxFx33 m_0;

@@ -13,8 +13,8 @@ extern void *gMsgRes;
 extern void *gDataRes;
 extern const char *data_ov000_021ca8d8[];
 extern u8 TextWin_vtbl[];
-extern const char *data_0208cca0;
-extern const char *data_0208cb74;
+extern const char *ArcPath_Menu;
+extern const char *ResName_CommonCells;
 extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Lo021cb5a8_vtbl[];
@@ -31,7 +31,7 @@ void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
 void UiList_SetIconModel(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
 u32 DataRes_GetCount(void *a, s32 b);
-u16 func_ov000_0214bcc4(u16 id, u16 index);
+u16 Quest_GetAvailable(u16 id, u16 index);
 s32 StageTbl_GetQuestName(u16 a);
 void func_ov000_0214fcfc(void *self, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, const void *mtx);
 BOOL func_ov000_0214ffac(void *self, void *msg);
@@ -156,7 +156,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     ((VObj *)self->unk_50)->vfunc_10(MsgRes_GetString(g, 0x10f));
     ((VObj *)self->unk_50)->vfunc_14(MsgRes_GetString(g, 0x110));
     UiList021cb4a8_SetLabel(self->unk_50, MsgRes_GetString(g, 0x111));
-    UiList_SetIconModel(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
+    UiList_SetIconModel(self->unk_50, ArcPath_Menu, ResName_CommonCells, 0xb);
     self->unk_50->owner = self;
     self->unk_50->rows = 4;
     {
@@ -178,7 +178,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     data_02fe1534.unk_7a = 0;
     n = DataRes_GetCount(gDataRes, 1);
     for (i = 0; i < n; i++) {
-        k = func_ov000_0214bcc4(id, i);
+        k = Quest_GetAvailable(id, i);
         if (k != 0xffff) {
             t = LFLD(VObj *, Task_FindById(0xe), 0x50);
             t->vfunc_74(StageTbl_GetQuestName(k), k, 0xffff, 0xffff);

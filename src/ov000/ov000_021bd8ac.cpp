@@ -11,12 +11,12 @@ typedef struct {
 } Ent_021bd8ac;
 
 extern "C" {
-extern char data_0214b105[];
-extern const char *data_0208cc88;
-extern const char *data_0208cc94;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
-extern const char *data_0208cb7c;
+extern char gCommonTextPath[];
+extern const char *ResName_BattleCells;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
+extern const char *ResName_TextCells;
 extern Ent_021bd8ac data_ov000_021cc8f0[];
 extern char data_ov000_021cc920[];
 void *ResSet_Init(void *p);
@@ -49,7 +49,7 @@ BOOL ActorMarker_LoadIcons(ActorMarker *self) {
     void *res;
     s32 n;
 
-    if (!ResMgr_GetArcList(data_0214b105) || !ResMgr_GetArcList(data_0208cca0) || !ResMgr_GetArcList(data_0208cc94)) {
+    if (!ResMgr_GetArcList(gCommonTextPath) || !ResMgr_GetArcList(ArcPath_Menu) || !ResMgr_GetArcList(ArcPath_MenuBattle)) {
         return FALSE;
     }
     n = self->nextKind;
@@ -59,111 +59,111 @@ BOOL ActorMarker_LoadIcons(ActorMarker *self) {
     Model *mdl[4] = {NULL, NULL, NULL, NULL};
     switch (n) {
     case 0:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 3);
         break;
     case 1:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 4);
         break;
     case 2:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 0xf);
         break;
     case 3:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
-        mdl[0] = NewModel_021bd8ac(&data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_BattleCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 2);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[1] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[1] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
         TexObj_SelectImage(mdl[1], 0, 2);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
-        mdl[2] = NewModel_021bd8ac(&data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
+        mdl[2] = NewModel_021bd8ac(&ResName_TextCells);
         TexObj_SetRes(mdl[2], res);
         mdl[2]->flags |= 2;
         TexObj_SelectImage(mdl[2], 0, 7);
         break;
     case 4:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
-        mdl[0] = NewModel_021bd8ac(&data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_BattleCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 3);
         TexObj_SelectImage(mdl[0], 0, 0x10);
         break;
     case 5:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
-        mdl[0] = NewModel_021bd8ac(&data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_BattleCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 3);
         TexObj_SelectImage(mdl[0], 0, 0x11);
         break;
     case 6:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
-        mdl[0] = NewModel_021bd8ac(&data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_BattleCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 2);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[1] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[1] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
         TexObj_SelectImage(mdl[1], 0, 2);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
-        mdl[2] = NewModel_021bd8ac(&data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
+        mdl[2] = NewModel_021bd8ac(&ResName_TextCells);
         TexObj_SetRes(mdl[2], res);
         mdl[2]->flags |= 2;
         TexObj_SelectImage(mdl[2], 0, 6);
         break;
     case 7:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
-        mdl[0] = NewModel_021bd8ac(&data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_BattleCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 3);
         TexObj_SelectImage(mdl[0], 0, 4);
         break;
     case 8:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_TextCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 8);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[1] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[1] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
         TexObj_SelectImage(mdl[1], 0, 2);
         break;
     case 9:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_TextCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 9);
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[1] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[1] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
         TexObj_SelectImage(mdl[1], 0, 2);
         break;
     case 10:
-        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
-        mdl[0] = NewModel_021bd8ac(&data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);
+        mdl[0] = NewModel_021bd8ac(&ResName_CommonCells);
         TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
         TexObj_SelectImage(mdl[0], 0, 0);

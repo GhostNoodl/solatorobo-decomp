@@ -5,19 +5,19 @@
 
 extern "C" {
 
-extern char data_0214b105[];
-extern const char *data_0208cb7c;
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern char gCommonTextPath[];
+extern const char *ResName_TextCells;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 extern u8 data_ov000_021c9b04[];
 extern u8 data_ov000_021c9b0a[];
 
 void Lo021cb744_Setup(Lo021cb744 *self) {
-    void *res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
+    void *res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        const char *nm = data_0208cb7c;
+        const char *nm = ResName_TextCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, nm, 0);
     }
@@ -30,10 +30,10 @@ void Lo021cb744_Setup(Lo021cb744 *self) {
     {
     Model *m2;
     void *res2;
-    res2 = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res2 = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     m2 = (Model *)Heap_Alloc(sizeof(Model));
     if (m2) {
-        const char *nm = data_0208cc88;
+        const char *nm = ResName_BattleCells;
         PlttRes_Init_02041218(&m2->pltt);
         TexObj_Init(m2, nm, 0);
     }

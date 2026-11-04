@@ -7,9 +7,9 @@ extern "C" {
 extern void *GfxCamPos_Init(VecFx32 *eye);
 extern void GfxCamParam_Init(s32 *proj);
 extern void Heap_Free(void *ptr);
-extern void func_0204bcb0(Camera *cam);
+extern void Camera_UpdateMode(Camera *cam);
 extern 
-void func_0204bac8(Camera *cam);
+void Camera_ApplyShake(Camera *cam);
 extern s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
 extern u32 Rand_UpTo(u32 max);
@@ -122,7 +122,7 @@ static inline void Cam_SqrtStart(s64 v) {
 void Camera_Apply(Camera *cam) {
     gGfxSys->nearClip = &cam->nearClip;
     if (cam->smooth && !cam->animated) {
-        func_0204bcb0(cam);
+        Camera_UpdateMode(cam);
     }
     if (cam->pitch < 0x8000) {
         if (cam->pitch > 0x3f00) {
@@ -164,7 +164,7 @@ void Camera_Apply(Camera *cam) {
         cam->up.z = -Cam_FxMul(-sr, sy);
     }
     if (cam->shakeTime) {
-        func_0204bac8(cam);
+        Camera_ApplyShake(cam);
     } else {
         if (cam->wallClip) {
             VecFx32 at;
@@ -232,11 +232,11 @@ void Camera_Apply(Camera *cam) {
 
 void Camera_SetAnim(Camera *cam, void *anim);
 
-void func_0204b924(Camera *cam, s32 speed);
+void Camera_StepAnim(Camera *cam, s32 speed);
 
-void func_0204bac8(Camera *cam);
+void Camera_ApplyShake(Camera *cam);
 
-void func_0204bcb0(Camera *cam);
+void Camera_UpdateMode(Camera *cam);
 
 u16 Camera_GetYaw(Camera *cam);
 

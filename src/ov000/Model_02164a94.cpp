@@ -8,8 +8,8 @@
 
 extern "C" {
 
-extern char data_0214b105[];
-extern const char *data_0208cca0;
+extern char gCommonTextPath[];
+extern const char *ArcPath_Menu;
 extern char data_ov000_021cb8e0[];
 extern char data_ov000_021cb8f1[];
 extern char data_ov000_021cb8fd[];
@@ -33,15 +33,15 @@ static inline Model *NewModel(char *nm) {
     return m;
 }
 
-void func_ov000_02164a94(Lo021cb6b0 *self) {
+void Lo021cb6b0_LoadModels(Lo021cb6b0 *self) {
     char buf[0x20];
     void *a;
     void *b;
     s32 *pp;
     s32 saved;
     Model *m;
-    ResMgr_GetArcList(data_0214b105);
-    a = ResMgr_GetArcList(data_0208cca0);
+    ResMgr_GetArcList(gCommonTextPath);
+    a = ResMgr_GetArcList(ArcPath_Menu);
     LangData_LocalizePath(buf, data_ov000_021cb8e0);
     b = ResMgr_GetArcList(buf);
     self->unk_50 = ((s32)gStageFlags->unk_020);
@@ -90,7 +90,7 @@ void *Heap_Alloc(u32 size);
 void PlttRes_SetSrc_02040be0(void *res, void *src);
 void PlttRes_SetData_02040d14(void *res, s32 a, s32 b);
 void PlttRes_Upload_02040d94(void *res, void *a, s32 b, s32 c);
-void func_02040dd8(void *res, s32 a, s32 b);
+void PlttRes_LoadFor(void *res, s32 a, s32 b);
 struct Out_52e4;
 struct Def_52e4;
 void func_ov000_021652e4(Lo021cb6b0 *self, Ctx0216607c *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
@@ -116,7 +116,7 @@ static inline u8 *Next02164c50(u8 *e) {
     return q;
 }
 
-void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
+void Lo021cb6b0_BuildMap(Lo021cb6b0 *self, u8 *arg) {
     Ctx0216607c *p;
     PlttRes *m;
     u8 *buf;
@@ -149,7 +149,7 @@ void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
     }
     PlttRes_Upload_02040d94(p->pltt, buf + 0x40, 0, 0x20);
     PlttRes_Upload_02040d94(p->pltt, buf + 0x80, 0x20, 0x20);
-    func_02040dd8(p->pltt, 2, 1);
+    PlttRes_LoadFor(p->pltt, 2, 1);
 
     cell = LoModelGetCell(self->unk_24, 2);
     base = LFLD(u16, self->unk_24, 0xf4);

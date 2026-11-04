@@ -175,7 +175,7 @@ BOOL TextWin_ParseTag(TextScanParser *p, const char **s);
 
 // Copies the visible characters of str into out (keeping tag 0x10 verbatim)
 // and returns the width of the last line.
-s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
+s32 Text_WrapLines(char *out, s32 outSize, const char *str) {
     const char *s;
     TextScanParser p;
     const char *tmp;
@@ -338,7 +338,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -538,8 +538,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -841,7 +841,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg) {
+void TextWin_ExecCmd(TextWin *win, u32 arg) {
     TextCmd cmd;
     u16 n;
     u16 i;
@@ -1083,8 +1083,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -1273,7 +1273,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p) {
     win->code = 0x11;
@@ -1784,8 +1784,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -1902,7 +1902,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -2310,8 +2310,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -2394,13 +2394,13 @@ void TextWin_DrawCursor(TextWin *win) {
         if (win->flag31 ? TRUE : FALSE) {
             Model *m = (Model *)Heap_Alloc(sizeof(Model));
             if (m != NULL) {
-                Model_Init(m, data_0208cc8c, data_0208cb84, 0);
+                Model_Init(m, ArcPath_MenuWifi, ResName_WifiCells, 0);
             }
             win->model = m;
         } else {
             Model *m = (Model *)Heap_Alloc(sizeof(Model));
             if (m != NULL) {
-                Model_Init(m, data_0208cca0, data_0208cb74, 0);
+                Model_Init(m, ArcPath_Menu, ResName_CommonCells, 0);
             }
             win->model = m;
         }
@@ -2468,7 +2468,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -2708,8 +2708,8 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx) {
     Model_ApplyPart(model, idx);
 }
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -2789,7 +2789,7 @@ typedef struct TextWinFont {
 
 extern GfxCell *GfxMgr_NextCell(GfxMgr *mgr);
 extern void GfxMgr_SetOamCache(GfxMgr *mgr, void *arg);
-extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
+extern void GfxMgr_DrawCanvasOam(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern int NNS_G2dCharCanvasDrawChar(const void *canvas, const void *font, int x, int y, int color, u16 c);
 
@@ -2814,7 +2814,7 @@ void TextWin_DrawChr(TextWin *win) {
     if (win->lines != NULL) {
         GfxMgr_SetOamCache(gGfxMgr, win->lines);
     }
-    func_0203a0cc(gGfxMgr, win->vram, cell, win->width, win->height, hi);
+    GfxMgr_DrawCanvasOam(gGfxMgr, win->vram, cell, win->width, win->height, hi);
     if (!win->vram->temporary) {
         if (win->vram->temporary || win->vram->unk_10_2) {
             return;
@@ -2859,14 +2859,14 @@ void TextWin_DrawChr(TextWin *win) {
     win->vram->unk_10_2 = 1;
 }
 
-extern void func_020430b8(int w, int h, u32 *ws, u32 *hs);
+extern void Gfx3D_GetSizeShifts(int w, int h, u32 *ws, u32 *hs);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, BOOL is4x4, u32 opt);
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, BOOL is4pltt, u32 opt);
 extern void *Vram_QueueTransfer(int type, void *src, u32 dst, u32 size, u32 chunk);
 extern void *func_02039720(void);
-extern void func_0204eb3c(TextWin *win);
+extern void TextWin_BuildTexDL(TextWin *win);
 
-void func_0204e5d4(TextWin *win) {
+void TextWin_RenderTex(TextWin *win) {
     u32 *dst;
     long outline;
     u32 size;
@@ -2897,10 +2897,10 @@ void func_0204e5d4(TextWin *win) {
     s32 px;
 
     if (win->flag24 == 1) {
-        func_020430b8(win->width + 2, win->height + 2, &win->texSizeS, &win->texSizeT);
+        Gfx3D_GetSizeShifts(win->width + 2, win->height + 2, &win->texSizeS, &win->texSizeT);
         outline = TRUE;
     } else {
-        func_020430b8(win->width, win->height, &win->texSizeS, &win->texSizeT);
+        Gfx3D_GetSizeShifts(win->width, win->height, &win->texSizeS, &win->texSizeT);
         outline = FALSE;
     }
     size = ((8 << win->texSizeS) << win->texSizeT) << 2;
@@ -2995,7 +2995,7 @@ void func_0204e5d4(TextWin *win) {
     win->unk_6c = Vram_QueueTransfer(1, func_02039720(), ((u32)win->plttVram & 0xffff) << 3, 0x40, 0);
     OS_EnableIrq();
     if (win->unk_4_30 == 1) {
-        func_0204eb3c(win);
+        TextWin_BuildTexDL(win);
     }
 }
 
@@ -3013,7 +3013,7 @@ extern "C" {
 
 
 // Builds the display list that draws the window's glyph texture as a (gradient) quad.
-void func_0204eb3c(TextWin *win) {
+void TextWin_BuildTexDL(TextWin *win) {
     u32 buf[0x40];
     GXDLInfo dl;
     s32 w = (8 << win->texSizeS) << 12;
@@ -3078,7 +3078,7 @@ void func_0204eb3c(TextWin *win) {
 extern BOOL Vram_IsTransferDone(void *task);
 extern void Gfx3D_SendDL(void *p, int a);
 
-extern void func_0204e5d4(TextWin *win);
+extern void TextWin_RenderTex(TextWin *win);
 
 static inline void TW_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
     u32 data = light | (polyMode << 4) | (cullMode << 6) | misc | (polygonId << 24) | (alpha << 16);
@@ -3169,7 +3169,7 @@ void TextWin_DrawTex(TextWin *win) {
     s32 w;
     s32 h;
     if (win->texVram == NULL) {
-        func_0204e5d4(win);
+        TextWin_RenderTex(win);
     }
     if (!TextWin_IsReady(win)) {
         return;
@@ -3311,7 +3311,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -3527,8 +3527,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void) {
@@ -3693,7 +3693,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -3909,8 +3909,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -4011,7 +4011,7 @@ void TextWinEx_Render(TextWinEx *win) {
     if (win->flag25 && win->flag26 && win->blocksReady) {
         win->unk_vf98();
     }
-    n = func_0204f804(win);
+    n = TextWinEx_RenderText(win);
     if (n == -1) {
         return;
     }
@@ -4019,14 +4019,14 @@ void TextWinEx_Render(TextWinEx *win) {
     if (count == 0) {
         return;
     }
-    func_0203972c(win->blocks, count);
+    GfxMgr_DrawBlocks(win->blocks, count);
 }
 
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void GfxMgr_PutChar(GfxMgr *mgr, u16 c);
 BOOL TextWin_ParseTag(TextWin *win, char **pp);
 
-s32 func_0204f804(TextWinEx *win) {
+s32 TextWinEx_RenderText(TextWinEx *win) {
     BOOL stop;
     s32 lineH;
     s16 n;
@@ -4067,7 +4067,7 @@ s32 func_0204f804(TextWinEx *win) {
                 TextWin_ParseTag(win, (char **)&win->unk_3d8);
                 switch (win->code) {
                 case 0x14:
-                    func_0204cb28(win, win->unk_3d8);
+                    TextWin_ExecCmd(win, win->unk_3d8);
                     stop = TRUE;
                     break;
                 case 0x11:
@@ -4284,7 +4284,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -4500,8 +4500,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -4951,7 +4951,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -5167,8 +5167,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -5315,7 +5315,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -5531,8 +5531,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -5821,7 +5821,7 @@ typedef struct TextCmd {
     /* 0x8 */ u16 args[6];
 } TextCmd;
 
-void func_0204cb28(TextWin *win, u32 arg);
+void TextWin_ExecCmd(TextWin *win, u32 arg);
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
 
@@ -6037,8 +6037,8 @@ void func_0204e2dc(Model *model, s32 v);
 
 void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
-extern void *func_0203972c(void *blocks, u32 count);
-extern s32 func_0204f804(TextWinEx *win);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
+extern s32 TextWinEx_RenderText(TextWinEx *win);
 extern s32 gFadeState[];
 
 u8 *GfxSys_Get3DState(void);
@@ -6121,7 +6121,7 @@ void TextBox_BuildModel(TextBox *box) {
     if (box->model == NULL) {
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            Model_Init(m, data_0208cca0, data_0208cb74, 0);
+            Model_Init(m, ArcPath_Menu, ResName_CommonCells, 0);
         }
         box->model = m;
         TexObj_SetRes(box->model, ResList_FindType2(ResMgr_GetArcList(m->name), box->model->unk_04c));
@@ -6606,11 +6606,11 @@ typedef struct SlideFont {
 } SlideFont;
 
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
-extern void func_020708fc(u16 id, char *out);
-extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
+extern void Tbl_MakeFacePath(u16 id, char *out);
+extern void Tbl_MakeFaceName(u16 id, char *out, u16 a, u16 b);
 extern void ResMgr_LoadArchive(void *a, void *b, int c, int d);
-extern const char *data_0208cc90;
-extern const char *data_0208b9cc[];
+extern const char *ArcPath_FaceIcons;
+extern const char *SlideWin_FaceNames[];
 void GameScene_StartShake(SlideWin *win);
 
 static inline Model *SlideModel_Init(Model *model, const char *name, const char *file, int a) {
@@ -6628,7 +6628,7 @@ static inline void SlidePanel_SetCur(SlidePanel *p, u8 v) {
 // Kept (round auA honesty audit): `fn` is a local declared as an unused second parameter (the caller passes
 // only win); as a local the registers differ. TextWin.cpp has .data and this function is mid-file,
 // so it can't be cut out to a dsd gap.
-void func_02051a34(SlideWin *win, SlideCharFn fn) {
+void SlideWin_RenderText(SlideWin *win, SlideCharFn fn) {
     char name[0x20];
     BOOL open;
     u16 c;
@@ -6714,8 +6714,8 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
                         if (panel != NULL && !panel->flag20) {
                             if (win->args[0] != -1 && win->mode != 0 && (win->value >> 12) != 3) {
                                 Model *m;
-                                func_020708fc(win->value, name);
-                                func_02070b98(win->value, file, win->args[2], win->args[0]);
+                                Tbl_MakeFacePath(win->value, name);
+                                Tbl_MakeFaceName(win->value, file, win->args[2], win->args[0]);
                                 if (win->args[1] & 2) {
                                     panel->flag26 = 1;
                                 } else {
@@ -6738,7 +6738,7 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
                                 if (panel->kind > 2) {
                                     m = (Model *)Heap_Alloc(sizeof(Model));
                                     if (m != NULL) {
-                                        SlideModel_Init(m, data_0208cc90, data_0208b9cc[panel->unk_0_10], 1);
+                                        SlideModel_Init(m, ArcPath_FaceIcons, SlideWin_FaceNames[panel->unk_0_10], 1);
                                     }
                                     panel->nextModel2 = m;
                                     ResMgr_LoadArchive(m->name, m->unk_04c, 2, 0);
@@ -7000,7 +7000,7 @@ typedef struct Obj3DAnimEnt {
 } Obj3DAnimEnt; // size 0x14
 
 extern const Obj3DAnimEnt Obj3D_AnimTable[];
-extern const char *data_0208cb80;
+extern const char *ArcPath_MenuEmo;
 
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
@@ -7059,13 +7059,13 @@ static inline Obj3DAnimObj *AnimObj_New(void) {
 }
 
 static inline void AnimMdl_Set0(Obj3DAnimMdl *m, const char *name) {
-    STD_CopyString(m->arc0, data_0208cb80);
+    STD_CopyString(m->arc0, ArcPath_MenuEmo);
     STD_CopyString(m->name0, name);
     m->flags |= 2;
 }
 
 static inline void AnimMdl_Set1(Obj3DAnimMdl *m, const char *name) {
-    STD_CopyString(m->arc1, data_0208cb80);
+    STD_CopyString(m->arc1, ArcPath_MenuEmo);
     STD_CopyString(m->name1, name);
     m->flags |= 4;
 }

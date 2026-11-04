@@ -365,14 +365,14 @@ void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
     if (self->vfunc_28()) return;
     l = (Model *)Heap_Alloc(sizeof(Model));
     if (l != NULL) {
-        file = (void *)data_0208cca0;
-        name = data_0208ccc0;
+        file = (void *)ArcPath_Menu;
+        name = ResName_CommonModel2;
         PlttRes_Init_02041218(&l->pltt);
         TexObj_Init(l, (char *)name, 0);
         STD_CopyString(l->name, (char *)file);
     }
     self->model = l;
-    TexObj_SetRes(self->model, ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0));
+    TexObj_SetRes(self->model, ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonModel2));
     self->model->flags |= 2;
     TexObj_SelectImage(self->model, 0, 0);
     {

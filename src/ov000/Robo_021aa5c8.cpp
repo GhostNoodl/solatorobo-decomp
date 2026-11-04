@@ -107,7 +107,7 @@ void Robo021ca458_State11(Robo021ca458 *self) {
         d.z = FxMulL021aa5c8(d.z, 0x733);
         d.y = self->centerY;
         VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
-        func_ov000_0218a358(&g->cam, &out, NULL, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
+        FieldCam_SetTarget(&g->cam, &out, NULL, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
     if (self->fsm->current != 0x11) {
         return;

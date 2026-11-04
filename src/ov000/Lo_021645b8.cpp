@@ -9,9 +9,9 @@ extern MessageQueue021cb980 *gMessageQueue;
 void LangData_LocalizePath(char *buf, const void *s);
 void *ResMgr_Load(const char *name, s32 a, s32 b);
 BOOL ResMgr_IsLoaded(const char *name, s32 a);
-void func_ov000_02164a94(Lo021cb6b0 *self);
+void Lo021cb6b0_LoadModels(Lo021cb6b0 *self);
 void func_ov000_02167d64(Lo021cb6b0 *self);
-void func_ov000_02166be8(Lo021cb6b0 *self);
+void Lo021cb6b0_UpdateMap(Lo021cb6b0 *self);
 
 void Lo021cb6b0_Update(Lo021cb6b0 *self) {
     switch (self->unk_20) {
@@ -34,7 +34,7 @@ void Lo021cb6b0_Update(Lo021cb6b0 *self) {
     }
     case 2:
         self->vfunc_0c();
-        func_ov000_02164a94(self);
+        Lo021cb6b0_LoadModels(self);
         self->unk_20 = 7;
         return;
     case 7: {
@@ -46,7 +46,7 @@ void Lo021cb6b0_Update(Lo021cb6b0 *self) {
             self->unk_50 += d >> 12;
         }
         func_ov000_02167d64(self);
-        func_ov000_02166be8(self);
+        Lo021cb6b0_UpdateMap(self);
         break;
     }
     }

@@ -8,8 +8,8 @@ struct TblCat {             # include/Main/Lang/TblRes.h
     u32 unk_8;
 }
 
-0x0208d6d0  TblCat[8]       # data_0208d6d0
-0x0208d730  ptr[47]         # data_0208d730: ParamKind_GetShape
+0x0208d6d0  TblCat[8]       # Tbl_Cats
+0x0208d730  ptr[47]         # ParamKind_ShapeTable: ParamKind_GetShape
 
 0x0208d2b4  str     # data_0208d2b4
 0x0208d2b9  str     # data_0208d2b9

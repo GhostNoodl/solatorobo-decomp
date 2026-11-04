@@ -7,7 +7,7 @@ extern char data_ov014_02217a72[];
 extern void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 extern void Model0218fe1c_ClearLoop(void *p);
 extern void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
-extern void func_ov014_0220a2d0(Ov014Act_02209280 *self, s32 a);
+extern void Ov014Act_02209280_SpawnShot(Ov014Act_02209280 *self, s32 a);
 
 static inline void Ov014_TickA(ActorSub40 *st) {
     u16 t = ActorSub40_Timer(st);
@@ -110,7 +110,7 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
         break;
     }
     case 2:
-        func_ov014_0220a2d0(self, (self->unk_f4 & (1 << (self->unk_f8 - 1))) ? 1 : 0);
+        Ov014Act_02209280_SpawnShot(self, (self->unk_f4 & (1 << (self->unk_f8 - 1))) ? 1 : 0);
         self->unk_f8--;
         if (self->unk_f8 == 0) {
             self->fsm->st = 4;

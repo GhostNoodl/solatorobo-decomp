@@ -29,7 +29,7 @@ struct Obj0217032c {
     u8 *unk_2c;
 };
 
-BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
+BOOL MessageQueue021cb980_OpenTextBox(Obj0217032c *self, void *res, u32 id) {
     s32 n;
     s32 v;
     u8 *p;
@@ -64,7 +64,7 @@ struct Obj02170448 {
     VObj *unk_30;
 };
 
-BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
+BOOL MessageQueue021cb980_OpenMsgWin(Obj02170448 *self, void *res, u32 id) {
     FieldState *g = gSceneCmd;
     u32 hi;
     u16 lo;

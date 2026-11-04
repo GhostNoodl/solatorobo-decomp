@@ -23,10 +23,10 @@ extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Ov000Vt_021cb1b0_vtbl[];
 extern u8 Ov000Vt_021cb0b8_vtbl[];
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 
 void UiObj_OpenChoice(UiObj *self, u16 a, s32 b, UiItemFn c) {
     Lo021cb0b8 *p;

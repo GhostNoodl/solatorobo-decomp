@@ -20,7 +20,7 @@ BOOL Obj021efe7c_IsLoaded(Obj021efe7c *self) {
 }
 
 void Obj021efe7c_Start(Obj021efe7c *self) {
-    func_ov002_021d95e0(self->board);
+    Obj021efe6c_Start(self->board);
     Obj021efe7c_SetPhase(self, self->unk_0c);
     EffectMgr_SaveList(gEffectMgr);
     *(s32 *)gEffectMgr = 0;

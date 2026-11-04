@@ -18,7 +18,7 @@ s32 TexObj_GetCellWidth(Model *model, void *tex);
 s32 TexObj_GetCellHeight(Model *model, void *tex);
 void func_02041774(Model *model, s32 idx);
 void TexObj_SetOamFunc(Model *model, s32 idx, void *cb, void *arg);
-void *func_ov000_021c0d50(ActorMarkerWork *work, u16 *cmd, void *arr, u16 *count);
+void *ActorMarker_OamCallback0a(ActorMarkerWork *work, u16 *cmd, void *arr, u16 *count);
 
 static inline void *Lo_GetPartTex(Model *model, s32 idx) {
     ModelRes *res = model->res;
@@ -79,7 +79,7 @@ void ActorMarker_DrawKind0a(Marker021c1180 *self) {
     }
     Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);
     self->unk_8c->unk_150 = self->work.z;
-    TexObj_SetOamFunc(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, &self->work);
+    TexObj_SetOamFunc(self->unk_8c, self->unk_96, (void *)ActorMarker_OamCallback0a, &self->work);
     if (a < 0x1e) {
         MODEL_FLAGS(self->unk_8c)->unk_21 = 0;
     } else {

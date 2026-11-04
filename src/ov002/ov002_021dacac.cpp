@@ -131,10 +131,10 @@ void CustomizeMenu_Init(Obj021eff74 *self) {
     }
     w = self->board;
     if (gStageFlags->bits18.mode == 1) {
-        func_ov000_021c9544(w->unk_76, w->pieces);
+        Parts_SumStats(w->unk_76, w->pieces);
         Obj021c95ac_Init_021c95ac(w->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544(w->unk_76, w->pieces);
+        Parts_SumStats(w->unk_76, w->pieces);
     }
     t = (Task021efba4 *)Task_FindById(0x1b);
     if (t != NULL && gStageFlags->bits18.mode == 1) {

@@ -36,7 +36,7 @@ u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 s32 Rand_UpTo(s32 max);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
-u16 func_ov000_02198da8(void *body, u16 angle);
+u16 Body_GetFaceAngle(void *body, u16 angle);
 void Field_ShakeCamera(s32 a, s32 b);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
@@ -222,7 +222,7 @@ void Robo021ca458_State16(Robo021ca458 *self) {
         }
         near = FALSE;
         if (!hit && (self->hit->unk_50 & 0x30) && !Ba4Bit_021a3220(self)) {
-            u16 a = func_ov000_02198da8(self->hit, self->moveYaw);
+            u16 a = Body_GetFaceAngle(self->hit, self->moveYaw);
             if ((u16)(a - self->moveYaw - 0x6400) < 0x3800) {
                 near = TRUE;
             }

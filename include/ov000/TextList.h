@@ -2,7 +2,7 @@
 #define OV000_TEXTLIST_H
 
 // The ov000 text list (vtable Ov000Vt_021ccadc_vtbl, 0xd4 bytes). Its constructor stores the UiObj
-// vtable and calls UiObj_Init, then stores Ov000Vt_021ccadc_vtbl and calls func_ov000_021c6140,
+// vtable and calls UiObj_Init, then stores Ov000Vt_021ccadc_vtbl and calls TextList_Init,
 // which clears the fields below; the dtors free them with Obj021c61a8_Release. The list shows one
 // row at a time: left/right move to the previous or next row (func_ov000_021c67e4), sliding the
 // old row out and the new one in over 15 frames, and A decides.
@@ -10,7 +10,7 @@
 // Methods: slot 0x08 Ov000Vt_021ccadc_Setup (start), slot 0x54 Ov000Vt_021ccadc_PreUpdate (update), slot 0x5c
 // Ov000Vt_021ccadc_DrawBody (places the rows and the cursor), slot 0x60 Ov000Vt_021ccadc_DrawTitle (draws the
 // window); List021c6474_Append appends a row, TextList_SelectByKey selects the row with an index,
-// Obj021c64b4_SetText sets the cursor text and func_ov000_021c6d64 draws the arrows beside the row.
+// Obj021c64b4_SetText sets the cursor text and TextList_DrawBody draws the arrows beside the row.
 // ov002 builds two (AlbumMenu_Start and the 021ef150 task).
 
 #include "ov000/UiObj.h"

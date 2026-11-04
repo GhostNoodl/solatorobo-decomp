@@ -8,7 +8,7 @@ extern char func_ov004_021ce7d8[];
 extern char func_ov004_021ce874[];
 extern char func_ov004_021ce934[];
 extern char func_ov004_021ceff8[];
-extern char func_ov004_021cea18[];
+extern char DSProt_Crc32[];
 extern char func_ov004_021ceaac[];
 void func_ov004_021cf544(void);
 void func_ov004_021cf5cc(void);
@@ -181,7 +181,7 @@ asm void func_ov004_021cf764(void) {
     dcd DSProt_BSS+0x3270
     dcd func_ov004_021cf6dc+0x3200
     dcd DSProt_BSS+0x3270
-    dcd func_ov004_021cea18+0x3200
+    dcd DSProt_Crc32+0x3200
     dcd DSProt_BSS+0x3290
     dcd 0x00000000
     dcd 0x00000000

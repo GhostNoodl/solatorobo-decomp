@@ -87,7 +87,7 @@ extern void Ov014ActExGrow_HitNearby(Ov014ActExGrow *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_ov014_02205924(Ov014ActExGrow *self);
+extern void Ov014ActExGrow_UpdateThrown(Ov014ActExGrow *self);
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -115,7 +115,7 @@ void Ov014ActExGrow_StateThrown(Ov014ActExGrow *self) {
             }
         }
         if (t->kind == 0x1000) {
-            func_ov014_02205924(self);
+            Ov014ActExGrow_UpdateThrown(self);
             return;
         }
         switch (self->fsm->st) {
@@ -196,7 +196,7 @@ extern void Ov014ActExGrow_HitNearby(Ov014ActExGrow *self);
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_02205924(Ov014ActExGrow *self) {
+void Ov014ActExGrow_UpdateThrown(Ov014ActExGrow *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {
@@ -436,7 +436,7 @@ extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Vec_RotateY(VecFx32 *a, VecFx32 *b, u16 ang);
 extern void Ov014ActExVt_02217838_HitNearby(Ov014ActExVt_02217838 *self);
-extern void func_ov014_02206734(Ov014ActExVt_02217838 *self);
+extern void Ov014ActExVt_02217838_UpdateThrown(Ov014ActExVt_02217838 *self);
 
 #define OV014F_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014F_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -454,7 +454,7 @@ void Ov014ActExVt_02217838_StateThrown(Ov014ActExVt_02217838 *self) {
         }
     }
     if (t->kind == 0x1000) {
-        func_ov014_02206734(self);
+        Ov014ActExVt_02217838_UpdateThrown(self);
         return;
     }
     pl = Actor_GetTarget(self);
@@ -633,7 +633,7 @@ extern void Ov014ActExVt_02217838_HitNearby(Ov014ActExVt_02217838 *self);
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_02206734(Ov014ActExVt_02217838 *self) {
+void Ov014ActExVt_02217838_UpdateThrown(Ov014ActExVt_02217838 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {
@@ -1154,7 +1154,7 @@ extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void func_ov014_0220840c(Ov014ActEx_0220774c *self);
+extern void Ov014ActEx_0220774c_UpdateThrown(Ov014ActEx_0220774c *self);
 extern u8 *ActorMgr_FindPlayer(void);
 extern BOOL Hit_PointInRotBox(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, Ov014HitBox *box, s32 a, s32 b);
@@ -1345,7 +1345,7 @@ void Ov014ActEx_0220774c_StateThrown(Ov014ActEx_0220774c *self) {
     if (*t->hp == 0) {
         return;
     }
-    func_ov014_0220840c(self);
+    Ov014ActEx_0220774c_UpdateThrown(self);
     pos = t->pos;
     box.unk_1e = 2;
     box.unk_20 = 0x20000000;

@@ -75,8 +75,8 @@ extern void EffectEmitterSub_DtorBase(EffectEmitterSub *sub);
 
 void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id);
 void EffectSetup_SetEmitterByName(EffectSetup *setup, EffectEmitter *em, const char *name);
-void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id);
-void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids);
+void EffectSetup_SetupEmitter(EffectSetup *setup, EffectEmitter *em, s32 id);
+void EffectSetup_AddPartSlots(EffectSetup *setup, EffectPartSet *parts, u8 *ids);
 
 static inline void Effect_SetStr(char *dst, const char *src) {
     if (src == NULL) {
@@ -127,7 +127,7 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
         em->unk_28 = def->unk_38;
         em->loopCount = def->loopCount;
         EffectSetup_SetEmitterByName(setup, em, def->emitName);
-        func_02068ab8(setup, em, def->paramId);
+        EffectSetup_SetupEmitter(setup, em, def->paramId);
         parts = (EffectPartSet *)Heap_Alloc(0x12c);
         if (parts != NULL) {
             *(u32 **)parts = MainVt_0208c364_vtbl;
@@ -135,7 +135,7 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
             *(u32 **)parts = MainVt_0208c850_vtbl;
             EffectPartSet_Reset(parts);
         }
-        func_02068b6c(setup, parts, def->partIds);
+        EffectSetup_AddPartSlots(setup, parts, def->partIds);
         em->parts = parts;
         break;
     }
@@ -173,7 +173,7 @@ void EffectSetup_SetEmitterByName(EffectSetup *setup, EffectEmitter *em, const c
     EffectEmitter_SetData(em, p + 0x18, count);
 }
 
-void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id) {
+void EffectSetup_SetupEmitter(EffectSetup *setup, EffectEmitter *em, s32 id) {
     s32 size;
     s32 count;
     s32 v;
@@ -196,7 +196,7 @@ void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id) {
     MIi_CpuCopy32(p, &em->params, 0x50);
 }
 
-void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids) {
+void EffectSetup_AddPartSlots(EffectSetup *setup, EffectPartSet *parts, u8 *ids) {
     s32 count;
     s32 size;
     u32 v;

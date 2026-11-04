@@ -31,7 +31,7 @@ extern "C" {
 
 extern u8 Ov006Vt_021ec26c_vtbl[];
 extern u8 Ov006Vt_021ec2dc_vtbl[];
-extern char data_0214b105[];
+extern char gCommonTextPath[];
 void PlayTime_Clear(void *p);
 void TexObj_SetOamFunc(Model *m, int a, void *cb, int b);
 void *ov006_OamCb_TimeDigits(void *self, u16 *flag, void *oam, u16 *count);
@@ -71,10 +71,10 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
         icon->unkE = 1;
     }
     self->unk88 = icon;
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
-        const char *name = data_0208cc94;
+        const char *name = ArcPath_MenuBattle;
         PlttRes_Init_02041218(&m1->pltt);
         TexObj_Init(m1, name, 0);
     }
@@ -91,24 +91,24 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
     icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
     m2 = (Model *)Heap_Alloc(sizeof(Model));
     if (m2 != NULL) {
-        const char *name = data_0208cb7c;
+        const char *name = ResName_TextCells;
         PlttRes_Init_02041218(&m2->pltt);
         TexObj_Init(m2, name, 0);
-        STD_CopyString(m2->name, data_0214b105);
+        STD_CopyString(m2->name, gCommonTextPath);
     }
     self->unk8C = m2;
-    TexObj_SetRes(self->unk8C, ResMgr_FindArcType2(data_0214b105, data_0208cb7c));
+    TexObj_SetRes(self->unk8C, ResMgr_FindArcType2(gCommonTextPath, ResName_TextCells));
     self->unk8C->flags |= 2;
     self->unk8C->flags |= 0x80000;
     TexObj_SelectImage(self->unk8C, 0, 0xe);
     m3 = (Model *)Heap_Alloc(sizeof(Model));
     if (m3 != NULL) {
-        const char *name = data_0208cc94;
+        const char *name = ArcPath_MenuBattle;
         PlttRes_Init_02041218(&m3->pltt);
         TexObj_Init(m3, name, 0);
     }
     self->unk90 = m3;
-    TexObj_SetRes(self->unk90, ResMgr_FindArcType2(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk90, ResMgr_FindArcType2(ArcPath_MenuBattle, ResName_BattleCells));
     self->unk90->flags |= 2;
     self->unk90->flags |= 0x80000;
     TexObj_SelectImage(self->unk90, 0, 0x1e);

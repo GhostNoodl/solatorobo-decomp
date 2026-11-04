@@ -15,7 +15,7 @@ extern void *gMsgRes;
 extern void *UiObj_vtbl;
 extern void *UiList_vtbl;
 extern void *Ov008Menu_vtbl;
-extern char data_0214b105[];
+extern char gCommonTextPath[];
 extern u8 *gStageFlags;
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
@@ -28,7 +28,7 @@ void MsgEntry_Init(Ov008Tag *t);
 void MsgEntry_Release(Ov008Tag *t);
 u32 func_ov000_0214c01c(u16 a);
 u32 Quest_GetOptFlags(u16 id);
-const char *func_ov000_0214c064(u16 id);
+const char *SceneRes_GetString(u16 id);
 void Text_ScanTags(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
 void func_ov000_0214dc20(void *arg, s32 *tag);
 void func_ov008_021cf5c8(s32 type, void *list, void *info);
@@ -121,7 +121,7 @@ void Ov008WorldMap_BuildMenu(Ov008Mgr *m) {
         }
     }
     m->menu->v08();
-    UiList_SetMarkModel(m->menu, data_0214b105, data_0208cb7c, 10);
+    UiList_SetMarkModel(m->menu, gCommonTextPath, ResName_TextCells, 10);
     base = gDataRes->unk_4c;
     ents = DataRes_GetTable(gDataRes, 1);
     cnt = DataRes_GetCount(gDataRes, 1);
@@ -145,7 +145,7 @@ void Ov008WorldMap_BuildMenu(Ov008Mgr *m) {
         }
         if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
             tag.id = 0xffff;
-            Text_ScanTags(func_ov000_0214c064(ents[i].id), 1, &tag, func_ov000_0214dc20);
+            Text_ScanTags(SceneRes_GetString(ents[i].id), 1, &tag, func_ov000_0214dc20);
             ok = OV008_ENT_NEW;
             if (tag.id != 0xffff) {
                 if (flags & 0x80) {

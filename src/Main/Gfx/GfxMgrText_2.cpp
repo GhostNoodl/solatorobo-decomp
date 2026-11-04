@@ -11,7 +11,7 @@ extern void Heap_FreeLo(void *ptr);
 // The bit position is built in `pos` and multiplied in both of its uses, so the product is a
 // temporary (`mul` takes bpp first); `pos` declared first and `b` after `cur` give the target's
 // registers.
-void func_0203b12c(GfxMgr *mgr, const char *str) {
+void GfxMgr_RenderGlyphs(GfxMgr *mgr, const char *str) {
     int pos;
     int srcSkip;
     u8 x;

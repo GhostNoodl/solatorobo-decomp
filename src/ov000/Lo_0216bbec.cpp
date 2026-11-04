@@ -8,14 +8,14 @@ void *MsgRes_GetString(void *a, s32 b);
 
 void LoTicker_InitTexts(LoTicker *self) {
     void *r = gMsgRes;
-    func_ov000_0216bae4(&self->res[1], MsgRes_GetString(r, 0x44));
+    LoTextHolder_SetText(&self->res[1], MsgRes_GetString(r, 0x44));
     self->res[2].text = MsgRes_GetString(r, 0x45);
     self->res[3].text = MsgRes_GetString(r, 0x46);
-    func_ov000_0216bae4(&self->res[4], MsgRes_GetString(r, 0x47));
+    LoTextHolder_SetText(&self->res[4], MsgRes_GetString(r, 0x47));
     self->res[5].text = MsgRes_GetString(r, 0x43);
-    func_ov000_0216bae4(&self->res[6], MsgRes_GetString(r, 0x3d));
-    func_ov000_0216bae4(&self->res[7], MsgRes_GetString(r, 0x3e));
-    func_ov000_0216bae4(&self->res[8], MsgRes_GetString(r, 0x3f));
+    LoTextHolder_SetText(&self->res[6], MsgRes_GetString(r, 0x3d));
+    LoTextHolder_SetText(&self->res[7], MsgRes_GetString(r, 0x3e));
+    LoTextHolder_SetText(&self->res[8], MsgRes_GetString(r, 0x3f));
     self->res[9].text = MsgRes_GetString(r, 0x42);
 }
 

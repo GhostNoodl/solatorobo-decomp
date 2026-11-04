@@ -9,7 +9,7 @@ extern "C" {
 
 extern UiLabelStyle UiLabel_StyleTable[];
 BOOL Model_IsReady(void *model, u32 id);
-void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx0);
+void UiLabel_DrawOam(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx0);
 
 void UiLabel_Draw(UiLabel *self) {
     s32 pos[3];
@@ -26,7 +26,7 @@ void UiLabel_Draw(UiLabel *self) {
     if (self->bits.centered) {
         pos[0] -= self->width >> 1;
     }
-    self->model->unk_158 = (void *)func_ov000_0215f970;
+    self->model->unk_158 = (void *)UiLabel_DrawOam;
     self->model->flags |= 0x80000;
     self->model->flags |= 0x200000;
     MODEL_FLAGS(self->model)->alpha = 0x1e;
@@ -41,7 +41,7 @@ void UiLabel_Draw(UiLabel *self) {
     Model_PlayPart(self->model, e->part);
     self->model->unk_158 = NULL;
     pos[2] -= 0x80;
-    func_ov000_0215f618(self, pos);
+    UiLabel_DrawBox(self, pos);
     t = self->text;
     pos[0] += (self->width - (s32)t->width) >> 1;
     pos[1] += (self->height - (s32)t->height) >> 1;

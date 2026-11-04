@@ -6,7 +6,7 @@ extern "C" {
 extern char data_ov006_021ec864[];
 
 BOOL Ov006Vt_021ec040_IsLoaded(void) {
-    BOOL a = ResMgr_IsLoaded(data_0208cc94, 7) != 0;
+    BOOL a = ResMgr_IsLoaded(ArcPath_MenuBattle, 7) != 0;
     return (a & ResMgr_IsLoaded(data_ov006_021ec864, 7)) ? TRUE : FALSE;
 }
 

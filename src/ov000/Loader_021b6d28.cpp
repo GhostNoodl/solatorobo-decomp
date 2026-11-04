@@ -24,7 +24,7 @@ static inline u32 Load021b6d28(const char *name, void **res) {
     return Vram_GetTexTransferId();
 }
 
-BOOL func_ov000_021b6d28(FieldPropLoader *self) {
+BOOL FieldPropLoader_Bind(FieldPropLoader *self) {
     BOOL done = FALSE;
     BOOL again;
     void *h;

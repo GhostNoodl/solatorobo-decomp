@@ -9,7 +9,7 @@
 extern "C" {
 
 void func_02041c18(void *m, int a);
-void func_ov000_0216d9dc(MtxFx43 *self, s32 unused, u16 *msg);
+void LoTimer_MtxFunc(MtxFx43 *self, s32 unused, u16 *msg);
 
 static inline void LoPlace(LoTimer *self, s32 x, s32 y) {
     MODEL_FLAGS(self->unk_10)->unk_21 = 1;
@@ -64,7 +64,7 @@ void LoTimer_Draw(LoTimer *self) {
         Model_SetPos(self->unk_14, (x + 0xf7) << 12, (y + 0xf) << 12);
         Model_PlayPart(self->unk_14, 0x1f);
         if (self->b11 == 1) {
-            self->unk_14->mtxFunc = (void *)func_ov000_0216d9dc;
+            self->unk_14->mtxFunc = (void *)LoTimer_MtxFunc;
             if (self->b12 == 1) {
                 self->unk_14->color = 0x7792;
             }

@@ -27,7 +27,7 @@ void Lo021cb6b0_FadeIn(void) {
 
 void TexObj_SetOamFuncArg(void *a, int b, int c);
 void func_ov000_0216715c(Lo021cb6b0 *self, Ctx0216607c *p);
-void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *p);
+void Lo021cb6b0_DrawMarkers(Lo021cb6b0 *self, Ctx0216607c *p);
 
 static inline void LoPlayIf(Model *m, int idx) {
     if (m != NULL) {
@@ -46,7 +46,7 @@ static inline void LoTail(Lo021cb6b0 *self, Ctx0216607c *p) {
     if (!q->f3) {
         func_ov000_0216715c(self, p);
     } else {
-        func_ov000_021675ec(self, p);
+        Lo021cb6b0_DrawMarkers(self, p);
     }
 }
 

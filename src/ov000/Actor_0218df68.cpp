@@ -46,7 +46,7 @@ void ActorGroup_Add(ActorGroup *group, Actor *actor) {
     }
 }
 
-void func_ov000_0218df68(ActorGroup *group, Actor *actor) {
+void ActorGroup_RemoveActor(ActorGroup *group, Actor *actor) {
     Actor *prev = actor->prev;
     Actor *next = actor->next;
     if (actor != NULL) {

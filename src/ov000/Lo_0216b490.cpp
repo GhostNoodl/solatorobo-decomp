@@ -5,7 +5,7 @@ extern "C" {
 
 u32 Rand_GetGlobal(void);
 
-void func_ov000_0216b490(Lo0216b474 *self) {
+void Lo0216b474_Release(Lo0216b474 *self) {
     LO_FREE_M(self, 0x8);
     self->flags = 0;
     self->state = 2;

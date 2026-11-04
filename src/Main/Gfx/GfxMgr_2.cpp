@@ -5,8 +5,8 @@
 extern "C" {
 
 
-extern u8 data_02097ce4[];
-extern const u8 data_02082798[0x60];
+extern u8 gGfxMgrPlttCopy[];
+extern const u8 GfxMgr_BgPltt[0x60];
 
 extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
@@ -68,16 +68,16 @@ void GfxMgr_Init(GfxMgr *mgr) {
     }
     mgr->unk_046 = 0;
     mgr->unk_000 = -1;
-    MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
-    DC_FlushRange(data_02097ce4, 0x60);
+    MI_CpuCopy8(GfxMgr_BgPltt, gGfxMgrPlttCopy, 0x60);
+    DC_FlushRange(gGfxMgrPlttCopy, 0x60);
     mgr->plttSlots[0] = GfxSys_AllocSlots(gGfxSys, 3, 4);
-    GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
+    GX_LoadBGPltt(GfxMgr_BgPltt, mgr->plttSlots[0] << 5, 0x60);
     mgr->plttSlots[1] = GfxSys_AllocSlots(gGfxSys, 3, 5);
-    GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
+    GXS_LoadBGPltt(GfxMgr_BgPltt, mgr->plttSlots[1] << 5, 0x60);
     mgr->plttSlots[2] = GfxSys_AllocSlots(gGfxSys, 3, 0);
-    GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
+    GX_LoadOBJPltt(GfxMgr_BgPltt, mgr->plttSlots[2] << 5, 0x60);
     mgr->plttSlots[3] = GfxSys_AllocSlots(gGfxSys, 3, 2);
-    GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
+    GXS_LoadOBJPltt(gGfxMgrPlttCopy, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_658 = 0;
     mgr->unk_65c = 0;
     mgr->unk_650 = GfxSys_AllocVram(gGfxSys, 0x4000, 0);
@@ -137,15 +137,15 @@ void GfxMgr_FreeAll(GfxMgr *mgr, int mode) {
         mgr->unk_67c = NULL;
     }
     mgr->unk_680 = 0;
-    DC_FlushRange(data_02097ce4, 0x60);
+    DC_FlushRange(gGfxMgrPlttCopy, 0x60);
     mgr->plttSlots[0] = GfxSys_AllocSlots(gGfxSys, 3, 4);
-    GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
+    GX_LoadBGPltt(GfxMgr_BgPltt, mgr->plttSlots[0] << 5, 0x60);
     mgr->plttSlots[1] = GfxSys_AllocSlots(gGfxSys, 3, 5);
-    GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
+    GXS_LoadBGPltt(GfxMgr_BgPltt, mgr->plttSlots[1] << 5, 0x60);
     mgr->plttSlots[2] = GfxSys_AllocSlots(gGfxSys, 3, 0);
-    GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
+    GX_LoadOBJPltt(GfxMgr_BgPltt, mgr->plttSlots[2] << 5, 0x60);
     mgr->plttSlots[3] = GfxSys_AllocSlots(gGfxSys, 3, 2);
-    GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
+    GXS_LoadOBJPltt(gGfxMgrPlttCopy, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_65c = 0;
     if (mode != 2) {
         mgr->unk_650 = GfxSys_AllocVram(gGfxSys, 0x4000, 0);
@@ -155,7 +155,7 @@ void GfxMgr_FreeAll(GfxMgr *mgr, int mode) {
     mgr->unk_654 = NULL;
 }
 
-void func_02039e0c(GfxMgr *mgr) {
+void GfxMgr_FreeTemporary(GfxMgr *mgr) {
     VramBlock *block;
     GfxPltt *pltt;
     int id;
@@ -182,11 +182,11 @@ void func_02039e0c(GfxMgr *mgr) {
     pltt = &gGfxSys->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
-        MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
-        GfxPltt_ApplyFilter(pltt, data_02097ce4, 0x60);
+        MI_CpuCopy8(GfxMgr_BgPltt, gGfxMgrPlttCopy, 0x60);
+        GfxPltt_ApplyFilter(pltt, gGfxMgrPlttCopy, 0x60);
         mgr->unk_000 = id;
-        DC_FlushRange(data_02097ce4, 0x60);
-        GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
+        DC_FlushRange(gGfxMgrPlttCopy, 0x60);
+        GX_LoadOBJPltt(gGfxMgrPlttCopy, mgr->plttSlots[2] << 5, 0x60);
     }
     mgr->unk_69c[0] = 0;
     mgr->unk_69c[1] = 0;
@@ -226,11 +226,11 @@ void GfxMgr_Update(GfxMgr *mgr) {
     pltt = &gGfxSys->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
-        MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
-        GfxPltt_ApplyFilter(pltt, data_02097ce4, 0x60);
+        MI_CpuCopy8(GfxMgr_BgPltt, gGfxMgrPlttCopy, 0x60);
+        GfxPltt_ApplyFilter(pltt, gGfxMgrPlttCopy, 0x60);
         mgr->unk_000 = id;
-        DC_FlushRange(data_02097ce4, 0x60);
-        GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
+        DC_FlushRange(gGfxMgrPlttCopy, 0x60);
+        GX_LoadOBJPltt(gGfxMgrPlttCopy, mgr->plttSlots[2] << 5, 0x60);
     }
 }
 
@@ -282,7 +282,7 @@ static inline s32 GfxOam_GetY(GfxOam *oam) {
     return y;
 }
 
-void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, int height, int pltt) {
+void GfxMgr_DrawCanvasOam(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, int height, int pltt) {
     u32 base;
     int h;
     int which;
@@ -300,7 +300,7 @@ void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, in
     if (cache == NULL || !cache->valid) {
         w = (width + 7) >> 3;
         h = (height + 7) >> 3;
-        if (data_020827f8[mgr->unk_004].mode == 4) {
+        if (GfxMgr_FontTable[mgr->unk_004].mode == 4) {
             pltt += mgr->plttSlots[2];
             shift = mgr->pools[0].alignShift;
             base = 0x6400000;

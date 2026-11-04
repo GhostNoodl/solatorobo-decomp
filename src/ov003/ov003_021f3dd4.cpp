@@ -82,7 +82,7 @@ extern u8 *Param_GetRecord(u16 id);
 extern void Model0218fe1c_StopAnim(Model0218fe1c *model);
 extern void ResSet_SetName0(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
 extern void ResSet_SetName1(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218ef10(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern void ResSet_SetName3(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL Model0218fe1c_SetRes(Model0218fe1c *model, ActorRes *res, s32 a, s32 b);
 
 // Actor::unk_34 is the actor's main ActorRes (built by ResSet_Init).
@@ -191,7 +191,7 @@ void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
         Model0218fe1c_StopAnim(self->model);
         ResSet_SetName0(Ov003Prop_MainRes(self), def->a, def->b, 1, 0);
         ResSet_SetName1(Ov003Prop_MainRes(self), def->c, def->d, 1, 0);
-        func_ov000_0218ef10(Ov003Prop_MainRes(self), def->e, def->f, 1, 0);
+        ResSet_SetName3(Ov003Prop_MainRes(self), def->e, def->f, 1, 0);
         if (def->alt != 0) {
             ResSet_SetName1(&self->res, def->a, def->b, 1, 0);
         }

@@ -67,7 +67,7 @@ static inline BOOL ov006_Menu_HasPeer(ov006_Menu *menu) {
     return menu->unk160 != 0 ? TRUE : FALSE;
 }
 
-/* func_ov006_021e4bec inlined: set whether the parent accepts entries. */
+/* ov006_Menu_SendEntry inlined: set whether the parent accepts entries. */
 static inline BOOL ov006_Menu_SetEntry(ov006_Menu *self, u8 enabled) {
     BOOL result;
     self->unk18 = enabled;

@@ -99,7 +99,7 @@ void ov006_Menu_ClearEntries(ov006_Menu *self) {
     }
 }
 
-BOOL func_ov006_021e4bec(ov006_Menu *self, u8 v) {
+BOOL ov006_Menu_SendEntry(ov006_Menu *self, u8 v) {
     BOOL result;
     self->unk18 = v;
     result = Wh_SetEntry(gWhMgr, v);

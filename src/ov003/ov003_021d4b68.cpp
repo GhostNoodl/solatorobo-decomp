@@ -280,7 +280,7 @@ extern char data_ov003_021f7a97[];
 extern char data_ov003_021f7a9d[];
 extern char data_ov003_021f7aa3[];
 extern s32 Rand_PlusMinus(s32 max);
-extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
+extern u16 Body_GetFaceAngle(ActorSub48 *ctl, u16 a);
 
 static inline u16 Ov003Kb_Angle(Ov003Actor *self) {
     u16 ang;
@@ -348,7 +348,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
         } else {
             ActorSub48 *c = self->hit;
             if ((c->unk_50 & 0x40000000) || c->unk_58 != 0) {
-                self->moveYaw = func_ov000_02198da8(c, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(c, self->moveYaw);
                 self->speed = 0x114;
                 if (self->velY < -0xcd) {
                     self->velY = -0xcd;
@@ -631,7 +631,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         } else {
             ActorSub48 *c = self->hit;
             if ((c->unk_50 & 0x40000000) || c->unk_58 != 0) {
-                self->moveYaw = func_ov000_02198da8(c, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(c, self->moveYaw);
                 self->speed = 0x8f;
                 self->fsm->timer = 0;
             }

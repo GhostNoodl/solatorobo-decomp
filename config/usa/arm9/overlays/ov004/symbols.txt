@@ -30,9 +30,9 @@ func_ov004_021cd658 kind:function(arm,size=0x88,dsprot=0x94) addr:0x021cd658
 .D_021cd6c8 kind:label(arm,data) addr:0x021cd6c8
 func_ov004_021cd6e0 kind:function(arm,size=0x34) addr:0x021cd6e0
 .D_021cd6ec kind:label(arm,data) addr:0x021cd6ec
-func_ov004_021cd714 kind:function(arm,size=0x3c,dsprot=0x3c) addr:0x021cd714
-func_ov004_021cd750 kind:function(arm,size=0x8c,dsprot=0x84) addr:0x021cd750
-func_ov004_021cd7dc kind:function(arm,size=0x58,dsprot=0x58) addr:0x021cd7dc
+DSProt_ClassifyInsn kind:function(arm,size=0x3c,dsprot=0x3c) addr:0x021cd714
+Rc4_Init kind:function(arm,size=0x8c,dsprot=0x84) addr:0x021cd750
+Rc4_NextByte kind:function(arm,size=0x58,dsprot=0x58) addr:0x021cd7dc
 func_ov004_021cd834 kind:function(arm,size=0x148,dsprot=0x144) addr:0x021cd834
 func_ov004_021cd97c kind:function(arm,size=0x1b4,dsprot=0x1ac) addr:0x021cd97c
 func_ov004_021cdb30 kind:function(arm,size=0x78,dsprot=0x74) addr:0x021cdb30
@@ -61,7 +61,7 @@ func_ov004_021ce848 kind:function(arm,size=0x2c) addr:0x021ce848
 .D_021ce854 kind:label(arm,data) addr:0x021ce854
 func_ov004_021ce874 kind:function(arm,size=0xc0,dsprot=(0xbc,0xfa8fd0ea)) addr:0x021ce874
 func_ov004_021ce934 kind:function(arm,size=0xe4,dsprot=(0xe0,0xfa8fd0ea)) addr:0x021ce934
-func_ov004_021cea18 kind:function(arm,size=0x94,dsprot=0x90) addr:0x021cea18
+DSProt_Crc32 kind:function(arm,size=0x94,dsprot=0x90) addr:0x021cea18
 func_ov004_021ceaac kind:function(arm,size=0x54c,dsprot=(0x540,0xfa8fd0ea)) addr:0x021ceaac
 func_ov004_021ceff8 kind:function(arm,size=0x54c,dsprot=(0x540,0xfa8fd0ea)) addr:0x021ceff8
 func_ov004_021cf544 kind:function(arm,size=0x88,dsprot=0x22c) addr:0x021cf544

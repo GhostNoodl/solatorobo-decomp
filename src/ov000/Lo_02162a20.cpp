@@ -19,7 +19,7 @@ typedef struct {
 } LoGlyph;
 
 extern s32 gFadeState[5];
-void func_ov000_02162bd4(ModelViewer *self);
+void ModelViewer_UpdateModel(ModelViewer *self);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
@@ -32,7 +32,7 @@ static inline BOOL LoIsMode4(void) {
 }
 
 void ModelViewer_Update(ModelViewer *self) {
-    func_ov000_02162bd4(self);
+    ModelViewer_UpdateModel(self);
     if (Model0218fe1c_GetAnimCtrl(&self->model, 0)) {
         Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     }

@@ -25,7 +25,7 @@ void Lo021ccb54_ClearLabels(void *p);
 void ListRow_Init(void *p);
 void Lo021cca40_Init(void *p);
 void *Param_Get(u16 id);
-Ov015ParamPrice *func_0206ee20(u16 id);
+Ov015ParamPrice *Param_GetFishItemInfo(u16 id);
 void LoBase021ccb54_021ccbe0_AppendRow(void *a, void *b);
 void Obj021c55e8_SetLabel1(void *a, void *b);
 void Obj021c55e8_SetLabel2(void *a, void *b);
@@ -130,7 +130,7 @@ void Ov015ResultPanel_Build(Ov015ResultPanel *self, s32 mode) {
             }
             name = Param_Get(items[i].id);
             k = 0;
-            d = func_0206ee20(items[i].id);
+            d = Param_GetFishItemInfo(items[i].id);
             if (d != NULL) {
                 k = d->price;
             }

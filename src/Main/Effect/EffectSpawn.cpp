@@ -50,7 +50,7 @@ extern char data_0208c7cb[];
 extern char data_0208c7dd[];
 extern char data_0208c7ef[];
 extern EffectFile *ResList_FindType0(void *arc, const char *name);
-extern EffectObj *func_02068544(EffectSetup *setup);
+extern EffectObj *EffectSetup_SpawnObjs(EffectSetup *setup);
 
 typedef struct EffectSetupBuf {
     u32 *vt;
@@ -271,7 +271,7 @@ EffectGroup *Effect_SpawnGroup640(s32 id, const VecFx32 *pos) {
     setup.chunk1c = NULL;
     setup.chunk20 = NULL;
     setup.chunk24 = NULL;
-    EffectObj_AddChild(g, func_02068544((EffectSetup *)&setup));
+    EffectObj_AddChild(g, EffectSetup_SpawnObjs((EffectSetup *)&setup));
     setup.vt = EffectSetup_vtbl;
     g->unk_20 = id;
     for (c = g->child; c != NULL; c = c->child) {

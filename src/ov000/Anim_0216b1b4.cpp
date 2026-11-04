@@ -8,7 +8,7 @@
 extern "C" {
 extern MessageQueue021cb980 *gMessageQueue;
 void TexObj_SetOamFunc(void *a, int b, void *c, void *d);
-void *func_ov000_0216ac14(void *self, u16 *msg, void *arr, u16 *cnt);
+void *Obj0216ad04_OamCallback(void *self, u16 *msg, void *arr, u16 *cnt);
 
 static inline Lo021cb798 *GetObj0216b1b4(void) {
     ListBuffer021cb940 *o = gMessageQueue->unk_11c;
@@ -36,7 +36,7 @@ static inline void SetPos0216b1b4(Model *o, s32 x, s32 y) {
     o->y = y;
 }
 
-void func_ov000_0216b1b4(Obj0216ad04 *self) {
+void Obj0216ad04_Draw(Obj0216ad04 *self) {
     s32 base;
     if (GetObj0216b1b4() == NULL) {
         return;
@@ -46,7 +46,7 @@ void func_ov000_0216b1b4(Obj0216ad04 *self) {
     }
     base = IsFlag0216b1b4(gMessageQueue) ? 0xae000 : 0xb6000;
     SetPos0216b1b4(self->model, -0x53000, (base + (s32)(((s64)self->ratio * 0x40000 + 0x800) >> 12) - 0x61000) & ~0xfff);
-    TexObj_SetOamFunc(self->model, 6, (void *)func_ov000_0216ac14, self);
+    TexObj_SetOamFunc(self->model, 6, (void *)Obj0216ad04_OamCallback, self);
     self->model->unk_150 = -0x1f80;
     Model_PlayPart(self->model, 6);
     Model_PlayPart(self->model, 7);

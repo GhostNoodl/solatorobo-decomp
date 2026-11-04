@@ -54,17 +54,17 @@ extern void *GfxSys_GetOamMgr(GfxSys *sys, int which);
 
 BOOL TexObj_CheckTransfer(TexObj *obj, int idx, TexObjEntry *e);
 
-void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
-void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
+void TexObj_DrawCellOam(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
+void TexObj_DrawCell3D(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
 
 typedef int OamShape;
 
-extern const int data_02082898[][4];
+extern const int Gfx3D_ObjWidthShift[][4];
 
 static inline int Oam_GetWidthShift(const OamShape *shape) {
     const u16 shapeBit = (u16)((*shape & 0xc000) >> 14);
     const u16 sizeBit = (u16)((*shape & 0xc0000000) >> 30);
-    return data_02082898[shapeBit][sizeBit];
+    return Gfx3D_ObjWidthShift[shapeBit][sizeBit];
 }
 
 static inline void TexObj_ReleaseTransfer(u32 *p) {
@@ -81,17 +81,17 @@ void TexObj_DrawCell(TexObj *obj, void *cell, TexObjEntry *e, u8 affine) {
     TexObj_ReleaseTransfer(&obj->pltt.transfer);
     TexObj_ReleaseTransfer(&obj->plttPtr->transfer);
     if (obj->unk_085 & 2) {
-        func_02042720(obj, 1, oam, cell, e, affine);
+        TexObj_DrawCellOam(obj, 1, oam, cell, e, affine);
     }
     if (obj->unk_085 & 4) {
-        func_02042720(obj, 2, oam, cell, e, affine);
+        TexObj_DrawCellOam(obj, 2, oam, cell, e, affine);
     }
     if (obj->unk_085 & 1) {
-        func_020429a0(obj, oam, cell, e, affine);
+        TexObj_DrawCell3D(obj, oam, cell, e, affine);
     }
 }
 
-void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine) {
+void TexObj_DrawCellOam(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine) {
     NNSG2dOamManagerInstance *mgr;
     TexObjPair trans;
     u16 count;
@@ -154,14 +154,14 @@ BOOL TexObj_CheckTransfer(TexObj *obj, int idx, TexObjEntry *e) {
 typedef void (*TexObjMtxFunc)(MtxFx43 *mtx, TexObj *obj, TexObjEntry *e);
 typedef void (*TexObjDrawFunc)(int i, int x, int y, int z, u16 color, TexObjOam *oam, int *tex, u32 texBase, u32 plttBase, MtxFx43 *mtx, int arg);
 
-extern const u8 data_0208288c[];
+extern const u8 TexObj_Cell3DSetupDL[];
 extern void Gfx3D_SendDL(void *obj, int a);
 extern void NNS_G3dGeSendDL(const void *list, u32 size);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern u32 NNS_G2dGetImageLocation(TexObj *obj, int idx);
 extern u32 NNS_G2dGetImagePaletteLocation(PlttSub *sub, int idx);
-extern void func_02043100(int x, int y, int z, u32 color, TexObjOam *oam, int *tex, u32 texBase, u32 plttBase, const MtxFx43 *mtx);
+extern void Gfx3D_DrawOamQuad(int x, int y, int z, u32 color, TexObjOam *oam, int *tex, u32 texBase, u32 plttBase, const MtxFx43 *mtx);
 
 static inline TexObjFlagsB *FB(TexObj *obj) {
     return (TexObjFlagsB *)&obj->unk_06c;
@@ -226,7 +226,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine) {
+void TexObj_DrawCell3D(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine) {
     u16 count;
     u32 texBase;
     int z;
@@ -236,7 +236,7 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
     MtxFx43 mtx;
     TexObj_CheckTransfer(obj, 0, e);
     Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
-    NNS_G3dGeSendDL(data_0208288c, 0xc);
+    NNS_G3dGeSendDL(TexObj_Cell3DSetupDL, 0xc);
     if (obj->plttPtr->fmt == 4) {
         obj->unk_018 = 1;
     }
@@ -317,7 +317,7 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
             if (obj->unk_158 != 0) {
                 ((TexObjDrawFunc)obj->unk_158)(i, obj->pairs[0].a + 0x80000, obj->pairs[0].b + 0x60000, z, obj->unk_154, &oam[i], &obj->unk_00c, texBase, plttBase, affine ? &mtx : NULL, e->unk_08);
             } else {
-                func_02043100(obj->pairs[0].a + 0x80000, obj->pairs[0].b + 0x60000, z, obj->unk_154, &oam[i], &obj->unk_00c, texBase, plttBase, affine ? &mtx : NULL);
+                Gfx3D_DrawOamQuad(obj->pairs[0].a + 0x80000, obj->pairs[0].b + 0x60000, z, obj->unk_154, &oam[i], &obj->unk_00c, texBase, plttBase, affine ? &mtx : NULL);
             }
         }
     }

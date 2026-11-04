@@ -44,10 +44,10 @@ typedef struct LangTbl2 {
     /* 0x08 */ void *items[8];
 } LangTbl2;
 
-extern LangTbl2 data_0214b160;
+extern LangTbl2 gTblRes;
 extern const u32 ResHandle_vtbl[];
-extern const char *data_0208ccb0;
-extern const char *data_0208cca4;
+extern const char *ArcPath_GameParam;
+extern const char *ResName_GoParam;
 extern void *Heap_Alloc(u32 size);
 extern void LangData_LocalizePath(char *dst, const char *src);
 
@@ -77,45 +77,45 @@ void LangRes2_Create(void) {
     char arcName[0x20];
     char name[0x20];
     LangRes2 *res = LangRes2_New();
-    data_0214b160.res = res;
+    gTblRes.res = res;
     res->type = 0;
-    LangData_LocalizePath(arcName, data_0208ccb0);
-    LangData_LocalizePath(name, data_0208cca4);
-    data_0214b160.res->Open(arcName, name);
+    LangData_LocalizePath(arcName, ArcPath_GameParam);
+    LangData_LocalizePath(name, ResName_GoParam);
+    gTblRes.res->Open(arcName, name);
 }
 
 void LangRes2_Delete(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
-    if (data_0214b160.res != NULL) {
-        if (data_0214b160.res != NULL) {
-            data_0214b160.res->DeletingDtor();
+    if (gTblRes.res != NULL) {
+        if (gTblRes.res != NULL) {
+            gTblRes.res->DeletingDtor();
         }
-        data_0214b160.res = NULL;
+        gTblRes.res = NULL;
     }
     gSysState->cur = saved;
 }
 
-BOOL func_0206facc(void) {
-    return data_0214b160.res->Load();
+BOOL LangRes2_Load(void) {
+    return gTblRes.res->Load();
 }
 
 
 void LangRes2_BindTables(void) {
     void **data;
-    if (data_0214b160.res->IsLoaded()) {
+    if (gTblRes.res->IsLoaded()) {
         return;
     }
-    data_0214b160.res->unk_vf30();
-    data = data_0214b160.res->GetData();
-    data_0214b160.items[0] = LangTbl_Find(data, "mc");
-    data_0214b160.items[1] = LangTbl_Find(data, "sc");
-    data_0214b160.items[2] = LangTbl_Find(data, "nc");
-    data_0214b160.items[3] = LangTbl_Find(data, "gm");
-    data_0214b160.items[4] = LangTbl_Find(data, "en");
-    data_0214b160.items[5] = LangTbl_Find(data, "so");
-    data_0214b160.items[6] = LangTbl_Find(data, "ac");
-    data_0214b160.items[7] = LangTbl_Find(data, "fs");
+    gTblRes.res->unk_vf30();
+    data = gTblRes.res->GetData();
+    gTblRes.items[0] = LangTbl_Find(data, "mc");
+    gTblRes.items[1] = LangTbl_Find(data, "sc");
+    gTblRes.items[2] = LangTbl_Find(data, "nc");
+    gTblRes.items[3] = LangTbl_Find(data, "gm");
+    gTblRes.items[4] = LangTbl_Find(data, "en");
+    gTblRes.items[5] = LangTbl_Find(data, "so");
+    gTblRes.items[6] = LangTbl_Find(data, "ac");
+    gTblRes.items[7] = LangTbl_Find(data, "fs");
 }
 
 }

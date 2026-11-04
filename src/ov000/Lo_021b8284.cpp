@@ -15,7 +15,7 @@ void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
 void *Heap_Alloc(u32 size);
 void *ResList_FindType2(void *a, void *b);
 BOOL Model_IsReady(void *a, s32 b);
-void func_02041d8c(void *model);
+void TexObj_ShrinkRes(void *model);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 FX_Div(s32 a, s32 b);
 
@@ -110,7 +110,7 @@ BOOL ImageCard_Update(Obj021b8284 *self) {
         if (!Model_IsReady(self->unk_4c, 0xffff)) {
             break;
         }
-        func_02041d8c(self->unk_4c);
+        TexObj_ShrinkRes(self->unk_4c);
         if (Fade4_021b8284()) {
             self->unk_50 = 0x3e7000;
         } else {

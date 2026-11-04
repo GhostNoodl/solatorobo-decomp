@@ -18,7 +18,7 @@ static inline s32 ov002_GetT(Obj021efe9c *self) {
     return FX_Div(self->unk_a4 << 12, self->unk_a8 << 12);
 }
 
-void func_ov002_021d83f0(Obj021efe9c *self) {
+void Obj021efe9c_Draw(Obj021efe9c *self) {
     switch (self->unk_ac) {
     case 1:
         self->trans.y = 0x400;

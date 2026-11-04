@@ -349,7 +349,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             rot.y += 0x8000;
             rot.x = 0x200;
             rot.z = 0;
-            func_ov000_0218a358(&g->cam, &v, &rot, 0xe000, 0, 0xccd, 0x99a, 1);
+            FieldCam_SetTarget(&g->cam, &v, &rot, 0xe000, 0, 0xccd, 0x99a, 1);
         }
         if ((s32)t == 0xa0) {
             SndMgr_PlayAt(gSndMgr, 0x38, &self->unk_84, 0);

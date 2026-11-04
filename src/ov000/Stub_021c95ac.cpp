@@ -27,7 +27,7 @@ typedef struct Node021c9544 {
 
 u8 *Param_GetEntry(u16 id);
 
-void func_ov000_021c9544(s16 *out, Node021c9544 *n) {
+void Parts_SumStats(s16 *out, Node021c9544 *n) {
     MI_CpuFill8(out, 0, 10);
     for (; n != NULL; n = n->next) {
         if (n->unk_4a != 2 && n->unk_6c == 0) {
@@ -82,7 +82,7 @@ typedef struct {
 
 extern Data0214a424 *gStageFlags;
 
-void func_ov000_021c95fc(s16 *out) {
+void StageFlags_SumPartStats(s16 *out) {
     s32 i;
     Slot021c95fc *slots;
     MI_CpuFill8(out, 0, 0x14);

@@ -94,7 +94,7 @@ BOOL Ov008WorldMap_DialogOnDecide(Ov008Menu *self, Ov008Sel *sel) {
 }
 
 #pragma force_active on
-void func_ov008_021cf9b8(Ov008Mgr *m, u32 id) {
+void Ov008WorldMap_SelectById(Ov008Mgr *m, u32 id) {
     Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);

@@ -12,8 +12,8 @@
 
 // The two data blocks of a field, as Main's Lang code reads them (LangBlockA / LangBlockB, declared
 // locally in src/Main/Lang). Block A is FieldMgr::blockA (LangBlockA_GetData / 0206e180 / 0206e1bc return
-// its three 0x18-byte entry lists); block B is FieldMgr::blockB (func_0206e230: the exits,
-// LangBlockB_GetData: the start points, func_0206e2a4: the props, func_0206e2ec: the actor spawns).
+// its three 0x18-byte entry lists); block B is FieldMgr::blockB (LangBlockB_GetData0: the exits,
+// LangBlockB_GetData: the start points, LangBlockB_GetData2: the props, LangBlockB_GetData3: the actor spawns).
 typedef struct LangBlockA {
     /* 0x00 */ u8 unk_00[8];
     /* 0x08 */ LangSecFlags flags;
@@ -27,7 +27,7 @@ typedef struct LangBlockA {
 typedef struct LangBlockB {
     /* 0x00 */ u8 unk_00[8];
     /* 0x08 */ LangSecFlags flags;
-    /* 0x0a */ u16 unk_0a; // the four TouchQuad_Init arguments (func_ov000_021b628c / 021b6c60)
+    /* 0x0a */ u16 unk_0a; // the four TouchQuad_Init arguments (FieldMgr_PlacePlayerAtExit / 021b6c60)
     /* 0x0c */ u16 unk_0c;
     /* 0x0e */ u16 unk_0e;
     /* 0x10 */ u16 unk_10;
@@ -47,7 +47,7 @@ typedef struct LangBlockB {
 
 // An exit of the field (0x24 bytes, block B section 0). Entering its box (FieldMgr_Update) moves
 // the player to field `dest` (0xff parts: the current field's) at exit `destExit` there;
-// func_ov000_021b628c places the player at pos + offset of the exit it arrives at.
+// FieldMgr_PlacePlayerAtExit places the player at pos + offset of the exit it arrives at.
 typedef struct FieldExit {
     /* 0x00 */ VecFx32 pos;
     /* 0x0c */ s16 hx; // half size of the box (<< 4)
@@ -74,7 +74,7 @@ typedef struct FieldStart {
     /* 0x0e */ u8 unk_0e[2];
 } FieldStart;
 
-// A prop record (0x34 bytes, block B section 2), read by func_ov000_021b8014.
+// A prop record (0x34 bytes, block B section 2), read by FieldProp_Init.
 typedef struct FieldPropDef {
     /* 0x00 */ char path[0x18]; // resource path entry (ResMgr_Load, Path_SkipDir)
     /* 0x18 */ VecFx32 pos;
@@ -83,7 +83,7 @@ typedef struct FieldPropDef {
     /* 0x2c */ s16 sy;
     /* 0x2e */ s16 sz;
     /* 0x30 */ s16 unk_30;
-    /* 0x32 */ u16 anim : 1; // the flags func_ov000_021b8014 turns into loader / model / prop flags
+    /* 0x32 */ u16 anim : 1; // the flags FieldProp_Init turns into loader / model / prop flags
     /* 0x32 */ u16 loop : 1;
     /* 0x32 */ u16 hit : 1;
     /* 0x32 */ u16 tex : 1;
@@ -94,7 +94,7 @@ typedef struct FieldPropDef {
     /* 0x32 */ u16 unk_32_8 : 8;
 } FieldPropDef;
 
-// The resource loader of a prop (0x24 bytes, FieldProp::loader, stepped by func_ov000_021b6d28).
+// The resource loader of a prop (0x24 bytes, FieldProp::loader, stepped by FieldPropLoader_Bind).
 typedef struct FieldPropLoader {
     /* 0x00 */ union {
         const char *path;
@@ -106,7 +106,7 @@ typedef struct FieldPropLoader {
         u16 flags;
         struct {
             u16 flag0 : 1; // load the archive
-            u16 flag1 : 1; // archive requested (released by func_ov000_021b7a7c)
+            u16 flag1 : 1; // archive requested (released by FieldProp_Release)
             u16 flag2 : 1; // model
             u16 flag3 : 1;
             u16 flag4 : 1; // texture (name + data_ov000_021cc84c)
@@ -125,8 +125,8 @@ typedef struct FieldPropLoader {
     /* 0x20 */ void **hit;
 } FieldPropLoader;
 
-// The model of a prop (0xc0 bytes, FieldProp::model; ctor func_ov000_021b6f94, set up by
-// func_ov000_021b70c0, animated by FieldPropModel_UpdateAnim, drawn by func_ov000_021b75e0).
+// The model of a prop (0xc0 bytes, FieldProp::model; ctor FieldPropModel_Ctor, set up by
+// FieldPropModel_Setup, animated by FieldPropModel_UpdateAnim, drawn by FieldProp_DrawModel).
 typedef struct FieldPropModel {
     /* 0x00 */ FieldPropLoader *res;
     /* 0x04 */ struct NNSG3dAnmObj_ *anm[5];
@@ -156,9 +156,9 @@ typedef struct FieldPropModel {
     };
 } FieldPropModel;
 
-// A prop of the field (0x114 bytes, ctor func_ov000_021b79f4, dtor func_ov000_021b7a7c), in the list
-// FieldMgr::head / tail. func_ov000_021b8014 sets it up from its record, func_ov000_021b7f0c loads
-// it, func_ov000_021b7b50 updates it and FieldProp_Draw tests whether it is drawn.
+// A prop of the field (0x114 bytes, ctor FieldProp_Ctor, dtor FieldProp_Release), in the list
+// FieldMgr::head / tail. FieldProp_Init sets it up from its record, FieldProp_Load loads
+// it, FieldProp_Update updates it and FieldProp_Draw tests whether it is drawn.
 typedef struct FieldProp {
     /* 0x000 */ struct FieldProp *prev;
     /* 0x004 */ struct FieldProp *next;
@@ -186,10 +186,10 @@ typedef struct FieldProp {
 struct FieldMgr;
 typedef void (FieldMgr::*FieldMgrFn)();
 
-// The field manager (0x294 bytes, ctor FieldMgr_Init, made by func_ov000_021b4eec, deleted by
-// func_ov000_021b4f28): gFieldMgr. FieldMgr_UpdateLoad loads the field's blocks and props,
+// The field manager (0x294 bytes, ctor FieldMgr_Init, made by FieldMgr_Create, deleted by
+// FieldMgr_Destroy): gFieldMgr. FieldMgr_UpdateLoad loads the field's blocks and props,
 // FieldMgr_Update updates them and tests the exits, FieldMgr_DrawProps draws,
-// func_ov000_021b53f4 unloads, func_ov000_021b628c places the player at the exit it arrives at.
+// func_ov000_021b53f4 unloads, FieldMgr_PlacePlayerAtExit places the player at the exit it arrives at.
 struct FieldMgr {
     /* 0x000 */ PauseNode pause;
     /* 0x008 */ u8 state; // FieldMgr_UpdateLoad load steps (0xff: done)
@@ -217,18 +217,18 @@ extern "C" {
 
 extern FieldMgr *gFieldMgr;
 
-void func_ov000_021b4eec(void);
-void func_ov000_021b4f28(void);
+void FieldMgr_Create(void);
+void FieldMgr_Destroy(void);
 FieldMgr *FieldMgr_Init(FieldMgr *self);
 void FieldMgr_Update(FieldMgr *self);
 void FieldMgr_DrawProps(FieldMgr *self);
 void func_ov000_021b53f4(FieldMgr *self);
 BOOL FieldMgr_UpdateLoad(FieldMgr *self);
-void func_ov000_021b5dc0(FieldMgr *self);
-void func_ov000_021b628c(FieldMgr *self);
+void FieldMgr_SetupBlock(FieldMgr *self);
+void FieldMgr_PlacePlayerAtExit(FieldMgr *self);
 void func_ov000_021b65ec(FieldMgr *self);
 FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos);
-void func_ov000_021b6994(FieldMgr *self, u8 all);
+void FieldMgr_LoadBlockArchives(FieldMgr *self, u8 all);
 void FieldMgr_SetIdVec(FieldMgr *self, u16 id, const VecFx32 *v);
 void FieldMgr_StepCameraAnim(FieldMgr *self);
 void FieldMgr_StepTouchArea(FieldMgr *self);

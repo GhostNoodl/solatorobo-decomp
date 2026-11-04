@@ -12,8 +12,8 @@ typedef struct {
 } Bits021bca00;
 
 extern "C" {
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 extern const u32 TextWin_vtbl[];
 extern void *gMsgRes;
 void *Heap_Alloc(u32 size);
@@ -24,7 +24,7 @@ void TextWin_RenderToVram(void *p);
 void func_ov000_02184508(void *p);
 BOOL Model_IsReady(void *p, s32 a);
 s32 FX_Div(s32 a, s32 b);
-BOOL func_ov000_021bc474(void *self);
+BOOL Fade021bc474_Update(void *self);
 
 static inline s32 Lo_FxMul64(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
@@ -58,16 +58,16 @@ struct Obj021bca00 {
     s32 unk_28;
 };
 
-BOOL func_ov000_021bca00(Obj021bca00 *self) {
+BOOL HelpButton_Update(Obj021bca00 *self) {
     switch (self->unk_0c) {
     case 0: {
-        void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+        void *res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             const char *arc;
             const char *name;
-            name = data_0208cc88;
-            arc = data_0208cc94;
+            name = ResName_BattleCells;
+            arc = ArcPath_MenuBattle;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);
@@ -122,7 +122,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
             }
         }
         self->unk_1c = Lo_FxMul64(FX_SinCosTable_[((r << 14) >> 16) * 2], 0x6000);
-        func_ov000_021bc474(self);
+        Fade021bc474_Update(self);
         break;
     }
     }

@@ -11,8 +11,8 @@ typedef struct {
 
 extern "C" {
 
-extern const char *data_0208cc88;
-extern const char *data_0208cc94;
+extern const char *ResName_BattleCells;
+extern const char *ArcPath_MenuBattle;
 extern void *gMsgRes;
 void *ResList_FindType2(void *a, void *b);
 void *ResMgr_GetArcList(void *a);
@@ -20,9 +20,9 @@ void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 BOOL Obj02152e5c_LoadModel(UiObj *self);
-void *func_ov000_0214c084(u8 *self, u16 *cmd, void *arr, u16 *count);
-void func_020708fc(s32 a, LoName16 *out);
-void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);
+void *Menu021ca94c_OamCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
+void Tbl_MakeFacePath(s32 a, LoName16 *out);
+void Tbl_MakeFaceName(s32 a, LoName16 *out, s32 b, s32 c);
 s32 Tbl_GetText(s32 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
@@ -52,8 +52,8 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
     if (m) {
         const char *arc;
         const char *name;
-        name = data_0208cc88;
-        arc = data_0208cc94;
+        name = ResName_BattleCells;
+        arc = ArcPath_MenuBattle;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);
@@ -66,11 +66,11 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
     }
     self->unk_88->flags |= 2;
     TexObj_SelectImage(self->unk_88, 0, 6);
-    TexObj_SetAllOamFuncs(self->unk_88, (void *)func_ov000_0214c084);
+    TexObj_SetAllOamFuncs(self->unk_88, (void *)Menu021ca94c_OamCallback);
     TexObj_SetOamFuncArg(self->unk_88, 6, self);
 
-    func_020708fc(0x1000, &a);
-    func_02070b98(0x1000, &b, 1, 2);
+    Tbl_MakeFacePath(0x1000, &a);
+    Tbl_MakeFaceName(0x1000, &b, 1, 2);
     res = ResList_FindType2(ResMgr_GetArchiveList(&a, &b, 2), &b);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {

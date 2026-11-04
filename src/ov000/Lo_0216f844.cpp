@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0216f23c(void *p, s32 a);
+void BufferList_Run(void *p, s32 a);
 
 struct Obj0216f844 {
     u8 unk_00[0x20];

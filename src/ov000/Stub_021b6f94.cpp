@@ -12,7 +12,7 @@ void MTX_Identity33_(MtxFx33 *mtx);
         (f) = 0;               \
     }
 
-FieldPropModel *func_ov000_021b6f94(FieldPropModel *self) {
+FieldPropModel *FieldPropModel_Ctor(FieldPropModel *self) {
     self->res = NULL;
     self->anm[0] = NULL;
     self->anm[1] = NULL;

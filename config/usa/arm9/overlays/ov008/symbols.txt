@@ -1,8 +1,8 @@
 Ov008Menu_AddItem kind:function(arm,size=0x98) addr:0x021ccda0
 Ov008Caption_Update kind:function(arm,size=0x10c) addr:0x021cce38
 func_ov008_021ccf44 kind:function(arm,size=0x328) addr:0x021ccf44
-func_ov008_021cd26c kind:function(arm,size=0x170) addr:0x021cd26c
-func_ov008_021cd3dc kind:function(arm,size=0x6c) addr:0x021cd3dc
+Ov008WorldMap_OamCallback0 kind:function(arm,size=0x170) addr:0x021cd26c
+Ov008WorldMap_OamCallback1 kind:function(arm,size=0x6c) addr:0x021cd3dc
 Ov008WorldMap_Create kind:function(arm,size=0x44) addr:0x021cd448
 Ov008WorldMap_Delete kind:function(arm,size=0x74) addr:0x021cd48c
 Ov008WorldMap_Init kind:function(arm,size=0x84) addr:0x021cd500
@@ -21,7 +21,7 @@ Ov008Menu_GetPadBottom kind:function(arm,size=0x8) addr:0x021cf788
 Ov008WorldMap_MenuOnDecide kind:function(arm,size=0xb4) addr:0x021cf790
 Ov008WorldMap_MenuOnCursor kind:function(arm,size=0x34) addr:0x021cf844
 Ov008WorldMap_DialogOnDecide kind:function(arm,size=0x140) addr:0x021cf878
-func_ov008_021cf9b8 kind:function(arm,size=0x80) addr:0x021cf9b8
+Ov008WorldMap_SelectById kind:function(arm,size=0x80) addr:0x021cf9b8
 Ov008WorldMap_BuildMenu kind:function(arm,size=0x4e4) addr:0x021cfa38
 Ov008Menu_DrawItem kind:function(arm,size=0x24) addr:0x021cff1c
 Ov008Menu_GetLineHeight kind:function(arm,size=0x44) addr:0x021cff40
@@ -39,7 +39,7 @@ func_ov008_021d0150 kind:function(arm,size=0x8) addr:0x021d0150
 Ov008Menu_GetIconWidth kind:function(arm,size=0x14) addr:0x021d0158
 func_ov008_021d016c kind:function(arm,size=0xc) addr:0x021d016c
 Ov008Menu_IsLoaded kind:function(arm,size=0x38) addr:0x021d0178
-func_ov008_021d01b0 kind:function(arm,size=0xd4) addr:0x021d01b0
+Ov008Menu_AreModelsReady kind:function(arm,size=0xd4) addr:0x021d01b0
 Ov008Menu_Dtor kind:function(arm,size=0x44) addr:0x021d0284
 data_ov008_021d02c8 kind:data(any) addr:0x021d02c8
 data_ov008_021d02d0 kind:data(any) addr:0x021d02d0

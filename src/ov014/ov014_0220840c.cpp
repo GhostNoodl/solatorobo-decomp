@@ -31,7 +31,7 @@ static inline BOOL Ov014_AnyHit(Ov014ActEx_0220774c *self) {
     return FALSE;
 }
 
-void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
+void Ov014ActEx_0220774c_UpdateThrown(Ov014ActEx_0220774c *self) {
     Ov003Actor *t = Actor_GetTarget(self);
     VecFx32 p;
     p.x = t->pos.x;

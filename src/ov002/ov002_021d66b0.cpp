@@ -39,7 +39,7 @@ static inline void Ov002_G3Cmd1(u32 op, u32 v) {
     NNS_G3dGeBufferOP_N(op, &a, 1);
 }
 
-void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, Ov002Oam *oam,
+void RobotTypeMenu_OamDraw(void *self, s32 x, s32 y, s32 z, s32 unused, Ov002Oam *oam,
                          const Ov002ImgAttr *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs) {
     s32 mv[3];
     s32 tv[3];

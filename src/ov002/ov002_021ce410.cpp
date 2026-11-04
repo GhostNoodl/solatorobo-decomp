@@ -181,7 +181,7 @@ void CabinMenu_BuildMenu(Task021ef4b0 *self) {
     self->unk_3c->flags &= ~0x80000;
     self->unk_3c->flags &= ~0x40000;
     self->unk_3c->flags &= ~0x10000;
-    UiList_SetMarkModel(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_3c, gCommonTextPath, ResName_TextCells, 0xb);
     e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe8), 0, 0xffff, 0);
     if (self->unk_48_0) {
         e->unk_24 = 0xe;

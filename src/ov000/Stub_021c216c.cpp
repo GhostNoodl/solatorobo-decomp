@@ -8,7 +8,7 @@ void Heap_Free(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 
-void func_ov000_021c216c(Obj021c2114 *self) {
+void Obj021c2114_Release(Obj021c2114 *self) {
     void *saved;
     void *p;
 

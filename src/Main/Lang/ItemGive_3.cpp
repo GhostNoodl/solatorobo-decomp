@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern u8 *data_0208d268[];
+extern u8 *Param_ItemTables[];
 extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
 extern s32 StageFlags_SetItemCount(StageFlags *f, u16 id, u8 n);
 extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
@@ -22,11 +22,11 @@ static inline u16 Item_Idx(u32 id) {
     return id & 0xfff;
 }
 
-void func_0206f518(SaveRef *ref, u32 id);
+void Item_InitSaveRef(SaveRef *ref, u32 id);
 
 static inline void Item_Notify(u16 id, u16 val) {
     SaveRef ref;
-    func_0206f518(&ref, id);
+    Item_InitSaveRef(&ref, id);
     if (ref.idx == -1) {
         return;
     }
@@ -38,7 +38,7 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     SaveRef ref;
     BOOL ok;
     u16 old;
-    func_0206f518(&ref, id);
+    Item_InitSaveRef(&ref, id);
     if (ref.idx == -1) {
         return FALSE;
     }
@@ -53,27 +53,27 @@ static inline BOOL Item_Set(u16 id, u16 val) {
 
 BOOL Item_Give(u16 id, int n);
 
-void func_0206f3f0(u16 id, int n);
+void Item_SetCount(u16 id, int n);
 
-void func_0206f518(SaveRef *ref, u32 id);
+void Item_InitSaveRef(SaveRef *ref, u32 id);
 
 BOOL Item_Set_0206f5e4(u16 id, int n);
 
-BOOL func_0206f66c(u16 id);
+BOOL Item_IsOwned(u16 id);
 
 typedef struct ItemDef {
     /* 0x00 */ u8 unk_00[0xc];
     /* 0x0c */ s16 parts[4];
 } ItemDef;
 
-u16 func_0206f6d4(s32 id, s32 *slot);
+u16 Item_FindPictureByChip(s32 id, s32 *slot);
 
-u16 func_0206f788(u16 id);
+u16 Item_GetPictureChipMask(u16 id);
 
-BOOL func_0206f85c(u32 n);
+BOOL Item_HasNewInTable(u32 n);
 
-BOOL func_0206f954(void) {
-    return func_0206f85c(9);
+BOOL Item_HasNewMovie(void) {
+    return Item_HasNewInTable(9);
 }
 
 typedef struct NamedEntry {

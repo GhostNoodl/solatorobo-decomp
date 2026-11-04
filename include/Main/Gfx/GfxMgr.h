@@ -146,7 +146,7 @@ typedef struct GfxMgr {
 
 extern GfxMgr *gGfxMgr;
 extern GfxSys *gGfxSys;
-extern const GfxFontEntry data_020827f8[9];
+extern const GfxFontEntry GfxMgr_FontTable[9];
 
 void *GfxMgr_GetFont(GfxMgr *mgr); // the current font
 

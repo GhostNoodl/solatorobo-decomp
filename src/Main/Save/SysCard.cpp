@@ -46,14 +46,14 @@ void SysCard_Create(void) {
         card->lockCount = 0;
     }
     gSysCard = card;
-    func_02046d1c(card);
+    SysCard_Init(card);
 }
 
 void SysCard_Reset_02046cd0(SysCard *card) {
     SysCard_Reset(card);
 }
 
-void func_02046d1c(SysCard *card) {
+void SysCard_Init(SysCard *card) {
     s32 id;
     CARD_Init();
     id = OS_GetLockID();
@@ -82,7 +82,7 @@ static inline BOOL SysCard_IsLocked(SysCard *card) {
     return card->lockCount != 0 ? TRUE : FALSE;
 }
 
-BOOL func_02046e28(SysCard *card) {
+BOOL SysCard_CheckLocked(SysCard *card) {
     return SysCard_IsLocked(card) ? TRUE : FALSE;
 }
 
@@ -169,7 +169,7 @@ BOOL SysCard_CheckError(SysCard *card, s32 err) {
     return FALSE;
 }
 
-BOOL func_020472c4(SysCard *card) {
+BOOL SysCard_CheckBusy(SysCard *card) {
     return SysCard_IsBusy() ? TRUE : FALSE;
 }
 

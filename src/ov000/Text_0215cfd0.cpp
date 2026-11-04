@@ -23,7 +23,7 @@ char *StageTbl_GetKeyItemName(u16 id);
 void Str_FormatInt(char *buf, u16 id);
 char *MsgRes_GetString(void *msg, s32 id);
 
-char *func_ov000_0215cfd0(Text0215cfd0 *self) {
+char *Text0215cfd0_FormatValue(Text0215cfd0 *self) {
     char tmp[0x20];
     char buf[0x100];
     char *s;

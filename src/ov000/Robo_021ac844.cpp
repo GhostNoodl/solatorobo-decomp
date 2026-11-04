@@ -36,8 +36,8 @@ void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void Field_ShakeCamera(u8 a, u8 b);
 u8 *Target_GetActor(void *p);
 void func_ov000_02199f88(void *t, void *self);
-u16 func_ov000_02198da8(void *body, u16 angle);
-u8 func_0206d204(void *p, s32 a);
+u16 Body_GetFaceAngle(void *body, u16 angle);
+u8 StageFlags_UseReviveItems(void *p, s32 a);
 void Robo021ca458_Move(Robo021ca458 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_021ac844(u16 id) {
@@ -203,7 +203,7 @@ void Robo021ca458_State13(Robo021ca458 *self) {
         } else {
             u32 fl;
             if ((self->hit->unk_50 & 0x40000000) || ((s32)self->hit->unk_58) != 0) {
-                self->moveYaw = func_ov000_02198da8(self->hit, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(self->hit, self->moveYaw);
                 self->speed = 0x114;
                 if (self->velY < -0xcd) {
                     self->velY = -0xcd;
@@ -233,7 +233,7 @@ void Robo021ca458_State13(Robo021ca458 *self) {
                     self->velY = -self->velY >> 1;
                     self->speed = self->speed - (self->speed >> 2);
                     stop = FALSE;
-                    r = func_0206d204(gStageFlags, 0);
+                    r = StageFlags_UseReviveItems(gStageFlags, 0);
                     if (self->hpObj->cur == 0 && r == 0) {
                         stop = TRUE;
                     }

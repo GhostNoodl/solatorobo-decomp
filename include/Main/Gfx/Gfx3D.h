@@ -15,16 +15,16 @@ extern "C" {
 extern void *Heap_AllocHi(u32 size, u32 align);
 extern void Heap_FreeHi(void *ptr);
 
-extern const int data_02082898[][4];
-extern const int data_020828c8[][4];
+extern const int Gfx3D_ObjWidthShift[][4];
+extern const int Gfx3D_ObjHeightShift[][4];
 extern u32 data_02fe00e8[];
-extern const void *data_0208b3d0[];
-extern const u32 data_020828f8[];
-extern const u16 data_02082958[];
-extern const u16 data_02082900[];
+extern const void *Gfx3D_PrimDLs[];
+extern const u32 Gfx3D_PrimDLSizes[];
+extern const u16 Gfx3D_ToonTable[];
+extern const u16 Gfx3D_EdgeColorTable[];
 extern const u16 data_02075614[][4];
 extern const u16 data_0207562c[][4];
-extern const int data_02082884[];
+extern const int Gfx3D_ColorFormatTable[];
 
 typedef int OamShape;
 

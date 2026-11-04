@@ -171,8 +171,8 @@ void EffectMgr_RestoreList(EffectMgr *m);
 void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 
 void EffectObj_UpdateSndCues(struct EffectObj *obj);
-BOOL func_020637d0(struct EffectObj *obj);
-void func_02063954(struct EffectObj *obj);
+BOOL EffectObj_Update(struct EffectObj *obj);
+void EffectObj_Render(struct EffectObj *obj);
 void EffectObj_StopLoop(struct EffectObj *obj);
 
 #define EFFECT_DELETE(obj) \

@@ -29,13 +29,13 @@ extern "C" {
 extern Save021b5578 *gStageFlags;
 
 Lang021b5578 *Lang_GetGroup(u8 id);
-void func_0206dde4(char *buf, u8 *ids);
-void func_0206dedc(char *buf, u8 *ids);
-void func_0206dfd4(char *buf, u8 *ids);
+void LangData_MakeAreaInfoPath(char *buf, u8 *ids);
+void LangData_MakeRadarPath(char *buf, u8 *ids);
+void LangData_MakeBlockPath(char *buf, u8 *ids);
 void ResMgr_LoadArchive(void *a, char *buf, s32 b, s32 c);
 BOOL ResMgr_IsArchiveLoaded(void *a, char *buf, s32 b);
 void **ResMgr_FindNamedArcType0(void *a, char *buf);
-Ent021b5578 *func_0206e1bc(LangBlockA *r);
+Ent021b5578 *LangBlockA_GetData2(LangBlockA *r);
 u16 LangData_GetIndex(u32 a, u32 b);
 u8 *Tbl_Elem_020704b4(u16 id);
 u8 *LangBlockA_GetData(LangBlockA *r);
@@ -49,12 +49,12 @@ void **ResList_FindType4(void *m, void *k);
 BOOL G3dRes_SetupVram(void *k, void *r);
 BOOL Vram_IsIdle(void);
 void G3dRes_DropTexData(void *r);
-FieldExit *func_0206e230(LangBlockB *r);
-FieldPropDef *func_0206e2a4(LangBlockB *r);
+FieldExit *LangBlockB_GetData0(LangBlockB *r);
+FieldPropDef *LangBlockB_GetData2(LangBlockB *r);
 void *Heap_Alloc(u32 size);
-FieldProp *func_ov000_021b79f4(FieldProp *p);
-void func_ov000_021b8014(FieldProp *n, const FieldPropDef *def, u8 *list, u8 count);
-BOOL func_ov000_021b7f0c(FieldProp *n);
+FieldProp *FieldProp_Ctor(FieldProp *p);
+void FieldProp_Init(FieldProp *n, const FieldPropDef *def, u8 *list, u8 count);
+BOOL FieldProp_Load(FieldProp *n);
 
 static inline void SetNibble021b5578(s32 row, s32 idx, u32 value) {
     s32 sh = idx % 8;
@@ -101,21 +101,21 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
             goto set;
         }
     case 10:
-        func_0206dde4(buf, ids);
+        LangData_MakeAreaInfoPath(buf, ids);
         ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         st = 0xb;
         goto set;
     case 0xb:
-        func_0206dde4(buf, ids);
+        LangData_MakeAreaInfoPath(buf, ids);
         if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
-        func_0206dedc(buf, ids);
+        LangData_MakeRadarPath(buf, ids);
         ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         self->state = 0x10;
     case 0x10: {
         void **r_0;
-        func_0206dedc(buf, ids);
+        LangData_MakeRadarPath(buf, ids);
         if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
@@ -123,7 +123,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
         if (r_0 != NULL) {
             self->unk_0c = *r_0;
         }
-        func_0206dde4(buf, ids);
+        LangData_MakeAreaInfoPath(buf, ids);
         r_0 = ResMgr_FindNamedArcType0(t->unk_08, buf);
         if (r_0 != NULL) {
             self->blockA = (LangBlockA *)*r_0;
@@ -133,7 +133,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
             break;
         }
         {
-            Ent021b5578 *ents = func_0206e1bc(self->blockA);
+            Ent021b5578 *ents = LangBlockA_GetData2(self->blockA);
             u8 n_0 = self->blockA->count2;
             s32 i_0;
             if (ents != NULL) {
@@ -178,7 +178,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
                     b.c[1] = e_0->c.c[1];
                     b.c[2] = 0xff;
                     mode = 0;
-                    o = func_ov000_0218b9ec(&s, &a, &b, NULL, NULL);
+                    o = Group_CreateNode(&s, &a, &b, NULL, NULL);
                     o->pos = e_0->pos;
                     o->rot.x = e_0->rot.x;
                     o->rot.y = e_0->rot.y;
@@ -295,14 +295,14 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
             self->state = 0xff;
             break;
         }
-        func_0206dfd4(buf, ids);
+        LangData_MakeBlockPath(buf, ids);
         ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         st = 0x1f;
     set:
         self->state = st;
         break;
     case 0x1f: {
-        func_0206dfd4(buf, ids);
+        LangData_MakeBlockPath(buf, ids);
         void **r_3;
         if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
@@ -316,16 +316,16 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
             u8 n_1;
             u8 *e_4;
             s32 i_4;
-            self->exits = func_0206e230(self->blockB);
-            d = func_0206e2a4(self->blockB);
+            self->exits = LangBlockB_GetData0(self->blockB);
+            d = LangBlockB_GetData2(self->blockB);
             n_1 = self->blockB->count2;
             e_4 = LangBlockA_GetData(self->blockA);
             for (i_4 = 0; i_4 < n_1; i_4++) {
                 FieldProp *nd = (FieldProp *)Heap_Alloc(sizeof(FieldProp));
                 if (nd != NULL) {
-                    nd = func_ov000_021b79f4(nd);
+                    nd = FieldProp_Ctor(nd);
                 }
-                func_ov000_021b8014(nd, &d[i_4], e_4, self->blockA->count0);
+                FieldProp_Init(nd, &d[i_4], e_4, self->blockA->count0);
                 {
                     FieldProp *tl = self->tail;
                     bool has = tl != NULL;
@@ -346,7 +346,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
         FieldProp *n_2;
         BOOL ok_1 = TRUE;
         for (n_2 = self->head; n_2 != NULL; n_2 = n_2->next) {
-            if (!func_ov000_021b7f0c(n_2)) {
+            if (!FieldProp_Load(n_2)) {
                 ok_1 = FALSE;
             }
         }

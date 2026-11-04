@@ -165,7 +165,7 @@ void func_ov000_021c69e4(TextList *self) {
 
 extern s32 data_ov000_021cc994;
 void Obj0215eab4_Draw(UiPanel *p);
-void func_ov000_021c6d64(TextList *self, s32 a, VecFx32 *pos, s32 b);
+void TextList_DrawBody(TextList *self, s32 a, VecFx32 *pos, s32 b);
 
 static inline ListRow *At6b28(TextList *self, s32 i) {
     // u32 counter: swaps the registers of i and k in the loop compare.
@@ -224,7 +224,7 @@ void Ov000Vt_021ccadc_DrawBody(TextList *self, s32 a, VecFx32 *pos, s32 b) {
         self->panelText->posZ = z + 0x20;
         self->panelText->Render();
     }
-    func_ov000_021c6d64(self, a, &p, b);
+    TextList_DrawBody(self, a, &p, b);
 }
 
 }

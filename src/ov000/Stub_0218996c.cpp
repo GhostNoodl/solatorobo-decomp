@@ -36,7 +36,7 @@ void func_ov000_021899d8(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clam
     if (s == NULL) {
         return;
     }
-    func_ov000_0218a358(s, pos, rot, dist, clamp, a6, a7, 1);
+    FieldCam_SetTarget(s, pos, rot, dist, clamp, a6, a7, 1);
 }
 
 }

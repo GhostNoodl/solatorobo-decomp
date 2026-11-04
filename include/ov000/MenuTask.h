@@ -143,7 +143,7 @@ public:
     Lo021cae48 *unk_4c;
     Lo021cb5a8 *unk_50;
     Lo021cacd8 *unk_54;
-    u8 unk_58[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+    u8 unk_58[0x100]; // text buffer, filled by Param_FormatName(0x100, ...)
 };
 SIZE_ASSERT(Task021cbe60, 0x158);
 
@@ -158,7 +158,7 @@ public:
     Lo021cadcc *unk_50;
     s32 unk_54;
     Lo021cad50 *unk_58; // message window (vtable Lo021cad50_vtbl)
-    u8 unk_5c[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+    u8 unk_5c[0x100]; // text buffer, filled by Param_FormatName(0x100, ...)
 };
 SIZE_ASSERT(Task021cbee0, 0x15c);
 
@@ -175,7 +175,7 @@ public:
     s32 unk_58;
     u16 unk_5c;
     u8 unk_5e;
-    u8 unk_5f[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+    u8 unk_5f[0x100]; // text buffer, filled by Param_FormatName(0x100, ...)
     u8 unk_15f;
 };
 SIZE_ASSERT(Task021cbf60, 0x160);

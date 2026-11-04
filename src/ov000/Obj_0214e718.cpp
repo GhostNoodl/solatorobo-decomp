@@ -38,7 +38,7 @@ VObj *Lo021caa44_New(void) {
     return obj;
 }
 
-void func_ov000_0214e7ac(s32 id) {
+void QuestWin_AddQuest(s32 id) {
     VObj *obj = Task_FindById(0xe)->unk_50;
     obj->vfunc_74(StageTbl_GetQuestName(id), id, 0xffff, 0xffff);
 }

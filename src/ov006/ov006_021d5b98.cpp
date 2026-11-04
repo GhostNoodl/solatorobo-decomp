@@ -28,7 +28,7 @@ struct ov006_Unk021d5b98 : public ov006_Task {
 extern "C" {
 
 extern u8 Ov006Vt_021ebfc0_vtbl[];
-extern char data_0214b105[];
+extern char gCommonTextPath[];
 extern char data_ov006_021ec864[];
 void LangData_LocalizePath(char *dst, const char *src);
 void *ResSet_ReleaseAll(void *p);
@@ -45,8 +45,8 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     OV006_DELETE_OBJECT(self->unk2C);
     OV006_DELETE_OBJECT(self->unk30);
     OV006_DELETE_OBJECT(self->unk34);
-    ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
     LangData_LocalizePath(buf, "menu/skyrace");
     ResMgr_ReleaseByName(gResMgr, buf, 7, 0);
     ResMgr_ReleaseByName(gResMgr, data_ov006_021ec864, 7, 0);
@@ -132,8 +132,8 @@ static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
 BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
     char buf[0x21];
     int i;
-    ResMgr_Load(data_0214b105, 7, 0);
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(gCommonTextPath, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
     LangData_LocalizePath(buf, "menu/skyrace");
     ResMgr_Load(buf, 7, 0);
     ResMgr_Load(data_ov006_021ec864, 7, 0);
@@ -210,13 +210,13 @@ extern ov006_Unk021ccd6c *gFieldMgr;
 extern void *gSndMgr;
 
 void Group_RefreshAll(Group *self);
-void func_ov000_0218be54(Group *self);
+void Group_UpdateAll(Group *self);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 void LangData_LocalizePath(char *dst, const char *src);
 BOOL ResSet_UpdateLoad(void *p);
 BOOL FieldMgr_UpdateLoad(void *p);
-void func_ov000_021b5dc0(void *p);
+void FieldMgr_SetupBlock(void *p);
 int LangBlockB_GetData(ov006_Party *party);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 Ov006Racer *Ov006Racer_New(u32 id, u8 a, const VecFx32 *pos, const Rot16 *rot);
@@ -249,10 +249,10 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
         break;
     case 1: {
         char buf[0x20];
-        if (!ResMgr_IsLoaded(data_0214b105, 7)) {
+        if (!ResMgr_IsLoaded(gCommonTextPath, 7)) {
             break;
         }
-        if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
+        if (!ResMgr_IsLoaded(ArcPath_MenuBattle, 7)) {
             break;
         }
         LangData_LocalizePath(buf, "menu/skyrace");
@@ -301,7 +301,7 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
         if (!FieldMgr_UpdateLoad(gFieldMgr)) {
             break;
         }
-        func_ov000_021b5dc0(gFieldMgr);
+        FieldMgr_SetupBlock(gFieldMgr);
         tbl = (ov006_PartyEntry *)ov006_GetPartyValue(gFieldMgr);
         n = gOv006SlotManager->numActive;
         for (j = 0; j < n; j++) {
@@ -345,7 +345,7 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
             }
         }
         if (gGroup != NULL) {
-            func_ov000_0218be54(gGroup);
+            Group_UpdateAll(gGroup);
         }
         self->subState++;
         break;
@@ -449,7 +449,7 @@ void ov006_MarkerSet_Load(VecFx32021d6724 *p);
 VecFx32021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
 void ov006_Unk021e279c_Load(VecFx32021d6724 *p);
 BOOL Vram_IsIdle(void);
-void func_02039518(void *p);
+void ResModel_ShrinkBlocks(void *p);
 void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
@@ -539,8 +539,8 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         if (!Vram_IsIdle()) {
             break;
         }
-        func_02039518(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1pic00"));
-        func_02039518(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1cmn01"));
+        ResModel_ShrinkBlocks(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1pic00"));
+        ResModel_ShrinkBlocks(ResMgr_FindArcType2(data_ov006_021ec864, "cefly1cmn01"));
         self->subState = 10;
         break;
     case 10:

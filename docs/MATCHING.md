@@ -9500,3 +9500,25 @@ ranges), the ov002 `.init`/`.ctor` of `__sinit_ov002_021ef1f0`, the anonymous li
 
 Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK; `check_drafts.py --score` and `honesty_scan.py` exit 0; a
 fresh copy of the tree (no `build/`, no `extract/usa/`) with the ROM builds with `configure.py usa` and `ninja`.
+
+## Round nmN (names from game text and code, continued): no new match
+
+Readability only; every function stays byte-identical, and only symbol names change. Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, every one of the 2,025 objects compares equal to the pre-round build once the names are mapped, `ninja report` at 8,215 of 8,287 matched entries and 101,408 data bytes (same as main), `check_drafts.py --score` and `honesty_scan.py` exit 0. `renames_final.txt` holds 424 pairs (`old new`, one per line, each straight to its final name): 288 functions (`func_*` and a few weak class-prefixed names) and 136 data symbols. No new name was in use at HEAD, no new name is also an old name (no swaps or cycles), every new name is fresh against all `symbols.txt` files, every identifier in src/include/libs, the `data/*.dspec` comments and `tools/honesty_allow.txt`, and `__sinit_ov002_021ef1f0` is untouched. About 680 `func_*` remain.
+
+**Evidence.** The nmM rule: the game's text (message files, the param and Tbl tables' sub-table keys, asset and archive member names) was read locally and none of it is in the repo; the names are short descriptions. Code evidence (callers, callees, the tables a function indexes, the structs it fills) decided the rest.
+
+**Counts by module:**
+
+| main | ov000 | ov002 | ov003 | ov004 | ov006 | ov008 | ov009 | ov012 | ov014 | ov015 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 250 | 132 | 21 | 1 | 4 | 2 | 4 | 1 | 2 | 6 | 1 |
+
+**Data named (the dxA tables).**
+- The param file: `gParamRes`/`gParamTables`, the 13 per-category tables `Param_<Category>Table` in the order `Param_BindTables` binds them (`use`, `device`, `fisItem`, the four collection kinds, `customBody`, `customSlot`, `fisAnchor`, `skyRaceCourse`, `fisGift`, `fisPlace`), and `Param_ItemTables`.
+- The Tbl file: `gTblRes`/`gTblEntries`, `Tbl_Cats`, the eight category blocks `Tbl_<Cat>Data`/`Ranges` after the keys `LangRes2_BindTables` looks up, and the shape tables `ParamKind_ShapeNN`/`ParamKind_ShapeTable` with their accessors (`ParamKind_*`).
+- Language: `gLang`, `gCommonTextPath`, `LangData_PathTable`, `gWorldInfo`/`gWorldInfoRes` (the world-info archive with its map-radar and info members), the face-icon path builders `Tbl_MakeFacePath`/`MakeFaceName`.
+- Resource paths: the pointer data at 0x0208cb74..0x0208ccc8 as `ResName_*` (member names) and `ArcPath_*` (archive paths), after the file each one names; `SndMgr_SeqArcTable`/`SeqVolumeTable`, `Snd_AreaCount`, `SlideWin_FaceNames`; the motion, graphics, 3D, scene, stage-box and effect tables (`Mo*`, `Gfx*`, `Gfx3D*`, `StageBox*`, `Effect*`); `gGfxMgrPlttCopy`, `gPlttTransferId`, `gStageResBusy` (with `StageRes_SetBusy`), `gStageLastNode`/`LastObj3D`, `gStageFlagsDefault`.
+
+**Functions named**, mostly in main and ov000: the Param and ParamKind getters (category now certain from the table they index), `LangData`/`LangBlockB` path and section helpers, `GfxMgr`/`Gfx3D`/`TexObj` loaders, `MoMem`/`MoAdpcm`, `LoTicker`/`LoTimer`, `ActorMarker`, `FieldProp`/`FieldMgr`, `StageFlags`, `Movie`, `Finder`, `Item`, `Quest`, `TextWin`/`TextList`/`UiList`/`UiLabel`, `HitSphere`, `Camera`, `EffectEmitter`/`EffectSetup`, `FaceIcon`, `ModelViewer`, plus helpers on existing class prefixes (`Obj021c2114`, `Obj0216ad04`, `Lo021cb6b0`, `Ov008WorldMap`, `Ov002StageFile`, `Ov014ActEx`, ...).
+
+**Left unnamed:** SDK statics whose exact SDK name is not certain, the `StageVars` field setters (a dozen near-identical stores with no caller context), small shared helpers with callers in unrelated systems, and ov000 data with no code references (`.data` pieces reached only by tables that are not named yet).

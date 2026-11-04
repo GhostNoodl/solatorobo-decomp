@@ -19,7 +19,7 @@ extern u8 Lo021cb6f0_vtbl[];
 extern u8 Lo021cb840_vtbl[];
 extern u8 Lo021cb894_vtbl[];
 void *Heap_Alloc(u32 size);
-void func_ov000_0216b474(Lo0216b474 *p);
+void Lo0216b474_Init(Lo0216b474 *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
 BOOL MsgRes_BindGlobal(void);
@@ -28,17 +28,17 @@ BOOL SceneCondCard_Update(void *p);
 BOOL MissionInfo_Update(void *p);
 BOOL TextWinTitle_Update(void *p);
 BOOL PlaceNameCard_Update(void *p);
-BOOL func_ov000_021bb33c(void *p);
+BOOL Obj021bb2b0_Update(void *p);
 BOOL ImageCard_Update(void *p);
 void SceneStage_RunCur(SceneStage *self);
-void func_ov000_0216b550(Lo0216b474 *p);
+void Lo0216b474_Update(Lo0216b474 *p);
 void Obj021bbc68_Release(void *p);
 void TextBox_Release(void *p);
 void ImageCard_Dtor(void *p);
 void PlaceNameCard_Dtor(void *p);
 void Obj021b8ecc_Release(void *p);
 void Obj021bacf4_Release(void *p);
-void func_ov000_021bb840(void *p);
+void Obj021bb810_Release(void *p);
 
 static inline VObj *NewObj2(u32 size, void *vt) {
     VObj *p = (VObj *)Heap_Alloc(size);
@@ -85,7 +85,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         self->unk_60 = (Lo021cb7ec *)NewObj2(sizeof(Lo021cb7ec), Lo021cb7ec_vtbl);
         r = (Lo0216b474 *)Heap_Alloc(sizeof(Lo0216b474));
         if (r != NULL) {
-            func_ov000_0216b474(r);
+            Lo0216b474_Init(r);
         }
         self->unk_68 = r;
         self->unk_64 = (Lo021cb744 *)NewObj2(sizeof(Lo021cb744), Lo021cb744_vtbl);
@@ -94,7 +94,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         self->unk_74 = (Lo021cb894 *)NewObj2(sizeof(Lo021cb894), Lo021cb894_vtbl);
         q = (Obj0216ad04 *)Heap_Alloc(sizeof(Obj0216ad04));
         if (q != NULL) {
-            func_ov000_0216ad04(q);
+            Obj0216ad04_Init(q);
         }
         self->unk_78 = q;
         tk = (LoTicker *)Heap_Alloc(sizeof(LoTicker));
@@ -169,13 +169,13 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         }
         break;
     }
-    if (self->unk_4c != NULL && !func_ov000_021bb33c(self->unk_4c)) {
-        HEAP_DELETE_FN(self->unk_4c, func_ov000_021bb840);
+    if (self->unk_4c != NULL && !Obj021bb2b0_Update(self->unk_4c)) {
+        HEAP_DELETE_FN(self->unk_4c, Obj021bb810_Release);
     }
     if (self->unk_34 != NULL && !ImageCard_Update(self->unk_34)) {
         HEAP_DELETE_FN(self->unk_34, ImageCard_Dtor);
     }
-    if (self->unk_50 != NULL && !func_ov000_0216ca70(self->unk_50)) {
+    if (self->unk_50 != NULL && !Obj0216c954_Update(self->unk_50)) {
         HEAP_DELETE(Obj0216c954 *, self->unk_50, Obj0216c9b0_Release(p); Heap_Free(p));
     }
     if (self->unk_54 != NULL && !LoTimer_Update(self->unk_54)) {
@@ -194,10 +194,10 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         self->unk_64->vfunc_0c();
     }
     if (self->unk_68 != NULL) {
-        func_ov000_0216b550(self->unk_68);
+        Lo0216b474_Update(self->unk_68);
     }
     if (self->unk_78 != NULL) {
-        func_ov000_0216adf8(self->unk_78);
+        Obj0216ad04_Update(self->unk_78);
     }
     if (self->unk_6c != NULL) {
         self->unk_6c->vfunc_0c();
@@ -209,7 +209,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
         self->unk_74->vfunc_0c();
     }
     if (self->ticker != NULL) {
-        func_ov000_0216be58(self->ticker);
+        LoTicker_Update(self->ticker);
     }
 }
 

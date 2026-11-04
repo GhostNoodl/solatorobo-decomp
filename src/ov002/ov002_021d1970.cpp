@@ -6,15 +6,15 @@ extern VFunc Lo021cb5a8_vtbl[];
 extern VFunc Ov000Vt_021ccadc_vtbl[];
 extern VFunc Ov000Vt_021cca70_vtbl[];
 extern VFunc Ov002Vt_021ef674_vtbl[];
-void func_ov000_021c6140(TextList *self);
+void TextList_Init(TextList *self);
 void ListRow_Init(void *self);
-void func_ov000_021c2208(void *self);
+void Obj021c2208_Init(void *self);
 void ListRow021cca70_Init(void *self);
 void ListRow021cca70_SetPhotoItem(void *self, u16 id);
 void List021c6474_Append(TextList *self, ListRow *row);
 void TextList_SelectByKey(TextList *self, s32 index);
-u16 func_0206f788(u16 id);
-void *func_0206eed0(u16 id);
+u16 Item_GetPictureChipMask(u16 id);
+void *Param_GetPictureInfo(u16 id);
 BOOL AlbumMenu_List3cOnCursor(TextList *self, ListRow021cca70 *row);
 BOOL AlbumMenu_List3cOnDecide(TextList *self, ListRow021cca70 *ev);
 
@@ -36,7 +36,7 @@ void AlbumMenu_Start(Task021ef69c *self) {
         *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
         *(VFunc **)p = Ov000Vt_021ccadc_vtbl;
-        func_ov000_021c6140((TextList *)p);
+        TextList_Init((TextList *)p);
     }
     self->unk_3c = (TextList *)p;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xee));
@@ -55,15 +55,15 @@ void AlbumMenu_Start(Task021ef69c *self) {
         count = DataRes_GetCount(gDataRes, 11);
         for (i = 0; i < count; i++) {
             id = tbl[i].b;
-            if (func_0206f788(id)) {
-                func_0206eed0(id);
+            if (Item_GetPictureChipMask(id)) {
+                Param_GetPictureInfo(id);
                 q = (ListRow021cca70 *)Heap_Alloc(sizeof(ListRow021cca70));
                 if (q != NULL) {
                     *(VFunc **)q = Ov002Vt_021ef684_vtbl;
                     ListRow_Init(q);
                     *(VFunc **)q = Ov000Vt_021cca70_vtbl;
                     *(VFunc **)&q->item = Ov002Vt_021ef674_vtbl;
-                    func_ov000_021c2208(&q->item);
+                    Obj021c2208_Init(&q->item);
                     ListRow021cca70_Init(q);
                 }
                 q->index = ((u32)tbl[i].b << 4) >> 16;

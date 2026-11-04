@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Ov015ParamPrice *func_0206ee20(u16 id);
+Ov015ParamPrice *Param_GetFishItemInfo(u16 id);
 s32 Rand_UpTo(s32 max);
 s32 Rand_PlusMinus(s32 max);
 extern const u16 data_ov015_0221265c[];
@@ -16,7 +16,7 @@ static inline s32 Ov015_Pick(const u16 *tbl, s32 max, s32 mod, s32 amt, s32 id) 
     s32 i;
     for (i = (start + 1) % mod; i != start; i = (i + 1) % mod) {
         id = tbl[i];
-        if (amt == 0 || func_0206ee20(id)->price < amt) {
+        if (amt == 0 || Param_GetFishItemInfo(id)->price < amt) {
             break;
         }
     }
@@ -78,7 +78,7 @@ void func_ov015_022113e8(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s3
             continue;
         }
         if (id != 0xffff) {
-            price = func_0206ee20(id)->price;
+            price = Param_GetFishItemInfo(id)->price;
             if (Ov015_InTable(data_ov015_0221266a, 8, id)) {
                 num = rest / price;
                 if (num >= 2) {

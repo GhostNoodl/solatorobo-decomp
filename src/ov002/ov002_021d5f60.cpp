@@ -57,7 +57,7 @@ static inline bool isState5(UiObj *p) {
     return p->state == 5;
 }
 
-void func_ov000_021c95fc(void *p);
+void StageFlags_SumPartStats(void *p);
 
 BOOL MsgBox_Update(void *p);
 
@@ -79,7 +79,7 @@ void RobotTypeMenu_PreUpdate(Task021efc24 *self) {
                 Task021efba4 *x = (Task021efba4 *)Task_FindById(0x1b);
                 if (x != NULL) {
                     u8 buf[0x14];
-                    func_ov000_021c95fc(buf);
+                    StageFlags_SumPartStats(buf);
                     if (x->hud != NULL) {
                         MI_CpuCopy8(buf, x->hud->unk_2c, 0x14);
                     }

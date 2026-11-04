@@ -27,7 +27,7 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-void func_ov000_0214b1a0(const s32 *pos, const s32 *scale, s32 alpha, u32 tex) {
+void Gfx_DrawTexQuad(const s32 *pos, const s32 *scale, s32 alpha, u32 tex) {
     Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     G3_Cmd1(0x30, 0xffff);
     G3_Cmd1(0x31, 0);

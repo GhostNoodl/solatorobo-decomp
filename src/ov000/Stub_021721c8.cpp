@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void func_ov000_0216f23c(BufferList *list, BOOL mode);
+void BufferList_Run(BufferList *list, BOOL mode);
 extern void *gTaskHost;
 void TaskHost_DrawTasks(void *p);
 
 void MessageQueue021cb980_Draw(MessageQueue021cb980 *self) {
-    func_ov000_0216f23c(&self->list, 1);
+    BufferList_Run(&self->list, 1);
     if (gTaskHost != NULL) {
         TaskHost_DrawTasks(gTaskHost);
     }

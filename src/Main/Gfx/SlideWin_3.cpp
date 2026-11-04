@@ -75,14 +75,14 @@ extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void GfxMgr_PutChar(GfxMgr *mgr, u16 c);
 extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
-extern void func_0204cb28(TextWin *win, u32 arg);
+extern void TextWin_ExecCmd(TextWin *win, u32 arg);
 extern void GameScene_StartShake(SlideWinX *win);
 extern const char *Tbl_GetText(u16 id);
-extern void func_020708fc(u16 id, char *out);
-extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
+extern void Tbl_MakeFacePath(u16 id, char *out);
+extern void Tbl_MakeFaceName(u16 id, char *out, u16 a, u16 b);
 extern void ResMgr_LoadArchive(const char *a, const char *b, u16 c, u8 d);
-extern const char *data_0208b9cc[];
-extern const char *data_0208cc90;
+extern const char *SlideWin_FaceNames[];
+extern const char *ArcPath_FaceIcons;
 
 static inline void SlideMsg_ClearVram(VramBlock *b, u32 v4, u32 v6) {
     MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? v4 : v6) + b->addr, b->size - b->pad);
@@ -285,7 +285,7 @@ static inline void SlideWin_Put(SlideWinX *win, SlideMsg *msg, u16 c) {
    so the clear selects between registers as in the ROM (round lfA). */
 typedef enum { SLIDE_VRAM_MAIN = 0x6400000, SLIDE_VRAM_SUB = 0x6600000 } SlideVram;
 
-s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
+s32 SlideWinX_RenderText(SlideWinX *win, SlideMsg *msg) {
     s16 count;
     s32 color;
     s32 adv;
@@ -347,7 +347,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                 TextWin_ParseTag(win, &win->str);
                 switch (win->code) {
                 case 20:
-                    func_0204cb28(win, (u32)win->str);
+                    TextWin_ExecCmd(win, (u32)win->str);
                     break;
                 case 22:
                 case 23:
@@ -533,8 +533,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                     if (panel != NULL) {
                         if (win->args[0] != -1 && win->mode != 0 && (win->value >> 12) != 3) {
                             if (panel->textPos != (u16)win->unk_b6c) {
-                                func_020708fc(win->value, name);
-                                func_02070b98(win->value, file, win->args[2], win->args[0]);
+                                Tbl_MakeFacePath(win->value, name);
+                                Tbl_MakeFaceName(win->value, file, win->args[2], win->args[0]);
                                 if (panel->unk_08 == win->value && panel->unk_0a == win->value &&
                                     panel->unk_0c == win->args[2] && panel->unk_0e == win->args[2]) {
                                     panel->flag27 = 1;
@@ -565,7 +565,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                                     ResMgr_LoadArchive(m->name, m->unk_04c, 2, 0);
                                 }
                                 if (panel->kind > 2) {
-                                    SlideModel *m = new SlideModel(data_0208cc90, data_0208b9cc[panel->unk_0_10], 1);
+                                    SlideModel *m = new SlideModel(ArcPath_FaceIcons, SlideWin_FaceNames[panel->unk_0_10], 1);
                                     panel->nextModel2 = m;
                                     ResMgr_LoadArchive(m->name, m->unk_04c, 2, 0);
                                 }

@@ -21,7 +21,7 @@ void Obj021efe4c_UpdateBoxMesh(Obj021efe4c *self) {
     u8 *res;
     char name[0x10];
     int idx;
-    self->map = (Ov002Shape *)(ParamKind_GetShape(*func_0206ef50(self->unk_68)));
+    self->map = (Ov002Shape *)(ParamKind_GetShape(*Param_GetSlotInfo(self->unk_68)));
     res = (u8 *)self->unk_08->mdl;
     if (res == NULL) {
         return;

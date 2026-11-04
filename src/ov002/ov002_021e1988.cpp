@@ -27,7 +27,7 @@ static inline void SetPos021e1988(Oam021e1988 *o, u16 x, u16 y) {
 
 extern "C" {
 
-Oam021e1988 *func_ov002_021e1988(Obj021e1988 *obj, Info021e1988 *info, Oam021e1988 *oam, u16 *count) {
+Oam021e1988 *Ov002Hud_OamCallback(Obj021e1988 *obj, Info021e1988 *info, Oam021e1988 *oam, u16 *count) {
     u16 n;
     u8 mode;
     Oam021e1988 *tmpl;

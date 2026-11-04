@@ -81,7 +81,7 @@ void Ov012ActExVt_0220b1e8_Start(Ov012ActExVt_0220b1e8 *self) {
 extern "C" {
 extern void Ov012ActExVt_0220b1e8_HitNearby(Ov012ActExVt_0220b1e8 *self);
 extern void func_ov012_02206508(Ov012ActExVt_0220b1e8 *self);
-extern void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self);
+extern void Ov012ActExVt_0220b1e8_UpdateThrown(Ov012ActExVt_0220b1e8 *self);
 extern const VecFx32 data_ov012_0220a84c[];
 
 static inline s32 Ov012_FxMul64d(s32 a, s64 b) {
@@ -113,7 +113,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         }
     }
     if (g->kind == 0x1000) {
-        func_ov012_02206098(self);
+        Ov012ActExVt_0220b1e8_UpdateThrown(self);
         return;
     }
     pl = Actor_GetTarget(self);

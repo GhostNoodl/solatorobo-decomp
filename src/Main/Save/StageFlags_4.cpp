@@ -57,7 +57,7 @@ u8 StageFlags_CountEntries(StageFlags *f, u16 id) {
     return n;
 }
 
-u8 func_0206d204(StageFlags *f, BOOL consume) {
+u8 StageFlags_UseReviveItems(StageFlags *f, BOOL consume) {
     u8 total = 0;
     s32 i;
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {

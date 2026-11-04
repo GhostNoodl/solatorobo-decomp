@@ -41,7 +41,7 @@ typedef struct LangId {
     u8 num2;
 } LangId;
 
-u8 *func_0206dd6c(LangSecFlags *flags, u8 *p);
+u8 *LangSec_SkipGfxEnv(LangSecFlags *flags, u8 *p);
 
 #define LANGDATA_PUTNUM(dst, len, num) \
     {                                   \
@@ -79,29 +79,29 @@ u8 *func_0206dd6c(LangSecFlags *flags, u8 *p);
     dst[len] = n + '0';                 \
     len++;
 
-void func_0206dde4(char *dst, const LangId *id);
+void LangData_MakeAreaInfoPath(char *dst, const LangId *id);
 
-void func_0206dedc(char *dst, const LangId *id);
+void LangData_MakeRadarPath(char *dst, const LangId *id);
 
-void func_0206dfd4(char *dst, const LangId *id);
+void LangData_MakeBlockPath(char *dst, const LangId *id);
 
 u8 *LangBlockA_GetData(LangBlockA *b);
 
 u8 *LangBlockA_GetData1(LangBlockA *b);
 
-u8 *func_0206e1bc(LangBlockA *b);
+u8 *LangBlockA_GetData2(LangBlockA *b);
 
-u8 *func_0206e200(LangBlockB *b);
+u8 *LangBlockB_GetLangEntry(LangBlockB *b);
 
-u8 *func_0206e230(LangBlockB *b);
+u8 *LangBlockB_GetData0(LangBlockB *b);
 
 u8 *LangBlockB_GetData(LangBlockB *b);
 
-u8 *func_0206e2a4(LangBlockB *b);
+u8 *LangBlockB_GetData2(LangBlockB *b);
 
-u8 *func_0206e2ec(LangBlockB *b);
+u8 *LangBlockB_GetData3(LangBlockB *b);
 
-u8 *func_0206e340(LangBlockB *b);
+u8 *LangBlockB_GetData4(LangBlockB *b);
 
 typedef struct GfxEnv {
     /* 0x00 */ u8 flags;
@@ -167,31 +167,31 @@ static inline void LangData_SetFogColor(u16 color, u16 alpha) {
     REG_FOG_COLOR = color | (alpha << 16);
 }
 
-void func_0206e3a0(LangSecFlags *flags, const u8 *p);
+void LangSec_ApplyGfxEnv(LangSecFlags *flags, const u8 *p);
 
-void func_0206e648(LangBlockB *b);
+void LangBlockB_ApplyGfxEnv(LangBlockB *b);
 
-void func_0206e660(LangBlockA *b);
+void LangBlockA_ApplyGfxEnv(LangBlockA *b);
 
 void LangData_LocalizePath(char *dst, const char *src);
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 typedef struct LangArc {
     /* 0x00 */ u8 unk_00[0x44];
     /* 0x44 */ u32 unk_44;
 } LangArc;
 
-extern LangArc data_0214b0b8;
+extern LangArc gWorldInfoRes;
 void ResHandle_LoadSync(LangArc *arc, const char *name);
 void ResHandle_Unload(LangArc *arc);
 void *ResHandle_GetData(LangArc *arc);
 LangTable **ResList_FindType0(void *res, const char *name);
 
-void func_0206e678(void);
+void LangData_LoadWorldInfo(void);
 
-void func_0206e6c0(void);
+void LangData_UnloadWorldInfo(void);
 
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 LangGroup *Lang_GetGroup(int i);
 
@@ -203,52 +203,52 @@ typedef struct OSOwnerInfo {
 } OSOwnerInfo;
 
 void OS_GetOwnerInfo(OSOwnerInfo *info);
-extern char data_0214b105[];
+extern char gCommonTextPath[];
 extern char data_0208cc36[];
 void LangData_LocalizePath(char *dst, const char *src);
 
-// The path of the language's base file. It is this TU's .data (only func_0206e858 reads it), and
+// The path of the language's base file. It is this TU's .data (only LangData_InitLanguage reads it), and
 // that matters for the schedule: a load from an object the TU defines is not disambiguated from the
-// store to the extern data_0214b104, so each arm stores the language before it reads the path
+// store to the extern gLang, so each arm stores the language before it reads the path
 // (round bgQ2). As an extern the load is hoisted above the store.
-const char *data_0208cb88 = data_0208cc36;
+const char *ArcPath_MenuCmnText = data_0208cc36;
 
 // Sets the game language from the owner info (1-5, anything else 1) and builds the language's file
-// name into data_0214b105 from the base path (twice, as the ROM does).
-void func_0206e858(void) {
+// name into gCommonTextPath from the base path (twice, as the ROM does).
+void LangData_InitLanguage(void) {
     OSOwnerInfo info;
     OS_GetOwnerInfo(&info);
     switch (info.language) {
     case 1:
-        data_0214b104.lang = 1;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 1;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     case 2:
-        data_0214b104.lang = 2;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 2;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     case 3:
-        data_0214b104.lang = 3;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 3;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     case 4:
-        data_0214b104.lang = 4;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 4;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     case 5:
-        data_0214b104.lang = 5;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 5;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     default:
-        data_0214b104.lang = 1;
-        LangData_LocalizePath(data_0214b105, data_0208cb88);
+        gLang.lang = 1;
+        LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
         break;
     }
-    LangData_LocalizePath(data_0214b105, data_0208cb88);
+    LangData_LocalizePath(gCommonTextPath, ArcPath_MenuCmnText);
 }
 
 u8 LangData_GetLang(void) {
-    return data_0214b104.lang;
+    return gLang.lang;
 }
 
 extern char data_0208cc6f[];
@@ -264,7 +264,7 @@ void LangData_LocalizePath(char *dst, const char *src) {
     const char *suffix;
     char *dot;
 
-    switch (data_0214b104.lang) {
+    switch (gLang.lang) {
     case 1:
         suffix = data_0208cc6f;
         break;
@@ -328,10 +328,10 @@ typedef struct LangMsgTbl {
     /* 0x04 */ void *items[13];
 } LangMsgTbl;
 
-extern LangMsgTbl data_0214b128;
+extern LangMsgTbl gParamRes;
 extern const u32 ResHandle_vtbl[];
-extern const char *data_0208ccb0;
-extern const char *data_0208cca8;
+extern const char *ArcPath_GameParam;
+extern const char *ResName_ItemParam;
 extern void *Heap_Alloc(u32 size);
 void *NamedTable_Find(void *data, const char *name);
 
@@ -348,27 +348,27 @@ void LangData_CreateRes(void) {
     char arcName[0x20];
     char name[0x20];
     LangRes *res = LangRes_New();
-    data_0214b128.res = res;
+    gParamRes.res = res;
     res->type = 0;
-    LangData_LocalizePath(arcName, data_0208ccb0);
-    LangData_LocalizePath(name, data_0208cca8);
-    data_0214b128.res->Open(arcName, name);
+    LangData_LocalizePath(arcName, ArcPath_GameParam);
+    LangData_LocalizePath(name, ResName_ItemParam);
+    gParamRes.res->Open(arcName, name);
 }
 
 void LangData_DeleteRes(void) {
     void *saved = gSysState->cur;
     gSysState->cur = gSysState->heapHi;
-    if (data_0214b128.res != NULL) {
-        if (data_0214b128.res != NULL) {
-            data_0214b128.res->DeletingDtor();
+    if (gParamRes.res != NULL) {
+        if (gParamRes.res != NULL) {
+            gParamRes.res->DeletingDtor();
         }
-        data_0214b128.res = NULL;
+        gParamRes.res = NULL;
     }
     gSysState->cur = saved;
 }
 
-BOOL func_0206ead8(void) {
-    return data_0214b128.res->Load();
+BOOL Param_LoadRes(void) {
+    return gParamRes.res->Load();
 }
 
 extern char data_0208cccc[];
@@ -387,24 +387,24 @@ extern char data_0208cd4f[];
 
 void Param_BindTables(void) {
     void **data;
-    if (data_0214b128.res->IsLoaded()) {
+    if (gParamRes.res->IsLoaded()) {
         return;
     }
-    data_0214b128.res->unk_vf30();
-    data = data_0214b128.res->GetData();
-    data_0214b128.items[0] = NamedTable_Find(*data, data_0208cccc);
-    data_0214b128.items[1] = NamedTable_Find(*data, data_0208ccd0);
-    data_0214b128.items[2] = NamedTable_Find(*data, data_0208ccd7);
-    data_0214b128.items[3] = NamedTable_Find(*data, data_0208ccdf);
-    data_0214b128.items[4] = NamedTable_Find(*data, data_0208cced);
-    data_0214b128.items[5] = NamedTable_Find(*data, data_0208ccfd);
-    data_0214b128.items[6] = NamedTable_Find(*data, data_0208cd0d);
-    data_0214b128.items[7] = NamedTable_Find(*data, data_0208cd19);
-    data_0214b128.items[8] = NamedTable_Find(*data, data_0208cd24);
-    data_0214b128.items[9] = NamedTable_Find(*data, data_0208cd2f);
-    data_0214b128.items[10] = NamedTable_Find(*data, data_0208cd39);
-    data_0214b128.items[11] = NamedTable_Find(*data, data_0208cd47);
-    data_0214b128.items[12] = NamedTable_Find(*data, data_0208cd4f);
+    gParamRes.res->unk_vf30();
+    data = gParamRes.res->GetData();
+    gParamRes.items[0] = NamedTable_Find(*data, data_0208cccc);
+    gParamRes.items[1] = NamedTable_Find(*data, data_0208ccd0);
+    gParamRes.items[2] = NamedTable_Find(*data, data_0208ccd7);
+    gParamRes.items[3] = NamedTable_Find(*data, data_0208ccdf);
+    gParamRes.items[4] = NamedTable_Find(*data, data_0208cced);
+    gParamRes.items[5] = NamedTable_Find(*data, data_0208ccfd);
+    gParamRes.items[6] = NamedTable_Find(*data, data_0208cd0d);
+    gParamRes.items[7] = NamedTable_Find(*data, data_0208cd19);
+    gParamRes.items[8] = NamedTable_Find(*data, data_0208cd24);
+    gParamRes.items[9] = NamedTable_Find(*data, data_0208cd2f);
+    gParamRes.items[10] = NamedTable_Find(*data, data_0208cd39);
+    gParamRes.items[11] = NamedTable_Find(*data, data_0208cd47);
+    gParamRes.items[12] = NamedTable_Find(*data, data_0208cd4f);
 }
 
 }

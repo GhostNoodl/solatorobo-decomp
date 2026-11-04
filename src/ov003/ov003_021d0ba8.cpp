@@ -61,7 +61,7 @@ typedef struct {
 
 extern Ov003ResInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern char *Tbl_GetResFile(u16 id);
-extern char *func_020701d4(u16 id);
+extern char *Tbl_GetResFileName(u16 id);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
 extern void ResSet_SetFile(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
@@ -72,7 +72,7 @@ void Ov003Res_SetNames(Ov003Res *res, u16 id) {
     char *a;
     char *b;
     if (param->evName != NULL) {
-        char *alt = func_020701d4(id);
+        char *alt = Tbl_GetResFileName(id);
         if (info->flags.bit0) {
             STD_CopyString(res->unk_10, name);
             STD_CopyString(res->unk_30, alt);

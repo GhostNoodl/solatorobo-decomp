@@ -9,7 +9,7 @@ extern void *UiList_vtbl;
 extern void *UiObj_vtbl;
 BOOL Model_IsReady(Model *a, u32 b);
 BOOL Vram_IsTransferDone(void *p);
-BOOL func_ov008_021d01b0(Ov008Menu *self);
+BOOL Ov008Menu_AreModelsReady(Ov008Menu *self);
 
 }
 
@@ -107,14 +107,14 @@ s32 func_ov008_021d016c(Ov008Menu *self) {
 }
 
 BOOL Ov008Menu_IsLoaded(Ov008Menu *self) {
-    BOOL r = func_ov008_021d01b0(self);
+    BOOL r = Ov008Menu_AreModelsReady(self);
     if (self->unk_b4 != NULL && !Model_IsReady(self->unk_b4, 0xffff)) {
         r = FALSE;
     }
     return r;
 }
 
-BOOL func_ov008_021d01b0(Ov008Menu *self) {
+BOOL Ov008Menu_AreModelsReady(Ov008Menu *self) {
     BOOL r = TRUE;
     Ov008MenuRes *p;
     if (self->unk_10 != NULL && !Model_IsReady(self->unk_10, 0xffff)) {

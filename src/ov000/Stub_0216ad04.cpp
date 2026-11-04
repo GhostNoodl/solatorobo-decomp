@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0216ad04(Obj0216ad04 *self) {
+void Obj0216ad04_Init(Obj0216ad04 *self) {
     self->flags = 0;
     self->state = 2;
     self->kind = -1;

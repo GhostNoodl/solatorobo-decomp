@@ -62,7 +62,7 @@ static inline void G3_Scale021b75e0(s32 x, s32 y, s32 z) {
     NNS_G3dGeBufferOP_N(0x1b, v, 3);
 }
 
-BOOL func_ov000_021b75e0(Model021b75e0 *self) {
+BOOL FieldProp_DrawModel(Model021b75e0 *self) {
     BOOL drawn = FALSE;
     u8 *mdl;
     MdlInfo021b75e0 *info;

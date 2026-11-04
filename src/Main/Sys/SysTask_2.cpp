@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_02063374(Unk0214a418 *self) {
+void Unk0214a418_Release(Unk0214a418 *self) {
     void *saved;
     void *p;
     Model *m;
@@ -217,7 +217,7 @@ static inline void SysTaskModel_SetPos(SysTaskModel *m, const VecFx32 *v) {
     m->pos.z = v->z;
 }
 
-BOOL func_02063650(Unk0214a418 *self) {
+BOOL Unk0214a418_Draw(Unk0214a418 *self) {
     MtxFx44 proj;
     MtxFx43 cam;
     MtxFx44 ortho;

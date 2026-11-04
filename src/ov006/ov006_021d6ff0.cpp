@@ -608,10 +608,10 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             for (k = 0; k < n; k++) {
                 PlayTime_Add(&sum, &sum, &split[k]);
             }
-            func_02048e74(&diff, &sum, &total);
+            PlayTime_Sub(&diff, &sum, &total);
             diff.millis = diff.millis / 10 * 10;
             if (laps > 1) {
-                func_02048e74(&split[laps - 1], &split[laps - 1], &diff);
+                PlayTime_Sub(&split[laps - 1], &split[laps - 1], &diff);
             }
             if (self->result->unk1C != NULL) {
                 ov006_Unk021dee68_SetRect(self->result->unk1C, &total, mode == 1, kind == 2);

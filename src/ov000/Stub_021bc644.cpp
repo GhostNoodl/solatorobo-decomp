@@ -9,10 +9,10 @@ typedef struct {
 
 extern "C" {
 
-BOOL func_ov000_021bc474(Obj021bc644 *self);
-BOOL func_ov000_021bca00(Obj021bc644 *self);
+BOOL Fade021bc474_Update(Obj021bc644 *self);
+BOOL HelpButton_Update(Obj021bc644 *self);
 
-BOOL func_ov000_021bc644(Obj021bc644 *self) {
+BOOL Obj021bc644_Update(Obj021bc644 *self) {
     BOOL r;
     if (self->unk_08 == 0) {
         return TRUE;
@@ -25,15 +25,15 @@ BOOL func_ov000_021bc644(Obj021bc644 *self) {
         } else {
             self->b0 = 0;
         }
-        func_ov000_021bc474(self);
+        Fade021bc474_Update(self);
         r = FALSE;
         break;
     case 2:
         self->b0 = 0;
-        func_ov000_021bc474(self);
+        Fade021bc474_Update(self);
         break;
     case 3:
-        r = func_ov000_021bca00(self);
+        r = HelpButton_Update(self);
         break;
     }
     return r;

@@ -10,7 +10,7 @@ BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 BOOL History_SetState(void *a, s32 b, s32 c);
 
-u16 func_ov000_02198da8(ActorSub48 *body, u16 angle);
+u16 Body_GetFaceAngle(ActorSub48 *body, u16 angle);
 
 BOOL func_ov000_021b468c(Robo021ca458 *self) {
     BOOL r = FALSE;
@@ -18,7 +18,7 @@ BOOL func_ov000_021b468c(Robo021ca458 *self) {
         ActorSub48 *body = self->hit;
         if ((body->unk_50 & 0x40000000) || body->unk_58 != 0) {
             if (!self->unk_b24_18) {
-                self->moveYaw = func_ov000_02198da8(body, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(body, self->moveYaw);
                 self->speed = 0x8a;
                 if (self->hit->unk_84 > 0x400 || self->hit->unk_58 != 0) {
                     self->speed = 0x229;
@@ -34,11 +34,11 @@ BOOL func_ov000_021b468c(Robo021ca458 *self) {
     return r;
 }
 
-u8 func_0206d204(void *p, s32 a);
+u8 StageFlags_UseReviveItems(void *p, s32 a);
 
 BOOL Actor_IsDead(Actor *self) {
     BOOL r = FALSE;
-    s32 x = func_0206d204(gStageFlags, 0);
+    s32 x = StageFlags_UseReviveItems(gStageFlags, 0);
     if (self->hp[0] == 0 && x == 0) {
         r = TRUE;
     }

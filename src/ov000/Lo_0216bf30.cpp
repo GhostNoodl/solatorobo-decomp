@@ -38,7 +38,7 @@ void LoTicker_Release(LoTicker *self) {
 }
 
 void TextWin_RenderToVram(TextWin *win);
-void func_ov000_0216bf18(NNSG3dRS *rs);
+void LoTicker_RSInit(NNSG3dRS *rs);
 
 static inline TextWin *NewText0216c018(void) {
     TextWin *t = (TextWin *)Heap_Alloc(0xb8);
@@ -63,7 +63,7 @@ static inline LoTickerMsg *GetCur0216c018(LoTicker *self) {
     return &self->msgs[self->read];
 }
 
-void func_ov000_0216c018(LoTicker *self) {
+void LoTicker_AddPending(LoTicker *self) {
     s32 sc;
     const LoTickerIcons *tbl;
     LoTickerSlot *s;
@@ -121,11 +121,11 @@ void func_ov000_0216c018(LoTicker *self) {
     } else {
         s->text = NULL;
     }
-    func_ov000_0216bae4(&self->res[tbl[s->kind].a], NULL);
-    func_ov000_0216bae4(&self->res[tbl[s->kind].b], NULL);
+    LoTextHolder_SetText(&self->res[tbl[s->kind].a], NULL);
+    LoTextHolder_SetText(&self->res[tbl[s->kind].b], NULL);
     if (s->kind == 7) {
         s->eff = EffectHud_New2710();
-        s->eff->initCallback = func_ov000_0216bf18;
+        s->eff->initCallback = LoTicker_RSInit;
         s->eff->loopStart = 0x7fffffff;
         s->eff->loopCount = -1;
     }
@@ -145,11 +145,11 @@ void func_ov000_0216c018(LoTicker *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_0216c310 is 65 / 22 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): LoTicker_UpdateItems is 65 / 22 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: colouring order (the ROM pops y between next and self) plus the post-allocation
 // CSE movne r0, ip; the 65 / 10 drafts need fake parameters. History: docs/MATCHING.md rounds mcA, hzS, qpG, pmA,
 // nmA, mtA, cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov000_0216c310: 121 / 27 (raw / register-masked), 103 / 8 with branch targets and pool offsets masked.
+// LoTicker_UpdateItems: 121 / 27 (raw / register-masked), 103 / 8 with branch targets and pool offsets masked.
 // Round bgG's clean redraft (no permuter temporaries; the earlier best had __typeof__ noise and was 124 / 27).
 // The 8 masked lines are scheduling around the IsCurNode test and m - 0x80000 that follow from the colouring:
 // the ROM colours n, next, y before self and the two loop-invariant temps (data_02071060 and self + 0x360);
@@ -195,7 +195,7 @@ static inline BOOL IsCurNode0216c310(LoTicker *self, LoTickerSlot *n) {
     return self->cur == n ? TRUE : FALSE;
 }
 
-void func_ov000_0216c310(LoTicker *self) {
+void LoTicker_UpdateItems(LoTicker *self) {
     s32 s;
     s32 m;
     s32 r;

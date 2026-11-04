@@ -33,7 +33,7 @@ void ModelViewer_InitCamera(ModelViewer *self) {
     self->unk_6f8.z = 0;
 }
 
-void func_ov000_02162910(ModelViewer *self, const VecFx32 *eye, const VecFx32 *at, const VecFx32 *up) {
+void ModelViewer_SetCamera(ModelViewer *self, const VecFx32 *eye, const VecFx32 *at, const VecFx32 *up) {
     s32 ex = eye->x;
     s32 ey = eye->y;
     s32 ez = eye->z;

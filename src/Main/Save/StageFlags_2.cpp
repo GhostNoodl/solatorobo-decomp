@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern StageFlags data_0214aa68;
+extern StageFlags gStageFlagsDefault;
 extern u8 gStageFlagsSave[0x640];
 extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
@@ -16,7 +16,7 @@ typedef struct StageFlagsInit {
     u32 data[5];
 } StageFlagsInit;
 
-extern const StageFlagsInit data_02082be4;
+extern const StageFlagsInit StageFlags_InitTable;
 
 static inline void StageFlags_LoadBuf(StageFlags *f) {
     s32 n = 0;
@@ -29,12 +29,12 @@ static inline void StageFlags_LoadBuf(StageFlags *f) {
 
 void StageFlags_Restore(StageFlags *f) {
     MI_CpuCopy8(gStageFlagsSave, f, sizeof(StageFlags));
-    MI_CpuCopy8(gStageFlagsSave, &data_0214aa68, 0x640);
+    MI_CpuCopy8(gStageFlagsSave, &gStageFlagsDefault, 0x640);
     StageFlags_LoadBuf(f);
 }
 
 void StageFlags_LoadDefault(StageFlags *f) {
-    MI_CpuCopy8(&data_0214aa68, f, sizeof(StageFlags));
+    MI_CpuCopy8(&gStageFlagsDefault, f, sizeof(StageFlags));
     StageFlags_LoadBuf(f);
 }
 

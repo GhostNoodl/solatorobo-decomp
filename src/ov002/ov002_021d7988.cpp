@@ -11,7 +11,7 @@ static inline void setPos(Obj021efe5c *self, s32 x, s32 y) {
     self->model.y = y << 12;
 }
 
-void func_ov002_021d7988(Obj021efe5c *self) {
+void Obj021efe5c_Draw(Obj021efe5c *self) {
     s32 x;
     s32 y;
     s32 z;

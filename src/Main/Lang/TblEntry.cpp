@@ -7,13 +7,13 @@ typedef struct TblEntry {
     /* 0x00 */ u32 offsets[6];
 } TblEntry;
 
-extern TblEntry *data_0214b164[];
+extern TblEntry *gTblEntries[];
 extern const char *Path_SkipDir(const char *path);
 
 // Unlike the TblRes.cpp lookups, this one re-reads cat->ranges at each use.
 static inline TblEntry *Tbl_FindEntry(s32 id) {
-    TblCat *cat = &data_0208d6d0[(u16)((id >> 12) - 1)];
-    TblEntry *entries = data_0214b164[id >> 12];
+    TblCat *cat = &Tbl_Cats[(u16)((id >> 12) - 1)];
+    TblEntry *entries = gTblEntries[id >> 12];
     u16 idx = id & 0xfff;
     if (cat->ranges != NULL) {
         int i = 0;
@@ -28,7 +28,7 @@ static inline TblEntry *Tbl_FindEntry(s32 id) {
 }
 
 static inline TblCat *Tbl_GetCat(s32 id) {
-    return &data_0208d6d0[(u16)((id >> 12) - 1)];
+    return &Tbl_Cats[(u16)((id >> 12) - 1)];
 }
 
 static inline void *Tbl_GetOffset(TblEntry *e, int i) {
@@ -57,15 +57,15 @@ void *Tbl_GetResFile(s32 id) {
 // The leading Tbl_FindEntry is dead apart from its search loop, which MWCC
 // keeps. The lookup that is used re-reads the category in its loop
 // condition. The type is unsigned (it is only used as an index).
-const char *func_020701d4(s32 id) {
+const char *Tbl_GetResFileName(s32 id) {
     u32 type = id >> 12;
-    TblCat *cat = &data_0208d6d0[(u16)(type - 1)];
+    TblCat *cat = &Tbl_Cats[(u16)(type - 1)];
     TblRange *ranges = cat->ranges;
     u16 idx;
     TblEntry *entries;
     Tbl_FindEntry(id);
     idx = id & 0xfff;
-    entries = data_0214b164[id >> 12];
+    entries = gTblEntries[id >> 12];
     if (ranges != NULL) {
         int i = 0;
         while (Tbl_GetCat(id)->ranges[i].start <= idx) {

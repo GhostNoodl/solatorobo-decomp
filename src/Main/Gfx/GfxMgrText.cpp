@@ -8,11 +8,11 @@ extern int NNSi_G2dFontGetTextHeight(const void *pFont, int vSpace, const void *
 extern void NNS_G2dCharCanvasInitForBG(void *canvas, void *charBase, int w, int h, int colorMode);
 extern void NNS_G2dMapScrToCharText(void *scrBase, int w, int h, int left, int top, int pitch, int charNo, int pltt);
 extern void *GfxSys_GetTextBgPtr(GfxSys *sys, BOOL main);
-extern void func_0203b12c(GfxMgr *mgr, const char *str);
+extern void GfxMgr_RenderGlyphs(GfxMgr *mgr, const char *str);
 extern void func_0203b4ac(GfxMgr *mgr, int color);
 extern void DC_FlushAll(void);
 
-void func_0203aab0(GfxMgr *mgr, const char *str) {
+void GfxMgr_PutStringBg(GfxMgr *mgr, const char *str) {
     GfxFont *font;
     int pal;
     int width;
@@ -46,7 +46,7 @@ void func_0203aab0(GfxMgr *mgr, const char *str) {
     charBase = (u8 *)GfxSys_GetTextBgPtr(gGfxSys, FALSE);
     NNS_G2dCharCanvasInitForBG(mgr->unk_684, charBase + charNo * 0x20, mgr->unk_678, rows, 4);
     NNS_G2dMapScrToCharText(GfxSys_GetTextBgPtr(gGfxSys, TRUE), mgr->unk_678, rows, 0, top, 0x20, charNo, pal + mgr->plttSlots[1]);
-    func_0203b12c(mgr, str);
+    GfxMgr_RenderGlyphs(mgr, str);
     func_0203b4ac(mgr, color);
     DC_FlushAll();
     p = str;
@@ -101,7 +101,7 @@ extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 extern VramBlock *GfxMgr_AllocCharBlock(GfxMgr *mgr, int width, int height, BOOL temporary);
 
 // Draws a string as one 16x16 OBJ per glyph.
-void func_0203acb8(GfxMgr *mgr, const char *str) {
+void GfxMgr_PutStringOam(GfxMgr *mgr, const char *str) {
     int shift;
     int i;
     int mask;
@@ -144,7 +144,7 @@ void func_0203acb8(GfxMgr *mgr, const char *str) {
         pal = (int)mgr->unk_008 / 5 + 1;
         color = ((int)mgr->unk_008 % 5) * 3 + 1;
     }
-    if (data_020827f8[mgr->unk_004].mode == 4) {
+    if (GfxMgr_FontTable[mgr->unk_004].mode == 4) {
         pal += mgr->plttSlots[2];
         shift = mgr->pools[0].alignShift;
         base = 0x6400000;

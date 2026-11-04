@@ -391,7 +391,7 @@ typedef struct UnkModel {
     /* 0x1c */ UnkBlock *block2;
 } UnkModel;
 
-void func_02039518(UnkModel *model) {
+void ResModel_ShrinkBlocks(UnkModel *model) {
     if (model == NULL) {
         return;
     }
@@ -408,7 +408,7 @@ void func_02039518(UnkModel *model) {
 }
 
 // Compares two file names up to their extensions.
-BOOL func_020395a8(const char *a, const char *b, int len) {
+BOOL ResList_NameMatches(const char *a, const char *b, int len) {
     int i;
     for (i = 0; i < len; i++) {
         char c = b[i];

@@ -13,7 +13,7 @@ u32 func_ov000_0214c01c(u16 arg) {
     return (data_02fe1534.unk_6a << 16) | data_02fe1534.unk_68;
 }
 
-s32 func_ov000_0214c064(void *arg) {
+s32 SceneRes_GetString(void *arg) {
     return MsgRes_GetString(gSceneResSet.unk_08->sub, arg);
 }
 

@@ -5,13 +5,13 @@
 
 extern "C" {
 
-extern char data_0214b105[];
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern char gCommonTextPath[];
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 extern void *gTaskHost;
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
-void func_ov000_0216f23c(void *p, s32 a);
+void BufferList_Run(void *p, s32 a);
 BOOL TaskHost_Update(void *p);
 void ListBuffer021cb940_Release(void *p);
 

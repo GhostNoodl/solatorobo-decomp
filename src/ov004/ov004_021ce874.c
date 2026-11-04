@@ -95,7 +95,7 @@ end:
         (c) = ((c) >> 1) ^ 0xedb88320; \
     }
 
-u32 func_ov004_021cea18(const u8 *p, u32 n) {
+u32 DSProt_Crc32(const u8 *p, u32 n) {
     u32 c = ~0;
     while (n-- != 0) {
         c ^= *p++;

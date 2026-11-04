@@ -21,7 +21,7 @@ struct Obj021bcd08 {
     s32 unk_28;
 };
 
-void func_ov000_021bcd08(Obj021bcd08 *self) {
+void Obj021bcd08_Draw(Obj021bcd08 *self) {
     Model *m;
     s32 y;
     VObj *obj;

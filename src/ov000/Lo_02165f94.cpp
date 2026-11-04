@@ -22,7 +22,7 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-u8 *func_ov000_02165f94(Lo021cb6b0 *self) {
+u8 *Lo021cb6b0_HandleInput(Lo021cb6b0 *self) {
     LoAnimC *p = self->unk_30->anim;
     FieldState *g = gSceneCmd;
     if (!LoAnimValid(p)) {

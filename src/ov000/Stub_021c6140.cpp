@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021c6140(TextList *self) {
+void TextList_Init(TextList *self) {
     s32 zero = 0;
     self->rows = NULL;
     self->cur = NULL;

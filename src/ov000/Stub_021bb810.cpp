@@ -39,7 +39,7 @@ void Obj021bb810_Init_021bb810(Obj021bb810 *self, s32 a) {
     self->unk_1c = 0;
 }
 
-void func_ov000_021bb840(Obj021bb810 *self) {
+void Obj021bb810_Release(Obj021bb810 *self) {
     if (EffectMgr_Contains(gEffectMgr, self->unk_10)) {
         void *saved = gSysState->cur;
         gSysState->cur = gSysState->heapHi;

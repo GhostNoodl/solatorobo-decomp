@@ -47,7 +47,7 @@ BOOL Ov015Msg_Appear(Ov015Msg *self) {
 }
 
 
-s32 func_0204c2f4(void *p, s32 n, void *src);
+s32 Text_WrapLines(void *p, s32 n, void *src);
 void Obj0215bb14_SetText(void *a, void *b);
 void Ov015UiText_SetText(Ov015UiText *self, void *msg);
 
@@ -64,7 +64,7 @@ BOOL Ov015Msg_Run(Ov015Msg *self) {
         if (n < self->pageCount) {
             if (self->label != NULL && self->pages[n] != NULL) {
                 Lo021cadcc *o;
-                func_0204c2f4(self->text, 0x80, self->pages[n]);
+                Text_WrapLines(self->text, 0x80, self->pages[n]);
                 Obj0215bb14_SetText(self->label, self->text);
                 self->label->vfunc_70();
                 FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;

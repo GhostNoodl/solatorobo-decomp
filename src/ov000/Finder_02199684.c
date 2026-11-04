@@ -125,7 +125,7 @@ static inline BOOL Part_IsActive(Part *p) {
     return FALSE;
 }
 
-BOOL func_ov000_02199684(Finder *self, ActorF *actor) {
+BOOL Finder_TestActor(Finder *self, ActorF *actor) {
     Shape s;
     Query *q = self->query;
 

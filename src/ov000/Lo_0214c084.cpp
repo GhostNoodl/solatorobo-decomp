@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-Glyph0214c084 *func_ov000_0214c084(u8 *self, u16 *cmd, Glyph0214c084 *arr, u16 *count) {
+Glyph0214c084 *Menu021ca94c_OamCallback(u8 *self, u16 *cmd, Glyph0214c084 *arr, u16 *count) {
     u16 n = *count;
     Glyph0214c084 *last = &arr[n - 1];
     if (*cmd == 6) {

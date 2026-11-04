@@ -11,9 +11,9 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_0214b105[];
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern u8 gCommonTextPath[];
+extern void *ArcPath_Menu;
+extern void *ArcPath_MenuBattle;
 extern u8 ResHandle_vtbl[];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
 extern u8 TimedBuffer021cb920_vtbl[];
@@ -27,8 +27,8 @@ void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
 VObj *ActorMgr_FindPlayer(void);
 void SceneCmd_Push0d(FieldState *q);
 BOOL ListBuffer021cb940_OpenWindow(ListBuffer021cb940 *t, s32 b, s32 c);
-BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
-BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL MessageQueue021cb980_OpenTextBox(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL MessageQueue021cb980_OpenMsgWin(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL ListBuffer021cb940_OpenDialog(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
 void ImageCard_Init(void *p, u16 a);
@@ -178,7 +178,7 @@ static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
     ch = (u16)(c >> 16);
     p = (Obj0216c954 *)Heap_Alloc(sizeof(Obj0216c954));
     if (p != NULL) {
-        func_ov000_0216c954(p, bh, bl);
+        Obj0216c954_Init(p, bh, bl);
     }
     t->unk_50 = p;
     Obj0216c954_SetCount(p, cl, ch);
@@ -315,9 +315,9 @@ void MessageQueue021cb980_HandleMsg(MessageQueue021cb980 *self, s32 a, s32 kind,
     switch (kind) {
     case 1:
         self->flag0 = 1;
-        ResMgr_Load(data_0214b105, 7, 0);
-        ResMgr_Load(data_0208cca0, 7, 0);
-        ResMgr_Load(data_0208cc94, 7, 0);
+        ResMgr_Load(gCommonTextPath, 7, 0);
+        ResMgr_Load(ArcPath_Menu, 7, 0);
+        ResMgr_Load(ArcPath_MenuBattle, 7, 0);
         if (self->unk_118 == NULL) {
             TimedBuffer021cb920 *t = (TimedBuffer021cb920 *)Heap_Alloc(0x34);
             if (t != NULL) {
@@ -384,7 +384,7 @@ void MessageQueue021cb980_HandleMsg(MessageQueue021cb980 *self, s32 a, s32 kind,
         if (a != 0) {
             return;
         }
-        if (func_ov000_0217032c(self->unk_11c, b, c)) {
+        if (MessageQueue021cb980_OpenTextBox(self->unk_11c, b, c)) {
             return;
         }
         self->vfunc_08(a, kind, b, c);
@@ -393,7 +393,7 @@ void MessageQueue021cb980_HandleMsg(MessageQueue021cb980 *self, s32 a, s32 kind,
         if (a != 0) {
             return;
         }
-        if (func_ov000_02170448(self->unk_11c, b, c)) {
+        if (MessageQueue021cb980_OpenMsgWin(self->unk_11c, b, c)) {
             return;
         }
         self->vfunc_08(a, kind, b, c);

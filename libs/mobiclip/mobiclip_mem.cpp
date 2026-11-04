@@ -15,22 +15,22 @@ typedef struct MoCodeMem {
     /* 0x1c */ void *unk_1c;
 } MoCodeMem;
 
-extern MoCodeMem data_02097cbc;
+extern MoCodeMem gMoMem;
 
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void *Gfx3D_AllocHi(u32 size);
 extern void Gfx3D_FreeHi(void *ptr);
 
 // Decoder kernels in ROM. dsd finds no relocations to these, so symbols.txt names them by hand.
-extern u8 data_0207bcb8[];
-extern u8 data_02077ab8[];
-extern u8 data_020823d4[];
-extern u8 data_02082254[];
+extern u8 MoMem_VideoCode[];
+extern u8 MoMem_Code04[];
+extern u8 MoMem_Code00[];
+extern u8 MoMem_Code1C[];
 
-#define MO_VIDEO_CODE ((void *)data_0207bcb8)
-#define MO_CODE_04 ((void *)data_02077ab8)
-#define MO_CODE_00 ((void *)data_020823d4)
-#define MO_CODE_1C ((void *)data_02082254)
+#define MO_VIDEO_CODE ((void *)MoMem_VideoCode)
+#define MO_CODE_04 ((void *)MoMem_Code04)
+#define MO_CODE_00 ((void *)MoMem_Code00)
+#define MO_CODE_1C ((void *)MoMem_Code1C)
 
 u32 MoMem_GetLargeSize(void) {
     return 0x659c;
@@ -41,75 +41,75 @@ u32 MoMem_GetSmallSize(void) {
 }
 
 int MoMem_SetLargeMem(u8 *mem, u32 size) {
-    data_02097cbc.largeMem = mem;
-    data_02097cbc.largeSize = size & ~3;
-    data_02097cbc.videoCode = NULL;
+    gMoMem.largeMem = mem;
+    gMoMem.largeSize = size & ~3;
+    gMoMem.videoCode = NULL;
     return 0;
 }
 
 int MoMem_SetSmallMem(u8 *mem, u32 size) {
-    data_02097cbc.smallMem = mem;
-    data_02097cbc.smallSize = size & ~3;
-    data_02097cbc.unk_04 = NULL;
-    data_02097cbc.unk_00 = NULL;
-    data_02097cbc.unk_1c = NULL;
+    gMoMem.smallMem = mem;
+    gMoMem.smallSize = size & ~3;
+    gMoMem.unk_04 = NULL;
+    gMoMem.unk_00 = NULL;
+    gMoMem.unk_1c = NULL;
     return 0;
 }
 
 void *MoMem_GetVideoCode(void) {
-    if (data_02097cbc.videoCode == NULL) {
-        if (data_02097cbc.largeSize >= 0x659c) {
-            data_02097cbc.videoCode = data_02097cbc.largeMem;
-            MIi_CpuCopyFast(MO_VIDEO_CODE, data_02097cbc.largeMem, 0x659c);
-            data_02097cbc.largeMem += 0x659c;
-            data_02097cbc.largeSize -= 0x659c;
+    if (gMoMem.videoCode == NULL) {
+        if (gMoMem.largeSize >= 0x659c) {
+            gMoMem.videoCode = gMoMem.largeMem;
+            MIi_CpuCopyFast(MO_VIDEO_CODE, gMoMem.largeMem, 0x659c);
+            gMoMem.largeMem += 0x659c;
+            gMoMem.largeSize -= 0x659c;
         } else {
             return MO_VIDEO_CODE;
         }
     }
-    return data_02097cbc.videoCode;
+    return gMoMem.videoCode;
 }
 
-void *func_020346d4(void) {
-    if (data_02097cbc.unk_04 == NULL) {
-        if (data_02097cbc.smallSize >= 0x2100) {
-            data_02097cbc.unk_04 = data_02097cbc.smallMem;
-            MIi_CpuCopyFast(MO_CODE_04, data_02097cbc.smallMem, 0x2100);
-            data_02097cbc.smallMem += 0x2100;
-            data_02097cbc.smallSize -= 0x2100;
+void *MoMem_GetCode04(void) {
+    if (gMoMem.unk_04 == NULL) {
+        if (gMoMem.smallSize >= 0x2100) {
+            gMoMem.unk_04 = gMoMem.smallMem;
+            MIi_CpuCopyFast(MO_CODE_04, gMoMem.smallMem, 0x2100);
+            gMoMem.smallMem += 0x2100;
+            gMoMem.smallSize -= 0x2100;
         } else {
             return MO_CODE_04;
         }
     }
-    return data_02097cbc.unk_04;
+    return gMoMem.unk_04;
 }
 
-void *func_02034740(void) {
-    if (data_02097cbc.unk_00 == NULL) {
-        if (data_02097cbc.smallSize >= 0x300) {
-            data_02097cbc.unk_00 = data_02097cbc.smallMem;
-            MIi_CpuCopyFast(MO_CODE_00, data_02097cbc.smallMem, 0x300);
-            data_02097cbc.smallMem += 0x300;
-            data_02097cbc.smallSize -= 0x300;
+void *MoMem_GetCode00(void) {
+    if (gMoMem.unk_00 == NULL) {
+        if (gMoMem.smallSize >= 0x300) {
+            gMoMem.unk_00 = gMoMem.smallMem;
+            MIi_CpuCopyFast(MO_CODE_00, gMoMem.smallMem, 0x300);
+            gMoMem.smallMem += 0x300;
+            gMoMem.smallSize -= 0x300;
         } else {
             return MO_CODE_00;
         }
     }
-    return data_02097cbc.unk_00;
+    return gMoMem.unk_00;
 }
 
-void *func_020347ac(void) {
-    if (data_02097cbc.unk_1c == NULL) {
-        if (data_02097cbc.smallSize >= 0x180) {
-            data_02097cbc.unk_1c = data_02097cbc.smallMem;
-            MIi_CpuCopyFast(MO_CODE_1C, data_02097cbc.smallMem, 0x180);
-            data_02097cbc.smallMem += 0x180;
-            data_02097cbc.smallSize -= 0x180;
+void *MoMem_GetCode1C(void) {
+    if (gMoMem.unk_1c == NULL) {
+        if (gMoMem.smallSize >= 0x180) {
+            gMoMem.unk_1c = gMoMem.smallMem;
+            MIi_CpuCopyFast(MO_CODE_1C, gMoMem.smallMem, 0x180);
+            gMoMem.smallMem += 0x180;
+            gMoMem.smallSize -= 0x180;
         } else {
             return MO_CODE_1C;
         }
     }
-    return data_02097cbc.unk_1c;
+    return gMoMem.unk_1c;
 }
 
 void *MoMem_Alloc(u32 size) {

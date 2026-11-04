@@ -534,7 +534,7 @@ struct Lo021cb3a8 : public UiList021cb4a8 {
 // Vtable Lo021cb5a8_vtbl; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.
 struct Lo021cb5a8 : public UiList {
     s32 unk_d4;
-    void *dl;     // frame display list (func_ov000_0215a088, G3_BeginMakeDL), Heap_FreeHi'd by slot 0x2c
+    void *dl;     // frame display list (Lo021cb5a8_BuildFrameDL, G3_BeginMakeDL), Heap_FreeHi'd by slot 0x2c
     u32 dlSize;
 };
 
@@ -546,7 +546,7 @@ struct Lo021cb6b0 : public VObj {
     Model *unk_28;
     Model *unk_2c;
     struct Ctx0216607c *unk_30; // the map work area (ov000/MapCtx.h)
-    s32 unk_34; // state (func_ov000_02166be8)
+    s32 unk_34; // state (Lo021cb6b0_UpdateMap)
     s32 unk_38;
     s32 unk_3c; // unk_38 / 0x1000, clamped to 0..0x1000
     VObj *unk_40;

@@ -165,7 +165,7 @@ GroupNode *Group_FindNodeByKind(Group *g, u16 id, u8 b) {
     return ret;
 }
 
-void func_ov000_0218be54(Group *g) {
+void Group_UpdateAll(Group *g) {
     if (g->unk_0c.bits.flag_0 && g->viewCount != 0) {
         GroupNode *n = g->head;
         while (n != NULL) {

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0216b474(Lo0216b474 *self) {
+void Lo0216b474_Init(Lo0216b474 *self) {
     self->flags = 0;
     self->state = 2;
     self->model = NULL;

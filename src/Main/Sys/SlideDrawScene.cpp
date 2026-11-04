@@ -68,7 +68,7 @@ typedef struct SlideCol3 {
 
 extern "C" {
 
-extern const SlideCol3 data_020829c8;
+extern const SlideCol3 SlideDrawScene_FadeColors;
 
 u8 *GfxSys_Get3DState(void);
 void *func_02055a9c(u8 *p);
@@ -142,7 +142,7 @@ void MainVt_0208bbc8_DrawSlides(SlideDrawScene *scene) {
     if (!scene->fading) {
         return;
     }
-    cols = data_020829c8;
+    cols = SlideDrawScene_FadeColors;
     GfxPltt_ApplyFilter(pltt, &cols, 6);
     if (scene->mode == 4) {
         polyId = func_02056c48() ? 0x1f : 0x18;

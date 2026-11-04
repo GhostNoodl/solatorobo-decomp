@@ -22,8 +22,8 @@ void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 UiListItem *ListOwner_GetNth(UiList *self, int n);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
-void func_ov000_02162910(void *p, const void *a, const void *b, const void *c);
-void func_ov000_0216295c(void *p, const void *v, int s);
+void ModelViewer_SetCamera(void *p, const void *a, const void *b, const void *c);
+void ModelViewer_SetFrustum(void *p, const void *v, int s);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
 void ov006_Caption_Init_021e0954(ov006_Caption *self);
 void ov006_TextHolder_Play_021e0ca8(ov006_Caption *self, void *text, int b);
@@ -97,8 +97,8 @@ void ov006_CraftSelect_Start(ov006_TaskD1F *self) {
         self->unk58 = (ov006_Actor58 *)p;
     }
     ModelViewer_InitCamera(self->unk58);
-    func_ov000_02162910(self->unk58, data_ov006_021eb71c, data_ov006_021eb728, data_ov006_021eb770);
-    func_ov000_0216295c(self->unk58, data_ov006_021eb740, 0x3d7);
+    ModelViewer_SetCamera(self->unk58, data_ov006_021eb71c, data_ov006_021eb728, data_ov006_021eb770);
+    ModelViewer_SetFrustum(self->unk58, data_ov006_021eb740, 0x3d7);
     self->unk5C = ov006_NewLo021cadcc();
     self->unk5C->width = 0xf8;
     self->unk5C->rows = 2;

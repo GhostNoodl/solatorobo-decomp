@@ -3,7 +3,7 @@
 
 extern "C" {
 
-BOOL func_ov000_021b7f0c(FieldProp *self);
+BOOL FieldProp_Load(FieldProp *self);
 void HitMesh_Link(void *p);
 void HitMesh_Unlink_0203f920(void *p);
 BOOL Hit_PointInBox(VecFx32 *v, VecFx32 *min, VecFx32 *max);
@@ -27,12 +27,12 @@ static inline void FieldProp_SetModel(FieldProp *self, u8 n) {
     }
 }
 
-s32 func_ov000_021b7b50(FieldProp *self) {
+s32 FieldProp_Update(FieldProp *self) {
     VecFx32 d;
     s32 mag;
     switch (self->state) {
     case 0:
-        if (!func_ov000_021b7f0c(self)) {
+        if (!FieldProp_Load(self)) {
             break;
         }
         self->visible = 1;

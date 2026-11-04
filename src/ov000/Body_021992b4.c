@@ -105,7 +105,7 @@ typedef struct {
 } Finder;
 
 GroupL *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
-BOOL func_ov000_02199684(Finder *self, ActorL *actor);
+BOOL Finder_TestActor(Finder *self, ActorL *actor);
 ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from);
 
 static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
@@ -206,7 +206,7 @@ s32 Finder_CollectParts(Finder *self, Query *q, ActorL **out, s32 max) {
     return n;
 }
 
-s32 func_ov000_02199454(Finder *self, Query *q, Part **list, s32 count) {
+s32 Finder_FindParts(Finder *self, Query *q, Part **list, s32 count) {
     Part *tmp[32];
     s32 n;
     s32 i;
@@ -245,7 +245,7 @@ s32 func_ov000_02199454(Finder *self, Query *q, Part **list, s32 count) {
     return n;
 }
 
-s32 func_ov000_02198efc(s32 count, SortLink *links, s32 *keys);
+s32 Finder_SortByKey(s32 count, SortLink *links, s32 *keys);
 
 static inline s32 DistSq9554(const VecFx32 *a, const VecFx32 *b) {
     s32 x = a->x;
@@ -258,7 +258,7 @@ static inline s32 DistSq9554(const VecFx32 *a, const VecFx32 *b) {
     return (s32)(((s64)x * x + (s64)y * y + (s64)z * z + 0x800) >> 12);
 }
 
-s32 func_ov000_02199554(Finder *self, Query *q, Part **out, s32 max) {
+s32 Finder_FindPartsSorted(Finder *self, Query *q, Part **out, s32 max) {
     Part *found[32];
     s32 dist[32];
     SortLink links[32];
@@ -294,7 +294,7 @@ s32 func_ov000_02199554(Finder *self, Query *q, Part **out, s32 max) {
                 dist[i] = 0x7fffffff;
             }
         }
-        cur = func_ov000_02198efc(n, links, dist);
+        cur = Finder_SortByKey(n, links, dist);
         for (i = 0; i < n; i++) {
             out[i] = found[cur];
             cur = links[cur].next;

@@ -5,15 +5,15 @@
 #include "Main/Res/ResArc.h"
 
 extern "C" {
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
-extern const char *data_0208cc88;
-extern const char *data_0208cc94;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
+extern const char *ResName_BattleCells;
+extern const char *ArcPath_MenuBattle;
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
-void *func_ov000_021540b0(void *self, u16 *msg, void *g, u16 *count);
+void *UiList_OamCallback(void *self, u16 *msg, void *g, u16 *count);
 void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 
 typedef struct {
@@ -60,9 +60,9 @@ static inline BOOL LoadModel0215429c(UiList *self) {
         return TRUE;
     }
     if (self->flag6 ? TRUE : FALSE) {
-        self->model = new ModelObj(data_0208cb84, data_0208cc8c);
+        self->model = new ModelObj(ResName_WifiCells, ArcPath_MenuWifi);
     } else {
-        self->model = new ModelObj(data_0208cb74, data_0208cca0);
+        self->model = new ModelObj(ResName_CommonCells, ArcPath_Menu);
     }
     {
         ResList *a = ResMgr_GetArcList(self->model->name);
@@ -84,7 +84,7 @@ void UiList_Setup(UiList *self) {
             TexObj_SelectImage(self->model, 0, 10);
             TexObj_SelectImage(self->model, 0, 6);
         }
-        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_021540b0);
+        TexObj_SetAllOamFuncs(self->model, (void *)UiList_OamCallback);
         TexObj_SetOamFuncArg(self->model, 2, self);
         TexObj_SetOamFuncArg(self->model, 6, self);
     }
@@ -93,8 +93,8 @@ void UiList_Setup(UiList *self) {
         if (m) {
             const char *arc;
             const char *name;
-            name = data_0208cc88;
-            arc = data_0208cc94;
+            name = ResName_BattleCells;
+            arc = ArcPath_MenuBattle;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);

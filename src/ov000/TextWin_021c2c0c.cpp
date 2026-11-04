@@ -12,7 +12,7 @@ static inline TextWin *TextWin_New(void) {
     return win;
 }
 
-void func_ov000_021c2c0c(ListRowGauge *self, u32 text) {
+void ListRowGauge_SetText(ListRowGauge *self, u32 text) {
     TextWin *win;
     {
         void *saved = gSysState->cur;

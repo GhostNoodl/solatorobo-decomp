@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void func_ov000_021bb248(NNSG3dRS *rs);
+void Obj021bb2b0_MatCallback(NNSG3dRS *rs);
 
-// A render-object init callback (NNS_G3dRenderObjSetInitFunc): hooks func_ov000_021bb248 on the
+// A render-object init callback (NNS_G3dRenderObjSetInitFunc): hooks Obj021bb2b0_MatCallback on the
 // NNS_G3D_SBC_MAT command.
-void func_ov000_021bb298(NNSG3dRS *rs) {
-    NNS_G3dRSSetCallBack(rs, func_ov000_021bb248, NNS_G3D_SBC_MAT, NNS_G3D_SBC_CALLBACK_TIMING_B);
+void Obj021bb2b0_RSInit(NNSG3dRS *rs) {
+    NNS_G3dRSSetCallBack(rs, Obj021bb2b0_MatCallback, NNS_G3D_SBC_MAT, NNS_G3D_SBC_CALLBACK_TIMING_B);
 }
 
 }

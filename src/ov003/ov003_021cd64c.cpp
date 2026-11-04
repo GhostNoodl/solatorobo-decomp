@@ -69,12 +69,12 @@ extern "C" {
 extern Ov003Sys *gDataRes;
 extern s32 DataRes_GetTable(Ov003Sys *sys, s32 a);
 extern void DataRes_WriteBitsById(Ov003Sys *sys, void *p, s32 a, s32 b, u16 c, s32 d);
-extern void func_ov003_021cd91c(Ov003Menu *self);
+extern void Ov003CdTask_ShowPhotoComplete(Ov003Menu *self);
 
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
-extern void func_ov000_021c2208(void *p);
+extern void Obj021c2208_Init(void *p);
 extern BOOL ResMgr_IsArchiveLoaded(const char *a, const char *b, u16 c);
 
 bool Ov003Task_GetFlag4(Ov003FlagSet *self) {
@@ -100,7 +100,7 @@ void Ov003TaskVt_021f78f4_PreUpdate(Ov003Menu *self) {
         break;
     }
     self->unk_3c->Draw();
-    func_ov003_021cd91c(self);
+    Ov003CdTask_ShowPhotoComplete(self);
 }
 
 void Ov003TaskVt_021f78f4_PostUpdate(void) {

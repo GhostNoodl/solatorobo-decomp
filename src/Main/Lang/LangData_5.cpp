@@ -77,7 +77,7 @@ static inline void LangCamera_SetAngle(LangCamera *cam, u16 angle) {
     cam->dirty = 1;
 }
 
-void func_0206e3a0(LangSecFlags *flags, const u8 *p) {
+void LangSec_ApplyGfxEnv(LangSecFlags *flags, const u8 *p) {
     GfxEnv *env = (GfxEnv *)gGfxSys->unk_8b0;
     if (flags->sec0) {
         u8 alpha = p[2];

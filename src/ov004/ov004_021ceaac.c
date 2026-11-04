@@ -33,7 +33,7 @@ extern void CARD_LockRom(u16 id);
 extern void CARD_UnlockRom(u16 id);
 extern Ov004RomHeader *CARD_GetRomHeader(void);
 extern void func_0200d6d4(s32 dma, u32 src, void *dst, u32 len, u32 e, u32 f, u32 g);
-extern u32 func_ov004_021cea18(const u8 *p, u32 n);
+extern u32 DSProt_Crc32(const u8 *p, u32 n);
 
 #define REG_EXMEMCNT (*(vu16 *)0x04000204)
 #define REG_MCCNT0_HI (*(vu8 *)(reg + 0x1a1))
@@ -120,9 +120,9 @@ s32 func_ov004_021ceaac(Ov004Call *c) {
     for (i = 0; i < 6; i++) {
         hdr = CARD_GetRomHeader();
         DSPROT_READ_ROM_DIRECT(base + (1 << (hdr->deviceSize + 17)), dst, cmd0);
-        crc[i] = func_ov004_021cea18(buf, 0x200);
+        crc[i] = DSProt_Crc32(buf, 0x200);
         func_0200d6d4(-1, base + off, buf, 0x200, 0, 0, 0);
-        crc[i + 6] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 6] = DSProt_Crc32(buf, 0x200);
         if (i < 3) {
             base += 0x200;
         } else if (i == 3) {
@@ -135,9 +135,9 @@ s32 func_ov004_021ceaac(Ov004Call *c) {
     base += 0x1e000;
     for (; i < 8; i++) {
         DSPROT_READ_ROM_DIRECT(base, dst, cmd1);
-        crc[i + 6] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 6] = DSProt_Crc32(buf, 0x200);
         func_0200d6d4(-1, base, buf, 0x200, 0, 0, 0);
-        crc[i + 8] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 8] = DSProt_Crc32(buf, 0x200);
         base += 0x1000;
     }
     CARD_UnlockRom(lock);
@@ -179,9 +179,9 @@ s32 func_ov004_021ceff8(Ov004Call *c) {
     for (i = 0; i < 6; i++) {
         hdr = CARD_GetRomHeader();
         DSPROT_READ_ROM_DIRECT(base + (1 << (hdr->deviceSize + 17)), dst, cmd0);
-        crc[i] = func_ov004_021cea18(buf, 0x200);
+        crc[i] = DSProt_Crc32(buf, 0x200);
         func_0200d6d4(-1, base + off, buf, 0x200, 0, 0, 0);
-        crc[i + 6] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 6] = DSProt_Crc32(buf, 0x200);
         if (i < 3) {
             base += 0x200;
         } else if (i == 3) {
@@ -194,9 +194,9 @@ s32 func_ov004_021ceff8(Ov004Call *c) {
     base += 0x1e000;
     for (; i < 8; i++) {
         DSPROT_READ_ROM_DIRECT(base, dst, cmd1);
-        crc[i + 6] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 6] = DSProt_Crc32(buf, 0x200);
         func_0200d6d4(-1, base, buf, 0x200, 0, 0, 0);
-        crc[i + 8] = func_ov004_021cea18(buf, 0x200);
+        crc[i + 8] = DSProt_Crc32(buf, 0x200);
         base += 0x1000;
     }
     CARD_UnlockRom(lock);

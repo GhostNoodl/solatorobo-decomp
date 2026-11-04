@@ -71,7 +71,7 @@ void PlayTime_Add(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_02048e74 is 60 / 20 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): PlayTime_Sub is 60 / 20 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: the schedule of the second and third borrows (ROM movlo/movhs pair in the register of
 // a->millis). History: docs/MATCHING.md rounds qpE, pmC, bgQ2, mlA, cvA (search for the address); the full list is
 // docs/UNMATCHED.md.
@@ -88,7 +88,7 @@ void PlayTime_Add(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
 // Round bgQ2: 60 raw. The stores to one dummy object never alias each other, so their order is only a
 // scheduling input; of all 24 orders (and PlayTime_Set) millis, minutes, hours, seconds is best (60;
 // the old minutes, hours, millis, seconds is 62). The borrow schedule is unchanged.
-void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
+void PlayTime_Sub(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     int ms, sec, min, h;
     int borrow;
     u16 aSec, bSec;

@@ -27,7 +27,7 @@ typedef struct Camera {
     /* 0x3e */ u8 projDirty;
     /* 0x40 */ u16 mode;
     /* 0x42 */ union {
-        Rot16 rot; // the three angles as one (func_ov000_0218a358 copies them)
+        Rot16 rot; // the three angles as one (FieldCam_SetTarget copies them)
         struct {
             u16 pitch;
             u16 yaw;
@@ -56,8 +56,8 @@ typedef struct Camera {
     /* 0x9c */ union {
         u8 flags; // the bits below as one byte (shakeX | shakeY | shakeZ is 0x1c)
         struct {
-            u8 smooth : 1;     // ease eye/at/up/angles toward their targets (func_0204bcb0)
-            u8 animated : 1;   // set by the path animation step (func_0204b924), skips the easing once
+            u8 smooth : 1;     // ease eye/at/up/angles toward their targets (Camera_UpdateMode)
+            u8 animated : 1;   // set by the path animation step (Camera_StepAnim), skips the easing once
             u8 shakeX : 1;
             u8 shakeY : 1;
             u8 shakeZ : 1;

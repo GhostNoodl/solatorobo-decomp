@@ -18,7 +18,7 @@ typedef struct Pad {
 } Pad; // size 0x1c
 
 extern Pad *gPad;
-extern const u16 data_02082864[16];
+extern const u16 Pad_DirTable[16];
 extern void *Heap_Alloc(u32 size);
 
 static inline u16 PAD_Read(void) {
@@ -36,7 +36,7 @@ static inline u16 Pad_ReadFiltered(void) {
 
 u16 Pad_LookupDir(Pad *pad, const u16 *table) {
     if (table == NULL) {
-        table = data_02082864;
+        table = Pad_DirTable;
     }
     return table[(u16)(((u32)pad->cur >> 4) & 0xf)];
 }

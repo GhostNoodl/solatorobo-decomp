@@ -16,7 +16,7 @@ extern "C" {
 void Obj0215eab4_Draw(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
-void func_ov000_0216295c(ModelViewer *self, const VecFx32 *v, s32 s) {
+void ModelViewer_SetFrustum(ModelViewer *self, const VecFx32 *v, s32 s) {
     s32 y = v->y;
     s32 x = v->x;
     self->projOfs.x = x;

@@ -3,7 +3,7 @@
 extern "C" {
 
 s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
-extern void *data_0208cb74;
+extern void *ResName_CommonCells;
 void ResMgr_ReleaseArchive(void *a, void *b, int c);
 void ResMgr_LoadArchive(void *a, void *b, int c, int d);
 int ResMgr_IsArchiveLoaded(void *a, void *b, int c);
@@ -63,15 +63,15 @@ void Ov015MsgMgr_DtorBase(Ov015MsgMgr *self) {
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        ResMgr_ReleaseArchive((void *)data_0208cca0, data_0208cb74, 2);
+        ResMgr_ReleaseArchive((void *)ArcPath_Menu, ResName_CommonCells, 2);
     }
 }
 
 int Ov015MsgMgr_Load(Ov015MsgMgr *self) {
     if (self->unk_09 == 0) {
-        ResMgr_LoadArchive((void *)data_0208cca0, data_0208cb74, 2, 0);
+        ResMgr_LoadArchive((void *)ArcPath_Menu, ResName_CommonCells, 2, 0);
     }
-    return ResMgr_IsArchiveLoaded((void *)data_0208cca0, data_0208cb74, 2);
+    return ResMgr_IsArchiveLoaded((void *)ArcPath_Menu, ResName_CommonCells, 2);
 }
 
 BOOL func_ov015_02210c28(void) {
@@ -194,7 +194,7 @@ void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        ResMgr_ReleaseArchive((void *)data_0208cca0, data_0208cb74, 2);
+        ResMgr_ReleaseArchive((void *)ArcPath_Menu, ResName_CommonCells, 2);
     }
     return self;
 }
@@ -259,7 +259,7 @@ void *Ov015Vt_02213200_DtorDelete(Ov015Shared *self) {
     return self;
 }
 
-// A 0x12-byte record of func_0206f040: up to four ids, each picked with weight[k] percent.
+// A 0x12-byte record of Param_GetFishingSpotInfo: up to four ids, each picked with weight[k] percent.
 typedef struct Ov015PickTable {
     u8 unk_00;
     u8 count;
@@ -267,7 +267,7 @@ typedef struct Ov015PickTable {
     u16 weight[4];
 } Ov015PickTable;
 
-extern Ov015PickTable *func_0206f040(u16 id);
+extern Ov015PickTable *Param_GetFishingSpotInfo(u16 id);
 extern s32 Rand_UpTo(s32 max);
 
 u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
@@ -305,7 +305,7 @@ u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
             s32 acc;
             u32 m;
             Ov015PickTable *e;
-            e = func_0206f040(self->unk_0a);
+            e = Param_GetFishingSpotInfo(self->unk_0a);
             m = e->count;
             rnd = Rand_UpTo(0x1000);
             acc = 0;

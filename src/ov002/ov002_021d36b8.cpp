@@ -9,7 +9,7 @@ extern "C" {
 extern void *data_ov002_021ef5ac[];
 
 
-void func_ov002_021d36b8(Task021ef91c *self, s32 n) {
+void LibraryViewer_LoadPage(Task021ef91c *self, s32 n) {
     char num[4];
     char buf[0x20];
     {

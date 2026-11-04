@@ -24,7 +24,7 @@ BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 void LoBase021ccb54_021ccbe0_SortRows(void *self, s32 (*cmp)(void *, void *));
 
-Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
+Ov002RowList *Obj021efef0_BuildRowList(Obj021efef0 *self, u32 kind) {
     u16 id;
     s32 n;
     s32 j;

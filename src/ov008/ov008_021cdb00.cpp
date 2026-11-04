@@ -22,7 +22,7 @@ void LangData_LocalizePath(char *dst, const char *src);
 void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *arc, const char *name);
 void SceneResSet_Open08(void);
-void func_ov000_0214c1ac(void);
+void FaceIcon_LoadPlayer(void);
 
 static inline Ov008Anim *Ov008_NewAnim(void) {
     Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
@@ -58,8 +58,8 @@ void Ov008WorldMap_LoadRes(Ov008Mgr *self) {
     char path[0x20];
     Ov008Pic *p;
     Ov008PicC4 *q;
-    ResMgr_Load(data_0208cca0, 7, 0);
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(ArcPath_Menu, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
 
     self->unk_c4 = Ov008_NewAnim();
     {
@@ -117,7 +117,7 @@ void Ov008WorldMap_LoadRes(Ov008Mgr *self) {
     STD_ConcatenateString(path, data_ov008_021d04d9);
     StageRes_Open(self->unk_fc, path, data_ov008_021d04e1);
     SceneResSet_Open08();
-    func_ov000_0214c1ac();
+    FaceIcon_LoadPlayer();
 }
 
 }

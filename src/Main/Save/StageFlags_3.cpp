@@ -22,9 +22,9 @@ typedef struct StageItemPos {
     s32 y;
 } StageItemPos;
 
-extern u8 *func_0206ef50(u16 id);
+extern u8 *Param_GetSlotInfo(u16 id);
 extern StageItemShape *ParamKind_GetShape(int kind);
-extern int func_ov002_021e3dac(StageItemPos *pos, StageItemShape *a, StageItemShape *b, StageItemPos *out);
+extern int Ov002Shape_FitInMap(StageItemPos *pos, StageItemShape *a, StageItemShape *b, StageItemPos *out);
 extern BOOL StageFlags_AddEntry(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
 extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
 u16 StageFlags_CountItems(StageFlags *f);
@@ -51,7 +51,7 @@ void StageFlags_SetShape(StageFlags *f, u16 id) {
     u16 y;
     u16 x;
     StageFlags_ClearEntries(f);
-    shape = ParamKind_GetShape((s8)func_0206ef50(id)[1]);
+    shape = ParamKind_GetShape((s8)Param_GetSlotInfo(id)[1]);
     grid = shape->grid;
     w = shape->w;
     h = shape->h;
@@ -95,8 +95,8 @@ void StageFlags_ChangeShape(StageFlags *f, u16 id) {
     StageItemShape *oldShape;
     StageItemShape *newShape;
     s32 i;
-    oldShape = ParamKind_GetShape(func_0206ef50(f->shapeId)[0]);
-    newShape = ParamKind_GetShape(func_0206ef50(id)[0]);
+    oldShape = ParamKind_GetShape(Param_GetSlotInfo(f->shapeId)[0]);
+    newShape = ParamKind_GetShape(Param_GetSlotInfo(id)[0]);
     MI_CpuCopy8(f->entries, entries, sizeof(entries));
     StageFlags_SetShape(f, id);
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
@@ -109,7 +109,7 @@ void StageFlags_ChangeShape(StageFlags *f, u16 id) {
             MI_CpuCopy8(ParamKind_GetShape(info[1]), &shape, sizeof(shape));
             shape.rot = e->bits.c;
             used = e->bits.used ? TRUE : FALSE;
-            if (func_ov002_021e3dac(&pos, newShape, &shape, NULL) == 0) {
+            if (Ov002Shape_FitInMap(&pos, newShape, &shape, NULL) == 0) {
                 StageFlags_AddEntry(gStageFlags, e->id, pos.x, pos.y, shape.rot, used);
             } else if (!used) {
                 StageFlags_AddItem(gStageFlags, e->id, 1);

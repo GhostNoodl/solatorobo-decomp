@@ -21,8 +21,8 @@ typedef struct {
 } Self021badd4;
 
 extern "C" {
-extern void *data_0208b3d0;
-extern void *data_020828f8;
+extern void *Gfx3D_PrimDLs;
+extern void *Gfx3D_PrimDLSizes;
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
@@ -44,7 +44,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_021badd4(Self021badd4 *self) {
+void SceneCondCard_DrawBanner(Self021badd4 *self) {
     GfxSys *g = gGfxSys;
     s32 a;
     s32 b;
@@ -68,7 +68,7 @@ void func_ov000_021badd4(Self021badd4 *self) {
         G3_Cmd1(0x20, 0x87);
         G3_Cmd1(0x2a, 0x20000000);
         G3_Vec(0x1b, 0x100000, 0x18000, 0x1000);
-        NNS_G3dGeSendDL(data_0208b3d0, (u32)data_020828f8);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs, (u32)Gfx3D_PrimDLSizes);
         G3_Cmd1(0x12, 1);
     }
     t = self->t1;
@@ -86,7 +86,7 @@ void func_ov000_021badd4(Self021badd4 *self) {
         G3_Cmd1(0x20, 0x7b);
         G3_Cmd1(0x2a, 0x20000000);
         G3_Vec(0x1b, 0x100000, 0xe000, 0x1000);
-        NNS_G3dGeSendDL(data_0208b3d0, (u32)data_020828f8);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs, (u32)Gfx3D_PrimDLSizes);
         G3_Cmd1(0x12, 1);
     }
     obj = self->obj;

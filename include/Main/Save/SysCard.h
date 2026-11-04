@@ -40,7 +40,7 @@ extern BOOL CARD_TryWaitBackupAsync(void);
 extern BOOL CARDi_RequestStreamCommand(u32 src, u32 dst, u32 len, void (*cb)(void *), void *arg, BOOL async, s32 type, s32 retry, s32 mode);
 extern BOOL ResMgr_IsIdle(void);
 
-void func_02046d1c(SysCard *card);
+void SysCard_Init(SysCard *card);
 s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len);
 s32 SysCard_Write(SysCard *card, u32 dst, const void *src, u32 len);
 void SysCard_OnReadDone(void *arg);

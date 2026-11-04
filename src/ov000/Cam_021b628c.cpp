@@ -11,7 +11,7 @@ public:
 
 extern "C" {
 
-FieldExit *func_0206e230(LangBlockB *b);
+FieldExit *LangBlockB_GetData0(LangBlockB *b);
 FieldStart *LangBlockB_GetData(LangBlockB *b);
 BOOL Shared_HasMark_02062698(void);
 void Shared_GetMarkPos(VecFx32 *pos);
@@ -47,7 +47,7 @@ public:
     virtual void vfunc_18();
 };
 
-void func_ov000_021b628c(FieldMgr *self) {
+void FieldMgr_PlacePlayerAtExit(FieldMgr *self) {
     VecFx32 pos;
     VecFx32 t;
     u16 rot[3];
@@ -60,7 +60,7 @@ void func_ov000_021b628c(FieldMgr *self) {
     self->destExit = 0xff;
     self->curExit = idx;
     if (idx != 0xff && self->blockB != NULL && self->blockB->count0 != 0) {
-        FieldExit *items = func_0206e230(self->blockB);
+        FieldExit *items = LangBlockB_GetData0(self->blockB);
         if (items != NULL) {
             FieldExit *it = &items[self->curExit];
             pos.x = it->ox << 4;

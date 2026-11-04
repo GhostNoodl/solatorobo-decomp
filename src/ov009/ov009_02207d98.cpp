@@ -48,7 +48,7 @@ static inline void Ov009Query_Set(Ov009Query *q, const VecFx32 *pos, u16 ang) {
     q->unk_00 = 0;
 }
 
-extern s32 func_ov000_02199180(Ov009Query *q, VecFx32 *pos, Ov003Actor **out, s32 max);
+extern s32 Finder_FindActors(Ov009Query *q, VecFx32 *pos, Ov003Actor **out, s32 max);
 
 void Ov009Multi_Update(Ov009Multi *self) {
     Ov009Query q;
@@ -78,7 +78,7 @@ void Ov009Multi_Update(Ov009Multi *self) {
         q.unk_12 = 0x22;
         q.unk_2c = self->id;
         Ov009Query_Set(&q, &self->unk_494, self->unk_492);
-        n = func_ov000_02199180(&q, &q.pos, res, 0x20);
+        n = Finder_FindActors(&q, &q.pos, res, 0x20);
         for (i = 0; i < n; i++) {
             Ov003Actor *a = res[i];
             if (a != NULL && a->kind != self->kind) {

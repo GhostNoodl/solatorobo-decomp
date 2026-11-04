@@ -25,7 +25,7 @@ void EffectSetup_Init(EffectSetup *setup, u8 *data, const VecFx32 *pos) {
 void EffectSetup_DtorBase(EffectSetup *setup) {
 }
 
-EffectObj *func_02068544(EffectSetup *setup) {
+EffectObj *EffectSetup_SpawnObjs(EffectSetup *setup) {
     EffectObj *prev = NULL;
     s32 count;
     s32 size;

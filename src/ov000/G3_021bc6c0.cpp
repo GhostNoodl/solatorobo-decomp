@@ -14,14 +14,14 @@ typedef struct {
 } DLRef021bc6c0;
 
 extern "C" {
-extern DLRef021bc6c0 data_0208b3d0;
-extern DLRef021bc6c0 data_020828f8;
+extern DLRef021bc6c0 Gfx3D_PrimDLs;
+extern DLRef021bc6c0 Gfx3D_PrimDLSizes;
 void Gfx3D_SendDL(void *obj, int a);
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 void func_ov000_021bc86c(void);
-void func_ov000_021bcd08(Obj021bc6c0 *self);
+void Obj021bcd08_Draw(Obj021bc6c0 *self);
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -38,7 +38,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_021bc6c0(Obj021bc6c0 *self) {
+void Obj021bc6c0_Draw(Obj021bc6c0 *self) {
     if (self->state == 0) {
         return;
     }
@@ -71,7 +71,7 @@ void func_ov000_021bc6c0(Obj021bc6c0 *self) {
         v1b[1] = 0xc0000;
         v1b[2] = 0x1000;
         NNS_G3dGeBufferOP_N(0x1b, v1b, 3);
-        NNS_G3dGeSendDL(data_0208b3d0.unk_04, (u32)data_020828f8.unk_04);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs.unk_04, (u32)Gfx3D_PrimDLSizes.unk_04);
         c12 = 1;
         NNS_G3dGeBufferOP_N(0x12, &c12, 1);
         break;
@@ -80,7 +80,7 @@ void func_ov000_021bc6c0(Obj021bc6c0 *self) {
         func_ov000_021bc86c();
         break;
     case 3:
-        func_ov000_021bcd08(self);
+        Obj021bcd08_Draw(self);
         break;
     }
 }

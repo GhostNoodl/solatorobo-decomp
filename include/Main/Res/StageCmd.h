@@ -20,7 +20,7 @@ extern void SceneCmd_Push10(FieldState *state, s32 id);
 extern void SceneCmd_Push0e(FieldState *state, s32 a);
 extern void SceneCmd_Push0f(FieldState *state, s32 a);
 extern void func_ov000_021762e4(u16 a, s32 b);
-extern void func_ov000_0214e7ac(s32 a);
+extern void QuestWin_AddQuest(s32 a);
 extern void SceneCmd_Push0a(u8 *buf);
 extern void SceneCmd_Push09(u8 *buf, int a);
 extern void SceneCmd_Push1e(FieldState *state);
@@ -212,8 +212,8 @@ static inline void Stage_FindObj(u16 id, u16 b) {
     if (id == 0) {
         return;
     }
-    data_02149f10 = Stage_FindObj3D(id);
-    data_02149f00 = Group_FindById(gGroup, id, b & 0xff);
+    gStageLastObj3D = Stage_FindObj3D(id);
+    gStageLastNode = Group_FindById(gGroup, id, b & 0xff);
 }
 
 struct StageObj3D {

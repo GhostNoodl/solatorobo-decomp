@@ -12,9 +12,9 @@ void Vram_FreeRes(void *p);
 FieldPropModel *FieldPropModel_Dtor(FieldPropModel *p);
 void ResMgr_ReleaseByName(void *mgr, const char *name, s32 type, s32 force);
 
-FieldPropModel *func_ov000_021b6f94(FieldPropModel *p);
+FieldPropModel *FieldPropModel_Ctor(FieldPropModel *p);
 
-FieldProp *func_ov000_021b79f4(FieldProp *self) {
+FieldProp *FieldProp_Ctor(FieldProp *self) {
     self->loader.path = NULL;
     self->loader.name = NULL;
     self->loader.state = -1;
@@ -23,7 +23,7 @@ FieldProp *func_ov000_021b79f4(FieldProp *self) {
     self->loader.tex = NULL;
     self->loader.anm = NULL;
     self->loader.hit = NULL;
-    func_ov000_021b6f94(&self->model);
+    FieldPropModel_Ctor(&self->model);
     self->prev = NULL;
     self->next = NULL;
     self->hitMesh = NULL;
@@ -41,7 +41,7 @@ FieldProp *func_ov000_021b79f4(FieldProp *self) {
     return self;
 }
 
-FieldProp *func_ov000_021b7a7c(FieldProp *self) {
+FieldProp *FieldProp_Release(FieldProp *self) {
     if (self->hitMesh != NULL) {
         void *saved;
         void *p;

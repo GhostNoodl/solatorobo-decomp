@@ -5,7 +5,7 @@ extern "C" {
 /* Returns TRUE if `shape`, placed at `pos`, leaves `map` or overlaps one of
  * its set cells. The offending cell goes to `out`
  * (-1, -1 when there is none). */
-int func_ov002_021e3dac(Vec2 *pos, Ov002Shape *map, Ov002Shape *sh, Vec2 *out) {
+int Ov002Shape_FitInMap(Vec2 *pos, Ov002Shape *map, Ov002Shape *sh, Vec2 *out) {
     s32 m[4];
     int hit;
     int cols;

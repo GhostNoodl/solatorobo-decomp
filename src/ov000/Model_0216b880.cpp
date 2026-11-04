@@ -42,7 +42,7 @@ static inline Lo021cb744 *GetB0216b880(MessageQueue021cb980 *mgr) {
     return mgr->unk_11c != NULL ? mgr->unk_11c->unk_64 : NULL;
 }
 
-void func_ov000_0216b880(Lo0216b474 *self) {
+void Lo0216b474_Draw(Lo0216b474 *self) {
     s32 off;
     Model *m;
     Lo021cb798 *a;

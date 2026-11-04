@@ -3,9 +3,9 @@
 #pragma force_active on
 
 extern char DSProt_BSS[];
-extern char func_ov004_021cd714[];
-extern char func_ov004_021cd750[];
-extern char func_ov004_021cd7dc[];
+extern char DSProt_ClassifyInsn[];
+extern char Rc4_Init[];
+extern char Rc4_NextByte[];
 extern char func_ov004_021cd834[];
 extern char func_ov004_021cd97c[];
 void func_ov004_021ce574(u32 *t);
@@ -29,7 +29,7 @@ asm void func_ov004_021cdc20(void) {
     orr r0, pc, #0
     adds r0, r0, #4
     bne func_ov004_021ce574
-    dcd func_ov004_021cd750+0x3200
+    dcd Rc4_Init+0x3200
     dcd DSProt_BSS+0x3284
     dcd func_ov004_021cd834+0x3200
     dcd DSProt_BSS+0x3344
@@ -39,9 +39,9 @@ asm void func_ov004_021cdc20(void) {
     dcd DSProt_BSS+0x3274
     dcd func_ov004_021cdba8+0x3200
     dcd DSProt_BSS+0x3274
-    dcd func_ov004_021cd7dc+0x3200
+    dcd Rc4_NextByte+0x3200
     dcd DSProt_BSS+0x3258
-    dcd func_ov004_021cd714+0x3200
+    dcd DSProt_ClassifyInsn+0x3200
     dcd DSProt_BSS+0x323c
     dcd 0x00000000
     dcd 0x00000000

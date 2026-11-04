@@ -41,7 +41,7 @@ typedef struct LangId {
     u8 num2;
 } LangId;
 
-u8 *func_0206dd6c(LangSecFlags *flags, u8 *p);
+u8 *LangSec_SkipGfxEnv(LangSecFlags *flags, u8 *p);
 
 #define LANGDATA_PUTNUM(dst, len, num) \
     {                                   \
@@ -79,11 +79,11 @@ u8 *func_0206dd6c(LangSecFlags *flags, u8 *p);
     dst[len] = n + '0';                 \
     len++;
 
-void func_0206dde4(char *dst, const LangId *id);
+void LangData_MakeAreaInfoPath(char *dst, const LangId *id);
 
-void func_0206dedc(char *dst, const LangId *id);
+void LangData_MakeRadarPath(char *dst, const LangId *id);
 
-void func_0206dfd4(char *dst, const LangId *id);
+void LangData_MakeBlockPath(char *dst, const LangId *id);
 
 u8 *LangBlockA_GetData(LangBlockA *b) {
     if (b == NULL) {
@@ -92,7 +92,7 @@ u8 *LangBlockA_GetData(LangBlockA *b) {
     if (b->count0 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data);
+    return LangSec_SkipGfxEnv(&b->flags, b->data);
 }
 
 u8 *LangBlockA_GetData1(LangBlockA *b) {
@@ -102,36 +102,36 @@ u8 *LangBlockA_GetData1(LangBlockA *b) {
     if (b->count1 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + b->count0 * 0x18;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + b->count0 * 0x18;
 }
 
-u8 *func_0206e1bc(LangBlockA *b) {
+u8 *LangBlockA_GetData2(LangBlockA *b) {
     if (b == NULL) {
         return NULL;
     }
     if (b->count2 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + b->count0 * 0x18 + b->count1 * 0x18;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + b->count0 * 0x18 + b->count1 * 0x18;
 }
 
-u8 *func_0206e200(LangBlockB *b) {
+u8 *LangBlockB_GetLangEntry(LangBlockB *b) {
     u8 *p;
     if (b == NULL) {
         return NULL;
     }
-    p = func_0206dd6c(&b->flags, b->data);
+    p = LangSec_SkipGfxEnv(&b->flags, b->data);
     return p + LangData_GetLang() * 0x18;
 }
 
-u8 *func_0206e230(LangBlockB *b) {
+u8 *LangBlockB_GetData0(LangBlockB *b) {
     if (b == NULL) {
         return NULL;
     }
     if (b->count0 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + 0xa8;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + 0xa8;
 }
 
 u8 *LangBlockB_GetData(LangBlockB *b) {
@@ -141,37 +141,37 @@ u8 *LangBlockB_GetData(LangBlockB *b) {
     if (b->count1 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + 0xa8 + b->count0 * 0x24;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + 0xa8 + b->count0 * 0x24;
 }
 
-u8 *func_0206e2a4(LangBlockB *b) {
+u8 *LangBlockB_GetData2(LangBlockB *b) {
     if (b == NULL) {
         return NULL;
     }
     if (b->count2 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10;
 }
 
-u8 *func_0206e2ec(LangBlockB *b) {
+u8 *LangBlockB_GetData3(LangBlockB *b) {
     if (b == NULL) {
         return NULL;
     }
     if (b->count3 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10 + b->count2 * 0x34;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10 + b->count2 * 0x34;
 }
 
-u8 *func_0206e340(LangBlockB *b) {
+u8 *LangBlockB_GetData4(LangBlockB *b) {
     if (b == NULL) {
         return NULL;
     }
     if (b->count4 == 0) {
         return NULL;
     }
-    return func_0206dd6c(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10 + b->count2 * 0x34 + b->count3 * 0x1c;
+    return LangSec_SkipGfxEnv(&b->flags, b->data) + 0xa8 + b->count0 * 0x24 + b->count1 * 0x10 + b->count2 * 0x34 + b->count3 * 0x1c;
 }
 
 typedef struct GfxEnv {
@@ -238,31 +238,31 @@ static inline void LangData_SetFogColor(u16 color, u16 alpha) {
     REG_FOG_COLOR = color | (alpha << 16);
 }
 
-void func_0206e3a0(LangSecFlags *flags, const u8 *p);
+void LangSec_ApplyGfxEnv(LangSecFlags *flags, const u8 *p);
 
-void func_0206e648(LangBlockB *b);
+void LangBlockB_ApplyGfxEnv(LangBlockB *b);
 
-void func_0206e660(LangBlockA *b);
+void LangBlockA_ApplyGfxEnv(LangBlockA *b);
 
 void LangData_LocalizePath(char *dst, const char *src);
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 typedef struct LangArc {
     /* 0x00 */ u8 unk_00[0x44];
     /* 0x44 */ u32 unk_44;
 } LangArc;
 
-extern LangArc data_0214b0b8;
+extern LangArc gWorldInfoRes;
 void ResHandle_LoadSync(LangArc *arc, const char *name);
 void ResHandle_Unload(LangArc *arc);
 void *ResHandle_GetData(LangArc *arc);
 LangTable **ResList_FindType0(void *res, const char *name);
 
-void func_0206e678(void);
+void LangData_LoadWorldInfo(void);
 
-void func_0206e6c0(void);
+void LangData_UnloadWorldInfo(void);
 
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 LangGroup *Lang_GetGroup(int i);
 
@@ -274,10 +274,10 @@ typedef struct OSOwnerInfo {
 } OSOwnerInfo;
 
 void OS_GetOwnerInfo(OSOwnerInfo *info);
-extern const char *data_0208cb88;
-extern char data_0214b105[];
+extern const char *ArcPath_MenuCmnText;
+extern char gCommonTextPath[];
 
-void func_0206e858(void);
+void LangData_InitLanguage(void);
 
 u8 LangData_GetLang(void);
 
@@ -321,10 +321,10 @@ typedef struct LangMsgTbl {
     /* 0x04 */ void *items[13];
 } LangMsgTbl;
 
-extern LangMsgTbl data_0214b128;
+extern LangMsgTbl gParamRes;
 extern const u32 ResHandle_vtbl[];
-extern const char *data_0208ccb0;
-extern const char *data_0208cca8;
+extern const char *ArcPath_GameParam;
+extern const char *ResName_ItemParam;
 extern void *Heap_Alloc(u32 size);
 void *NamedTable_Find(void *data, const char *name);
 
@@ -341,7 +341,7 @@ void LangData_CreateRes(void);
 
 void LangData_DeleteRes(void);
 
-BOOL func_0206ead8(void);
+BOOL Param_LoadRes(void);
 
 extern char data_0208cccc[];
 extern char data_0208ccd0[];

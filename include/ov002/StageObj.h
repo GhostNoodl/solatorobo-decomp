@@ -176,7 +176,7 @@ SIZE_ASSERT(Ov002Obj021f0784, 0x60);
 // Vtable Ov002Vt_021f06e4_vtbl, 0x54 bytes (Ov002Obj021f06e4_New).
 struct Ov002Obj021f06e4 : public Ov002Obj {
     union {
-        s16 unk_4c; // passed to func_0206e3a0 with unk_50
+        s16 unk_4c; // passed to LangSec_ApplyGfxEnv with unk_50
         struct {
             u16 unk_4c_0 : 2;
             u16 unk_4c_2 : 1; // keep edge marking
@@ -255,7 +255,7 @@ struct Ov002Cam021f0828 : public Ov002Cam021f0854 {
 };
 SIZE_ASSERT(Ov002Cam021f0828, 0xcc);
 
-// Texture pair node (0x50) the stage reader can collect (func_ov002_021eb298, func_ov002_021eb448,
+// Texture pair node (0x50) the stage reader can collect (func_ov002_021eb298, Ov002StageFile_BuildModels,
 // func_ov002_021ebcf8): two names and the kind of the record that named them.
 typedef struct Ov002ResNode {
     char a[0x20];
@@ -282,14 +282,14 @@ struct Ov002StageFile : public VObj {
     u8 *data;     // the file
     u8 unk_0c;
     u8 unk_0d[3];
-    u8 *unk_10;   // camera records (func_ov002_021eb0f8)
-    u8 *unk_14;   // model records (func_ov002_021eb448)
+    u8 *unk_10;   // camera records (Ov002StageFile_BuildCameras)
+    u8 *unk_14;   // model records (Ov002StageFile_BuildModels)
     u8 *unk_18;   // texture link records (func_ov002_021eb298)
     u8 *unk_1c;   // kind 2 animation records (func_ov002_021ebcf8)
     u8 *unk_20;   // kind 3 animation records
     u8 *unk_24;   // kind 3 animation records
     u8 *unk_28;   // kind 6 records
-    u8 *unk_2c;   // kind 10 records (func_ov002_021eb7c0)
+    u8 *unk_2c;   // kind 10 records (Ov002StageFile_BuildEnv)
     u8 *unk_30;   // effect records (func_ov002_021eb870)
     u8 *unk_34;   // three more record blocks found by Ov002StageFile_FindChunks
     u8 *unk_38;

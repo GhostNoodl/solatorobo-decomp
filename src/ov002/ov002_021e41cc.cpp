@@ -5,7 +5,7 @@ extern "C" {
 /* Returns TRUE if shape `a` placed at `pa` and shape `b` placed at `pb`
  * share a set cell. The first shared cell goes to `out` (-1, -1 when
  * there is none). */
-BOOL func_ov002_021e41cc(Vec2 *pa, Vec2 *pb, Ov002Shape *sa, Ov002Shape *sb, Vec2 *out) {
+BOOL Ov002Shape_Overlaps(Vec2 *pa, Vec2 *pb, Ov002Shape *sa, Ov002Shape *sb, Vec2 *out) {
     s32 ma[4];
     s32 mb[4];
     int hit;

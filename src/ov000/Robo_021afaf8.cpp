@@ -47,7 +47,7 @@ void Actor_SendMsgU8(void *a, u16 id, s32 b);
 void Model0218fe1c_StopAnim(void *p);
 void ResSet_SetName0(void *p, const char *name, const char *ext, s32 c, s32 d);
 void ResSet_SetName1(void *p, const char *name, const char *ext, s32 c, s32 d);
-void func_ov000_0218ef10(void *p, const char *name, const char *ext, s32 c, s32 d);
+void ResSet_SetName3(void *p, const char *name, const char *ext, s32 c, s32 d);
 BOOL History_SetState(void *a, s32 b, s32 c);
 
 static inline BOOL GBusy_021afaf8(FieldState *g) {
@@ -310,7 +310,7 @@ void Robo021ca458_State1f(VObj *self_) {
             }
             ResSet_SetName0((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
             ResSet_SetName1((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
-            func_ov000_0218ef10((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
+            ResSet_SetName3((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
             if (def->unk_18 != 0) {
                 ResSet_SetName1((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
             }

@@ -7,8 +7,8 @@ typedef struct ParamOfs {
     /* 0x4 */ u32 offset2;
 } ParamOfs;
 
-extern ParamOfs *data_0214b12c[];
-extern u8 *data_0208d268[];
+extern ParamOfs *gParamTables[];
+extern u8 *Param_ItemTables[];
 
 static inline u16 Param_Cat(u32 id) {
     return id >> 12;
@@ -19,17 +19,17 @@ static inline u16 Param_Idx(u32 id) {
 }
 
 void *Param_Get(u32 id) {
-    ParamOfs *ofs = &data_0214b12c[Param_Cat(id) - 1][Param_Idx(id)];
+    ParamOfs *ofs = &gParamTables[Param_Cat(id) - 1][Param_Idx(id)];
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset : NULL;
 }
 
 void *Param_GetDesc(u32 id) {
-    ParamOfs *ofs = &data_0214b12c[Param_Cat(id) - 1][Param_Idx(id)];
+    ParamOfs *ofs = &gParamTables[Param_Cat(id) - 1][Param_Idx(id)];
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset2 : NULL;
 }
 
 static inline void *Param_GetStr(u32 id) {
-    ParamOfs *ofs = &data_0214b12c[Param_Cat(id) - 1][Param_Idx(id)];
+    ParamOfs *ofs = &gParamTables[Param_Cat(id) - 1][Param_Idx(id)];
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset2 : NULL;
 }
 
@@ -43,13 +43,13 @@ typedef struct ParamItem {
 char *Str_FindCharMb(char *str, int c);
 void Str_FormatInt(char *dst, int num);
 
-void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
+void Param_FormatName(u32 dstSize, char *dst, u32 id) {
     char num[0x10];
     char buf[0x100];
     const char *str = (const char *)Param_GetStr(id);
     int cat = Param_Cat(id) - 1;
     if (cat == 1) {
-        ParamItem *item = &((ParamItem *)data_0208d268[(u16)cat])[Param_Idx(id)];
+        ParamItem *item = &((ParamItem *)Param_ItemTables[(u16)cat])[Param_Idx(id)];
         char *q;
         STD_CopyString(buf, str);
         dst[0] = 0;
@@ -73,47 +73,47 @@ void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
 }
 
 void *Param_GetEntry(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x10;
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x10;
 }
 
-void *func_0206ee20(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
+void *Param_GetFishItemInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
 }
 
 void *Param_GetBgmInfo(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 4;
 }
 
 void *Param_GetMovieInfo(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
-void *func_0206eed0(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
+void *Param_GetPictureInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
 void *Param_GetRecord(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x2c;
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x2c;
 }
 
-void *func_0206ef50(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 2;
+void *Param_GetSlotInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 2;
 }
 
-void *func_0206ef88(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 8;
+void *Param_GetHarpoonInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 8;
 }
 
-void *func_0206efc0(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
+void *Param_GetCourseInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x14;
 }
 
 void *Param_GetExchangeItem(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 6;
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 6;
 }
 
-void *func_0206f040(u32 id) {
-    return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x12;
+void *Param_GetFishingSpotInfo(u32 id) {
+    return Param_ItemTables[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x12;
 }
 
 typedef struct ParamKind {
@@ -124,7 +124,7 @@ typedef struct ParamKind {
 
 ParamKind *ParamKind_GetShape(int kind);
 
-s32 func_0206f080(u32 id) {
+s32 Param_GetIconId(u32 id) {
     s32 ret = 0xffff;
     switch (Param_Cat(id) - 1) {
     case 0:
@@ -132,7 +132,7 @@ s32 func_0206f080(u32 id) {
         ret = 0x25;
         break;
     case 1:
-        ret = ParamKind_GetShape(((ParamItem *)data_0208d268[(u16)(Param_Cat(id) - 1)])[Param_Idx(id)].kind)->value;
+        ret = ParamKind_GetShape(((ParamItem *)Param_ItemTables[(u16)(Param_Cat(id) - 1)])[Param_Idx(id)].kind)->value;
         break;
     }
     return ret;
@@ -165,17 +165,17 @@ u32 Param_GetValue(u32 id) {
     u16 cat = Param_Cat(id);
     switch (cat - 1) {
     case 0:
-        return ((ParamE0 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE0 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     case 1:
-        return ((ParamE1 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE1 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     case 2:
-        return ((ParamE0 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE0 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     case 3:
-        return ((ParamE0 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE0 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     case 4:
-        return ((ParamE4 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE4 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     case 7:
-        return ((ParamE7 *)data_0208d268[(u16)(cat - 1)])[Param_Idx(id)].value;
+        return ((ParamE7 *)Param_ItemTables[(u16)(cat - 1)])[Param_Idx(id)].value;
     }
     return 0;
 }

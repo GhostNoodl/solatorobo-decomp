@@ -41,7 +41,7 @@ typedef struct LangId {
     u8 num2;
 } LangId;
 
-u8 *func_0206dd6c(LangSecFlags *flags, u8 *p) {
+u8 *LangSec_SkipGfxEnv(LangSecFlags *flags, u8 *p) {
     if (flags->sec0) {
         p += 4;
     }
@@ -102,8 +102,8 @@ u8 *func_0206dd6c(LangSecFlags *flags, u8 *p) {
     dst[len] = n + '0';                 \
     len++;
 
-void func_0206dde4(char *dst, const LangId *id) {
-    LangGroup *group = &data_0214b0a8->groups[id->group];
+void LangData_MakeAreaInfoPath(char *dst, const LangId *id) {
+    LangGroup *group = &gWorldInfo->groups[id->group];
     int len;
 
     STD_CopyString(dst, data_0208cb68);
@@ -112,14 +112,14 @@ void func_0206dde4(char *dst, const LangId *id) {
     len = STD_GetStringLength(dst);
     LANGDATA_PUTNUM(dst, len, id->num);
     {
-        const char *ext = data_02082bf8[1];
+        const char *ext = LangData_PathTable[1];
         dst[len] = 0;
         STD_ConcatenateString(dst, ext);
     }
 }
 
-void func_0206dedc(char *dst, const LangId *id) {
-    LangGroup *group = &data_0214b0a8->groups[id->group];
+void LangData_MakeRadarPath(char *dst, const LangId *id) {
+    LangGroup *group = &gWorldInfo->groups[id->group];
     int len;
 
     STD_CopyString(dst, data_0208cb6d);
@@ -128,11 +128,11 @@ void func_0206dedc(char *dst, const LangId *id) {
     len = STD_GetStringLength(dst);
     LANGDATA_PUTNUM(dst, len, id->num);
     dst[len] = 0;
-    STD_ConcatenateString(dst, data_02082bf8[1]);
+    STD_ConcatenateString(dst, LangData_PathTable[1]);
 }
 
-void func_0206dfd4(char *dst, const LangId *id) {
-    LangGroup *group = &data_0214b0a8->groups[id->group];
+void LangData_MakeBlockPath(char *dst, const LangId *id) {
+    LangGroup *group = &gWorldInfo->groups[id->group];
     int len;
 
     STD_CopyString(dst, data_0208cb70);
@@ -148,26 +148,26 @@ void func_0206dfd4(char *dst, const LangId *id) {
         LANGDATA_PUTNUM2(dst, len2, n, d)
         dst[len2] = 0;
     }
-    STD_ConcatenateString(dst, data_02082bf8[1]);
+    STD_ConcatenateString(dst, LangData_PathTable[1]);
 }
 
 u8 *LangBlockA_GetData(LangBlockA *b);
 
 u8 *LangBlockA_GetData1(LangBlockA *b);
 
-u8 *func_0206e1bc(LangBlockA *b);
+u8 *LangBlockA_GetData2(LangBlockA *b);
 
-u8 *func_0206e200(LangBlockB *b);
+u8 *LangBlockB_GetLangEntry(LangBlockB *b);
 
-u8 *func_0206e230(LangBlockB *b);
+u8 *LangBlockB_GetData0(LangBlockB *b);
 
 u8 *LangBlockB_GetData(LangBlockB *b);
 
-u8 *func_0206e2a4(LangBlockB *b);
+u8 *LangBlockB_GetData2(LangBlockB *b);
 
-u8 *func_0206e2ec(LangBlockB *b);
+u8 *LangBlockB_GetData3(LangBlockB *b);
 
-u8 *func_0206e340(LangBlockB *b);
+u8 *LangBlockB_GetData4(LangBlockB *b);
 
 typedef struct GfxEnv {
     /* 0x00 */ u8 flags;
@@ -233,31 +233,31 @@ static inline void LangData_SetFogColor(u16 color, u16 alpha) {
     REG_FOG_COLOR = color | (alpha << 16);
 }
 
-void func_0206e3a0(LangSecFlags *flags, const u8 *p);
+void LangSec_ApplyGfxEnv(LangSecFlags *flags, const u8 *p);
 
-void func_0206e648(LangBlockB *b);
+void LangBlockB_ApplyGfxEnv(LangBlockB *b);
 
-void func_0206e660(LangBlockA *b);
+void LangBlockA_ApplyGfxEnv(LangBlockA *b);
 
 void LangData_LocalizePath(char *dst, const char *src);
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 typedef struct LangArc {
     /* 0x00 */ u8 unk_00[0x44];
     /* 0x44 */ u32 unk_44;
 } LangArc;
 
-extern LangArc data_0214b0b8;
+extern LangArc gWorldInfoRes;
 void ResHandle_LoadSync(LangArc *arc, const char *name);
 void ResHandle_Unload(LangArc *arc);
 void *ResHandle_GetData(LangArc *arc);
 LangTable **ResList_FindType0(void *res, const char *name);
 
-void func_0206e678(void);
+void LangData_LoadWorldInfo(void);
 
-void func_0206e6c0(void);
+void LangData_UnloadWorldInfo(void);
 
-void func_0206e6e4(void);
+void LangData_BindWorldInfo(void);
 
 LangGroup *Lang_GetGroup(int i);
 
@@ -269,10 +269,10 @@ typedef struct OSOwnerInfo {
 } OSOwnerInfo;
 
 void OS_GetOwnerInfo(OSOwnerInfo *info);
-extern const char *data_0208cb88;
-extern char data_0214b105[];
+extern const char *ArcPath_MenuCmnText;
+extern char gCommonTextPath[];
 
-void func_0206e858(void);
+void LangData_InitLanguage(void);
 
 u8 LangData_GetLang(void);
 
@@ -316,10 +316,10 @@ typedef struct LangMsgTbl {
     /* 0x04 */ void *items[13];
 } LangMsgTbl;
 
-extern LangMsgTbl data_0214b128;
+extern LangMsgTbl gParamRes;
 extern const u32 ResHandle_vtbl[];
-extern const char *data_0208ccb0;
-extern const char *data_0208cca8;
+extern const char *ArcPath_GameParam;
+extern const char *ResName_ItemParam;
 extern void *Heap_Alloc(u32 size);
 void *NamedTable_Find(void *data, const char *name);
 
@@ -336,7 +336,7 @@ void LangData_CreateRes(void);
 
 void LangData_DeleteRes(void);
 
-BOOL func_0206ead8(void);
+BOOL Param_LoadRes(void);
 
 extern char data_0208cccc[];
 extern char data_0208ccd0[];

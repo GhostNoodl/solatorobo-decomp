@@ -21,8 +21,8 @@ typedef struct {
 extern "C" {
 
 void Gfx3D_SendDL(void *p, s32 a);
-void func_ov000_021b9b14(Obj021b9a84 *self);
-void func_ov000_021ba338(Obj021b9a84 *self);
+void Obj021b9a84_Draw(Obj021b9a84 *self);
+void Obj021ba338_Draw(Obj021b9a84 *self);
 
 void MissionCard_Draw(Obj021b9a84 *self) {
     switch (self->unk_08) {
@@ -30,9 +30,9 @@ void MissionCard_Draw(Obj021b9a84 *self) {
     case 12:
     case 13:
         Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
-        func_ov000_021b9b14(self);
+        Obj021b9a84_Draw(self);
         if (self->unk_0c == 1 || self->unk_0c == 3) {
-            func_ov000_021ba338(self);
+            Obj021ba338_Draw(self);
         }
         break;
     case 14:
@@ -49,11 +49,11 @@ void MissionCard_Draw(Obj021b9a84 *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_021b9b14 is 12 / 4 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): Obj021b9a84_Draw is 12 / 4 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: colouring of the two bit-field stores' temporaries in section 4 (the ROM's and
 // before the word load needs another dependence graph). History: docs/MATCHING.md rounds lfA, pmB, bgY, mlA, mtA,
 // cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov000_021b9b14: 12 raw / 4 register-masked diffs (was 33 / 2), no fake
+// Obj021b9a84_Draw: 12 raw / 4 register-masked diffs (was 33 / 2), no fake
 // parameters or junk locals. The else-state arms are written as two arms with the
 // same product (the compiler cross-jumps them into rsbeq + one multiply, keeping the
 // constant's zero high word in a register); a conditional `t = 0x1000 - t` lets the
@@ -166,8 +166,8 @@ typedef struct Model_021b9b14 {
 
 extern "C" {
 
-extern void *data_0208b3d0;
-extern u32 data_020828f8;
+extern void *Gfx3D_PrimDLs;
+extern u32 Gfx3D_PrimDLSizes;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 u8 Gfx3DState_NextPolyId(void *p);
@@ -225,7 +225,7 @@ static inline void PlayPart(Model_021b9b14 *m, int idx) {
 
 typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;
 
-void func_ov000_021b9b14(Obj021b9a84 *self) {
+void Obj021b9a84_Draw(Obj021b9a84 *self) {
     u32 al;
     SprDepth_021b9b14 dp;
     GfxSys *g = gGfxSys;
@@ -271,7 +271,7 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
         }
         G3Cmd1(0x2a, 0x20000000);
         G3Vec(0x1b, 0x100000, 0x18000, 0x1000);
-        NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs, Gfx3D_PrimDLSizes);
         G3Cmd1(0x12, 1);
     }
 
@@ -297,7 +297,7 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
         }
         G3Cmd1(0x2a, 0x20000000);
         G3Vec(0x1b, 0x100000, 0xe000, 0x1000);
-        NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs, Gfx3D_PrimDLSizes);
         G3Cmd1(0x12, 1);
     }
 

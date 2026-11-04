@@ -15,8 +15,8 @@ typedef struct { u32 a : 12; u32 k : 16; } LoW12;
 extern "C" {
 extern void *gTaskHost;
 extern u8 data_ov000_021c9b28[];
-void func_020708fc(s32 a, LoFadeP *out);
-void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
+void Tbl_MakeFacePath(s32 a, LoFadeP *out);
+void Tbl_MakeFaceName(s32 a, LoFadeP *out, s32 b, s32 c);
 BOOL ResMgr_IsArchiveLoaded(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 s32 func_ov000_02180838(void *a);
@@ -30,8 +30,8 @@ static inline BOOL LoFadeDone(void) {
     LoFadeP a;
     LoFadeP b;
     BOOL ret = TRUE;
-    func_020708fc(0x1000, &a);
-    func_02070b98(0x1000, &b, 1, 2);
+    Tbl_MakeFacePath(0x1000, &a);
+    Tbl_MakeFaceName(0x1000, &b, 1, 2);
     if (!ResMgr_IsArchiveLoaded(&a, &b, 2)) {
         ret = FALSE;
     }

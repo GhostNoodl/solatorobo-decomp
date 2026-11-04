@@ -12,7 +12,7 @@ struct Ov009Bits16 {
 
 void Ov009Names_Fill_02211da4(Ov009Names *self, u16 kind) {
     char *a = Tbl_GetResFile(kind);
-    char *b = func_020701d4(kind);
+    char *b = Tbl_GetResFileName(kind);
     u8 *c = Tbl_FindEntry_0206fef8(kind);
     if (FLD(Ov009Bits16, c, 0x12).b0) {
         STD_CopyString(self->mdlDir, a);

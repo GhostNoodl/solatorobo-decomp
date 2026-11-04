@@ -67,7 +67,7 @@ struct Obj021efe8c : public VObj {
 SIZE_ASSERT(Obj021efe8c, 0x8c);
 
 // Vtable Ov002Vt_021efe5c_vtbl, 0x1e8 bytes: an Ov002Mdl021efe3c and a 2D Model drawn over it
-// (func_ov002_021d7988). unk_1d8 counts ticks (Obj021efe5c_SyncAnmFrame).
+// (Obj021efe5c_Draw). unk_1d8 counts ticks (Obj021efe5c_SyncAnmFrame).
 struct Obj021efe5c : public VObj {
     Ov002Mdl021efe3c mdl;
     Model model;
@@ -250,7 +250,7 @@ SIZE_ASSERT(Obj021efed4, 0xb4);
 struct Obj021efef0 : public VObj {
     struct Obj021eff50 *owner;
     Ov002RowList *unk_08; // vtable Ov002Vt_021f0044_vtbl
-    Ov002RowList *unk_0c; // vtable Ov002Vt_021f0044_vtbl (func_ov002_021def98)
+    Ov002RowList *unk_0c; // vtable Ov002Vt_021f0044_vtbl (Obj021efef0_BuildRowList)
     Obj021efe8c *unk_10;
     Obj021efe8c *unk_14;
     u16 unk_18;
@@ -273,7 +273,7 @@ SIZE_ASSERT(Obj021efef0, 0x138);
 struct Obj021eff10 : public VObj {
     struct Obj021eff50 *owner;
     Obj021efe5c *unk_08;
-    Lo021cb0b8 *unk_0c; // the message list (func_ov002_021dd6a4)
+    Lo021cb0b8 *unk_0c; // the message list (Obj021eff10_NewMsgList)
     Model *unk_10;
     Obj021efe8c *unk_14;
     s32 unk_18;

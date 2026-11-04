@@ -8,8 +8,8 @@ extern "C" {
 
 extern s32 gFadeState[5];
 BOOL Model_IsReady(void *a, s32 b);
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 extern u8 data_ov000_021c9ab0[];
 extern s32 data_ov000_021c9bb4[];
@@ -47,10 +47,10 @@ static inline BOOL LoD78Idle(void) {
 }
 
 void Lo021cb7ec_Setup(Lo021cb7ec *self) {
-    void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    void *res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        const char *nm = data_0208cc88;
+        const char *nm = ResName_BattleCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, nm, 0);
     }

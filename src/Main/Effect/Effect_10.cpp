@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern const u8 data_02082ba4[0x38];
+extern const u8 EffectPtcl_DLTemplate[0x38];
 extern EffectPtclHandler EffectPtclCmd_Pos_pmf;
 extern EffectPtclHandler EffectPtclCmd_Scale_pmf;
 extern EffectPtclHandler EffectPtclCmd_Rot_pmf;

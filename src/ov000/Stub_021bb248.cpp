@@ -6,7 +6,7 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_021bb248(NNSG3dRS *rs) {
+void Obj021bb2b0_MatCallback(NNSG3dRS *rs) {
     NNSG3dMatAnmResult *sub = rs->pMatAnmResult;
     GfxSys *p = gGfxSys;
     u32 flags = sub->prmPolygonAttr;

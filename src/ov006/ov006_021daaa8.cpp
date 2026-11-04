@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void *func_0206efc0(u32 id);
+void *Param_GetCourseInfo(u32 id);
 
 void *ov006_GetCourseInfo(u32 id) {
     void *result = NULL;
     if (id >= 0xb000 && id < 0xb00b) {
-        result = func_0206efc0(id);
+        result = Param_GetCourseInfo(id);
     }
     return result;
 }

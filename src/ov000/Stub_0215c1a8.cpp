@@ -50,7 +50,7 @@ static inline BOOL Obj0215c720_TestBit3(Obj0215c720 *self) {
 extern "C" {
 
 // The Text_ScanTags callback of Obj0215c1bc_SetText / func_ov000_0215c744: tag 0x10 sets the font.
-void func_ov000_0215c1a8(s32 *font, s32 *tag) {
+void Obj0215c1bc_ScanTagCallback(s32 *font, s32 *tag) {
     if (tag[0] == 0x10) {
         *font = tag[1];
     }
@@ -149,7 +149,7 @@ void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, char *str) {
     self->rows = n;
     self->height = self->vfunc_44();
     font = 0;
-    Text_ScanTags(str, 1, &font, (void *)func_ov000_0215c1a8);
+    Text_ScanTags(str, 1, &font, (void *)Obj0215c1bc_ScanTagCallback);
     f = font;
     tt = (Text0215c1bc *)Heap_Alloc(0xb8);
     if (tt != NULL) {
@@ -245,14 +245,14 @@ s32 Lo021cad50_GetPadTop(Obj0215c720 *self) {
 }
 
 extern void *gMsgRes;
-u16 func_02061d54(u16 a);
+u16 StageId_Strip(u16 a);
 char *MsgRes_GetString(void *p, s32 a);
 char *Str_FindCharMb(char *str, int c);
 void Tbl_Format_02070874(char *dst, const char *fmt, const char *arg);
-void func_020707e8(char *dst, const char *fmt, const char *arg, int c);
+void Tbl_FormatChar(char *dst, const char *fmt, const char *arg, int c);
 BOOL Item_Give(u16 id, int n);
 void SceneCmd_Push10(void *self, s32 a);
-char *func_ov000_0215cfd0(void *self);
+char *Text0215cfd0_FormatValue(void *self);
 
 static inline u16 ItemKind_0215c744(u16 v) { return v >> 12; }
 
@@ -277,13 +277,13 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
     self->unk_88 = id;
     self->unk_94 = 1;
     self->unk_84 = flags;
-    { void *msg = gMsgRes; str = MsgRes_GetString(msg, func_02061d54(flags & 0x3ff)); }
+    { void *msg = gMsgRes; str = MsgRes_GetString(msg, StageId_Strip(flags & 0x3ff)); }
     center = FALSE;
     star = FALSE;
     for (i = 0; i < 13; i++) {
         lines[i] = NULL;
     }
-    lines[0] = func_ov000_0215cfd0(self);
+    lines[0] = Text0215cfd0_FormatValue(self);
     if (lines[0] != NULL) {
         self->unk_94++;
     }
@@ -297,7 +297,7 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
             self->unk_94--;
         } else if (Str_FindCharMb(str, '*') != NULL) {
             self->unk_90 = (char *)Heap_AllocHi(len + STD_GetStringLength(lines[0]), 4);
-            func_020707e8(self->unk_90, str, lines[0], '*');
+            Tbl_FormatChar(self->unk_90, str, lines[0], '*');
             self->unk_94--;
             id = 0;
             lines[0] = NULL;

@@ -24,11 +24,11 @@ extern const FieldMgrFn FieldMgr_StepTouchArea_pmf;
 extern char data_ov000_021cc82c[];
 extern char data_ov000_021cc83d[];
 
-void func_0206e660(LangBlockA *p);
-void func_0206e648(LangBlockB *p);
+void LangBlockA_ApplyGfxEnv(LangBlockA *p);
+void LangBlockB_ApplyGfxEnv(LangBlockB *p);
 void Gfx3DState_Apply(void *p);
-u8 *func_0206e340(LangBlockB *r);
-Ent021b5dc0 *func_0206e2ec(LangBlockB *r);
+u8 *LangBlockB_GetData4(LangBlockB *r);
+Ent021b5dc0 *LangBlockB_GetData3(LangBlockB *r);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -61,7 +61,7 @@ static inline u16 Kind021b5dc0(u16 v) {
     return v >> 12;
 }
 
-void func_ov000_021b5dc0(FieldMgr *self) {
+void FieldMgr_SetupBlock(FieldMgr *self) {
     GroupActorDesc s;
     VecFx32 base;
     VecFx32 out;
@@ -78,18 +78,18 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     FieldProp *n;
 
     if (self->blockA != NULL) {
-        func_0206e660(self->blockA);
+        LangBlockA_ApplyGfxEnv(self->blockA);
     }
     if (self->blockB != NULL) {
-        func_0206e648(self->blockB);
+        LangBlockB_ApplyGfxEnv(self->blockB);
     }
     Gfx3DState_Apply(gGfxSys->unk_8b0);
     v = self->blockB->count4;
     cam = &gSceneCmd->cam;
-    cam->zones = (const FieldCamZone *)func_0206e340(self->blockB);
+    cam->zones = (const FieldCamZone *)LangBlockB_GetData4(self->blockB);
     cam->zoneCount = v;
     g = gSceneCmd;
-    ents = func_0206e2ec(self->blockB);
+    ents = LangBlockB_GetData3(self->blockB);
     if (ents != NULL && (!SameArea021b5dc0() || gSceneCmd->unk_c9 != 0)) {
         for (i = 0; i < self->blockB->count3; i++) {
             GroupNode *o;
@@ -106,7 +106,7 @@ void func_ov000_021b5dc0(FieldMgr *self) {
                 s.args[k] = ents[i].h[k];
             }
             mode = 0;
-            o = func_ov000_0218b9ec(&s, &g->unk_ca, &g->unk_ca, NULL, NULL);
+            o = Group_CreateNode(&s, &g->unk_ca, &g->unk_ca, NULL, NULL);
             o->pos = ents[i].pos;
             o->rot.x = ents[i].rot.x;
             o->rot.y = ents[i].rot.y;

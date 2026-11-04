@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern const u8 data_02082ba4[0x38];
+extern const u8 EffectPtcl_DLTemplate[0x38];
 extern EffectPtclHandler EffectPtclCmd_Pos_pmf;
 extern EffectPtclHandler EffectPtclCmd_Scale_pmf;
 extern EffectPtclHandler EffectPtclCmd_Rot_pmf;
@@ -14,7 +14,7 @@ extern EffectPtclHandler EffectPtclCmd_Color_pmf;
 
 void EffectPtcl_Init(EffectPtcl *p) {
     p->unk_58 = -1;
-    MIi_CpuCopyFast(data_02082ba4, p->dl, sizeof(p->dl));
+    MIi_CpuCopyFast(EffectPtcl_DLTemplate, p->dl, sizeof(p->dl));
     p->tex = NULL;
     p->polyAttr = 0x21200000;
     p->texAddr = -1;

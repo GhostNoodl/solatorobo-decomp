@@ -19,7 +19,7 @@ static inline void ov006_Task021ec040_dtor(ov006_Task021ec040 *self) {
     OV006_DELETE_OBJECT(self->unk24);
     OV006_DELETE_OBJECT(self->unk28);
     TaskHost_Destroy();
-    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
     ResMgr_ReleaseByName(gResMgr, data_ov006_021ec864, 7, 0);
     func_ov006_021ccddc(self);
 }

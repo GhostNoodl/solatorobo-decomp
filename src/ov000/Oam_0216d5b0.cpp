@@ -16,7 +16,7 @@ struct Obj0216d5b0 {
     s32 unk_70;
 };
 
-Glyph0216d5b0 *func_ov000_0216d5b0(Obj0216d5b0 *self, u16 *cmd, Glyph0216d5b0 *arr, u16 *count) {
+Glyph0216d5b0 *LoTimer_OamCallback(Obj0216d5b0 *self, u16 *cmd, Glyph0216d5b0 *arr, u16 *count) {
     u16 n = *count;
     Glyph0216d5b0 *last = &arr[n - 1];
     s16 x = 0;

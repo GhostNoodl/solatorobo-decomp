@@ -10,15 +10,15 @@ extern "C" {
 // Pointers in Main's .data to archive / file name strings, passed as the name arguments of the ResArc
 // functions (ResMgr_Load, ResMgr_IsLoaded, ResMgr_GetArcList, ResMgr_ReleaseByName) and of TexObj_Init / STD_CopyString
 // when a Model is built.
-extern const char *data_0208cb74;
-extern const char *data_0208cb78;
-extern const char *data_0208cb7c;
-extern const char *data_0208cb84;
-extern const char *data_0208cc88;
-extern const char *data_0208cc8c;
-extern const char *data_0208cc94;
-extern const char *data_0208cc9c;
-extern const char *data_0208cca0;
+extern const char *ResName_CommonCells;
+extern const char *ResName_CommonModel;
+extern const char *ResName_TextCells;
+extern const char *ResName_WifiCells;
+extern const char *ResName_BattleCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ArcPath_MenuBattle;
+extern const char *ArcPath_MenuLoad;
+extern const char *ArcPath_Menu;
 
 #ifdef __cplusplus
 }

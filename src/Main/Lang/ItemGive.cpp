@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern u8 *data_0208d268[];
+extern u8 *Param_ItemTables[];
 extern s32 StageFlags_AddItem(StageFlags *f, u16 id, u32 n);
 extern s32 StageFlags_SetItemCount(StageFlags *f, u16 id, u8 n);
 extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
@@ -30,11 +30,11 @@ static inline u16 Item_Idx(u32 id) {
     return id & 0xfff;
 }
 
-void func_0206f518(SaveRef *ref, u32 id);
+void Item_InitSaveRef(SaveRef *ref, u32 id);
 
 static inline void Item_Notify(u16 id, u16 val) {
     SaveRef ref;
-    func_0206f518(&ref, id);
+    Item_InitSaveRef(&ref, id);
     if (ref.idx == -1) {
         return;
     }
@@ -46,7 +46,7 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     SaveRef ref;
     BOOL ok;
     u16 old;
-    func_0206f518(&ref, id);
+    Item_InitSaveRef(&ref, id);
     if (ref.idx == -1) {
         return FALSE;
     }
@@ -96,7 +96,7 @@ BOOL Item_Give(u16 id, int n) {
     return ok;
 }
 
-void func_0206f3f0(u16 id, int n) {
+void Item_SetCount(u16 id, int n) {
     if (Item_Cat(id) - 1 != 1) {
         return;
     }
@@ -113,7 +113,7 @@ void func_0206f3f0(u16 id, int n) {
     }
 }
 
-void func_0206f518(SaveRef *ref, u32 id) {
+void Item_InitSaveRef(SaveRef *ref, u32 id) {
     u32 idx = -1;
     u16 unk = 0;
     switch (Item_Cat((u16)(id & 0xf000) - 1)) {
@@ -157,10 +157,10 @@ BOOL Item_Set_0206f5e4(u16 id, int n) {
     return Item_Set(id, n);
 }
 
-BOOL func_0206f66c(u16 id) {
+BOOL Item_IsOwned(u16 id) {
     SaveRef ref;
     BOOL ret;
-    func_0206f518(&ref, id);
+    Item_InitSaveRef(&ref, id);
     if (ref.idx == -1) {
         return FALSE;
     }
@@ -173,7 +173,7 @@ typedef struct ItemDef {
     /* 0x0c */ s16 parts[4];
 } ItemDef;
 
-u16 func_0206f6d4(s32 id, s32 *slot) {
+u16 Item_FindPictureByChip(s32 id, s32 *slot) {
     u16 found = 0;
     int k;
     int j;
@@ -182,7 +182,7 @@ u16 func_0206f6d4(s32 id, s32 *slot) {
     }
     for (k = 0; k < 16; k++) {
         u16 item = k + 0x7000;
-        s16 *parts = ((ItemDef *)data_0208d268[(u16)(Item_Cat16(item) - 1)])[Item_Idx16(item)].parts;
+        s16 *parts = ((ItemDef *)Param_ItemTables[(u16)(Item_Cat16(item) - 1)])[Item_Idx16(item)].parts;
         for (j = 0; j < 4; j++) {
             if (id == parts[j]) {
                 found = item;
@@ -197,11 +197,11 @@ end:
     return found;
 }
 
-u16 func_0206f788(u16 id);
+u16 Item_GetPictureChipMask(u16 id);
 
-BOOL func_0206f85c(u32 n);
+BOOL Item_HasNewInTable(u32 n);
 
-BOOL func_0206f954(void);
+BOOL Item_HasNewMovie(void);
 
 typedef struct NamedEntry {
     /* 0x0 */ u32 nameOffset;

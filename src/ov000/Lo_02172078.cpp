@@ -5,13 +5,13 @@
 
 extern "C" {
 
-extern char data_0214b105[];
-extern const char *data_0208cca0;
-extern const char *data_0208cc94;
+extern char gCommonTextPath[];
+extern const char *ArcPath_Menu;
+extern const char *ArcPath_MenuBattle;
 extern void *gTaskHost;
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
-void func_ov000_0216f23c(void *p, s32 a);
+void BufferList_Run(void *p, s32 a);
 BOOL TaskHost_Update(void *p);
 void ListBuffer021cb940_Release(void *p);
 
@@ -27,13 +27,13 @@ void MessageQueue021cb980_Start(MessageQueue021cb980 *self) {
         return;
     }
     r = TRUE;
-    if (!ResMgr_IsLoaded(data_0214b105, 7)) {
+    if (!ResMgr_IsLoaded(gCommonTextPath, 7)) {
         r = FALSE;
     }
-    if (!ResMgr_IsLoaded(data_0208cca0, 7)) {
+    if (!ResMgr_IsLoaded(ArcPath_Menu, 7)) {
         r = FALSE;
     }
-    if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
+    if (!ResMgr_IsLoaded(ArcPath_MenuBattle, 7)) {
         r = FALSE;
     }
     if (r) {
@@ -47,7 +47,7 @@ void MessageQueue021cb980_Update(VObj *self) {
     while (self->vfunc_14(buf, 1)) {
         self->vfunc_10(buf);
     }
-    func_ov000_0216f23c((u8 *)self + 8, 0);
+    BufferList_Run((u8 *)self + 8, 0);
     if (gTaskHost != NULL) {
         TaskHost_Update(gTaskHost);
     }

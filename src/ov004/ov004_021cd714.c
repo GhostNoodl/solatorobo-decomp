@@ -3,7 +3,7 @@
 
 #pragma force_active on
 
-s32 func_ov004_021cd714(u32 insn) {
+s32 DSProt_ClassifyInsn(u32 insn) {
     u32 hi = (insn >> 24) & 0xff;
     if ((hi & 0xe) == 0xa) {
         if ((hi & 0xf0) == 0xf0) {

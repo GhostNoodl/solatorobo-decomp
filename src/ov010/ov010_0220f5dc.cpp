@@ -2660,7 +2660,7 @@ void Ov010State3_Update(Ov010State3 *self) {
     Rot16 r = data_ov010_0220ebea;
     r.y = Ov003Vec_Yaw(&d);
     s32 dist = VEC_Distance(&pp, &self->unk_0c);
-    func_ov000_0218a358(&gSceneCmd->cam, &self->unk_0c, &r, self->unk_08 + dist + 0x10000, 0, 0x1000, 0x1000, 1);
+    FieldCam_SetTarget(&gSceneCmd->cam, &self->unk_0c, &r, self->unk_08 + dist + 0x10000, 0, 0x1000, 0x1000, 1);
 }
 
 void Ov010State3_HandleMsg(Ov010State3 *self, s32 *msg) {
@@ -2895,7 +2895,7 @@ void Ov010Vt_0220fc8c_Update(Ov010Toggle *o) {
     if (o->b0) {
         VecFx32 v = data_ov010_0220ec80;
         Rot16 r = data_ov010_0220ebfc;
-        func_ov000_0218a358(&gSceneCmd->cam, &v, &r, 0x17385, 0, 0x1000, 0x1000, 1);
+        FieldCam_SetTarget(&gSceneCmd->cam, &v, &r, 0x17385, 0, 0x1000, 0x1000, 1);
     } else if (o->b1) {
         Ov010_SetSky();
     }
@@ -2922,7 +2922,7 @@ void Ov010Vt_0220fcac_Update(Ov010Toggle *o) {
     if (o->b0) {
         VecFx32 v = data_ov010_0220ec74;
         Rot16 r = data_ov010_0220ebf6;
-        func_ov000_0218a358(&gSceneCmd->cam, &v, &r, 0xf000, 0, 0x1000, 0x1000, 1);
+        FieldCam_SetTarget(&gSceneCmd->cam, &v, &r, 0xf000, 0, 0x1000, 0x1000, 1);
     } else if (o->b1) {
         Ov010_SetSky();
     }

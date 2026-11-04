@@ -11,7 +11,7 @@ void Camera_Dtor(void *p);
 void Ov008WorldMap_Init(Ov008Mgr *m);
 void Ov008WorldMap_FreeAll(Ov008Mgr *m);
 void SceneResSet_Close08(void);
-void func_ov000_0214c210(void);
+void FaceIcon_ReleasePlayer(void);
 extern void *ResHandle_vtbl;
 
 extern void *UiList_vtbl;
@@ -35,9 +35,9 @@ void StageRes_Init(void *p);
 void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
 void SceneResSet_Open08(void);
-void func_ov000_0214c1ac(void);
+void FaceIcon_LoadPlayer(void);
 BOOL SceneResSet_IsLoaded08(void);
-BOOL func_ov000_0214c270(void);
+BOOL FaceIcon_IsPlayerLoaded(void);
 
 }
 
@@ -89,10 +89,10 @@ BOOL Ov008WorldMap_IsResReady(Ov008Mgr *m) {
     if (m->unk_cc->unk_00 >= 0 && !ResSet_UpdateLoad(m->unk_cc)) {
         r = FALSE;
     }
-    if (!ResMgr_IsLoaded(data_0208cca0, 7)) {
+    if (!ResMgr_IsLoaded(ArcPath_Menu, 7)) {
         r = FALSE;
     }
-    if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
+    if (!ResMgr_IsLoaded(ArcPath_MenuBattle, 7)) {
         r = FALSE;
     }
     if (!StageRes_IsAllLoaded(m->unk_fc)) {
@@ -101,7 +101,7 @@ BOOL Ov008WorldMap_IsResReady(Ov008Mgr *m) {
     if (!SceneResSet_IsLoaded08()) {
         r = FALSE;
     }
-    if (!func_ov000_0214c270()) {
+    if (!FaceIcon_IsPlayerLoaded()) {
         r = FALSE;
     }
     return r;

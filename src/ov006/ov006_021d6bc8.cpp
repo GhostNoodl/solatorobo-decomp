@@ -34,7 +34,7 @@ void ov006_Unk021e1af0_Update(void *p);
 void ov006_MarkerSet_Update(void *p);
 void ov006_Unk021e2878_Update(void *p);
 void FieldMgr_Update(void *p);
-void func_ov000_0218be54(void *p);
+void Group_UpdateAll(void *p);
 void ActorMgr_Update(void *p);
 int ov006_Race_Update(ov006_Scene021d6bc8 *self);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
@@ -76,7 +76,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
             FieldMgr_Update(gFieldMgr);
         }
         if (gGroup != NULL) {
-            func_ov000_0218be54(gGroup);
+            Group_UpdateAll(gGroup);
         }
         if (gActorMgr != NULL) {
             ActorMgr_Update(gActorMgr);

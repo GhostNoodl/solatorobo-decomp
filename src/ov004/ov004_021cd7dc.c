@@ -5,7 +5,7 @@
 
 #pragma force_active on
 
-u8 func_ov004_021cd7dc(Rc4 *c) {
+u8 Rc4_NextByte(Rc4 *c) {
     u32 i = (c->i + 1 + c->x) & 0xff;
     u8 a = c->s[i];
     u32 j = (c->x + (a + c->j)) & 0xff;

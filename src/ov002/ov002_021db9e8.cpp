@@ -125,7 +125,7 @@ void Obj021eff50_Update(Obj021eff50 *self) {
             }
             m->cue = k;
             m->unk_5d = 0;
-            func_ov002_021d9c04(self->board);
+            Obj021efe6c_CommitToFlags(self->board);
             self->unk_14 = 50;
         }
         break;

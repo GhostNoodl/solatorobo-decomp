@@ -8,7 +8,7 @@
 
 // The resource loader of a ModelViewer (0x558 bytes at ModelViewer::res, vtable Ov000Vt_021cabd8_vtbl,
 // dtor Ov000Vt_021cabd8_Dtor). It keeps two pairs of resource blocks and loads the next pair
-// (cur ^ 1) from the names while the current one is shown (func_ov000_02161fac).
+// (cur ^ 1) from the names while the current one is shown (ModelViewerRes_UpdateLoad).
 typedef struct ModelViewerRes {
     /* 0x000 */ void *vtbl;
     /* 0x004 */ u8 state; // 0: load, 10: wait, 20: loaded
@@ -25,7 +25,7 @@ typedef struct ModelViewerRes {
 
 // A 3D model drawn with its own camera and projection (0x708 bytes, ctor ModelViewer_Ctor, vtable
 // ModelViewer_vtbl, dtors ModelViewer_Dtor / 0216251c). ModelViewer_SetModel requests new
-// resources, func_ov000_02162bd4 steps the state machine, ModelViewer_Draw draws.
+// resources, ModelViewer_UpdateModel steps the state machine, ModelViewer_Draw draws.
 typedef struct ModelViewer {
     /* 0x000 */ void *vtbl;
     /* 0x004 */ ModelViewerRes res;
@@ -33,7 +33,7 @@ typedef struct ModelViewer {
     /* 0x644 */ VecFx32 eye; // GfxCamPos_Init
     /* 0x650 */ VecFx32 at;
     /* 0x65c */ VecFx32 up;
-    /* 0x668 */ MtxFx44 proj; // func_ov000_0216295c
+    /* 0x668 */ MtxFx44 proj; // ModelViewer_SetFrustum
     /* 0x6a8 */ VecFx32 projOfs;
     /* 0x6b4 */ s32 projScale;
     /* 0x6b8 */ s32 state;

@@ -11,8 +11,8 @@ void LangData_LocalizePath(char *buf, const char *name);
 void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
 extern char data_ov015_022128ab[];
 extern char data_ov015_022128b5[];
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern void *ArcPath_MenuBattle;
+extern void *ResName_BattleCells;
 
 Ov015Glyph *Ov015Hud_OamLabel(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     Ov015Glyph *last = &e[*count - 1];
@@ -45,8 +45,8 @@ s32 Ov015Hud_Setup(Ov015Hud *self) {
         TexObj_SetOamFunc(self->mdl0, 0xf, (void *)Ov015Hud_OamDigits, arg);
         TexObj_SetOamFunc(self->mdl0, 0xe, (void *)Ov015Hud_OamDigits, arg);
     }
-    res = ResList_FindType2(ResMgr_GetArcList((char *)data_0208cc94), data_0208cc88);
-    Ov015_LabelInit(self->mdl1, data_0208cc88, data_0208cc94);
+    res = ResList_FindType2(ResMgr_GetArcList((char *)ArcPath_MenuBattle), ResName_BattleCells);
+    Ov015_LabelInit(self->mdl1, ResName_BattleCells, ArcPath_MenuBattle);
     TexObj_SetRes(self->mdl1, res);
     TexObj_SelectImage(self->mdl1, 0, 0x10);
     self->mdl1->flags |= 2;

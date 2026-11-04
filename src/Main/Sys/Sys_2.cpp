@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern BOOL func_020472c4(SysCard *obj);
+extern BOOL SysCard_CheckBusy(SysCard *obj);
 extern void GX_DispOff(void);
 extern void GX_DispOn(void);
 extern BOOL PM_SetLCDPower(u32 a);
@@ -31,7 +31,7 @@ static inline BOOL PAD_DetectFold(void) {
 
 void Sys_UpdateFold(void) {
     if (PAD_DetectFold()) {
-        if (func_020472c4(gSysCard) != 0 || gSysState->unk_1f != 0 || gSysState->unk_31 != 0) {
+        if (SysCard_CheckBusy(gSysCard) != 0 || gSysState->unk_1f != 0 || gSysState->unk_31 != 0) {
             if (gSysState->lcdOn == 1) {
                 gSysState->lcdOn = 0;
                 GX_DispOff();

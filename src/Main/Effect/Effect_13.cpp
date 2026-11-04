@@ -28,7 +28,7 @@ static inline void EffG3_Vtx(s16 x, s16 y, s16 z) {
     EFF_G3_REG(0x0400048c) = (u32)(u16)z;
 }
 
-extern const u16 data_02082bdc[];
+extern const u16 EffectPartSet_TexCoordTable[];
 
 void EffectPartSet_DrawSlots(EffectPartSet *s) {
     EffectPartSlot *slot;
@@ -88,7 +88,7 @@ void EffectPartSet_DrawSlots(EffectPartSet *s) {
             break;
         }
         EFF_G3_REG(0x04000500) = 0;
-        EFF_G3_REG(0x04000480) = data_02082bdc[i];
+        EFF_G3_REG(0x04000480) = EffectPartSet_TexCoordTable[i];
         EffG3_Vtx(x0, y0, z0);
         EffG3_Vtx(x1, y1, z1);
         EffG3_Vtx(x2, y2, z2);

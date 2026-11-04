@@ -7,8 +7,8 @@ typedef struct {
 } LoFadeP0214f390;
 
 extern "C" {
-void func_020708fc(s32 a, LoFadeP0214f390 *out);
-void func_02070b98(s32 a, LoFadeP0214f390 *out, s32 b, s32 c);
+void Tbl_MakeFacePath(s32 a, LoFadeP0214f390 *out);
+void Tbl_MakeFaceName(s32 a, LoFadeP0214f390 *out, s32 b, s32 c);
 void ResMgr_ReleaseArchive(LoFadeP0214f390 *a, LoFadeP0214f390 *b, s32 c);
 
 void Lo021caa44_Release(Lo021caa44 *self) {
@@ -24,8 +24,8 @@ void Lo021caa44_Release(Lo021caa44 *self) {
     {
         LoFadeP0214f390 b;
         LoFadeP0214f390 a;
-        func_020708fc(0x1000, &a);
-        func_02070b98(0x1000, &b, 1, 2);
+        Tbl_MakeFacePath(0x1000, &a);
+        Tbl_MakeFaceName(0x1000, &b, 1, 2);
         ResMgr_ReleaseArchive(&a, &b, 2);
     }
     gSceneResSet.unk_00 = 0;

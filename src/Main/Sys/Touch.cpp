@@ -59,7 +59,7 @@ void TouchQuad_Init(TouchQuad *q, u16 a, u16 b, u16 c, u16 d) {
     q->cb += b;
 }
 
-void func_0203d4f8(Touch *tp) {
+void Touch_Init(Touch *tp) {
     tp->unk_00 = 0;
     tp->unk_04 = 12;
     tp->unk_05 = 6;
@@ -90,7 +90,7 @@ void Touch_Create(void) {
     TP_GetUserInfo(calib);
     TP_SetCalibrateParam(calib);
     tp = (Touch *)Heap_AllocLo(sizeof(Touch), 4);
-    func_0203d4f8(tp);
+    Touch_Init(tp);
     gTouch = tp;
 }
 

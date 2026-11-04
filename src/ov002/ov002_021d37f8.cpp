@@ -37,7 +37,7 @@ static inline void ov002_021d37f8_stop(FieldPlayer *t) {
     }
 }
 
-void func_ov002_021d37f8(Task021ef91c *self) {
+void LibraryViewer_ShowPage(Task021ef91c *self) {
     void *res;
     void *m;
     if (self->unk_c4 != NULL) {

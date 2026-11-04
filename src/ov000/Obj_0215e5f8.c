@@ -16,14 +16,14 @@ typedef struct Obj0215e5f8 {
 extern void *gMsgRes;
 extern void *gSndMgr;
 
-void *func_02061d54(s32 a);
+void *StageId_Strip(s32 a);
 void *MsgRes_GetString(void *a, void *b);
 void Lo021cb0b8_Setup(Obj0215e5f8 *self);
 void func_0206281c(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void Ov000Vt_021cafc0_Setup(Obj0215e5f8 *self) {
-    self->unk_1dc = MsgRes_GetString(gMsgRes, func_02061d54(0x18));
+    self->unk_1dc = MsgRes_GetString(gMsgRes, StageId_Strip(0x18));
     Lo021cb0b8_Setup(self);
 }
 

@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-// A Tbl category (data_0208d6d0, indexed by id >> 12, minus 1). The table is game data in main's
+// A Tbl category (Tbl_Cats, indexed by id >> 12, minus 1). The table is game data in main's
 // .data and its ranges in main's .text; their bytes come from the user's ROM at build time
 // (data/main/main_data_0208d2b4.dspec, data/main/main_rodata_02082254.dspec).
 typedef struct TblRange {
@@ -26,7 +26,7 @@ typedef struct TblCat {
     /* 0x8 */ u32 unk_8;
 } TblCat;
 
-extern TblCat data_0208d6d0[8];
+extern TblCat Tbl_Cats[8];
 
 typedef struct TblActorPair {
     struct {

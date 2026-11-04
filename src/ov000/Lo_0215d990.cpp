@@ -9,7 +9,7 @@ extern void *gSndMgr;
 extern void *gMsgRes;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL Model_IsReady(void *p, s32 a);
-u16 func_02061d54(u16 a);
+u16 StageId_Strip(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 

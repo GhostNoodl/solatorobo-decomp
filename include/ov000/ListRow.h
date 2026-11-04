@@ -56,7 +56,7 @@ struct Hud021cca10 : public ListRow {
 };
 
 // Vtable Ov000Vt_021cc9f8_vtbl (0x44 bytes, init ListRowGauge_Init): a bar display and a label
-// (func_ov000_021c2c0c), built by slot 0x08 (ListRowGauge_Update) and drawn by slot 0x0c
+// (ListRowGauge_SetText), built by slot 0x08 (ListRowGauge_Update) and drawn by slot 0x0c
 // (ListRowGauge_Draw). The bar shows value out of max (ov002's level list, LibraryMenu_Start, sets
 // value to level * 100 + the percent of the way to the next threshold and max to 300).
 struct ListRowGauge : public ListRow {
@@ -81,7 +81,7 @@ struct ListRowText : public ListRow {
 };
 
 // Vtable Ov000Vt_021cca28_vtbl (0x34 bytes, init ListRowLabel_Init; ov006 builds them): a row that is
-// one line of text (func_ov000_021c5fd0 sets it), drawn by slot 0x0c (ListRowLabel_Draw).
+// one line of text (ListRowLabel_SetText sets it), drawn by slot 0x0c (ListRowLabel_Draw).
 struct ListRowLabel : public ListRow {
     TextWin *text; // 0x30
 };

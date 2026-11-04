@@ -186,8 +186,8 @@ default raw
 0x0208cb6b  str     # data_0208cb6b
 0x0208cb6d  str     # data_0208cb6d
 0x0208cb70  str     # data_0208cb70
-0x0208cb74  ptr     # data_0208cb74
-0x0208cb78  ptr     # data_0208cb78
-0x0208cb7c  ptr     # data_0208cb7c
-0x0208cb80  ptr     # data_0208cb80
-0x0208cb84  ptr     # data_0208cb84
+0x0208cb74  ptr     # ResName_CommonCells
+0x0208cb78  ptr     # ResName_CommonModel
+0x0208cb7c  ptr     # ResName_TextCells
+0x0208cb80  ptr     # ArcPath_MenuEmo
+0x0208cb84  ptr     # ResName_WifiCells

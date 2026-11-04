@@ -25,7 +25,7 @@ if (res->anm[i] != NULL) {                                   \
 }
 
 // needMat and nsub are u8 for the prologue order of the two stack-argument copies.
-void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub);
+void FieldPropModel_Setup(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub);
 
 #ifdef NONMATCHING
 // Status (round auA): demoted in the honesty audit. The match declared the local tex as a seventh parameter (callers
@@ -33,7 +33,7 @@ void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u
 // whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 // Round mtA: tex declared in the anm block (25 to 21 / 0); mdl and tex still swap r7/r8.
-void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub) {
+void FieldPropModel_Setup(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub) {
     NNSG3dResMdlSet *set;
     NNSG3dResMdl *mdl;
     BOOL needJnt;

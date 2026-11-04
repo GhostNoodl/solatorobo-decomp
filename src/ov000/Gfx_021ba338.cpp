@@ -6,8 +6,8 @@
 
 extern "C" {
 
-extern void *data_0208b3d0;
-extern const u32 data_020828f8;
+extern void *Gfx3D_PrimDLs;
+extern const u32 Gfx3D_PrimDLSizes;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 u8 Gfx3DState_NextPolyId(void *p);
@@ -37,7 +37,7 @@ struct Obj021ba338 {
     s32 unk_38;
 };
 
-void func_ov000_021ba338(Obj021ba338 *self) {
+void Obj021ba338_Draw(Obj021ba338 *self) {
     GfxSys *g = gGfxSys;
     s32 a = self->unk_2c;
     s32 b;
@@ -60,7 +60,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         G3Cmd1_021ba338(0x20, 0x7bff);
         G3Cmd1_021ba338(0x2a, 0x20000000);
         G3Vec021ba338(0x1b, 0x100000, 0x18000, 0x1000);
-        NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
+        NNS_G3dGeSendDL(Gfx3D_PrimDLs, Gfx3D_PrimDLSizes);
         G3Cmd1_021ba338(0x12, 1);
     }
     {
@@ -77,14 +77,14 @@ void func_ov000_021ba338(Obj021ba338 *self) {
     G3Cmd1_021ba338(0x20, 0x68);
     G3Cmd1_021ba338(0x2a, 0x20000000);
     G3Vec021ba338(0x1b, 0x100000, 0x2000, 0x1000);
-    NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs, Gfx3D_PrimDLSizes);
     G3Cmd1_021ba338(0x12, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3Vec021ba338(0x1c, 0x80000 - w, 0x6b000, -0x77a);
     G3Cmd1_021ba338(0x20, 0x68);
     G3Cmd1_021ba338(0x2a, 0x20000000);
     G3Vec021ba338(0x1b, 0x100000, 0x2000, 0x1000);
-    NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs, Gfx3D_PrimDLSizes);
     G3Cmd1_021ba338(0x12, 1);
     {
         s32 d = self->unk_38;

@@ -74,7 +74,7 @@ BOOL func_020554c8(SlidePanel *panel) {
 // scheduled differently.
 #pragma push
 #pragma opt_propagation off
-void func_020554e4(SlidePanel *panel) {
+void SlidePanel_Release(SlidePanel *panel) {
     if (panel->pltt != NULL) {
         void *saved = gSysState->cur;
         gSysState->cur = gSysState->heapHi;

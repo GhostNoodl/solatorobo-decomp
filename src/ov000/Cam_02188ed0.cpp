@@ -52,7 +52,7 @@ void func_ov000_02188ed0(SceneCmd *self) {
                 self->event = 1;
             }
         }
-        func_ov000_0218a358(s, &self->unk_d8, &self->unk_e4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
+        FieldCam_SetTarget(s, &self->unk_d8, &self->unk_e4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
     } else {
         self->event = 0;
     }

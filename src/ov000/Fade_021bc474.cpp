@@ -36,7 +36,7 @@ static inline BOOL Fade021bc474_Busy(void) {
     return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021bc474(Fade021bc474 *self) {
+BOOL Fade021bc474_Update(Fade021bc474 *self) {
     switch (self->unk_04) {
     case 1:
         if (Fade021bc474_Idle()) {

@@ -74,7 +74,7 @@ extern "C" {
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
-extern void func_ov000_021c2208(void *p);
+extern void Obj021c2208_Init(void *p);
 extern void Heap_Free(void *p);
 extern void ResMgr_ReleaseArchive(const void *a, const void *b, s32 c);
 extern BOOL ResMgr_IsArchiveLoaded(const char *a, const char *b, u16 c);
@@ -93,7 +93,7 @@ void Ov003TaskVt_021f78f4_Init(Ov003Title *self) {
     self->unk_54 = 0;
     self->unk_58 = 0;
     self->unk_5c = 0;
-    func_ov000_021c2208(self->unk_60);
+    Obj021c2208_Init(self->unk_60);
     self->unk_6c = 0;
     self->unk_70 = 0;
     self->unk_74 = 0;

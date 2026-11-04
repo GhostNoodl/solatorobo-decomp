@@ -10,9 +10,9 @@ void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void Ov015Main_Shutdown(Ov015Main *self);
 void Ov015Shared_Delete(void);
-extern void *data_0208cc94;
-extern void *data_0208ccc8;
-extern char data_0214b105[];
+extern void *ArcPath_MenuBattle;
+extern void *ArcPath_Menu3D;
+extern char gCommonTextPath[];
 void GXx_SetMasterBrightness_(u32 reg, s32 v);
 
 
@@ -211,10 +211,10 @@ void Ov015Main_Shutdown(Ov015Main *self) {
     HEAP_PUSH(saved);
     DELETE_V(gOv015Globals.fade);
     HEAP_POP(saved);
-    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, (char *)data_0208cc94, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, (char *)data_0208ccc8, 7, 0);
-    ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, (char *)ArcPath_MenuBattle, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, (char *)ArcPath_Menu3D, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0);
     if (gSceneCmd != NULL) {
         *(void **)gEffectMgr->task = gSceneCmd->pause;
     }
@@ -232,16 +232,16 @@ BOOL Ov015Main_LoadCommonRes(Ov015Main *self) {
     BOOL r = FALSE;
     switch (self->unk_10) {
     case 0:
-        ResMgr_Load(data_0208cca0, 7, 0);
-        ResMgr_Load((char *)data_0208cc94, 7, 0);
-        ResMgr_Load((char *)data_0208ccc8, 7, 0);
-        ResMgr_Load(data_0214b105, 7, 0);
+        ResMgr_Load(ArcPath_Menu, 7, 0);
+        ResMgr_Load((char *)ArcPath_MenuBattle, 7, 0);
+        ResMgr_Load((char *)ArcPath_Menu3D, 7, 0);
+        ResMgr_Load(gCommonTextPath, 7, 0);
         self->unk_10 = 10;
     case 10: {
-        bool ok = ResMgr_IsLoaded(data_0208cca0, 7) != 0;
-        ok &= ResMgr_IsLoaded((char *)data_0208cc94, 7);
-        ok &= ResMgr_IsLoaded((char *)data_0208ccc8, 7);
-        ok &= ResMgr_IsLoaded(data_0214b105, 7);
+        bool ok = ResMgr_IsLoaded(ArcPath_Menu, 7) != 0;
+        ok &= ResMgr_IsLoaded((char *)ArcPath_MenuBattle, 7);
+        ok &= ResMgr_IsLoaded((char *)ArcPath_Menu3D, 7);
+        ok &= ResMgr_IsLoaded(gCommonTextPath, 7);
         if (!ok) {
             break;
         }

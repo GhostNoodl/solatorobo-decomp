@@ -7,7 +7,7 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_021c1478(NNSG3dRS *rs) {
+void ActorMarker_MatCallback0b(NNSG3dRS *rs) {
     u32 flags;
     u32 v;
     NNSG3dMatAnmResult *sub = rs->pMatAnmResult;

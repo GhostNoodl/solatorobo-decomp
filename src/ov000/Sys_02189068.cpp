@@ -6,8 +6,8 @@ extern VObj *gDataRes;
 extern VObj *gStageDataRes;
 extern MessageQueue021cb980 *gMessageQueue;
 BOOL MsgRes_LoadGlobal(void);
-BOOL func_0206facc(void);
-BOOL func_0206ead8(void);
+BOOL LangRes2_Load(void);
+BOOL Param_LoadRes(void);
 BOOL MsgRes_BindGlobal(void);
 void LangRes2_BindTables(void);
 void Param_BindTables(void);
@@ -34,7 +34,7 @@ static inline BOOL IsReady(MessageQueue021cb980 *c) {
     return ok;
 }
 
-BOOL func_ov000_02189068(void *self) {
+BOOL GlobalRes_Load(void *self) {
     if (!HasMgr()) {
         return FALSE;
     }
@@ -47,10 +47,10 @@ BOOL func_ov000_02189068(void *self) {
     if (!IsReady(gMessageQueue)) {
         return FALSE;
     }
-    if (!func_0206facc()) {
+    if (!LangRes2_Load()) {
         return FALSE;
     }
-    if (!func_0206ead8()) {
+    if (!Param_LoadRes()) {
         return FALSE;
     }
     gDataRes->vfunc_30();

@@ -6,14 +6,14 @@
 // The jump-table words are commented with the label they lead to; pc-relative operands stay
 // numeric (the MWCC assembler has no label arithmetic), commented with the label they resolve to.
 // The code/data split comes from a flow analysis, not from any symbol information.
-// Generated with tools/asm2mw/asmblob.py main data_0207bcb8:0207bcb8:02082254:code; its --labels
+// Generated with tools/asm2mw/asmblob.py main MoMem_VideoCode:0207bcb8:02082254:code; its --labels
 // output is the .D_/.L_ labels in symbols.txt that give the delinked target the same $d/$a layout.
 
 #pragma force_active on
 
-void data_0207bcb8(void);
+void MoMem_VideoCode(void);
 
-asm void data_0207bcb8(void) {
+asm void MoMem_VideoCode(void) {
     b @L0207d3a8
     dcd 0x00000100
     dcd 0x0000009e

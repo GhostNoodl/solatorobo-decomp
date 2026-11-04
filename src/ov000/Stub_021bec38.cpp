@@ -23,7 +23,7 @@ typedef struct {
 
 extern "C" {
 
-Entry021bec38 *func_ov000_021bec38(ActorMarkerWork *work, Src021bec38 *src, Entry021bec38 *out, u16 *count) {
+Entry021bec38 *ActorMarker_OamCallback03(ActorMarkerWork *work, Src021bec38 *src, Entry021bec38 *out, u16 *count) {
     u16 n = *count;
     Entry021bec38 *e = &out[n - 1];
     if (src->type == 2) {

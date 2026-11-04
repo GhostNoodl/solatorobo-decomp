@@ -13,7 +13,7 @@ void MissionInfo_Draw(void *p);
 void TextBox_Draw(void *p);
 void PlaceNameCard_Draw(void *p);
 void ImageCard_Draw(void *p);
-void func_ov000_0216b880(void *p);
+void Lo0216b474_Draw(void *p);
 
 void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
     switch (self->state) {
@@ -60,7 +60,7 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         ImageCard_Draw(self->unk_34);
     }
     if (self->unk_50 != NULL) {
-        func_ov000_0216d14c(self->unk_50);
+        Obj0216c954_Draw(self->unk_50);
     }
     if (self->unk_54 != NULL) {
         LoTimer_Draw(self->unk_54);
@@ -78,10 +78,10 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         self->unk_64->vfunc_10();
     }
     if (self->unk_68 != NULL) {
-        func_ov000_0216b880(self->unk_68);
+        Lo0216b474_Draw(self->unk_68);
     }
     if (self->unk_78 != NULL) {
-        func_ov000_0216b1b4(self->unk_78);
+        Obj0216ad04_Draw(self->unk_78);
     }
     if (self->unk_6c != NULL) {
         self->unk_6c->vfunc_10();
@@ -93,7 +93,7 @@ void ListBuffer021cb940_Draw(ListBuffer021cb940 *self) {
         self->unk_74->vfunc_10();
     }
     if (self->ticker != NULL) {
-        func_ov000_0216be94(self->ticker);
+        LoTicker_Draw(self->ticker);
     }
 }
 }

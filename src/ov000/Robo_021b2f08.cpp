@@ -50,8 +50,8 @@ typedef struct {
 } Act_021b2f08;
 
 extern "C" {
-s32 func_ov000_02199554(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
-s32 func_ov000_02199454(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
+s32 Finder_FindPartsSorted(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
+s32 Finder_FindParts(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
 Act_021b2f08 *Obj021984c8_GetActor(Part_021b2f08 *p);
 BOOL func_ov000_02199c70(void *sub, u16 kind);
 void *Target_Get(void *p);
@@ -183,7 +183,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
     fq.q.unk_1c = r;
     fq.q.flags |= 6;
     fq.finder.query = NULL;
-    n = func_ov000_02199554(&fq.finder, &fq.q, list, 0x20);
+    n = Finder_FindPartsSorted(&fq.finder, &fq.q, list, 0x20);
     if (n == 0) {
         return NULL;
     }
@@ -260,7 +260,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         }
         Init_021b2f08(&fq);
         SetRange_021b2f08(&fq, -0x59a, self->height + 0x800);
-        n2 = func_ov000_02199454(&fq.finder, &fq.q, list2, cnt);
+        n2 = Finder_FindParts(&fq.finder, &fq.q, list2, cnt);
         cnt2 = 0;
         for (j = 0; j < n2; j++) {
             u16 kk;
@@ -297,7 +297,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
             h = 0;
         }
         SetRange_021b2f08(&fq, 0x29, h + self->height);
-        n2 = func_ov000_02199454(&fq.finder, &fq.q, list, cnt2);
+        n2 = Finder_FindParts(&fq.finder, &fq.q, list, cnt2);
         for (m = 0; m < n2; m++) {
             u16 kk;
             u8 k;

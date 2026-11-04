@@ -36,7 +36,7 @@ static inline void Obj021bc2d8_Delete(Obj021bc2d8 *o) {
     Heap_Free(o);
 }
 
-void func_ov000_021bc2d8(void) {
+void FieldFade_Destroy(void) {
     Obj021bc2d8 *p;
     void *saved;
     saved = gSysState->cur;

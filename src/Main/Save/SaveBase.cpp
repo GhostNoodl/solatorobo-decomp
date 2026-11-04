@@ -137,7 +137,7 @@ BOOL func_02047694(SaveBase *s) {
     return TRUE;
 }
 
-BOOL func_02047724(SaveBase *s) {
+BOOL SaveBase_VerifySlot(SaveBase *s) {
     u8 *p;
     u8 *slot;
     u32 i;

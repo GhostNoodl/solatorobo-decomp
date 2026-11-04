@@ -89,7 +89,7 @@ public:
 extern "C" {
 extern u16 Pad_GetCur(void);
 extern u16 Pad_GetRelease(void);
-extern void func_02051a34(SlideScene *scene);
+extern void SlideWin_RenderText(SlideScene *scene);
 extern void *Heap_GetCurrent(void);
 extern void Heap_SetCurrentHi(void);
 extern Model *Model_Dtor(Model *model);
@@ -111,28 +111,28 @@ extern void *PlttRes_Ctor(void *pltt);
 extern void PlttRes_Load(void *res, Model *src);
 extern u32 *func_02054b90(void *pltt);
 extern void func_02054b98(void *dst, u32 size);
-extern void func_02040dd8(PlttRes *res, int idx, bool load);
+extern void PlttRes_LoadFor(PlttRes *res, int idx, bool load);
 extern void func_02054bac(Model *model, void *pltt);
 extern void func_02054bb4(SlidePanel *panel);
 extern BOOL Gfx_IsFadeIdle_02054b4c(int ch);
 extern BOOL Model_IsReady(Model *model, u32 idx);
 extern void func_02055068(SlidePanel *panel, SlidePanel *prev);
-extern void func_020554e4(SlidePanel *panel);
+extern void SlidePanel_Release(SlidePanel *panel);
 extern void SlideCtrl_Lock(SlideScene *scene);
 extern void SlideCtrl_Unlock(SlideScene *scene);
 extern BOOL TextWin_IsState4_0204ffb0(int idx);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_020556a0(SlideHud *hud, s8 *text);
-extern void func_02055bbc(SlideScene *scene);
-extern void func_02055cbc(SlideScene *scene);
+extern void FieldMsg_SetText(SlideHud *hud, s8 *text);
+extern void GameScene_UpdateShake(SlideScene *scene);
+extern void GameScene_ApplyCamEffect(SlideScene *scene);
 extern void Obj3DAnim_UpdateSlots(SlideScene *scene);
 extern BOOL FieldMsg_IsBusy(SlideScene *scene);
-extern BOOL func_02055aa4(SlideScene *scene);
+extern BOOL GameScene_UpdateFade(SlideScene *scene);
 extern BOOL Field_HasEvent_02055844(void);
 extern void Field_ClearEvent(void);
 extern u16 Pad_GetTrig(void);
 extern BOOL Field_IsPlayerBusy_02055898(void);
-extern void func_0205592c(SlideHud *hud);
+extern void GlyphCache_Clear(SlideHud *hud);
 extern BOOL func_020559c8(SlideHud *hud);
 extern BOOL Field_IsEventQueued(s32 id);
 extern BOOL Field_IsIdle_02055a4c(void);
@@ -170,11 +170,11 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
     scene->unk_b5c--;
     if (!scene->inited) {
         scene->inited = 1;
-        func_02051a34(scene);
+        SlideWin_RenderText(scene);
     }
     scene->flag5 = 1;
     scene->flag6 = 1;
-    if (!scene->loaded && ResMgr_GetArcList(data_0208cca0) != NULL) {
+    if (!scene->loaded && ResMgr_GetArcList(ArcPath_Menu) != NULL) {
         scene->loaded = 1;
         heap = Heap_GetCurrent();
         Heap_SetCurrentHi();
@@ -190,13 +190,13 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
         if (func_0204e218(scene)) {
             model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                model = Model_Init_0204e238(model, data_0208cc8c, data_0208cb84, 0);
+                model = Model_Init_0204e238(model, ArcPath_MenuWifi, ResName_WifiCells, 0);
             }
             scene->model = model;
         } else {
             model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                model = Model_Init_0204e238(model, data_0208cca0, data_0208cb74, 0);
+                model = Model_Init_0204e238(model, ArcPath_Menu, ResName_CommonCells, 0);
             }
             scene->model = model;
         }
@@ -252,7 +252,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 buf = func_02054b90(panel->nextPltt);
                 func_02054b98((void *)buf[3], buf[2]);
                 DC_FlushRange((void *)buf[3], buf[2]);
-                func_02040dd8(panel->nextPltt, 0, 1);
+                PlttRes_LoadFor(panel->nextPltt, 0, 1);
                 func_02054bac(panel->nextModel, panel->nextPltt);
             }
             model = panel->nextModel2;
@@ -303,7 +303,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 }
                 panel->link = 0;
             }
-            func_020554e4(panel);
+            SlidePanel_Release(panel);
         }
         count++;
         if (scene->flag5 == 1 && scene->faded == 1 && panel->moving) {
@@ -389,7 +389,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 if (hud->flag16) {
                     if (!scene->skip) {
                         if (scene->msg[0] != 0) {
-                            func_020556a0(hud, scene->msg);
+                            FieldMsg_SetText(hud, scene->msg);
                         }
                     } else {
                         hud->flag14 = 0;
@@ -399,17 +399,17 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 scene->unk_b5c = 0;
             }
         } else if (hud->flag16 && !scene->skip && scene->msg[0] != 0) {
-            func_020556a0(hud, scene->msg);
+            FieldMsg_SetText(hud, scene->msg);
         }
     }
-    func_02055bbc(scene);
-    func_02055cbc(scene);
+    GameScene_UpdateShake(scene);
+    GameScene_ApplyCamEffect(scene);
     Obj3DAnim_UpdateSlots(scene);
     scene->pressed = 0;
     if (!scene->loaded || FieldMsg_IsBusy(scene)) {
         return TRUE;
     }
-    if (!func_02055aa4(scene)) {
+    if (!GameScene_UpdateFade(scene)) {
         if (Field_HasEvent_02055844()) {
             Field_ClearEvent();
         }
@@ -441,7 +441,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                     scene->End();
                 }
                 if (scene->unk_07c == 0 && hud->active) {
-                    func_0205592c(hud);
+                    GlyphCache_Clear(hud);
                     scene->msgX = hud->x;
                     scene->msgY = hud->y;
                 }
@@ -450,7 +450,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
     }
     if (hud->opening) {
         if ((scene->busy == 1 || scene->skip == 1) && !hud->shown) {
-            func_0205592c(hud);
+            GlyphCache_Clear(hud);
             hud->shown = 1;
             hud->opened = 0;
             hud->timer = 0;

@@ -101,7 +101,7 @@ VObj *Ov002Vt_021f0044_Dtor(VObj *self) {
     return self;
 }
 
-EffectObj *func_ov002_021e3874(const VecFx32 *pos, int unused, s32 n) {
+EffectObj *Ov002_SpawnEffect3D(const VecFx32 *pos, int unused, s32 n) {
     EffectObj *o = Effect3D_Create(data_ov002_021f00cc, data_ov002_021f00d8, 0, pos);
     s32 s = (s32)(((s64)((n - 1) << 12) * 0x4cd + 0x800) >> 12);
     o->SetScaleXYZ(s + 0x1000, s + 0x1000, s + 0x1000);

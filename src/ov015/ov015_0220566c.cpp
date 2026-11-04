@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 gTaskSwitchPending;
-u8 *func_0206ef88(u16 id);
+u8 *Param_GetHarpoonInfo(u16 id);
 void GfxSys_StartFadeOut(int a, int b, int c);
 BOOL MsgBox_Update(void *p);
 void *Param_GetDesc(u16 id);
@@ -11,7 +11,7 @@ void Obj0215bb14_SetText(void *a, void *b);
 void MsgBox_Render(void *p);
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
-void func_0206ecd4(s32 n, void *buf, u16 id);
+void Param_FormatName(s32 n, void *buf, u16 id);
 BOOL Ov015PointShop_BuyItem(Ov015Scene2b08 *o);
 
 void Ov015SpotSelect_ConfirmSpot(Ov015Scene2b88 *self, s32 a) {
@@ -33,7 +33,7 @@ void Ov015SpotSelect_ConfirmSpot(Ov015Scene2b88 *self, s32 a) {
         self->parent = 0;
         self->unk_04 |= 6;
         gOv015Shared->unk_0a = self->unk_54;
-        price = FLD(u16, func_0206ef88(gOv015Shared->unk_08), 0x0);
+        price = FLD(u16, Param_GetHarpoonInfo(gOv015Shared->unk_08), 0x0);
         r = 0;
         if (gStageFlags->unk_020 > price) {
             r = gStageFlags->unk_020 - price;
@@ -136,7 +136,7 @@ void Ov015SpotSelect_Draw(Ov015Scene2b88 *self) {
 BOOL Ov015PointShop_List3cOnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2b08 *o = (Ov015Scene2b08 *)self->owner;
     if (ev != NULL) {
-        func_0206ecd4(0x100, o->textBuf, ev->id);
+        Param_FormatName(0x100, o->textBuf, ev->id);
         if (o->unk_44 != NULL) {
             Obj0215bb14_SetText(o->unk_44, o->textBuf);
             o->unk_44->vfunc_70();
@@ -227,15 +227,15 @@ extern u8 Ov000Vt_021cb1b0_vtbl[];
 extern u8 Ov000Vt_021cb0b8_vtbl[];
 extern u8 Ov000Vt_021cafc0_vtbl[];
 extern u8 Lo021cad50_vtbl[];
-extern void *data_0208ccc8;
+extern void *ArcPath_Menu3D;
 extern u8 data_ov015_022129ac[];
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
 void UiList_SetIconModel(void *a, void *b, void *c, u16 d);
-BOOL func_0206f66c(u16 id);
+BOOL Item_IsOwned(u16 id);
 u8 *Param_GetExchangeItem(u16 id);
 void *Param_Get(u16 id);
-s32 func_0206f080(u16 id);
+s32 Param_GetIconId(u16 id);
 
 static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
     o->posX = x;
@@ -282,21 +282,21 @@ void Ov015PointShop_Start(Ov015Scene2b08 *self) {
     self->unk_3c->unk_c0 = 0x78;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->flags |= 0x40000;
-    UiList_SetIconModel(self->unk_3c, data_0208ccc8, data_ov015_022129ac, 0xffff);
+    UiList_SetIconModel(self->unk_3c, ArcPath_Menu3D, data_ov015_022129ac, 0xffff);
     for (i = 0; i < 13; i++) {
         id = i | 0xc000;
-        if (!func_0206f66c(id)) {
+        if (!Item_IsOwned(id)) {
             u8 *e = Param_GetExchangeItem(id);
             switch (e[0]) {
             case 0: {
                 u16 k = FLD(u16, e, 2);
                 void *a = Param_Get(k);
-                ((UiListItem *)self->unk_3c->vfunc_74(a, k, (u16)func_0206f080(k), FLD(u16, e, 4)))->unk_10 = id;
+                ((UiListItem *)self->unk_3c->vfunc_74(a, k, (u16)Param_GetIconId(k), FLD(u16, e, 4)))->unk_10 = id;
                 break;
             }
             case 1: {
                 void *a = Param_Get(id);
-                ((UiListItem *)self->unk_3c->vfunc_74(a, id, (u16)func_0206f080(id), FLD(u16, e, 4)))->unk_10 = id;
+                ((UiListItem *)self->unk_3c->vfunc_74(a, id, (u16)Param_GetIconId(id), FLD(u16, e, 4)))->unk_10 = id;
                 break;
             }
             }
@@ -339,7 +339,7 @@ void Ov015PointShop_Start(Ov015Scene2b08 *self) {
     self->unk_44->slideMode = 1;
     self->unk_44->vfunc_08();
     if (self->unk_3c->itemCount != 0) {
-        func_0206ecd4(0x100, self->textBuf, Ov015_ListNthB(self->unk_3c)->id);
+        Param_FormatName(0x100, self->textBuf, Ov015_ListNthB(self->unk_3c)->id);
         if (self->unk_44 != NULL) {
             Obj0215bb14_SetText(self->unk_44, self->textBuf);
             self->unk_44->vfunc_70();

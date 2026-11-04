@@ -67,7 +67,7 @@ extern Group *gGroup;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
-void func_ov000_0218df68(ActorGroup *group, Actor *actor);
+void ActorGroup_RemoveActor(ActorGroup *group, Actor *actor);
 void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Actor *actor);
 
 static inline Actor *GetActor0218ab00(u16 id) {
@@ -129,7 +129,7 @@ void GroupNode_Refresh(GroupNode *self) {
             continue;
         }
         GroupNode_UpdateEntry(self, 2, a);
-        func_ov000_0218df68(ActorMgr_GetGroup(gActorMgr, a->id & 0xf000), a);
+        ActorGroup_RemoveActor(ActorMgr_GetGroup(gActorMgr, a->id & 0xf000), a);
     }
     if (changed) {
         Group_RemoveNode(gGroup, self, 0);

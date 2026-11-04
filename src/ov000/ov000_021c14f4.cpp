@@ -31,7 +31,7 @@ typedef struct G3dGlb14f4 {
 } G3dGlb14f4;
 extern G3dGlb14f4 NNS_G3dGlb;
 extern char data_ov000_021cc929[];
-void func_ov000_021c14dc(void *self);
+void ActorMarker_RSInit0b(void *self);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 void *ResSet_ReleaseAll(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
@@ -102,7 +102,7 @@ void ActorMarker_UpdateKind0b(ActorMarker3D *self) {
         Model0218fe1c_SetAnim(self->unk_90, data_ov000_021cc929, 0, 1);
         self->unk_90->actor_id = 0;
         model = self->unk_90;
-        NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c14dc);
+        NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)ActorMarker_RSInit0b);
         model->clearInit = 0;
         Model0218fe1c_SetLoop(self->unk_90);
         self->work.state = 4;

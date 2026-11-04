@@ -4,7 +4,7 @@ extern "C" {
 
 extern void Ov012ActExVt_0220b1e8_HitNearby(Ov012ActExVt_0220b1e8 *self);
 
-void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
+void Ov012ActExVt_0220b1e8_UpdateThrown(Ov012ActExVt_0220b1e8 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {

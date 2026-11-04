@@ -49,9 +49,9 @@ struct Model;
 struct Obj0216c954; // ov000/Obj0216c954.h
 struct Obj0216ad04; // ov000/Obj0216ad04.h
 
-// 0x1c bytes, ListBuffer021cb940::unk_68 (init func_ov000_0216b474, release func_ov000_0216b490): a 2D model
+// 0x1c bytes, ListBuffer021cb940::unk_68 (init Lo0216b474_Init, release Lo0216b474_Release): a 2D model
 // that slides in while something keeps asking for it each frame (Lo0216b474_Ask, from the robot's
-// update) and slides out once it stops. func_ov000_0216b550 updates it, func_ov000_0216b880 places it.
+// update) and slides out once it stops. Lo0216b474_Update updates it, Lo0216b474_Draw places it.
 struct Lo0216b474 {
     union {
         u32 flags;

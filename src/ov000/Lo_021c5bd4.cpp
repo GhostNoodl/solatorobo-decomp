@@ -4,13 +4,13 @@
 
 extern "C" {
 extern void *gMsgRes;
-extern void *data_0208cc88;
-extern void *data_0208cc94;
+extern void *ResName_BattleCells;
+extern void *ArcPath_MenuBattle;
 void *MsgRes_GetString(void *a, s32 b);
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
 void TexObj_SetAllOamFuncs(void *model, void *fn);
-void *func_ov000_021c5a0c(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *Lo021cca40_OamCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void Lo021cca40_Update(Lo021cca40 *self) {
     void *res;
@@ -46,8 +46,8 @@ void Lo021cca40_Update(Lo021cca40 *self) {
     if (m != NULL) {
         void *arc;
         void *name;
-        name = data_0208cc88;
-        arc = data_0208cc94;
+        name = ResName_BattleCells;
+        arc = ArcPath_MenuBattle;
         PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
         TexObj_Init((Model *)m, (const char *)name, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc);
@@ -57,7 +57,7 @@ void Lo021cca40_Update(Lo021cca40 *self) {
     self->unk_34->flags |= 2;
     TexObj_SelectImage(self->unk_34, 0, 6);
     TexObj_SelectImage(self->unk_34, 0, 7);
-    TexObj_SetAllOamFuncs((u8 *)self->unk_34, (void *)func_ov000_021c5a0c);
+    TexObj_SetAllOamFuncs((u8 *)self->unk_34, (void *)Lo021cca40_OamCallback);
     self->built = 1;
 }
 

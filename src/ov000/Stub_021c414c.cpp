@@ -25,7 +25,7 @@ static inline void SelectNode(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
     }
 }
 
-void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
+void LoBase021ccb54_021ccbe0_SelectRow(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
     ListRow *n = self->unk_94;
     s32 i = 0;
     while (n != NULL) {

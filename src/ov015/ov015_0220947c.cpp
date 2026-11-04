@@ -31,7 +31,7 @@ void HitSphere_Unlink_0203f364(void *a);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
-int func_0203f3d0(void *a);
+int HitSphere_Collide(void *a);
 extern u32 gHitSphereGroups;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
@@ -156,7 +156,7 @@ BOOL Ov015Fish_Update(Ov015Fish *self, BOOL b) {
     self->hit.prev = self->hit.pos;
     self->hit.pos = self->pos;
     self->hit.radius = self->radius;
-    func_0203f3d0(&self->hit);
+    HitSphere_Collide(&self->hit);
     self->hit.unk_44 = gHitSphereGroups;
     return TRUE;
 }

@@ -99,7 +99,7 @@ extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 
 BOOL func_02047694(SaveBase *s);
-BOOL func_02047724(SaveBase *s);
+BOOL SaveBase_VerifySlot(SaveBase *s);
 
 static inline void SaveBase_SetState(SaveBase *s, s32 state) {
     if (s->state != state) {

@@ -5,15 +5,15 @@
 #include "ov000/LoTimer.h"
 
 extern "C" {
-extern char data_0214b105[];
-extern const char *data_0208cb7c;
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern char gCommonTextPath[];
+extern const char *ResName_TextCells;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 void *Heap_Alloc(u32 size);
 void TexObj_SetOamFunc(void *model, s32 a, void *cb, void *arg);
-void *func_ov000_0216d5b0(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *LoTimer_OamCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
 
-void func_ov000_0216e67c(LoTimer *self) {
+void LoTimer_LoadModels(LoTimer *self) {
     void *res;
     Model *m;
     Model *m2;
@@ -21,10 +21,10 @@ void func_ov000_0216e67c(LoTimer *self) {
     if (self->built == 1) {
         return;
     }
-    res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
+    res = ResList_FindType2(ResMgr_GetArcList(gCommonTextPath), ResName_TextCells);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        const char *n = data_0208cb7c;
+        const char *n = ResName_TextCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, n, 0);
     }
@@ -36,10 +36,10 @@ void func_ov000_0216e67c(LoTimer *self) {
     TexObj_SelectImage(self->unk_10, 0, 0xf);
     self->unk_10->flags |= 0x80000;
     MODEL_FLAGS(self->unk_10)->alpha = 0x1e;
-    res2 = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res2 = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     m2 = (Model *)Heap_Alloc(sizeof(Model));
     if (m2) {
-        const char *n = data_0208cc88;
+        const char *n = ResName_BattleCells;
         PlttRes_Init_02041218(&m2->pltt);
         TexObj_Init(m2, n, 0);
     }
@@ -54,9 +54,9 @@ void func_ov000_0216e67c(LoTimer *self) {
         q->unk_14c = 0x800;
     }
     TexObj_SelectImage(self->unk_14, 0, 0x1e);
-    TexObj_SetOamFunc(self->unk_14, 0x1e, (void *)func_ov000_0216d5b0, self);
+    TexObj_SetOamFunc(self->unk_14, 0x1e, (void *)LoTimer_OamCallback, self);
     TexObj_SelectImage(self->unk_14, 0, 0x1f);
-    TexObj_SetOamFunc(self->unk_14, 0x1f, (void *)func_ov000_0216d5b0, self);
+    TexObj_SetOamFunc(self->unk_14, 0x1f, (void *)LoTimer_OamCallback, self);
     TexObj_SelectImage(self->unk_14, 0, 0x20);
     self->unk_14->flags |= 0x80000;
     MODEL_FLAGS(self->unk_14)->alpha = 0x1e;

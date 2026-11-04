@@ -11,7 +11,7 @@ typedef struct {
 extern "C" {
 
 void Gfx3D_SendDL(void *p, s32 a);
-void func_ov000_021bbf78(Obj021bbbdc *self);
+void Obj021bbf78_Draw(Obj021bbbdc *self);
 
 void MissionInfo_Draw(Obj021bbbdc *self) {
     switch (self->unk_50) {
@@ -20,7 +20,7 @@ void MissionInfo_Draw(Obj021bbbdc *self) {
     case 12:
     case 13:
         Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
-        func_ov000_021bbf78(self);
+        Obj021bbf78_Draw(self);
         if (self->unk_5c != NULL) {
             self->unk_5c->vfunc_20();
         }

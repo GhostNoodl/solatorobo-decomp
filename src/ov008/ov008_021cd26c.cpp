@@ -23,7 +23,7 @@ struct Ov008GlyphInfo {
 };
 extern "C" {
 
-Ov008Oam *func_ov008_021cd26c(void *a, Ov008GlyphInfo *info, Ov008Oam *oam, u16 *n) {
+Ov008Oam *Ov008WorldMap_OamCallback0(void *a, Ov008GlyphInfo *info, Ov008Oam *oam, u16 *n) {
     u16 cnt = *n;
     Ov008Oam *last = &oam[cnt - 1];
     if (info->type == 2) {
@@ -52,7 +52,7 @@ Ov008Oam *func_ov008_021cd26c(void *a, Ov008GlyphInfo *info, Ov008Oam *oam, u16 
     return oam;
 }
 
-Ov008Oam *func_ov008_021cd3dc(void *a, Ov008GlyphInfo *info, Ov008Oam *oam, u16 *n) {
+Ov008Oam *Ov008WorldMap_OamCallback1(void *a, Ov008GlyphInfo *info, Ov008Oam *oam, u16 *n) {
     u16 cnt = *n;
     Ov008Oam *last = &oam[cnt - 1];
     if (info->type == 6) {

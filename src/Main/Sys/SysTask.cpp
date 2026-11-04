@@ -28,7 +28,7 @@ void Unk0214a418_Create(void) {
 }
 
 static inline void Unk0214a418_Dtor(Unk0214a418 *p) {
-    func_02063374(p);
+    Unk0214a418_Release(p);
     p->unk_00 = 0;
     p->unk_04 = 0;
     p->unk_08 = NULL;
@@ -75,19 +75,19 @@ struct SysTaskRes {
     virtual void *vf10(void);
 };
 
-extern void *data_0208b3d0[];
-extern u32 data_020828f8[];
+extern void *Gfx3D_PrimDLs[];
+extern u32 Gfx3D_PrimDLSizes[];
 extern char data_0208c1a0[];
 extern char data_0208c1a4[];
 extern char data_0208c1a8[];
 extern BOOL Unk0214a418_LoadTitleWipe(Unk0214a418 *p);
-extern BOOL func_02063650(Unk0214a418 *p);
+extern BOOL Unk0214a418_Draw(Unk0214a418 *p);
 extern void *Model0218fe1c_Init(void *p);
 extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 extern BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 extern void Model0218fe1c_SetLoop(void *a);
 extern void Model0218fe1c_ClearLoop(void *a);
-extern void func_02041d8c(void *a);
+extern void TexObj_ShrinkRes(void *a);
 extern BOOL Model_IsReady(Model *a, u32 b);
 extern void Gfx3D_SendDL(void *a, s32 b);
 extern void NNS_G3dGeBufferOP_N(u32 cmd, const void *data, u32 count);
@@ -123,7 +123,7 @@ static inline void ST_DrawBg(int idx, int x, int y, u32 color) {
     NNS_G3dGeBufferOP_N(0x1b, scale, 3);
     c = color;
     NNS_G3dGeBufferOP_N(0x20, &c, 1);
-    NNS_G3dGeSendDL(data_0208b3d0[idx], data_020828f8[idx]);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs[idx], Gfx3D_PrimDLSizes[idx]);
 }
 
 static inline void ST_Draw(Unk0214a418 *p, u32 size) {
@@ -154,7 +154,7 @@ static inline void ST_Draw(Unk0214a418 *p, u32 size) {
     NNS_G3dGeBufferOP_N(0x1b, scale, 3);
     c = 0;
     NNS_G3dGeBufferOP_N(0x20, &c, 1);
-    NNS_G3dGeSendDL(data_0208b3d0[1], size);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs[1], size);
     one = 1;
     NNS_G3dGeBufferOP_N(0x12, &one, 1);
     p->unk_14->unk_150 = -0x3b3;
@@ -224,13 +224,13 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
         return arg->state;
     }
     arg->timer += 0x1000;
-    size = data_020828f8[1];
+    size = Gfx3D_PrimDLSizes[1];
     do {
         again = FALSE;
         switch (p->unk_00) {
         case 0:
             if (Model_IsReady(p->unk_14, 0xffff)) {
-                func_02041d8c(p->unk_14);
+                TexObj_ShrinkRes(p->unk_14);
                 Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a0, 0, 1);
                 Model0218fe1c_ClearLoop(p->unk_0c);
                 p->unk_00 = 1;
@@ -241,7 +241,7 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
             if (arg->state == 1) {
                 ST_Draw(p, size);
             }
-            if (func_02063650(p)) {
+            if (Unk0214a418_Draw(p)) {
                 Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a4, 0, 1);
                 Model0218fe1c_SetLoop(p->unk_0c);
                 p->unk_00 = 2;
@@ -249,7 +249,7 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
             break;
         case 2:
             ST_Draw(p, size);
-            func_02063650(p);
+            Unk0214a418_Draw(p);
             Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a8, 0, 1);
             Model0218fe1c_ClearLoop(p->unk_0c);
             p->unk_00 = 3;
@@ -258,7 +258,7 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
             if (arg->state == 3) {
                 ST_Draw(p, size);
             }
-            if (func_02063650(p)) {
+            if (Unk0214a418_Draw(p)) {
                 if (arg->state == 3) {
                     p->unk_00 = 4;
                     if (arg->timer >= arg->limit) {
@@ -279,7 +279,7 @@ s32 Unk0214a418_Run(Unk0214a418 *p, s32 argv) {
             }
             break;
         case 5:
-            func_02063374(p);
+            Unk0214a418_Release(p);
             p->unk_00 = 0;
             arg->state = 0;
             break;

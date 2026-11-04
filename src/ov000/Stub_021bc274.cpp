@@ -19,7 +19,7 @@ extern "C" {
 extern Obj021ccd70 *gFieldFade;
 void *Heap_Alloc(u32 size);
 
-void func_ov000_021bc274(void) {
+void FieldFade_Create(void) {
     Obj021ccd70 *p;
     if (gFieldFade != NULL) {
         return;

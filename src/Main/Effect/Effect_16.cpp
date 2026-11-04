@@ -14,7 +14,7 @@ BOOL MainVt_0208c8bc_Loop(EffectEmitter *em) {
 extern u32 MainVt_0208c840_vtbl[];
 extern s32 Rand_PlusMinus(s32 range);
 extern void EffectPtcl_Init(EffectPtcl *p);
-extern void func_0206bab8(EffectEmitter *em, EffectPtcl *p);
+extern void EffectEmitter_InitPtcl(EffectEmitter *em, EffectPtcl *p);
 
 #define EFFECT_PARAM(em, off) (*(s32 *)((u8 *)&(em)->params + (off)))
 
@@ -28,7 +28,7 @@ static inline BOOL Effect_EmitDue(EffectEmitter *em, s32 t) {
     return FALSE;
 }
 
-EffectPtcl *func_0206b81c(EffectEmitter *em) {
+EffectPtcl *EffectEmitter_Emit(EffectEmitter *em) {
     MtxFx33 tmp;
     s32 n;
     u16 rx;
@@ -94,7 +94,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
             *(u32 **)p = MainVt_0208c840_vtbl;
             EffectPtcl_Init(p);
         }
-        func_0206bab8(em, p);
+        EffectEmitter_InitPtcl(em, p);
         if (head != NULL) {
             p->prev = NULL;
             p->next = head;
@@ -248,7 +248,7 @@ static inline void Effect_MtxRotYXZ(MtxFx43 *m, s32 range) {
     }
 }
 
-void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
+void EffectEmitter_InitPtcl(EffectEmitter *em, EffectPtcl *p) {
     s32 f;
     s32 range;
 

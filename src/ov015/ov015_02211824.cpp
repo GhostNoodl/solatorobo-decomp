@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 Ov015Info38_vtbl[];
-u8 *func_0206ef88(u16 id);
+u8 *Param_GetHarpoonInfo(u16 id);
 extern Ov015Obj290 *gOv015Obj290;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
@@ -42,7 +42,7 @@ void Ov015Info38_Set(Ov015Info38 *self, u16 id, s32 mode) {
     u8 *info;
     s32 t;
     self->id = id;
-    info = func_0206ef88(id);
+    info = Param_GetHarpoonInfo(id);
     self->unk_08 = info[2] * 0x333 + 0x4cd;
     self->unk_0c = info[2] * 0x4cd + 0xccd;
     self->unk_10 = 0xa000;

@@ -41,7 +41,7 @@ void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
 void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void TexObj_TickAnim(void *a, int b);
@@ -156,7 +156,7 @@ s32 Ov008WorldMap_Update(Ov008Mgr *m) {
             break;
         } else {
             res = gMsgRes;
-            id = func_02061d54(0x1a);
+            id = StageId_Strip(0x1a);
             w = (Ov008Dialog *)Heap_Alloc(0x1e4);
             if (w != NULL) {
                 OV008_SET_VT(w, &UiObj_vtbl);

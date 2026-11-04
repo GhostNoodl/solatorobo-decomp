@@ -36,7 +36,7 @@ extern "C" {
 extern Ent02197ad0 data_ov000_021c9de8[];
 extern void *gSndMgr;
 extern char data_ov000_021cc46f[];
-u16 func_ov000_02198da8(Body02197ad0 *b, u16 angle);
+u16 Body_GetFaceAngle(Body02197ad0 *b, u16 angle);
 void *SndMgr_PlayAt(void *mgr, s32 id, VecFx32 *pos, s32 a);
 void Ov003Pickup_Update(Actor *self, s32 a);
 
@@ -58,7 +58,7 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         e = &data_ov000_021c9de8[k];
     }
     if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) || ((Body02197ad0 *)self->hit)->unk_58 != 0) {
-        self->moveYaw = func_ov000_02198da8(((Body02197ad0 *)self->hit), self->moveYaw);
+        self->moveYaw = Body_GetFaceAngle(((Body02197ad0 *)self->hit), self->moveYaw);
         if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) && e->se >= 0 && ((Body02197ad0 *)self->hit)->unk_58 == 0) {
             SndMgr_PlayAt(gSndMgr, e->se, &self->pos, 0);
         }

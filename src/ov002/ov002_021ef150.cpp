@@ -63,7 +63,7 @@ BOOL LibraryMenu_List3cOnDecide(UiObj *self, ListRow *ev) {
                 Ov002_MakeLangFileName(w->unk_7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.hdExt, mode);
                 w->unk_bc = idx;
                 w->unk_c0 = (u16)n;
-                func_ov002_021d36b8(w, (u16)(idx * 3));
+                LibraryViewer_LoadPage(w, (u16)(idx * 3));
             }
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         }
@@ -128,7 +128,7 @@ u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
 void LoBase021ccb54_021ccbe0_CtorBase(Ov002RowList *self);
 void ListRow_Init(ListRow *self);
 void ListRowGauge_Init(ListRowGauge *self);
-void func_ov000_021c2c0c(ListRowGauge *self, void *a);
+void ListRowGauge_SetText(ListRowGauge *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 BOOL LibraryMenu_List3cOnCursor(UiObj *self, ListRow *arg);
 BOOL LibraryMenu_List3cOnDecide(UiObj *self, ListRow *ev);
@@ -190,7 +190,7 @@ void LibraryMenu_Start(Task021ef99c *self) {
             ListRowGauge_Init(q);
         }
         q->index = i;
-        func_ov000_021c2c0c(q, self->unk_4c[i].label);
+        ListRowGauge_SetText(q, self->unk_4c[i].label);
         val = func_ov002_021e4c30(i);
         lvl = Ov002LevelTable_GetLevel(&self->unk_4c[i], val);
         if (lvl != 3) {
@@ -407,7 +407,7 @@ char *Ov002StrTable_GetLabel(Ov002StrTable *self, u32 idx);
 char *Ov002StrTable_GetDesc(Ov002StrTable *self, u32 idx);
 void ListRow_Init(ListRow *self);
 void ListRowText_Init(ListRowText *self);
-void func_ov000_021c6140(TextList *self);
+void TextList_Init(TextList *self);
 void List021c6474_Append(TextList *self, ListRow *row);
 
 static inline bool ov002_IsActive(TimedBuffer021cb920 *p) {
@@ -469,7 +469,7 @@ void LibraryViewer_Start(Task021ef91c *self) {
             *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
             *(VFunc **)p = Ov000Vt_021ccadc_vtbl;
-            func_ov000_021c6140((TextList *)p);
+            TextList_Init((TextList *)p);
         }
         self->unk_3c = (TextList *)p;
         p->vfunc_10(self->unk_94.label);
@@ -597,7 +597,7 @@ void LibraryViewer_UpdateActive(Task021ef91c *self) {
 
 void LibraryViewer_PreUpdate(Task021ef91c *self) {
     if (self->state == 0xd) {
-        func_ov002_021d37f8(self);
+        LibraryViewer_ShowPage(self);
     }
 }
 
@@ -618,7 +618,7 @@ void LibraryViewer_PostUpdate(Task021ef91c *self) {
         s32 n = self->unk_3c->index + self->unk_bc * 3;
         cnt++;
         if (self->unk_cc != n) {
-            func_ov002_021d36b8(self, n);
+            LibraryViewer_LoadPage(self, n);
         }
     }
     if (self->unk_40 != NULL && self->unk_40->vfunc_1c()) {

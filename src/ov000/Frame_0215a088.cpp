@@ -44,7 +44,7 @@ extern const Vtxs0215a088 data_ov000_021c98fa;
 extern const Tcs0215a088 data_ov000_021c995c;
 extern const Quads0215a088 data_ov000_021c99dc;
 
-void func_ov000_0215a088(Frame0215a088 *self) {
+void Lo021cb5a8_BuildFrameDL(Frame0215a088 *self) {
     Tcs0215a088 tc;
     Quads0215a088 quads;
     GXDLInfo dl;

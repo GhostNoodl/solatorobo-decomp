@@ -10,9 +10,9 @@ extern void *Heap_Alloc(u32 size);
 extern void PM_AppendPreSleepCallback(MovieSleepCb *cb);
 extern void PM_AppendPostSleepCallback(MovieSleepCb *cb);
 extern BOOL OS_IsRunOnTwl(void);
-void func_02044670(Movie *m);
-void func_0204479c(Movie *m, int arg);
-void func_02043ef8(Movie *m);
+void Movie_StopPlayback(Movie *m);
+void Movie_DecodeLoop(Movie *m, int arg);
+void Movie_Init(Movie *m);
 
 extern void SND_StartTimer(int chMask, int capMask, int alarmMask, int flags);
 extern void SND_StopTimer(int chMask, int capMask, int alarmMask, int flags);
@@ -44,7 +44,7 @@ void Movie_Pause(void) {
     if (m->state == 0) {
         return;
     }
-    func_02044670(m);
+    Movie_StopPlayback(m);
     m->paused = TRUE;
 }
 
@@ -66,13 +66,13 @@ void Movie_Create(void) {
     gSysState->cur = gSysState->heapLo;
     m = (Movie *)Heap_Alloc(sizeof(Movie));
     if (m != NULL) {
-        func_02043ef8(m);
+        Movie_Init(m);
     }
     gMovie = m;
     gSysState->cur = gSysState->heapHi;
 }
 
-void func_02043ef8(Movie *m) {
+void Movie_Init(Movie *m) {
     m->state = 0;
     *(u8 *)((u8 *)m + 0x14a) = 0;
     *(u8 *)((u8 *)m + 0x14b) = 0;
@@ -113,9 +113,9 @@ extern void OS_CreateThread(Movie *m, void (*cb)(int), int arg, void *buf, u32 s
 extern void OS_WakeupThreadDirect(Movie *m);
 extern void OS_SetThreadStackWarningOffset(Movie *m, int arg);
 extern const char data_0208b3d8[];
-void func_02044494(int arg);
+void Movie_DecodeThread(int arg);
 void Movie_Close(Movie *m);
-void func_020448dc(Movie *m);
+void Movie_StartSound(Movie *m);
 
 static inline void Sys_SetFrameWait(u8 w) {
     UnkSys *sys = gSysState;
@@ -191,7 +191,7 @@ void Movie_Update(Movie *m) {
             MIi_CpuClearFast(0, m->bufR, m->bufSize);
         }
         m->buf = Heap_AllocLo(0x300, 4);
-        OS_CreateThread(m, func_02044494, 0, (u8 *)m->buf + 0x300, 0x300, 0x11);
+        OS_CreateThread(m, Movie_DecodeThread, 0, (u8 *)m->buf + 0x300, 0x300, 0x11);
         OS_SetThreadStackWarningOffset(m, 0x4c);
         Movie_SetFrameWait(60 / (m->unk_140 >> 24));
         m->state = 2;
@@ -208,13 +208,13 @@ void Movie_Update(Movie *m) {
             return;
         }
         if (m->channels != 0) {
-            func_020448dc(m);
+            Movie_StartSound(m);
         }
         m->state = 4;
         return;
     case 4:
         if (m->paused) {
-            func_02044670(m);
+            Movie_StopPlayback(m);
             return;
         }
         if (m->numQueued >= 3 && m->numBlocks >= 4) {
@@ -251,7 +251,7 @@ void Movie_Update(Movie *m) {
             return;
         }
         if (m->channels != 0) {
-            func_020448dc(m);
+            Movie_StartSound(m);
         }
         m->state = 4;
         return;
@@ -266,8 +266,8 @@ void Movie_Update(Movie *m) {
     }
 }
 
-void func_02044494(int arg) {
-    func_0204479c(gMovie, arg);
+void Movie_DecodeThread(int arg) {
+    Movie_DecodeLoop(gMovie, arg);
 }
 
 void Movie_Load(Movie *m, int idx, int mode, BOOL loop) {
@@ -333,7 +333,7 @@ void Movie_Close(Movie *m) {
     m->opened = FALSE;
 }
 
-void func_02044670(Movie *m) {
+void Movie_StopPlayback(Movie *m) {
     if (!m->playing) {
         return;
     }
@@ -359,7 +359,7 @@ void func_02044670(Movie *m) {
     m->state = 7;
 }
 
-void func_0204479c(Movie *m, int arg) {
+void Movie_DecodeLoop(Movie *m, int arg) {
     u32 bs = Mo_GetBlockSize(m->audio);
     u32 total = m->blockCount * bs;
     for (;;) {
@@ -399,7 +399,7 @@ void Movie_ReleaseBlock(void) {
     }
 }
 
-void func_020448dc(Movie *m) {
+void Movie_StartSound(Movie *m) {
     u32 timer;
     u32 bs;
     int ch;

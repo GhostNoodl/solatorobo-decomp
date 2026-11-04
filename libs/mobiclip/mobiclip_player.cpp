@@ -6,9 +6,9 @@ extern "C" {
 extern void Gfx3D_FreeHi(void *ptr);
 extern void *Gfx3D_AllocHi(u32 size);
 extern void *MoMem_GetVideoCode(void);
-extern void *func_020346d4(void);
-extern void *func_02034740(void);
-extern u32 func_020347ac(void);
+extern void *MoMem_GetCode04(void);
+extern void *MoMem_GetCode00(void);
+extern u32 MoMem_GetCode1C(void);
 
 #define MOFLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
@@ -53,12 +53,12 @@ BOOL MoPlayer_Open(MoPlayer *player, MoStream *stream, u32 flags) {
     player->decoder = dec;
     MIi_CpuClearFast(0, dec, 0x454);
     player->decodeFunc = (int (*)(MoVideoDecoder *))MoMem_GetVideoCode();
-    MOFLD(void *, player->decoder, 0x3c) = func_020346d4();
+    MOFLD(void *, player->decoder, 0x3c) = MoMem_GetCode04();
     MOFLD(u32, player->decoder, 0x40) = 0x2079bb8;
-    MOFLD(u32, player->decoder, 0x44) = func_020347ac() + 0x40;
+    MOFLD(u32, player->decoder, 0x44) = MoMem_GetCode1C() + 0x40;
     MOFLD(u32, player, 0x4c) = player->width;
     MOFLD(u32, player, 0x50) = player->height;
-    MOFLD(void *, player, 0x54) = func_02034740();
+    MOFLD(void *, player, 0x54) = MoMem_GetCode00();
     MOFLD(u32, player->decoder, 0x4) = player->width;
     MOFLD(u32, player->decoder, 0x8) = player->height;
     if (player->width > 0x100) {
@@ -339,7 +339,7 @@ BOOL MoPlayer_ConvertFrame(MoPlayer *player, void *dst, u32 stride, int mode) {
         params.width = player->width;
         params.height = player->height;
         params.unk_18 = player->unk_64[player->curBuffer];
-        params.unk_1c = func_020347ac();
+        params.unk_1c = MoMem_GetCode1C();
         if (mode == 2) {
             params.unk_20 = FALSE;
         } else {
@@ -366,7 +366,7 @@ extern void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 extern int func_02075d4c(MoAudioDecoder *decoder);
 extern void func_0207670c(MoAudioDecoder *decoder);
 extern void MoAdpcm_SetHeader(MoAudioDecoder *decoder, u8 *data);
-extern void func_020349ec(MoAudioDecoder *decoder, u8 *data, u32 size, void *out);
+extern void MoAdpcm_DecodeBlock(MoAudioDecoder *decoder, u8 *data, u32 size, void *out);
 
 BOOL MoPlayer_SkipFrame(MoPlayer *player) {
     if (player->shownFrames >= player->decodedFrames) {
@@ -406,7 +406,7 @@ BOOL MoPlayer_DecodeAudio(MoPlayer *player, void *out) {
             MoAdpcm_SetHeader(&player->audioDecoders[player->audioChannel], player->decoder->data);
             player->decoder->data += 4;
         }
-        func_020349ec(&player->audioDecoders[player->audioChannel], player->decoder->data, 0x80, out);
+        MoAdpcm_DecodeBlock(&player->audioDecoders[player->audioChannel], player->decoder->data, 0x80, out);
         player->decoder->data += 0x80;
     } else {
         MIi_CpuCopy16(player->decoder->data, out, 0x200);

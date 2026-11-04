@@ -20,7 +20,7 @@ typedef struct SndListener {
     /* 0xf8 */ VecFx32 pos;
 } SndListener;
 
-extern s32 data_0208b700;
+extern s32 Snd_AreaCount;
 extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];

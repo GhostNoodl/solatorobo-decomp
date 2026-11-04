@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_0205592c(GlyphCache *cache);
+void GlyphCache_Clear(GlyphCache *cache);
 
 BOOL func_020559c8(FieldMsg *msg) {
     if (msg->flag16) {

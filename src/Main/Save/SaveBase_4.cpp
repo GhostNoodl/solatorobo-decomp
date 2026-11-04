@@ -22,7 +22,7 @@ void SaveBase_State9(SaveBase *s) {
                 return;
             }
             SysCard_EndAccess();
-            if (!func_02047724(s)) {
+            if (!SaveBase_VerifySlot(s)) {
                 SaveBase_SetState(s, 11);
             } else {
                 SaveBase_SetState(s, 10);

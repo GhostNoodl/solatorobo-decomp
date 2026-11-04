@@ -14,13 +14,13 @@ void HitMesh_Link(void *mesh);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, int scale);
 void HitMesh_SetMtx(void *mesh, const void *mtx);
-BOOL func_ov000_021b6d28(FieldPropLoader *p);
-void func_ov000_021b70c0(FieldPropModel *a, FieldPropLoader *b, s32 c, u8 d, s32 e, s32 f);
+BOOL FieldPropLoader_Bind(FieldPropLoader *p);
+void FieldPropModel_Setup(FieldPropModel *a, FieldPropLoader *b, s32 c, u8 d, s32 e, s32 f);
 
-BOOL func_ov000_021b7f0c(FieldProp *self) {
+BOOL FieldProp_Load(FieldProp *self) {
     BOOL ok = TRUE;
     if (self->loader.state >= 0) {
-        if (!func_ov000_021b6d28(&self->loader)) {
+        if (!FieldPropLoader_Bind(&self->loader)) {
             ok = FALSE;
         } else {
             s32 a = 0;
@@ -32,7 +32,7 @@ BOOL func_ov000_021b7f0c(FieldProp *self) {
             if (self->lod) {
                 m = 2;
             }
-            func_ov000_021b70c0(&self->model, &self->loader, self->unk_f0, self->unk_f4, a, m);
+            FieldPropModel_Setup(&self->model, &self->loader, self->unk_f0, self->unk_f4, a, m);
             if (self->loader.hit != NULL) {
                 Mtx021b7f0c mtx;
                 void *mesh;

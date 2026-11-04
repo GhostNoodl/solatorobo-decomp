@@ -27,7 +27,7 @@ ov006_Task *Ov006Vt_021ebc98_Ctor(void *mem);
 ov006_Task *Ov006Vt_021ebfc0_Ctor(void *mem);
 ov006_Task *Ov006Vt_021ec040_Ctor(void *mem);
 int ov006_Manager_SwitchTask(ov006_Manager *self);
-int func_ov006_021cd4c0(ov006_Manager *self);
+int ov006_Manager_ShutdownNet(ov006_Manager *self);
 
 void ov006_Task_Ctor(ov006_Task *self) {
     *(void **)self = &ov006_Task_vtbl;
@@ -73,7 +73,7 @@ void ov006_Task_Draw(void) {
 static inline void ov006_Manager_Dtor(ov006_Manager *self) {
     self->vtbl = &Ov006Vt_021ebb48_vtbl;
     OV006_DELETE_OBJECT(self->task);
-    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
     ResMgr_ReleaseByName(gResMgr, data_ov006_021ebb88, 7, 0);
     ov006_Menu_Delete();
     WH_Destroy_02044b20();
@@ -120,7 +120,7 @@ void ov006_Manager_Delete(void) {
 #pragma force_active reset
 
 static inline BOOL ov006_IsLoaded(void) {
-    return ((ResMgr_IsLoaded(data_0208cca0, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ebb88, 7)) != 0;
+    return ((ResMgr_IsLoaded(ArcPath_Menu, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ebb88, 7)) != 0;
 }
 
 int ov006_Manager_LoadRes(ov006_Manager *self) {
@@ -131,7 +131,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
 
     switch (self->state) {
     case 0:
-        ResMgr_Load(data_0208cca0, 7, zero);
+        ResMgr_Load(ArcPath_Menu, 7, zero);
         ResMgr_Load(data_ov006_021ebb88, 7, zero);
         self->state = 1;
         self->subState = zero;
@@ -173,7 +173,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
         }
         break;
     case 4:
-        if (func_ov006_021cd4c0(self) != 0) {
+        if (ov006_Manager_ShutdownNet(self) != 0) {
             self->state = 5;
             self->subState = zero;
         }
@@ -299,7 +299,7 @@ BOOL ov006_Manager_SwitchTask(ov006_Manager *self) {
     return result;
 }
 
-BOOL func_ov006_021cd4c0(ov006_Manager *self) {
+BOOL ov006_Manager_ShutdownNet(ov006_Manager *self) {
     BOOL result = FALSE;
     switch (self->subState) {
     case 0:

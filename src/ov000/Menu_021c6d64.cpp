@@ -22,7 +22,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     TexObj_DrawCell(model, anim, part, flag);
 }
 
-void func_ov000_021c6d64(TextList *self, void *unused, VecFx32 *pos, s32 arg) {
+void TextList_DrawBody(TextList *self, void *unused, VecFx32 *pos, s32 arg) {
     s32 z = pos->z + 0x20;
     if (self->count > 1 && (self->listFlags.wrap || self->index > 0)) {
         MtxFx22 m;

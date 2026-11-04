@@ -264,7 +264,7 @@ BOOL EffectEmitter_MovePtcls(EffectEmitter *em) {
 }
 
 
-EffectPtcl *func_0206b340(EffectEmitter *em) {
+EffectPtcl *EffectEmitter_SortPtcls(EffectEmitter *em) {
     EffectPtcl *p;
     EffectPtcl *q;
     EffectPtcl *next;
@@ -364,7 +364,7 @@ void EffectEmitter_Draw(EffectEmitter *em) {
     bb.m[3][0] = 0;
     bb.m[3][1] = 0;
     bb.m[3][2] = 0;
-    for (p = func_0206b340(em); p != NULL; p = p->next) {
+    for (p = EffectEmitter_SortPtcls(em); p != NULL; p = p->next) {
         p->unk_a0 = Effect_NextPolyId_0206379c();
         if (em->unk_28 == 1) {
             EffectPtcl_Draw(p, em->unk_28, &bb, em->alpha);

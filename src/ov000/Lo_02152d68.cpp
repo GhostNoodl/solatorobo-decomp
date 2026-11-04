@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0215a8c8(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
+void Lo021cb5a8_DrawFrameOam(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
 void UiObj_Release(UiObj *self) {
     self->vfunc_48(1, 0);

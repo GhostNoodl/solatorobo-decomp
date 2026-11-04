@@ -19,7 +19,7 @@ void PlayTime_Clear(PlayTime *t);
 void PlayTime_Normalize_02048bfc(PlayTime *t, BOOL toMinutes);
 void PlayTime_Clamp(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis);
 void PlayTime_Add(PlayTime *dst, const PlayTime *a, const PlayTime *b);
-void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b);
+void PlayTime_Sub(PlayTime *dst, const PlayTime *a, const PlayTime *b);
 void PlayTime_FromFrames(PlayTime *t, u32 frames);
 
 #ifdef __cplusplus

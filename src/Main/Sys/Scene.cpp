@@ -14,14 +14,14 @@ extern const char *data_0208cb28[];
 
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 extern void StageFlags_Create(void);
-extern void func_0206e858(void);
+extern void LangData_InitLanguage(void);
 extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
 extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
 extern void func_0201bbfc(u32 a);
 extern void GfxSys_StopFade(int a);
 extern void StageFlags_Reset(StageFlags *obj);
 extern void Snd_Reset(void);
-extern void func_02039e0c(GfxMgr *mgr);
+extern void GfxMgr_FreeTemporary(GfxMgr *mgr);
 extern void GfxSys_SetBackdrop(GfxSys *sys, u16 color);
 extern void GfxSys_SetBackdropSub(GfxSys *sys, u16 color);
 extern void Gfx3DState_SetDefaults(void *obj);
@@ -60,7 +60,7 @@ void SceneMgr_Create(void) {
         movie->unk_0e8 = 2;
     }
     StageFlags_Create();
-    func_0206e858();
+    LangData_InitLanguage();
 }
 
 void SceneMgr_Run(void) {
@@ -98,7 +98,7 @@ void SceneMgr_Update(SceneMgr *mgr) {
                     func_0201bbfc(1);
                     gSysState->frameWait = 1;
                     GfxSys_StopFade(-1);
-                    for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
+                    for (i = 0, entry = Scene_EntryTable; i < 2; i++, entry++) {
                         if (entry->valid == 1) {
                             Scene_SetNext(&entry->desc);
                             gSceneMgr->changing = TRUE;
@@ -108,7 +108,7 @@ void SceneMgr_Update(SceneMgr *mgr) {
                     gSceneMgr->noReset = FALSE;
                     StageFlags_Reset(gStageFlags);
                     Snd_Reset();
-                    func_02039e0c(gGfxMgr);
+                    GfxMgr_FreeTemporary(gGfxMgr);
                 }
             }
             if (mgr->state == 0 && mgr->cur.draw != NULL && !PauseNode_IsDrawPaused(&gSysState->node, TRUE)) {
@@ -156,7 +156,7 @@ void SceneMgr_Update(SceneMgr *mgr) {
         case 4:
             GX_DispOn();
             *(vu32 *)0x4001000 |= 0x10000;
-            for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
+            for (i = 0, entry = Scene_EntryTable; i < 2; i++, entry++) {
                 if (entry->valid == 1) {
                     Scene_SetNext(&entry->desc);
                     gSceneMgr->changing = TRUE;

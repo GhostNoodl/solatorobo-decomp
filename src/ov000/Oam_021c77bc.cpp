@@ -16,7 +16,7 @@ static inline s32 GetWidth021c77bc(u8 *obj) {
 
 extern "C" {
 
-Glyph021c77bc *func_ov000_021c77bc(u8 *self, u16 *cmd, Glyph021c77bc *arr, u16 *count) {
+Glyph021c77bc *LoBase021ccb54_021ccbe0_GlyphCallback(u8 *self, u16 *cmd, Glyph021c77bc *arr, u16 *count) {
     u16 n = *count;
     if (*cmd == 2) {
         s32 w = GetWidth021c77bc(LFLD(u8 *, cmd, 0x8)) - 0xc;

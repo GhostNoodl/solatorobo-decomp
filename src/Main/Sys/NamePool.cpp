@@ -37,7 +37,7 @@ typedef struct NamePools {
 } NamePools;
 
 // mwcc lays out .bss in the order x(n-1) .. x1, xn of the definitions.
-u32 data_02097de0;
+u32 gPlttTransferId;
 u32 gTexTransferId;
 NamePool *gPlttNamePool;
 u32 data_02097dd4;
@@ -569,7 +569,7 @@ typedef struct ResTex {
     /* 0x18 */ ResTex4x4Info tex4x4Info;
 } ResTex;
 
-void func_0203ec08(ResTex *tex) {
+void ResTex_QueueTransfer(ResTex *tex) {
     u32 ofsPltt;
     u32 key;
     u32 size;
@@ -595,7 +595,7 @@ void func_0203ec08(ResTex *tex) {
     type = 0;
     addr = (key & 0xffff) << 3;
     gTexTransferId = Vram_QueueTransfer(type, (u32)tex + tex->tex4x4Info.ofsTex, addr, sz, type);
-    data_02097de0 = Vram_QueueTransfer(type, (u32)tex + ofsPltt, ((addr & 0x1ffff) >> 1) + 0x20000 + ((addr & 0x40000) >> 2), sz >> 1, type);
+    gPlttTransferId = Vram_QueueTransfer(type, (u32)tex + ofsPltt, ((addr & 0x1ffff) >> 1) + 0x20000 + ((addr & 0x40000) >> 2), sz >> 1, type);
     tex->tex4x4Info.flag |= 1;
 }
 
@@ -655,7 +655,7 @@ BOOL G3dRes_SetupVram(const char *name, u32 *res) {
                 NamePool_SetName(gPlttNamePool, name, 0);
                 tex->plttKey = NNS_GfdDefaultFuncAllocPlttVram(plttSize, tex->tex4x4Info.flag & 0x8000, 0);
             }
-            func_0203ec08((ResTex *)tex);
+            ResTex_QueueTransfer((ResTex *)tex);
             if (!(tex->plttFlag & 1)) {
                 u32 ofs;
                 u32 size = (u32)tex->sizePltt << 3;

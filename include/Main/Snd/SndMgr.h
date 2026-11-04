@@ -87,11 +87,11 @@ typedef struct SndGlobal {
 extern SndGlobal gSndQueue;
 #endif
 extern SndMgr *gSndMgr; // gSndQueue.mgr, reached through its own symbol
-extern const s8 data_0208b778[];
-extern const s32 data_0208b688[];
+extern const s8 SndMgr_SeqVolumeTable[];
+extern const s32 SndMgr_SeqArcTable[];
 
 struct SndCmd;
-void func_0204aad0(SndQueue *queue);
+void SndMgr_ClearSeqArc(SndQueue *queue);
 void SndQueue_Exec(SndQueue *queue, struct SndCmd *cmd);
 void SndQueue_StopSeqArcs(SndQueue *queue);
 void SndMgr_UpdateLoad(SndMgr *mgr);
@@ -107,7 +107,7 @@ void SndMgr_ResumeAll(SndMgr *mgr);
 void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 
 static inline s32 SndMgr_GetSeqVolume(s32 seq) {
-    return (u32)seq >= 0x4f ? 0 : data_0208b778[seq];
+    return (u32)seq >= 0x4f ? 0 : SndMgr_SeqVolumeTable[seq];
 }
 
 static inline void SndMgr_RequestLoad(SndMgr *mgr, s32 type, s32 id, s32 arg) {

@@ -9,7 +9,7 @@ static inline bool isState5(UiObj *p) {
 void Lo021cae48_SetValue(Lo021cae48 *self, s32 value, BOOL both);
 
 
-void *func_ov002_021e3874(s32 *v, int a, int b);
+void *Ov002_SpawnEffect3D(s32 *v, int a, int b);
 
 
 void Obj021eff10_ShowCellInfo(Obj021eff10 *self, void *a, void *b, int c);
@@ -40,7 +40,7 @@ void Obj021eff10_Step30(Obj021eff10 *self) {
         b[1] = self->unk_2c->unk_68;
         Ov002_CellToPos(out, a, b);
         out[1] = 0x266;
-        func_ov002_021e3874(out, 0x80, 1);
+        Ov002_SpawnEffect3D(out, 0x80, 1);
         Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
         Obj021eff10_ShowCellInfo(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
     } else {
@@ -184,7 +184,7 @@ extern VFunc Ov000Vt_021cb0b8_vtbl[];
 
 BOOL func_ov002_021e046c(UiList *self, UiListItem *item);
 
-void *func_ov002_021dd6a4(Obj021eff10 *self, char *text, u16 msgId) {
+void *Obj021eff10_NewMsgList(Obj021eff10 *self, char *text, u16 msgId) {
     Lo021cb0b8 *p;
     {
         void *saved;

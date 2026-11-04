@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0206ecd4(u32 size, void *dst, u16 id);
+void Param_FormatName(u32 size, void *dst, u16 id);
 
 static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
     s32 y = pos->y;
@@ -32,7 +32,7 @@ void Obj021eff10_ShowCellInfo(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
         if (nxt->obj != cur->obj || c != 0 || self->unk_20 != 0) {
             w->unk_74 = 1;
             w->unk_75 = 1;
-            func_0206ecd4(0x100, (u8 *)self + 0x34, nxt->obj->unk_48);
+            Param_FormatName(0x100, (u8 *)self + 0x34, nxt->obj->unk_48);
             ov002_ShowMsg(self, self->unk_34);
         }
         break;

@@ -65,7 +65,7 @@ typedef int (*VFunc)();
 void Heap_FreeArray(void *p);
 
 /* ---- */
-extern char data_0214b105[];
+extern char gCommonTextPath[];
 
 
 typedef struct {
@@ -275,7 +275,7 @@ Ov002LevelTable *Ov002Vt_021f00fc_Dtor(Ov002LevelTable *self);
 extern VFunc Ov002TaskVt_021ef99c_vtbl[];
 
 void Ov002StrTable_Clear(Ov002StrTable *self);
-void func_ov002_021d37f8(Task021ef91c *self);
+void LibraryViewer_ShowPage(Task021ef91c *self);
 extern VFunc Ov002TaskVt_021ef81c_vtbl[];
 void MenuScript_Open(void);
 u32 MenuScript_IsLoaded(void);
@@ -363,7 +363,7 @@ void Obj021efe8c_SyncAnmFrame(Obj021efe8c *self);
 void Obj021efe5c_SyncAnmFrame(Obj021efe5c *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-u8 *func_0206ef50(u32 id);
+u8 *Param_GetSlotInfo(u32 id);
 Ov002Shape *ParamKind_GetShape(int id);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
@@ -381,7 +381,7 @@ static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
     func_ov002_021e38f8(self->unk_5c, v);
 }
 
-void func_ov002_021d83f0(Obj021efe9c *self);
+void Obj021efe9c_Draw(Obj021efe9c *self);
 u8 Gfx3DState_NextPolyId(void *a);
 void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
 void Ov002_CellToPos(s32 *out, s32 *pos, s32 *origin);
@@ -433,8 +433,8 @@ void Obj021efe4c_SetupBoxModels(Obj021efe4c *self);
 void Obj021efe4c_UpdateBoxMesh(Obj021efe4c *self);
 void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range);
 void Obj021efe6c_Init(Obj021efe6c *self);
-void func_ov002_021d98ac(Obj021efe6c *self);
-void func_ov002_021d9c04(Obj021efe6c *self);
+void Obj021efe6c_LoadPieces(Obj021efe6c *self);
+void Obj021efe6c_CommitToFlags(Obj021efe6c *self);
 void Obj021efe6c_AppendPiece(Obj021efe6c *self, Obj021efeb8 *node);
 void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del);
 void func_ov002_021da054(Obj021efe6c *self);
@@ -495,7 +495,7 @@ void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc Ov000Vt_021ccbe0_vtbl[];
 void LoBase021ccb54_021ccbe0_Release(void *self);
-void func_ov002_021d95e0(Obj021efe6c *a);
+void Obj021efe6c_Start(Obj021efe6c *a);
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
     void *prev;
@@ -528,7 +528,7 @@ typedef struct Bits021e0420 {
 } Bits021e0420;
 
 extern VFunc Ov002Vt_021f0ce8_vtbl[];
-int func_ov002_021e3dac(Vec2 *pos, Ov002Shape *map, Ov002Shape *shape, Vec2 *out);
+int Ov002Shape_FitInMap(Vec2 *pos, Ov002Shape *map, Ov002Shape *shape, Vec2 *out);
 void Obj021efe9c_ClampToBoard(Obj021efe9c *self, Ov002Shape *map);
 void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *map);
 
@@ -540,7 +540,7 @@ typedef struct Bits021e2f04 {
 } Bits021e2f04;
 
 void func_ov002_021e0280(Obj021eff30 *self);
-void func_ov002_021d7988(Obj021efe5c *self);
+void Obj021efe5c_Draw(Obj021efe5c *self);
 void *TwlLoader_Unload(void *p);
 
 extern char data_ov002_021effde[];
@@ -652,7 +652,7 @@ void Obj021efe6c_FreePieces(Obj021efe6c *self);
 void Ov002Msg021f0ce8_Init(Ov002Msg021f0ce8 *p);
 extern VFunc Ov002Vt_021efe6c_vtbl[];
 
-void func_ov000_021c9544(void *a, void *b);
+void Parts_SumStats(void *a, void *b);
 typedef struct Bits021d9e38 {
     u16 b0 : 1;
     u16 mode : 2;
@@ -669,13 +669,13 @@ typedef struct Oam021e7ab8 {
     u32 b1 : 16;
 } Oam021e7ab8;
 
-void func_ov002_021d36b8(Task021ef91c *self, s32 n);
+void LibraryViewer_LoadPage(Task021ef91c *self, s32 n);
 extern VFunc Ov002Vt_021eff74_vtbl[];
 void Ov002StageFile_Init(Ov002StageFile *self);
 void Gfx3DState_Init(void *p);
 void Ov002Stage_Init(Ov002Stage *self);
 
-BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, Ov002Shape *c, Ov002Shape *d, Vec2 *out);
+BOOL Ov002Shape_Overlaps(Vec2 *a, Vec2 *b, Ov002Shape *c, Ov002Shape *d, Vec2 *out);
 BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *map, Ov002Shape *shape);
 BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *map);
 void Ov002Obj021f075c_UpdateAnims(Ov002Obj021f075c *self);
@@ -698,7 +698,7 @@ extern u8 data_ov002_021ef665[];
 extern VFunc Ov002Vt_021f000c_vtbl[];
 
 void *func_ov000_0214b8ec(void *p);
-void func_ov000_0214b1a0(VecFx32 *a, VecFx32 *b, s32 c, void *d);
+void Gfx_DrawTexQuad(VecFx32 *a, VecFx32 *b, s32 c, void *d);
 extern VecFx32 data_ov002_021ef124;
 
 extern u8 data_ov002_021f064d[];
@@ -713,7 +713,7 @@ typedef int (*SortCmp)(void *, void *);
 void ModelViewer_Draw(void *p);
 void MsgBox_Render(void *p);
 
-void func_0206e3a0(void *a, void *b);
+void LangSec_ApplyGfxEnv(void *a, void *b);
 void Gfx3DState_Apply(void *p);
 void Ov002Obj021f075c_Init(Ov002Obj021f075c *self);
 

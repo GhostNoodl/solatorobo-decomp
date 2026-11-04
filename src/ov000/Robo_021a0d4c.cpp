@@ -62,7 +62,7 @@ static inline Actor *Target021a0d4c(Robo021ca458 *self) {
 static inline void Gauge021a0d4c(u16 v) {
     ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_78 != NULL) {
-        func_ov000_0216adc0(g->unk_78, 1, v);
+        Obj0216ad04_Ask(g->unk_78, 1, v);
     }
 }
 

@@ -9,7 +9,7 @@ extern RoboDef data_ov000_021ca398[];
 extern char data_ov000_021cc5d2[];
 extern char data_ov000_021cc5d9[];
 void *Tbl_GetResFile(u16 id);
-s32 func_020701d4(u16 id);
+s32 Tbl_GetResFileName(u16 id);
 Param0206ef10 *Param_GetRecord(u16 id);
 void *Heap_Alloc(u32 size);
 void *Shadow_Ctor(void *p);
@@ -28,7 +28,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     u32 kind;
 
     res = Tbl_GetResFile(self->kind);
-    func_020701d4(self->kind);
+    Tbl_GetResFileName(self->kind);
     ResSet_SetFile(&self->res0, res, TRUE, TRUE, 1, FALSE);
     self->res0.unk_00 = 0;
     {

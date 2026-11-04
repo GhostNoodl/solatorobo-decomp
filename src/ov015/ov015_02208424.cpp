@@ -4,10 +4,10 @@
 extern "C" {
 
 extern Ov015Ship *gOv015Ship;
-extern void *data_0208cb74;
+extern void *ResName_CommonCells;
 void *ResMgr_GetArchiveList(void *a, void *b, int c);
 void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
-Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
+Ov015Glyph *Ov015Vt_02212d3c_OamCallback(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void Ov015_ParseTextTag(char *out, s32 *outId, u32 n, const char *src);
 void Ov015UiText_LoadText(Ov015UiText *self, void *p);
 s32 TexObj_GetCellWidth(void *m, void *anim);
@@ -143,7 +143,7 @@ void Ov015Ship_SetCaptureCb(NNSG3dRS *rs) {
     rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
-Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
+Ov015Glyph *Ov015Vt_02212d3c_OamCallback(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     u16 n = *count;
     if (entry->index == 0) {
         u32 x0 = e[0].x;
@@ -179,13 +179,13 @@ void Ov015Vt_02212d3c_Setup(Ov015UiText *self) {
     Model *l = (Model *)Heap_Alloc(sizeof(Model));
     void *r;
     if (l != NULL) {
-        Ov015Label_Ctor(l, data_0208cca0, data_0208cb74);
+        Ov015Label_Ctor(l, ArcPath_Menu, ResName_CommonCells);
     }
     self->model = l;
     r = ResList_FindType2(ResMgr_GetArchiveList(l->name, l->unk_04c, 2), self->model->unk_04c);
     TexObj_SetRes(self->model, r);
     self->model->flags |= 2;
-    TexObj_SetOamFunc(self->model, 0, (void *)func_ov015_0220848c, NULL);
+    TexObj_SetOamFunc(self->model, 0, (void *)Ov015Vt_02212d3c_OamCallback, NULL);
     if (self->title != NULL) {
         TexObj_SelectImage(self->model, 0, 7);
     }

@@ -71,7 +71,7 @@ extern void Vram_CancelTransfer(u32 id);
 extern void ResMgr_ReleaseArchive(const char *arc, const char *name, u16 mode);
 
 
-void func_020416b4(TexObj *obj, int i);
+void TexObj_FreeEntryVram(TexObj *obj, int i);
 
 void TexObj_Init(TexObj *obj, const char *name, u8 owned) {
     int i;
@@ -128,7 +128,7 @@ void TexObj_Release(TexObj *obj) {
     obj->texKey = 0;
     PlttRes_Release(&obj->pltt);
     for (i = 0; i < obj->count; i++) {
-        func_020416b4(obj, i);
+        TexObj_FreeEntryVram(obj, i);
     }
     if (obj->entries != NULL) {
         Heap_FreeHi(obj->entries);
@@ -144,7 +144,7 @@ void TexObj_Release(TexObj *obj) {
     TexObj_Init(obj, NULL, 0);
 }
 
-void func_020416b4(TexObj *obj, int i) {
+void TexObj_FreeEntryVram(TexObj *obj, int i) {
     TexObjEntry *e;
     u16 j;
     if (obj->entries == NULL) {
@@ -205,7 +205,7 @@ extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj
 extern u16 *NNS_G2dGetAnimSequenceByIdx(u16 *dict, int idx);
 extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
 extern void GfxPltt_ApplyFilter(GfxPltt *pltt, void *src, u32 size);
-void func_02041c90(TexObj *obj);
+void TexObj_ReloadCellImage(TexObj *obj);
 
 
 typedef struct OamAttrs {
@@ -226,8 +226,8 @@ typedef struct OamRes {
 
 typedef int OamShape;
 
-extern const int data_02082898[][4];
-extern const int data_020828c8[][4];
+extern const int Gfx3D_ObjWidthShift[][4];
+extern const int Gfx3D_ObjHeightShift[][4];
 
 static inline OamShape Oam_GetShape(const OamAttrs *attr) {
     return (OamShape)(*(u32 *)attr & 0xc000c000);
@@ -236,22 +236,22 @@ static inline OamShape Oam_GetShape(const OamAttrs *attr) {
 static inline int Oam_GetWidth(const OamShape *shape) {
     const u16 shapeBit = (u16)((*shape & 0xc000) >> 14);
     const u16 sizeBit = (u16)((*shape & 0xc0000000) >> 30);
-    return 8 << data_02082898[shapeBit][sizeBit];
+    return 8 << Gfx3D_ObjWidthShift[shapeBit][sizeBit];
 }
 
 static inline int Oam_GetHeight(const OamShape *shape) {
     const u16 shapeBit = (u16)((*shape & 0xc000) >> 14);
     const u16 sizeBit = (u16)((*shape & 0xc0000000) >> 30);
-    return 8 << data_020828c8[shapeBit][sizeBit];
+    return 8 << Gfx3D_ObjHeightShift[shapeBit][sizeBit];
 }
 
-extern void func_0204205c(TexObj *obj, int idx, int value);
+extern void TexObj_LoadCellImage(TexObj *obj, int idx, int value);
 
 static inline TexObjEntry *TexObj_GetEntry(TexObj *obj, int idx) {
     return idx >= obj->count ? NULL : &obj->entries[idx];
 }
 
-extern void func_02039518(void *res);
+extern void ResModel_ShrinkBlocks(void *res);
 
 
 typedef struct TexObjImage {
@@ -268,8 +268,8 @@ typedef struct TexObjRes2 {
     /* 0x1c */ TexObjImage *image0;
 } TexObjRes2;
 
-extern void func_02040dd8(PlttRes *res, int idx, bool load);
-void func_02041e74(TexObj *obj, int idx);
+extern void PlttRes_LoadFor(PlttRes *res, int idx, bool load);
+void TexObj_LoadImage(TexObj *obj, int idx);
 
 
 typedef struct TexObjImageInfo {
@@ -335,7 +335,7 @@ static inline void TexObj_InitAnim(TexObj *obj, int idx) {
     NNS_G2dInitCellAnimation(anim, data, ((TexObjRes *)obj->res)->unk_04);
     NNS_G2dSetCellAnimationSequence((TexObjAnim *)e->anim, data);
     anim->unk_0c = 1;
-    NNS_G2dSetAnimCtrlCallBackFunctor(anim, 3, obj, func_02041c90);
+    NNS_G2dSetAnimCtrlCallBackFunctor(anim, 3, obj, TexObj_ReloadCellImage);
     NNS_G2dTickCellAnimation((TexObjAnim *)e->anim, 0);
 }
 

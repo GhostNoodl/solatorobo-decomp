@@ -43,7 +43,7 @@ typedef struct SndListener {
     /* 0xf8 */ VecFx32 pos;
 } SndListener;
 
-extern s32 data_0208b700;
+extern s32 Snd_AreaCount;
 extern SndListener *gSceneCmd;
 extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
@@ -97,7 +97,7 @@ s32 SndMgr_CalcAreaVolume(SndMgr *mgr, const VecFx32 *pos) {
     VecFx32 vec;
     s32 dist;
     s32 vol;
-    for (i = 0; i < data_0208b700; i++) {
+    for (i = 0; i < Snd_AreaCount; i++) {
         SndAreaEntry *e = &Snd_AreaTable[i];
         u8 a = e->a;
         u8 b = e->b;
@@ -202,7 +202,7 @@ typedef struct SndListener {
     /* 0xf8 */ VecFx32 pos;
 } SndListener;
 
-extern s32 data_0208b700;
+extern s32 Snd_AreaCount;
 extern SndListener *gSceneCmd;
 extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
@@ -632,7 +632,7 @@ void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 
 u16 SndQueue_Peek(SndQueue *queue);
 
-void func_0204aad0(SndQueue *queue);
+void SndMgr_ClearSeqArc(SndQueue *queue);
 
 void SndQueue_Exec(SndQueue *queue, SndCmd *cmd);
 
@@ -724,7 +724,7 @@ u16 SndQueue_Peek(SndQueue *queue) {
     return queue->cur->value;
 }
 
-void func_0204aad0(SndQueue *queue) {
+void SndMgr_ClearSeqArc(SndQueue *queue) {
     SndMgr *mgr = SND_MGR;
     mgr->seqArcNext = 0;
     mgr->unk_9c = 0;

@@ -164,13 +164,13 @@ void Gfx3DState_SetDefaults(Gfx3DState *st) {
     G3X_SetFogTable((const u32 *)st->fogTable);
     st->shading = 0;
     G3X_SetShading(GX_SHADING_TOON);
-    MIi_CpuCopyFast(data_02082958, st->toonTable, sizeof(st->toonTable));
-    G3X_SetToonTable(data_02082958);
+    MIi_CpuCopyFast(Gfx3D_ToonTable, st->toonTable, sizeof(st->toonTable));
+    G3X_SetToonTable(Gfx3D_ToonTable);
     st->edgeMarking = FALSE;
     st->unk_000_5 = FALSE;
     REG_DISP3DCNT &= 0xcfdf;
-    MIi_CpuCopyFast(data_02082900, st->edgeTable, sizeof(st->edgeTable));
-    G3X_SetEdgeColorTable(data_02082900);
+    MIi_CpuCopyFast(Gfx3D_EdgeColorTable, st->edgeTable, sizeof(st->edgeTable));
+    G3X_SetEdgeColorTable(Gfx3D_EdgeColorTable);
     st->clearColor = 0;
     st->clearPolyId = 0x3f;
     G3X_SetClearColor(0, 0x1f, 0x7fff, 0x3f, TRUE);
@@ -267,7 +267,7 @@ void Gfx3D_DrawPrimScaled(int idx, int x, int y, u32 color) {
     NNS_G3dGeBufferOP_N(0x1b, (u32 *)scale, 3);
     c = color;
     NNS_G3dGeBufferOP_N(0x20, &c, 1);
-    NNS_G3dGeSendDL(data_0208b3d0[idx], data_020828f8[idx]);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs[idx], Gfx3D_PrimDLSizes[idx]);
 }
 
 void *Gfx3D_AllocHi(u32 size) {

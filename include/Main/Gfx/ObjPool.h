@@ -47,11 +47,11 @@ extern "C" {
 
 // TU2's own .bss scalars (StageRes/StageCmd/ObjPool), laid out from 0x02149efc.
 extern u32 data_02149efc;
-extern void *data_02149f00;
+extern void *gStageLastNode;
 extern s32 gStageResSlotTail; // slot ring end
-extern u32 data_02149f08;
+extern u32 gStageResBusy;
 extern ObjPool *gStageObjPool;
-extern void *data_02149f10;
+extern void *gStageLastObj3D;
 extern s32 gStageResSlotHead; // slot ring start
 extern UnkSys *gSysState;
 extern void *Heap_Alloc(u32 size);

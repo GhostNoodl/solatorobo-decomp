@@ -19,7 +19,7 @@ static inline BOOL Gfx_IsFadeDone(int ch) {
     return gFadeState[ch] == 4 ? TRUE : FALSE;
 }
 
-BOOL func_02055aa4(GameScene *scene) {
+BOOL GameScene_UpdateFade(GameScene *scene) {
     u32 type;
     if (scene->fadeReq) {
         if (!Gfx_IsFadeIdle2(0)) {
@@ -44,13 +44,13 @@ BOOL func_02055aa4(GameScene *scene) {
     return TRUE;
 }
 
-void func_02055bbc(GameScene *scene) {
+void GameScene_UpdateShake(GameScene *scene) {
     ShakeTable table;
     s32 t;
     if (scene->shake == 0) {
         return;
     }
-    table = data_020829d0;
+    table = GameScene_ShakeTable;
     t = FX_Div(scene->shakeTime, scene->shakePeriod) >> 12;
     if (scene->shakeLimit != -1 && t >= scene->shakeLimit) {
         scene->shake = 0;
@@ -67,7 +67,7 @@ void func_02055bbc(GameScene *scene) {
     scene->shakeTime += 0x1000;
 }
 
-void func_02055cbc(GameScene *scene) {
+void GameScene_ApplyCamEffect(GameScene *scene) {
     u32 effect = scene->effect;
     FieldState *state;
     if (effect == 0) {
@@ -128,7 +128,7 @@ void MainVt_0208bbc8_Render(GameScene *scene) {
     if (!scene->flag2) {
         return;
     }
-    r = func_020572f8(scene, (u8 *)scene + 0xc0);
+    r = SlideWinX_RenderText(scene, (u8 *)scene + 0xc0);
     if (r == -1) {
         return;
     }
@@ -136,7 +136,7 @@ void MainVt_0208bbc8_Render(GameScene *scene) {
     if (n == 0) {
         return;
     }
-    func_0203972c(scene->unk_0d0, n);
+    GfxMgr_DrawBlocks(scene->unk_0d0, n);
 }
 
 void MainVt_0208bbc8_DrawCursor(GameScene *scene) {

@@ -7,15 +7,15 @@
 
 extern "C" {
 
-extern const char *data_0208cc88;
-extern const char *data_0208cc94;
+extern const char *ResName_BattleCells;
+extern const char *ArcPath_MenuBattle;
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 BOOL Obj02152e5c_LoadModel(UiObj *self);
 void func_ov000_0215ec44(UiPanel *self);
 void Obj0215e8b0_LoadModel(UiPanel *self);
-void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);
-void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
+void *LoBase021ccb54_021ccbe0_GlyphCallback(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *LoBase021ccb54_021ccbe0_OamCallback(u8 *self, void *req, void *buf, u16 *count);
 
 void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
     ListRow *p;
@@ -62,7 +62,7 @@ void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
         TexObj_SelectImage(self->model, 0, 2);
         TexObj_SelectImage(self->model, 0, 4);
         TexObj_SelectImage(self->model, 0, 6);
-        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_021c77bc);
+        TexObj_SetAllOamFuncs(self->model, (void *)LoBase021ccb54_021ccbe0_GlyphCallback);
         TexObj_SetOamFuncArg(self->model, 2, self);
     }
     if (self->flags & 0x400000) {
@@ -70,8 +70,8 @@ void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
         if (m) {
             const char *arc;
             const char *name;
-            name = data_0208cc88;
-            arc = data_0208cc94;
+            name = ResName_BattleCells;
+            arc = ArcPath_MenuBattle;
             PlttRes_Init_02041218(&m->pltt);
             TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);
@@ -84,7 +84,7 @@ void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
         if (self->flags & 0x800000) {
             TexObj_SelectImage(self->unk_84, 0, 7);
         }
-        TexObj_SetAllOamFuncs(self->unk_84, (void *)func_ov000_021c782c);
+        TexObj_SetAllOamFuncs(self->unk_84, (void *)LoBase021ccb54_021ccbe0_OamCallback);
     }
     if (self->unk_90 == NULL) {
         o = (UiPanel *)Heap_Alloc(sizeof(UiPanel));

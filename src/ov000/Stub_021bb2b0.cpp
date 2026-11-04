@@ -23,7 +23,7 @@ extern "C" {
 Obj0219bf90 *ActorMgr_FindPlayer(void);
 extern void *gDataRes;
 extern s32 gFadeState[];
-void func_ov000_021bb298(NNSG3dRS *self);
+void Obj021bb2b0_RSInit(NNSG3dRS *self);
 u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);
@@ -110,7 +110,7 @@ static inline BOOL Game021bb33c_Is4(void) {
     return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
+BOOL Obj021bb2b0_Update(Obj021bb2b0 *self) {
     switch (self->state) {
     case 1: {
         Effect3D *fx = NULL;
@@ -171,7 +171,7 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
             break;
         }
         if (fx != NULL) {
-            fx->initCallback = (NNSG3dSbcCallBackFunc)func_ov000_021bb298;
+            fx->initCallback = (NNSG3dSbcCallBackFunc)Obj021bb2b0_RSInit;
         }
         self->fx->speed = 0;
         self->state = 10;

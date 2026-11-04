@@ -13,7 +13,7 @@ extern "C" {
 extern void *data_02149efc;
 extern void *gSndMgr;
 BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
-s32 func_ov000_021b7b50(FieldProp *n);
+s32 FieldProp_Update(FieldProp *n);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(Robo021ca458 *pl);
 BOOL Hit_PointInRotBox(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
@@ -51,7 +51,7 @@ void FieldMgr_Update(FieldMgr *self) {
         return;
     }
     for (n = self->head; n != NULL; n = n->next) {
-        func_ov000_021b7b50(n);
+        FieldProp_Update(n);
     }
     if (*(void **)&self->step != NULL) {
         (self->*self->step)();

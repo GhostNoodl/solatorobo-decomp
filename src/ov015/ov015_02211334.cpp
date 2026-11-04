@@ -3,7 +3,7 @@
 extern "C" {
 
 u8 *func_02070744(u16 id);
-Ov015ParamPrice *func_0206ee20(u16 id);
+Ov015ParamPrice *Param_GetFishItemInfo(u16 id);
 void func_ov015_02211334(Ov015Shared *self, u16 id) {
     s32 i;
     self->catchId = id;
@@ -18,7 +18,7 @@ void func_ov015_02211334(Ov015Shared *self, u16 id) {
         if (e == 0) {
             return;
         }
-        self->total += self->items[i].count * func_0206ee20(e)->price;
+        self->total += self->items[i].count * Param_GetFishItemInfo(e)->price;
 
     }
 }

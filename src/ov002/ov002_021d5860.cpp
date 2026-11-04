@@ -29,10 +29,10 @@ void *ResMgr_FindArcType2(void *a, void *b);
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
-void func_ov000_021c95fc(void *p);
+void StageFlags_SumPartStats(void *p);
 BOOL RobotTypeMenu_List50OnDecide(UiList *self, UiListItem *ev);
 BOOL RobotTypeMenu_List50OnCursor(UiList *self, UiListItem *ev);
-void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
+void RobotTypeMenu_OamDraw(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
 static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
     UiListItem *p = g->topItem;
@@ -80,7 +80,7 @@ void RobotTypeMenu_Start(Task021efc24 *self) {
     u32 count;
     UiListItem *e;
     self->unk_74 = gStageFlags->bits18.unk_3 + 0x8000;
-    res = ResMgr_FindArcType2(data_ov002_021efaf1, data_0208ccc0);
+    res = ResMgr_FindArcType2(data_ov002_021efaf1, ResName_CommonModel2);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
         PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
@@ -91,7 +91,7 @@ void RobotTypeMenu_Start(Task021efc24 *self) {
     self->unk_3c->flags |= 2;
     TexObj_SelectImage((Model *)self->unk_3c, 0, 0);
     self->unk_3c->unk_150 = -0x1fe66;
-    self->unk_3c->unk_158 = (void *)func_ov002_021d66b0;
+    self->unk_3c->unk_158 = (void *)RobotTypeMenu_OamDraw;
     TexObj_SetOamFuncArg((Model *)self->unk_3c, 0, (u8 *)self + 0x40);
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
@@ -152,7 +152,7 @@ void RobotTypeMenu_Start(Task021efc24 *self) {
         s->slideY = 0;
         s->slideZ = -0x199a;
     }
-    UiList_SetMarkModel(self->unk_50, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_50, gCommonTextPath, ResName_TextCells, 0xb);
     self->unk_50->flags &= ~0x400000;
     self->unk_50->flags &= ~0x80000;
     self->unk_50->flags |= 0x40000;
@@ -236,7 +236,7 @@ void RobotTypeMenu_Start(Task021efc24 *self) {
             if (t->hud != NULL) {
                 Ov002Hud_SetRow(t->hud, 9, 0);
             }
-            func_ov000_021c95fc((u8 *)self + 0x60);
+            StageFlags_SumPartStats((u8 *)self + 0x60);
             if (t->hud != NULL) {
                 MI_CpuCopy8((u8 *)self + 0x60, t->hud->unk_2c, 0x14);
             }

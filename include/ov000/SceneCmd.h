@@ -38,7 +38,7 @@ public:
     /* 0x0d3 */ u8 unk_d3;
     /* 0x0d4 */ u32 event; // FieldState::event
     // 0xd3..0xf0: the camera target that func_ov000_02188ed0 hands to the field camera
-    // (func_ov000_0218a358: position, rotation, distance and the two s16 rates).
+    // (FieldCam_SetTarget: position, rotation, distance and the two s16 rates).
     /* 0x0d8 */ VecFx32 unk_d8;
     /* 0x0e4 */ Rot16 unk_e4;
     /* 0x0ea */ u8 unk_ea[2];

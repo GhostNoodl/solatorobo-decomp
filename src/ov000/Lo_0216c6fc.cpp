@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0216c6fc(LoTicker *self) {
+void LoTicker_DrawItems(LoTicker *self) {
     const LoTickerIcons *tbl = data_ov000_021c9bb4;
     LoTickerSlot *n = self->head;
     if (n == NULL) {

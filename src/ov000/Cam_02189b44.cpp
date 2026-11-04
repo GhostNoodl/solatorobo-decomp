@@ -169,7 +169,7 @@ void FieldCam_Apply(FieldCam *self) {
             code = (const u32 *)(node + 1);
         }
         for (i = 0; i < n; i++) {
-            if (func_ov000_0218a670(self, node, code, &info)) {
+            if (FieldCam_ApplyZone(self, node, code, &info)) {
                 self->zone = node;
                 self->zoneCode = code;
                 self->zoneIdx = i;

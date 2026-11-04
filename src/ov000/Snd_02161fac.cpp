@@ -8,7 +8,7 @@ void ResSet_SetName1(ActorRes *t, void *a, void *b, s32 c, s32 d);
 BOOL ResSet_UpdateLoad(ActorRes *t);
 BOOL Vram_IsIdle(void);
 
-void func_ov000_02161fac(ModelViewerRes *self) {
+void ModelViewerRes_UpdateLoad(ModelViewerRes *self) {
     u8 idx;
     switch (self->state) {
     case 0:

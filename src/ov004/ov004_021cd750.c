@@ -6,7 +6,7 @@
 
 #pragma force_active on
 
-void func_ov004_021cd750(Rc4 *c, const u8 *key, u32 len) {
+void Rc4_Init(Rc4 *c, const u8 *key, u32 len) {
     s32 k;
     u32 j;
     u32 *p;

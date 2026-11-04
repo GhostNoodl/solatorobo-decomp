@@ -36,7 +36,7 @@ void Ov002Staff_DrawFade(Ov002Staff *self) {
     ov002_G3Vec(0x1c, 0, 0, -0x333);
     ov002_G3Vec(0x1b, 0x100000, 0xc0000, 0x1000);
     ov002_G3Cmd1(0x20, 0);
-    NNS_G3dGeSendDL(data_0208b3d0[1], data_020828f8[1]);
+    NNS_G3dGeSendDL(Gfx3D_PrimDLs[1], Gfx3D_PrimDLSizes[1]);
     ov002_G3Cmd1(0x12, 1);
 }
 

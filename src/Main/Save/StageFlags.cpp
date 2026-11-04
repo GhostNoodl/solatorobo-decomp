@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern StageFlags data_0214aa68;
+extern StageFlags gStageFlagsDefault;
 extern u8 gStageFlagsSave[0x640];
 extern void StageFlags_SetShape(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
@@ -17,7 +17,7 @@ typedef struct StageFlagsInit {
     u32 data[5];
 } StageFlagsInit;
 
-extern const StageFlagsInit data_02082be4;
+extern const StageFlagsInit StageFlags_InitTable;
 
 void StageFlags_Create(void) {
     StageFlags *f;
@@ -31,7 +31,7 @@ void StageFlags_Create(void) {
 }
 
 BOOL StageFlags_IsValid(void) {
-    return data_0214aa68.magic == STAGE_FLAGS_MAGIC;
+    return gStageFlagsDefault.magic == STAGE_FLAGS_MAGIC;
 }
 
 
@@ -48,7 +48,7 @@ void StageFlags_Reset(StageFlags *f) {
     MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
     MIi_CpuClearFast(0, gStageFlagsSave, sizeof(gStageFlagsSave));
-    MIi_CpuClearFast(0, &data_0214aa68, 0x640);
+    MIi_CpuClearFast(0, &gStageFlagsDefault, 0x640);
     f->unk_01a = 1;
     f->color2.r = 0xfe;
     f->color2.g = 0xfe;
@@ -65,7 +65,7 @@ void StageFlags_Reset(StageFlags *f) {
     }
     data_02fe1534.unk_58 = 1;
     {
-        StageFlagsInit init = data_02082be4;
+        StageFlagsInit init = StageFlags_InitTable;
         MIi_CpuCopy32(&init, f->unk_624, sizeof(f->unk_624));
     }
     f->unk_639 = 0xff;
@@ -76,14 +76,14 @@ extern s32 DataRes_Pack(DataRes *res, u8 *buf, s32 size);
 extern s32 StageVars_Save(u8 *buf, s32 size);
 extern s32 SceneStage_Serialize(u8 *src, u8 *buf, s32 size);
 extern u16 *StageRes_FindSlot(u32 id);
-extern u16 func_020600cc(u16 *obj, StageVec *pos, u16 *rot, u16 *id);
+extern u16 StageSlot_ReadPos(u16 *obj, StageVec *pos, u16 *rot, u16 *id);
 extern BOOL Shared_HasMark_02062698(void);
 extern void Shared_GetMarkPos(StageVec *pos);
 extern u16 Shared_GetMarkRot(void);
 
 void StageFlags_CapturePlayer(StageFlags *f);
 
-void func_0206c620(StageFlags *f) {
+void StageFlags_Save(StageFlags *f) {
     u16 *p;
     StageFlags_CapturePlayer(f);
     p = StageRes_FindSlot(0x310);
@@ -114,7 +114,7 @@ void StageFlags_Commit(StageFlags *f) {
     MI_CpuCopy8(f, gStageFlagsSave, sizeof(StageFlags));
 }
 
-void func_0206c72c(StageFlags *f, StageColor *rgb) {
+void StageFlags_SaveForExit(StageFlags *f, StageColor *rgb) {
     u16 *p;
     StageFlags_CapturePlayer(f);
     if (rgb != NULL) {
@@ -133,7 +133,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         StageVec pos;
         u16 rot[3];
         u16 id;
-        func_020600cc(p, &pos, rot, &id);
+        StageSlot_ReadPos(p, &pos, rot, &id);
         if (id == 0xffff) {
             f->pos = pos;
             f->rotY = rot[1];
@@ -144,7 +144,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         Shared_GetMarkPos(&f->pos);
         f->rotY = Shared_GetMarkRot();
     }
-    MI_CpuCopy8(f, &data_0214aa68, sizeof(StageFlags));
+    MI_CpuCopy8(f, &gStageFlagsDefault, sizeof(StageFlags));
 }
 
 void StageFlags_CapturePlayer(StageFlags *f) {

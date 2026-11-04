@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov000_0216f23c(BufferList *list, BOOL mode);
+void BufferList_Run(BufferList *list, BOOL mode);
 
 void MessageQueue_Draw(MessageQueue *self) {
-    func_ov000_0216f23c(&self->list, 1);
+    BufferList_Run(&self->list, 1);
 }
 
 // The body of the TimedBuffer021cb920 constructor (Field_Create, ov002's Ov002Session_Create).

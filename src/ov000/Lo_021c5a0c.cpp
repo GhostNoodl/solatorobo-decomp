@@ -16,7 +16,7 @@ struct Obj021c5a0c {
     s32 unk_70;
 };
 
-Glyph02160e28 *func_ov000_021c5a0c(Obj021c5a0c *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
+Glyph02160e28 *Lo021cca40_OamCallback(Obj021c5a0c *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
     u16 n = *count;
     u32 base = arr[n - 1].chr;
     s32 v;

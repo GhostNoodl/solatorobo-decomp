@@ -3,7 +3,7 @@
 
 // The map screen's work area (an object's unk_30 in Lo_02165f94.cpp and Lo_02166be8.cpp), its
 // area nodes and their items (round svG; the layout is round mtA's, from its typed draft of
-// func_ov000_02166180). func_ov000_02164c50 allocates it (0xce0 bytes, high heap) and builds a node
+// func_ov000_02166180). Lo021cb6b0_BuildMap allocates it (0xce0 bytes, high heap) and builds a node
 // per area (func_ov000_021652e4) with its OAM entries, parts and items taken from the pools here.
 
 #include "types.h"
@@ -98,7 +98,7 @@ typedef struct {
     Item0216607c **list;
 } Slot0216607c;
 
-// The busy-list header at Ctx0216607c::anim (func_ov000_02165f94 cycles its colour): a path of
+// The busy-list header at Ctx0216607c::anim (Lo021cb6b0_HandleInput cycles its colour): a path of
 // up to 0x20 nodes.
 typedef struct LoAnimC {
     u8 rgb[4];
@@ -115,7 +115,7 @@ typedef struct LoAnimC {
 typedef struct Ctx0216607c {
     /* 0x000 */ u8 unk_00;
     /* 0x001 */ u8 oamUsed; // of oams / poss
-    /* 0x002 */ u8 markCount; // marks used (func_ov000_021675ec)
+    /* 0x002 */ u8 markCount; // marks used (Lo021cb6b0_DrawMarkers)
     /* 0x003 */ u8 pad_03;
     /* 0x004 */ u16 unk_04; // area id
     /* 0x006 */ u8 partUsed;

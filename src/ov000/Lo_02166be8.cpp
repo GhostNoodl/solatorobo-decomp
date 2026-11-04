@@ -17,9 +17,9 @@ extern u8 data_ov000_021c9a9c[];
 extern s32 gFadeState[5];
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self);
-u8 *func_ov000_02165f94(Lo021cb6b0 *self);
+u8 *Lo021cb6b0_HandleInput(Lo021cb6b0 *self);
 Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area);
-void func_ov000_02164c50(Lo021cb6b0 *self, u8 *tgt);
+void Lo021cb6b0_BuildMap(Lo021cb6b0 *self, u8 *tgt);
 void func_ov000_02166180(Lo021cb6b0 *self);
 s32 FX_Div(s32 a, s32 b);
 
@@ -65,7 +65,7 @@ static inline BOOL Skip02166be8(void) {
     return skip;
 }
 
-void func_ov000_02166be8(Lo021cb6b0 *self) {
+void Lo021cb6b0_UpdateMap(Lo021cb6b0 *self) {
     Node0216607c *area;
     u8 *rgb;
     s32 k;
@@ -89,7 +89,7 @@ void func_ov000_02166be8(Lo021cb6b0 *self) {
         if (tgt == NULL) {
             return;
         }
-        func_ov000_02164c50(self, tgt);
+        Lo021cb6b0_BuildMap(self, tgt);
         self->unk_34 = 8;
         return;
     case 3:
@@ -114,7 +114,7 @@ void func_ov000_02166be8(Lo021cb6b0 *self) {
         }
         return;
     case 7: {
-        rgb = func_ov000_02165f94(self);
+        rgb = Lo021cb6b0_HandleInput(self);
         w = self->unk_30;
         k = 0x19a;
         if (w->sel == NULL || !w->sel->f3) {
@@ -344,7 +344,7 @@ typedef struct { s8 x; s8 y; } Ofs715c;
 extern Ofs715c data_ov000_021c9ae4[];
 void *GfxSys_GetOamMgr(void *a, s32 b);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
-u32 func_02041080(void *a, s32 b, s32 c, s32 d);
+u32 PlttRes_Transfer(void *a, s32 b, s32 c, s32 d);
 
 static inline void SetXY715c_b(Oam715c *o, u16 x, u16 y) {
     o->w0.x = x;
@@ -422,7 +422,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
             d = pal->data + 0x10;
             d[2] = d[k];
             DC_FlushRange(d, 0x20);
-            func_02041080(p->pal, 2, 2, 1);
+            PlttRes_Transfer(p->pal, 2, 2, 1);
             if (r == p->sel) {
                 f_0 = TRUE;
             } else {
@@ -439,7 +439,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
             d = pal->data;
             d[2] = d[k];
             DC_FlushRange(d, 0x20);
-            func_02041080(p->pal, 2, 1, 1);
+            PlttRes_Transfer(p->pal, 2, 1, 1);
             pt = r->links;
             for (j = 0; j < r->nlinks; j++, pt++) {
                 c = pt->tgt;

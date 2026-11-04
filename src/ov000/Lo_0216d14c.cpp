@@ -7,7 +7,7 @@
 extern "C" {
 BOOL PauseNode_IsDrawPaused(void *p, s32 a);
 
-void func_ov000_0216d14c(Obj0216c954 *self) {
+void Obj0216c954_Draw(Obj0216c954 *self) {
     Model *m;
     s32 x;
     if (PauseNode_IsDrawPaused(gSceneCmd->pause, 1)) {
@@ -36,7 +36,7 @@ void func_ov000_0216d14c(Obj0216c954 *self) {
         break;
     }
     if (self->effect != NULL) {
-        func_ov000_021c1e78(self->effect);
+        Obj021c2114_Draw(self->effect);
     }
 }
 

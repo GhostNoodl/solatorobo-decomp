@@ -4,7 +4,7 @@ extern "C" {
 
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void Ov002_QuarterRotMtx33(void *m, u8 dir);
-void *func_ov002_021e3874(s32 *pos, u8 type, u8 a);
+void *Ov002_SpawnEffect3D(s32 *pos, u8 type, u8 a);
 
 typedef struct {
     u16 lo : 8;
@@ -46,7 +46,7 @@ void func_ov002_021d8860(Obj021efe9c *self) {
         out[0] += v[0];
         out[1] = 0x266;
         out[2] += v[2];
-        func_ov002_021e3874(out, self->unk_4a, self->shape.w);
+        Ov002_SpawnEffect3D(out, self->unk_4a, self->shape.w);
         {
             void *p = Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
             if (p != NULL) {

@@ -83,10 +83,10 @@ extern HitInfo gHitResult;
 extern int gHitCount;
 extern HitInfo gHitList[];
 
-int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b);
-int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b);
+int HitSphere_CastMove(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b);
+int HitSphere_CastOverlap(VecFx32 *out, VecFx32 *pos, int radius, int a, int b);
 
-int func_0203f3d0(HitSphere *self) {
+int HitSphere_Collide(HitSphere *self) {
     int result = 0;
     HitSphere *cur;
     int best;
@@ -195,7 +195,7 @@ int func_0203f3d0(HitSphere *self) {
             v.x = 0;
             v.y = 0;
             v.z = 0;
-            if (func_0203fc78(&v, &d, &self->prev, self->radius, self->unk_30, self->unk_34) != -0x1000) {
+            if (HitSphere_CastMove(&v, &d, &self->prev, self->radius, self->unk_30, self->unk_34) != -0x1000) {
                 VEC_Add(&self->push, &v, &self->push);
                 VEC_Add(&d, &v, &d);
                 info = gHitResult;
@@ -203,7 +203,7 @@ int func_0203f3d0(HitSphere *self) {
                 flag = 1;
             }
         }
-        if (func_0203fde8(&self->push, &d, self->radius, self->unk_30, self->unk_34) != -0x1000) {
+        if (HitSphere_CastOverlap(&self->push, &d, self->radius, self->unk_30, self->unk_34) != -0x1000) {
             result |= 2;
         }
         if (flag) {
@@ -270,7 +270,7 @@ extern HitMesh *gHitMeshList;
 extern int gHitMeshCount;
 
 void HitMesh_CalcExtent(HitMesh *mesh);
-void func_0203fb08(HitMesh *mesh);
+void HitMesh_InitRes(HitMesh *mesh);
 
 void HitMesh_Init(HitMesh *mesh) {
     mesh->flags = 0;
@@ -330,7 +330,7 @@ void HitMesh_SetRes(HitMesh *mesh, HitMeshRes *res) {
     mesh->res = res;
     mesh->scale = 0x1000;
     mesh->invScale = 0x1000;
-    func_0203fb08(mesh);
+    HitMesh_InitRes(mesh);
     HitMesh_CalcExtent(mesh);
 }
 
@@ -386,7 +386,7 @@ void HitMesh_CalcExtent(HitMesh *mesh) {
     VEC_Add((VecFx32 *)mesh->mtx.m[3], &v, &mesh->max);
 }
 
-void func_0203fb08(HitMesh *mesh) {
+void HitMesh_InitRes(HitMesh *mesh) {
     HitMeshRes *res;
     HitMeshHeader *header;
     HitMeshBlock *block;
@@ -458,7 +458,7 @@ static inline void HitVec_Sub(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) 
     out->z = a->z - b->z;
 }
 
-int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b) {
+int HitSphere_CastMove(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b) {
     VecFx32 dir;
     VecFx32 p;
     int r;
@@ -481,7 +481,7 @@ int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, 
     return r;
 }
 
-int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
+int HitSphere_CastOverlap(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
     VecFx32 p;
     VecFx32 d;
     VecFx32 min;
@@ -585,7 +585,7 @@ static inline void HitTri_SetNormal(HitTri *tri, VecFx32 *e) {
     tri->normal.z = n.z;
 }
 
-void func_0203ff94(HitBounds *bounds, HitTri *tri, int value, const VecFx16 *verts, const u32 (*indices)[3]) {
+void HitTri_SetupQuad(HitBounds *bounds, HitTri *tri, int value, const VecFx16 *verts, const u32 (*indices)[3]) {
     int i;
     for (i = 0; i < 2; i++, tri++) {
         VecFx32 e;

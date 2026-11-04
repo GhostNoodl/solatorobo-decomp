@@ -94,7 +94,7 @@ extern const char data_0208b2fa[]; // ".nsbta"
 extern const char data_0208b301[]; // ".nsbtp"
 extern const char data_0208b308[]; // ".nsbva"
 
-extern BOOL func_020395a8(const char *a, const char *b, int len);
+extern BOOL ResList_NameMatches(const char *a, const char *b, int len);
 extern void Str_CopyStem(char *dst, const char *src, int len);
 extern const char *Path_FindExt(const char *path);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
@@ -117,7 +117,7 @@ void ResList_AddEntry(ResList *list, ResRequest *req) {
 
     if (type == 2 || type == 3 || type == 6) {
         for (node = list->head; node != NULL; node = node->next) {
-            if (node->type == type && func_020395a8(node->name, entry->name, 0x18)) {
+            if (node->type == type && ResList_NameMatches(node->name, entry->name, 0x18)) {
                 break;
             }
         }

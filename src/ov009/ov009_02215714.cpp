@@ -11,7 +11,7 @@ extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
 #define OV009_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV009_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
+void Ov009ActExVt_0221802c_UpdateThrown(Ov009ActExVt_0221802c *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {

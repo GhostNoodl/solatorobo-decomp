@@ -8,8 +8,8 @@ typedef struct MoAdpcmState {
 } MoAdpcmState;
 
 // dsd finds no relocations to these tables, so symbols.txt names them by hand.
-extern const s8 data_020826d4[16];
-extern const s16 data_020826e4[89];
+extern const s8 MoAdpcm_IndexTable[16];
+extern const s16 MoAdpcm_StepTable[89];
 
 void MoAdpcm_SetHeader(MoAdpcmState *state, const u8 *header) {
     int index = header[0];
@@ -19,9 +19,9 @@ void MoAdpcm_SetHeader(MoAdpcmState *state, const u8 *header) {
 
 #define ADPCM_DECODE_NIBBLE(state, nibble)                    \
     {                                                         \
-        int step = data_020826e4[(state)->index];             \
+        int step = MoAdpcm_StepTable[(state)->index];             \
         int diff;                                             \
-        (state)->index += data_020826d4[(nibble) & 7];        \
+        (state)->index += MoAdpcm_IndexTable[(nibble) & 7];        \
         if ((state)->index < 0) {                             \
             (state)->index = 0;                               \
         }                                                     \
@@ -51,7 +51,7 @@ void MoAdpcm_SetHeader(MoAdpcmState *state, const u8 *header) {
         }                                                     \
     }
 
-void func_020349ec(MoAdpcmState *state, const u8 *src, int count, u32 *dst) {
+void MoAdpcm_DecodeBlock(MoAdpcmState *state, const u8 *src, int count, u32 *dst) {
     int i;
     for (i = 0; i < count; i++) {
         int nibble = src[i];

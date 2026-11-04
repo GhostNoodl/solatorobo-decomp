@@ -14,7 +14,7 @@ static inline TextWin *TextWin_New(void) {
     return win;
 }
 
-void func_020556a0(FieldMsg *msg, const char *text) {
+void FieldMsg_SetText(FieldMsg *msg, const char *text) {
     TextWin *win;
     if (msg->win == NULL) {
         msg->win = TextWin_New();
@@ -75,7 +75,7 @@ BOOL Field_IsPlayerBusy_02055898(void) {
 
 // Same VRAM-free loop as MainVt_0208bbc8_Release: the OBJ VRAM bases are read with the
 // SDK getters into locals before the loop, and `i` is a `long`.
-void func_0205592c(GlyphCache *cache) {
+void GlyphCache_Clear(GlyphCache *cache) {
     long i;
     u8 *objBase;
     u8 *subObjBase;

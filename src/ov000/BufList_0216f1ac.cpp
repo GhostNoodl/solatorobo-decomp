@@ -78,7 +78,7 @@ void ListBuffer_AddToList(ListBuffer *buf, BufferList *list) {
     }
 }
 
-void func_ov000_0216f23c(BufferList *list, BOOL mode) {
+void BufferList_Run(BufferList *list, BOOL mode) {
     ListBuffer *buf;
     ListBuffer *next;
     for (buf = list->head; buf != NULL; buf = buf->next) {

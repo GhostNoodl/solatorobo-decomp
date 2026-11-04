@@ -9,8 +9,8 @@ typedef struct {
 
 extern "C" {
 extern u16 data_ov000_021cabe0[];
-extern void *data_0208cc88;
-extern void *data_0208cc94;
+extern void *ResName_BattleCells;
+extern void *ArcPath_MenuBattle;
 extern void *gMsgRes;
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
@@ -42,8 +42,8 @@ void Lo021cae48_Setup(Lo021cae48 *self) {
     if (m) {
         void *arc_;
         void *name_;
-        name_ = data_0208cc88;
-        arc_ = data_0208cc94;
+        name_ = ResName_BattleCells;
+        arc_ = ArcPath_MenuBattle;
         PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
         TexObj_Init((Model *)m, (const char *)name_, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc_);

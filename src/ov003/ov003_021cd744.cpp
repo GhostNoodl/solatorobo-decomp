@@ -109,11 +109,11 @@ void Ov003TaskVt_021f78f4_Draw(Ov003Menu2 *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov003_021cd91c is 44 / 35 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): Ov003CdTask_ShowPhotoComplete is 44 / 35 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: case 10's alpha register and state/timer stores, and pressure-mode picks in
 // Ov003Cd_Color's 64-bit products (7 lines are Thumb bl/blx, link-time only). History: docs/MATCHING.md rounds pmB,
 // bgW, bgY, bgQ2, mlA, cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov003_021cd91c (0x98c bytes, the result-card task's per-frame update): 44 raw (bgQ/pmC draft,
+// Ov003CdTask_ShowPhotoComplete (0x98c bytes, the result-card task's per-frame update): 44 raw (bgQ/pmC draft,
 // first time in the tree, round bgY). This file's .text ends at 0x021cd91c, so the function belongs
 // here once it matches. Ov003CdTask is the same object as Ov003Menu2 above (unk_3c..unk_69 agree).
 // Of the 44 lines, 7 are bl/blx (Thumb MTX_ callees, a link-time difference). The real misses:
@@ -226,7 +226,7 @@ static inline u16 Ov003Cd_Color(Ov003CdTask *self) {
     return g | (g << 5) | (b << 10);
 }
 
-void func_ov003_021cd91c(Ov003CdTask *self) {
+void Ov003CdTask_ShowPhotoComplete(Ov003CdTask *self) {
     VecFx32 v1;
     VecFx32 zero;
     VecFx32 v2;

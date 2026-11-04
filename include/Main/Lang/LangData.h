@@ -36,14 +36,14 @@ typedef struct LangTable {
     /* 0x10 */ LangGroup groups[1];
 } LangTable;
 
-extern LangTable *data_0214b0a8;
-extern const char *const data_02082bf8[];
+extern LangTable *gWorldInfo;
+extern const char *const LangData_PathTable[];
 typedef struct LangState {
     /* 0x00 */ u8 lang;
     /* 0x01 */ char name[0x23];
 } LangState;
 
-extern LangState data_0214b104;
+extern LangState gLang;
 
 #ifdef __cplusplus
 }

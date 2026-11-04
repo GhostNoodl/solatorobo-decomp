@@ -10,11 +10,11 @@ void func_ov002_021eb298(Ov002StageFile *self);
 
 void func_ov002_021ebcf8(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out);
 
-void func_ov002_021eb0f8(Ov002StageFile *self);
+void Ov002StageFile_BuildCameras(Ov002StageFile *self);
 
-void func_ov002_021eb448(Ov002StageFile *self);
+void Ov002StageFile_BuildModels(Ov002StageFile *self);
 
-void func_ov002_021eb7c0(Ov002StageFile *self);
+void Ov002StageFile_BuildEnv(Ov002StageFile *self);
 
 void func_ov002_021eb870(Ov002StageFile *self);
 
@@ -61,8 +61,8 @@ void Ov002StageFile_BuildScene(Ov002StageFile *self) {
     func_ov002_021ebcf8(self, 2, self->unk_1c, self->unk_44);
     func_ov002_021ebcf8(self, 3, self->unk_20, self->unk_48);
     func_ov002_021ebcf8(self, 3, self->unk_24, self->unk_4c);
-    func_ov002_021eb0f8(self);
-    func_ov002_021eb448(self);
+    Ov002StageFile_BuildCameras(self);
+    Ov002StageFile_BuildModels(self);
     d = self->unk_28;
     MI_CpuCopy8(d + 8, &hdr, 8);
     n = hdr.count;
@@ -73,7 +73,7 @@ void Ov002StageFile_BuildScene(Ov002StageFile *self) {
         Ov002Obj021f0784_New(rec.a, rec.b, rec.c, rec.d, rec.e, rec.mode, rec.f, rec.g);
         src += stride;
     }
-    func_ov002_021eb7c0(self);
+    Ov002StageFile_BuildEnv(self);
     func_ov002_021eb870(self);
     Ov002_MakeSlideName(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
     Ov002_MakeSlideFileName(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
@@ -110,7 +110,7 @@ typedef struct Ent021eb0f8 {
     s32 parent;
 } Ent021eb0f8;
 
-void func_ov002_021eb0f8(Ov002StageFile *self) {
+void Ov002StageFile_BuildCameras(Ov002StageFile *self) {
     Rec021eb0f8 rec;
     Hdr021eb0f8 hdr;
     u8 *d = self->unk_10;
@@ -273,7 +273,7 @@ typedef struct Rec021eb448 {
     u32 mask;
 } Rec021eb448;
 
-void func_ov002_021eb448(Ov002StageFile *self) {
+void Ov002StageFile_BuildModels(Ov002StageFile *self) {
     Hdr021eb448 hdr;
     Rec021eb448 rec;
     u8 *d;

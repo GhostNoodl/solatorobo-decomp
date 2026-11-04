@@ -7,7 +7,7 @@
 
 extern "C" {
 
-void func_ov000_021570f0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
+void UiList_DrawArrowOam(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
 static inline void LoSetScrPos(void *m, s32 px, s32 y) {
     LFLD(s32, m, 0xfc) = (px - 0x80) << 12;
@@ -32,7 +32,7 @@ void UiList_DrawArrows(UiList *self, s32 unused, s32 *pos) {
     s32 h;
     s32 px;
     s32 y;
-    self->model->unk_158 = (void *)func_ov000_021570f0;
+    self->model->unk_158 = (void *)UiList_DrawArrowOam;
     self->model->flags |= 0x80000;
     self->model->flags |= 0x200000;
     MODEL_FLAGS(self->model)->alpha = 0x1e;

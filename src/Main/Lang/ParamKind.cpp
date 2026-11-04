@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern void *data_0208d730[];
+extern void *ParamKind_ShapeTable[];
 
 void *ParamKind_GetShape(int kind) {
-    return data_0208d730[kind];
+    return ParamKind_ShapeTable[kind];
 }
 
 }

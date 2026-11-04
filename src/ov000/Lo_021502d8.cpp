@@ -63,8 +63,8 @@ BOOL QuestWin_IsLoaded(Lo021ca9c4 *self) {
 extern "C" {
 extern void *gMsgRes;
 extern const char *data_ov000_021ca8d8[];
-extern const char *data_0208cca0;
-extern const char *data_0208cb74;
+extern const char *ArcPath_Menu;
+extern const char *ResName_CommonCells;
 extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
 extern u8 Lo021cb5a8_vtbl[];
@@ -123,8 +123,8 @@ void QuestWin_Start(Lo021ca9c4 *self) {
     TexObj_SelectImage(self->unk_44, 0, 0);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        arc = data_0208cca0;
-        name = data_0208cb74;
+        arc = ArcPath_Menu;
+        name = ResName_CommonCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);

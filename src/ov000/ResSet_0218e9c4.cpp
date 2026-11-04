@@ -185,7 +185,7 @@ void ResSet_SetName1(ResSet *self, const char *name, const char *ext, BOOL owned
     }
 }
 
-void func_ov000_0218ef10(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
+void ResSet_SetName3(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
         if (!force && !STD_CompareString(self->entries[3].name, name) && !STD_CompareString(self->entries[3].ext, ext)) {
             return;

@@ -12,12 +12,12 @@ typedef struct {
 
 extern "C" {
 
-u16 func_0206f788(u32 v);
+u16 Item_GetPictureChipMask(u32 v);
 u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 u32 DataRes_GetCount(DataRes *res, u32 idx);
 SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
 
-void func_ov000_021c2208(Obj021c2208 *self) {
+void Obj021c2208_Init(Obj021c2208 *self) {
     self->unk_04 = 0;
     self->unk_06 = 0;
     self->unk_08 = 0;
@@ -25,12 +25,12 @@ void func_ov000_021c2208(Obj021c2208 *self) {
     self->unk_0a = 0;
 }
 
-void func_ov000_021c2224(Obj021c2208 *self, u32 id) {
+void Obj021c2208_SetPicture(Obj021c2208 *self, u32 id) {
     s32 i;
     SaveLayout *layout;
     SaveEntry *entries;
     self->unk_04 = id;
-    self->unk_06 = func_0206f788(id);
+    self->unk_06 = Item_GetPictureChipMask(id);
     self->unk_09 = 4;
     self->unk_08 = 0;
     for (i = 0; i < self->unk_09; i++) {

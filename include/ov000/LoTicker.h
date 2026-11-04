@@ -3,8 +3,8 @@
 
 // The field message ticker (ctor LoTicker_Init, 0x3d8 bytes, allocated by ListBuffer021cb940_Update,
 // which builds res[] with __cxa_vec_ctor at 0x360). Messages are queued in the ring msgs[read..write),
-// moved one at a time into a free slot (func_ov000_0216c018), slid in and dropped out by
-// func_ov000_0216c310 and drawn by func_ov000_0216c6fc between the two icon texts of their kind.
+// moved one at a time into a free slot (LoTicker_AddPending), slid in and dropped out by
+// LoTicker_UpdateItems and drawn by LoTicker_DrawItems between the two icon texts of their kind.
 
 #include "types.h"
 #include "Main/Gfx/TextWin.h"
@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-// A text window shared by several users (func_ov000_0216bae4 creates it or counts one more user).
+// A text window shared by several users (LoTextHolder_SetText creates it or counts one more user).
 typedef struct LoTextHolder {
     s32 count;
     void *text; // the string (TextWin::str)
@@ -66,16 +66,16 @@ extern const LoTickerIcons data_ov000_021c9bb4[];
 
 void LoTextHolder_Init(LoTextHolder *self);
 LoTextHolder *LoTextHolder_Dtor(LoTextHolder *self);
-void func_ov000_0216bae4(LoTextHolder *self, void *text);
+void LoTextHolder_SetText(LoTextHolder *self, void *text);
 void LoTicker_InitTexts(LoTicker *self);
 void LoTicker_Clear(LoTicker *self);
-void func_ov000_0216be58(LoTicker *self);
-void func_ov000_0216be94(LoTicker *self);
+void LoTicker_Update(LoTicker *self);
+void LoTicker_Draw(LoTicker *self);
 void LoTicker_Init(LoTicker *self);
 void LoTicker_Release(LoTicker *self);
-void func_ov000_0216c018(LoTicker *self);
-void func_ov000_0216c310(LoTicker *self);
-void func_ov000_0216c6fc(LoTicker *self);
+void LoTicker_AddPending(LoTicker *self);
+void LoTicker_UpdateItems(LoTicker *self);
+void LoTicker_DrawItems(LoTicker *self);
 
 #ifdef __cplusplus
 }

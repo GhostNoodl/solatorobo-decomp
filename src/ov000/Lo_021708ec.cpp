@@ -6,7 +6,7 @@ extern "C" {
 extern s32 gFadeState[];
 extern MessageQueue *gMessageQueue;
 void Obj021bb810_Init_021bb810(void *self, s32 a);
-void func_ov000_021bb840(void *self);
+void Obj021bb810_Release(void *self);
 
 static inline BOOL Lo_SysIdle(void) {
     BOOL r;
@@ -82,7 +82,7 @@ BOOL func_ov000_021708ec(Obj021708ec *self, s32 arg, s32 arg2) {
         if (self->unk_4c != NULL) {
             void *q = self->unk_4c;
             if (q != NULL) {
-                func_ov000_021bb840(q);
+                Obj021bb810_Release(q);
                 Heap_Free(q);
             }
             self->unk_4c = NULL;

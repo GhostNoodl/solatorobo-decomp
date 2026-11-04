@@ -12,10 +12,10 @@ extern "C" {
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void GfxCamParam_Init(s32 *proj);
-void *func_ov000_021b7a7c(FieldProp *n);
+void *FieldProp_Release(FieldProp *n);
 void Heap_Free(void *p);
 Ent021b53f4 *Lang_GetGroup(u8 id);
-void func_0206dfd4(char *buf, u8 *ids);
+void LangData_MakeBlockPath(char *buf, u8 *ids);
 void ResMgr_ReleaseArchive(void *a, char *buf, s32 c);
 
 void func_ov000_021b53f4(FieldMgr *self) {
@@ -38,7 +38,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
         prev = n->prev;
         next = n->next;
         if (n != NULL) {
-            func_ov000_021b7a7c(n);
+            FieldProp_Release(n);
             Heap_Free(n);
         }
         if (prev != NULL) {
@@ -61,7 +61,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
             ids = p->unk_ca.c;
         }
         e = Lang_GetGroup(ids[0]);
-        func_0206dfd4(buf, ids);
+        LangData_MakeBlockPath(buf, ids);
         ResMgr_ReleaseArchive(e->unk_08, buf, 0);
         {
             FieldCam *sub = &gSceneCmd->cam;
@@ -74,7 +74,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
     {
         FieldState *p = gSceneCmd;
         if (p->unk_ca.c[0] != p->unk_d0.c[0] || p->unk_ca.c[1] != p->unk_d0.c[1] || p->unk_c9 != 0) {
-            func_ov000_021b6994(self, 0);
+            FieldMgr_LoadBlockArchives(self, 0);
         }
     }
     self->unk_1f2 = 0;

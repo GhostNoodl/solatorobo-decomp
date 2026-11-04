@@ -357,7 +357,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self) {
         {
             VecFx32 cp = data_ov013_0220ae7c;
             Rot16 rot = data_ov013_0220ae48;
-            func_ov000_0218a358(cam, &cp, &rot, 0x13000, 1, 0x1000, 0x1000, 1);
+            FieldCam_SetTarget(cam, &cp, &rot, 0x13000, 1, 0x1000, 0x1000, 1);
         }
     }
 }

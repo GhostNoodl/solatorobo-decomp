@@ -13,8 +13,8 @@ extern char data_ov000_021ca8ff[];
 extern char data_ov000_021ca917[];
 extern void *data_ov000_021ca8d8;
 void *Heap_Alloc(u32 size);
-void func_020708fc(s32 a, void *out);
-void func_02070b98(s32 a, void *out, s32 b, s32 c);
+void Tbl_MakeFacePath(s32 a, void *out);
+void Tbl_MakeFaceName(s32 a, void *out, s32 b, s32 c);
 void ResMgr_LoadArchive(void *a, void *b, s32 c, s32 d);
 void StageRes_Init(void *res);
 void StageRes_Open(void *res, char *name, char *path);
@@ -25,8 +25,8 @@ void Lo021caa44_Load(Lo021caa44 *self) {
     char name[0x20];
     VObj *o;
 
-    func_020708fc(0x1000, a);
-    func_02070b98(0x1000, b, 1, 2);
+    Tbl_MakeFacePath(0x1000, a);
+    Tbl_MakeFaceName(0x1000, b, 1, 2);
     ResMgr_LoadArchive(a, b, 2, 0);
     gSceneResSet.unk_00 = 1;
     o = (VObj *)Heap_Alloc(0xc4);

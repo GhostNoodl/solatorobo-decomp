@@ -4,9 +4,9 @@
 
 extern "C" {
 
-// The NODEDESC callback hooked by func_ov000_021c2078: applies the pending rotation and offset
+// The NODEDESC callback hooked by Obj021c2114_RSInit: applies the pending rotation and offset
 // of data_ov000_021ccd74 to the joint, then unhooks itself.
-void func_ov000_021c2090(NNSG3dRS *rs) {
+void Obj021c2114_JointCallback(NNSG3dRS *rs) {
     NNSG3dJntAnmResult *jnt = rs->pJntAnmResult;
     if (data_ov000_021ccd74.jointRot != NULL) {
         jnt->flag &= ~NNS_G3D_JNTANM_RESULTFLAG_ROT_ZERO;

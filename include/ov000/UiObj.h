@@ -166,7 +166,7 @@ struct UiLabel {
 // The label styles (UiLabel_StyleTable, 0x18 bytes each).
 typedef struct UiLabelStyle {
     u16 part;           // frame model part
-    u16 color0;         // gradient colours of the frame (func_ov000_0215f618)
+    u16 color0;         // gradient colours of the frame (UiLabel_DrawBox)
     u16 color1;
     u8 unk_06[0x6];
     s32 height;         // fx32
@@ -245,7 +245,7 @@ void UiLabel_SetText(UiLabel *self, u32 text);
 void UiLabel_Draw(UiLabel *self);
 void UiLabel_Reset_0215f514(UiLabel *self);
 void UiLabel_Release(UiLabel *self);
-void func_ov000_0215f618(UiLabel *self, s32 *pos);
+void UiLabel_DrawBox(UiLabel *self, s32 *pos);
 }
 
 #endif

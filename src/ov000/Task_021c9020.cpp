@@ -62,7 +62,7 @@ extern "C" {
 
 extern u8 Task_vtbl[];
 extern u8 Ov000TaskVt_021ccc94_vtbl[];
-extern const char *data_0208cc94;
+extern const char *ArcPath_MenuBattle;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
@@ -100,13 +100,13 @@ VObj *Ov000TaskVt_021ccc94_New(void) {
 }
 
 void Ov000TaskVt_021ccc94_Load(void) {
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
     ResMgr_Load(data_ov000_021ccc68, 7, 0);
     ResMgr_LoadArchive(data_ov000_021ccc72, data_ov000_021ccc7e, 2, 0);
 }
 
 BOOL Ov000TaskVt_021ccc94_IsLoaded(void) {
-    BOOL ok = ResMgr_IsLoaded(data_0208cc94, 7) ? TRUE : FALSE;
+    BOOL ok = ResMgr_IsLoaded(ArcPath_MenuBattle, 7) ? TRUE : FALSE;
     ok = (ok & ResMgr_IsLoaded(data_ov000_021ccc68, 7)) ? TRUE : FALSE;
     return (ok & ResMgr_IsArchiveLoaded(data_ov000_021ccc72, data_ov000_021ccc7e, 2)) ? TRUE : FALSE;
 }

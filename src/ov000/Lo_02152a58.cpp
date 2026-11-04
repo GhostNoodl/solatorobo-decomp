@@ -6,7 +6,7 @@ extern "C" {
 
 extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
-void func_ov000_0216bae4(void *dst, void *src);
+void LoTextHolder_SetText(void *dst, void *src);
 BOOL Model_IsReady(void *a, s32 b);
 BOOL Vram_IsTransferDone(void *p);
 void Obj0215eab4_Draw(void *p);

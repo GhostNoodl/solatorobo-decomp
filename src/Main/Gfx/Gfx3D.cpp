@@ -8,13 +8,13 @@ void Oam_GetSize(const OamShape *attr, u32 *w, u32 *h) {
     OamShape shape = *attr & 0xc000c000;
     u16 shapeBit = (u16)((shape & 0xc000) >> 14);
     u16 sizeBit = (u16)((shape & 0xc0000000) >> 30);
-    int ws = data_02082898[shapeBit][sizeBit];
-    int hs = data_020828c8[shapeBit][sizeBit];
+    int ws = Gfx3D_ObjWidthShift[shapeBit][sizeBit];
+    int hs = Gfx3D_ObjHeightShift[shapeBit][sizeBit];
     *w = ws;
     *h = hs;
 }
 
-void func_020430b8(int w, int h, int *ws, int *hs) {
+void Gfx3D_GetSizeShifts(int w, int h, int *ws, int *hs) {
     int i;
     for (i = 0; i < 32; i++) {
         if (w <= (8 << i)) {
@@ -34,7 +34,7 @@ void func_020430b8(int w, int h, int *ws, int *hs) {
 
 
 #ifdef NONMATCHING
-// Status (round drA): func_02043100 is 105 / 62 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): Gfx3D_DrawOamQuad is 105 / 62 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: the ROM loads attr01 three times (needs a join between the shape read and the x read);
 // colouring of the rest. History: docs/MATCHING.md rounds frD, qpE, pmC, bgQ2, mlA, cvA (search for the address);
 // the full list is docs/UNMATCHED.md.
@@ -64,11 +64,11 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
     u16 shapeBit = (u16)((u32)(*sp & 0xc000) >> 14);
     u16 sizeBit = (u16)((u32)(*sp & 0xc0000000) >> 30);
-    *w = data_02082898[shapeBit][sizeBit];
-    *h = data_020828c8[shapeBit][sizeBit];
+    *w = Gfx3D_ObjWidthShift[shapeBit][sizeBit];
+    *h = Gfx3D_ObjHeightShift[shapeBit][sizeBit];
 }
 
-// func_02043100 (round frD): 109 / 63, 110 / 62 with branch targets and pool offsets masked
+// Gfx3D_DrawOamQuad (round frD): 109 / 63, 110 / 62 with branch targets and pool offsets masked
 // (was 122 / 66, 123 / 63): `s0` declared after `h`/`w` (tools/declsweep.py single move).
 // Round qpE: the ROM loads attr01 three times (ldm for shape/charNo, then x, then y). Before
 // allocation the backend's local CSE only spans an extended block, and the x and y reads here
@@ -79,7 +79,7 @@ static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
 // field is read before the size-table reads, `t0` is set by if/else instead of `?:`, and `oy`
 // (dead after `y += oy << 12`) is reused for the bottom texture coordinate (rule F; with a
 // separate `t1` it is 87 / 42). The declaration order is the search's.
-void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const GfxOamTex *tex, u32 texBase, u32 plttBase, const void *mtx) {
+void Gfx3D_DrawOamQuad(int x, int y, int z, u32 color, const GfxOamAttr *oam, const GfxOamTex *tex, u32 texBase, u32 plttBase, const void *mtx) {
     int trans[3];
     int scale[3];
     const GfxOamBits *o = (const GfxOamBits *)oam;
@@ -137,7 +137,7 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
         t0 = oy - 0x1000;
         oy = tmp - 0x1000;
     }
-    fmt = data_02082884[o->colorMode];
+    fmt = Gfx3D_ColorFormatTable[o->colorMode];
     if (tex->extPltt != 0) {
         pal = (u16)o->cParam << 9;
     } else if (fmt == 4) {

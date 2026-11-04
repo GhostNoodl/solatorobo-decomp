@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern const char *data_0208cc94;
-extern const char *data_0208cc88;
+extern const char *ArcPath_MenuBattle;
+extern const char *ResName_BattleCells;
 
 void Lo021cb894_Setup(Lo021cb894 *self) {
     void *res;
@@ -20,10 +20,10 @@ void Lo021cb894_Setup(Lo021cb894 *self) {
     self->unk_74 = 0;
     self->unk_78 = 0;
     self->unk_7c = -0x2000;
-    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(ArcPath_MenuBattle), ResName_BattleCells);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        const char *nm = data_0208cc88;
+        const char *nm = ResName_BattleCells;
         PlttRes_Init_02041218(&m->pltt);
         TexObj_Init(m, nm, 0);
     }

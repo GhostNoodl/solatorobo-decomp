@@ -29,7 +29,7 @@ static inline void ov002_Hud_Set(Ov002Hud *hud, u8 k) {
     }
 }
 
-void func_ov002_021d95e0(Obj021efe6c *self) {
+void Obj021efe6c_Start(Obj021efe6c *self) {
     void *cam;
     Task021efba4 *t;
     if (gStageFlags->shapeId == 0x9000 && gStageFlags->bits18.mode != 0) {
@@ -47,7 +47,7 @@ void func_ov002_021d95e0(Obj021efe6c *self) {
     ov002_Vec_Set((s32 *)((u8 *)((void *)self->cam) + 0x18), 0, 0x1000, 0);
     self->unk_90 = -1;
     self->unk_94 = 0x14;
-    func_ov002_021d98ac(self);
+    Obj021efe6c_LoadPieces(self);
     t = (Task021efba4 *)Task_FindById(0x1b);
     if (t != NULL && self->unk_75 != 0) {
         ov002_Hud_Set(t->hud, self->unk_74);

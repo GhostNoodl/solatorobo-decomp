@@ -258,7 +258,7 @@ void Ov002StaffPhoto_Render(Ov002StaffPhoto *self) {
         } else {
             a.z = -0x1ccd;
         }
-        func_ov000_0214b1a0(&a, &b, self->alpha, func_ov000_0214b8ec(self->photo));
+        Gfx_DrawTexQuad(&a, &b, self->alpha, func_ov000_0214b8ec(self->photo));
     }
 }
 

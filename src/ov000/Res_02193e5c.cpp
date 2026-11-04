@@ -45,7 +45,7 @@ extern char data_ov000_021cc454[];
 ResInfo02193e5c *Tbl_FindEntry_0206fef8(s32 id);
 ResParam02193e5c *Tbl_Elem_020704b4(s32 id);
 char *Tbl_GetResFile(s32 id);
-char *func_020701d4(s32 id);
+char *Tbl_GetResFileName(s32 id);
 char *Tbl_GetEntryData(s32 id, s32 n);
 char *Path_SkipDir(const char *path);
 void ResSet_SetFile(Res02193e5c *p, char *name, s32 a, s32 b, s32 c, s32 d);
@@ -75,7 +75,7 @@ void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
             STD_CopyString(res->unk_e4, alt);
             res->unk_03 |= 0x10;
         }
-        alt = func_020701d4(id);
+        alt = Tbl_GetResFileName(id);
         if (info->flags.bit0) {
             STD_CopyString(res->unk_10, name);
             STD_CopyString(res->unk_30, alt);

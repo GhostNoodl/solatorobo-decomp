@@ -4,7 +4,7 @@ extern "C" {
 
 extern Ov003Actor *Target_Get(void *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
+extern void Ov014ActEx_02208618_UpdateThrown(Ov014ActEx_02208618 *self);
 extern void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -22,7 +22,7 @@ void Ov014ActEx_02208618_StateThrown(Ov014ActEx_02208618 *self) {
             }
         }
         if (o->kind == 0x1000) {
-            func_ov014_02208a9c(self);
+            Ov014ActEx_02208618_UpdateThrown(self);
             return;
         }
         switch (self->fsm->st) {

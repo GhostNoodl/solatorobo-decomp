@@ -35,7 +35,7 @@ BOOL Ov006Vt_021ec040_Load(void) {
             s->unk8 = 10;
         }
     }
-    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(ArcPath_MenuBattle, 7, 0);
     ResMgr_Load(data_ov006_021ec864, 7, 0);
     return TRUE;
 }

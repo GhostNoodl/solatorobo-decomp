@@ -26,7 +26,7 @@ extern "C" {
 
 void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
 void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_02161fac(ModelViewerRes *res);
+void ModelViewerRes_UpdateLoad(ModelViewerRes *res);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
@@ -52,7 +52,7 @@ static inline void StopSlot(ModelViewerRes *res, u8 i) {
 }
 
 
-void func_ov000_02162bd4(ModelViewer *self) {
+void ModelViewer_UpdateModel(ModelViewer *self) {
     switch (self->state) {
     case 0:
         if (self->request) {
@@ -68,7 +68,7 @@ void func_ov000_02162bd4(ModelViewer *self) {
     case 11: {
         AnimCtrl *ctrl;
 
-        func_ov000_02161fac(&self->res);
+        ModelViewerRes_UpdateLoad(&self->res);
         if (self->res.state != 20) {
             break;
         }

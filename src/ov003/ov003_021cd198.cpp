@@ -44,13 +44,13 @@ extern "C" {
 
 extern char data_ov003_021f78c4[];
 extern BOOL Item_Set_0206f5e4(u16 id, s32 a);
-extern void *func_0206f6d4(u16 id, u32 *out);
-extern void func_ov000_021c2224(void *p, void *res);
-extern u32 *func_0206eed0(void *res);
+extern void *Item_FindPictureByChip(u16 id, u32 *out);
+extern void Obj021c2208_SetPicture(void *p, void *res);
+extern u32 *Param_GetPictureInfo(void *res);
 extern void ResMgr_LoadArchive(const void *a, const void *b, s32 c, s32 d);
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
-extern void func_ov000_021c2208(void *p);
+extern void Obj021c2208_Init(void *p);
 extern u32 ResMgr_IsArchiveLoaded(const void *a, const void *b, s32 c);
 
 void Ov003TaskVt_021f78f4_Load(Ov003Title *self) {
@@ -59,10 +59,10 @@ void Ov003TaskVt_021f78f4_Load(Ov003Title *self) {
         void *res;
         self->unk_58 = id;
         Item_Set_0206f5e4(self->unk_58, 1);
-        res = func_0206f6d4(id, &self->unk_5c);
-        func_ov000_021c2224(self->unk_60, res);
-        self->unk_50 = func_0206eed0(res)[1];
-        self->unk_54 = func_0206eed0(res)[2];
+        res = Item_FindPictureByChip(id, &self->unk_5c);
+        Obj021c2208_SetPicture(self->unk_60, res);
+        self->unk_50 = Param_GetPictureInfo(res)[1];
+        self->unk_54 = Param_GetPictureInfo(res)[2];
     }
     ResMgr_LoadArchive((void *)self->unk_50, (void *)self->unk_54, 2, 0);
     ResMgr_LoadArchive(data_ov003_021f78c4, data_ov003_021f78cd, 2, 0);

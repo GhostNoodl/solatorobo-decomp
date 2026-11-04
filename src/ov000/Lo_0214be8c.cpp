@@ -39,7 +39,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-BOOL func_ov000_0214be8c(void) {
+BOOL Quest_AllCleared(void) {
     void *p = LFLD(void *, gDataRes, 0x4c);
     u8 *tbl = (u8 *)DataRes_GetTable(gDataRes, 1);
     u32 n = DataRes_GetCount(gDataRes, 1);

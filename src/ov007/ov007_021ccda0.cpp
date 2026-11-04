@@ -146,7 +146,7 @@ s32 Ov007Title_Update(Ov007Scene *s) {
         Ov007Title_State5(s);
         break;
     case 7:
-        if (s->sub == 0 && func_ov000_02189068(gSceneCmd)) {
+        if (s->sub == 0 && GlobalRes_Load(gSceneCmd)) {
             if (s->player != NULL) {
                 s->player->flags |= 0x40000;
                 break;
@@ -380,7 +380,7 @@ void Ov007Title_State3(Ov007Scene *s) {
         s->sub = 1;
         return;
     case 8:
-        if (!func_ov000_02189068(gSceneCmd)) {
+        if (!GlobalRes_Load(gSceneCmd)) {
             return;
         }
         GfxSys_StartFadeIn(1, 0, 0);
@@ -541,7 +541,7 @@ u32 Text_Measure(u32 font, u32 spacing, u32 str, u32 *outW, u32 *outH, BOOL d);
 void TextWin_RenderToVram(void *p);
 void SndQueue_Push_0204aab0(Ov007SndQ *queue, u16 value);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-void func_0204b924(void *p, s32 v);
+void Camera_StepAnim(void *p, s32 v);
 Ov007MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 BOOL Model0218fe1c_IsAnimDone(void *model);
@@ -961,7 +961,7 @@ void Ov007Title_State5(Ov007Scene *s) {
         break;
     }
     if (s->cam != NULL) {
-        func_0204b924(s->cam, 0x1000);
+        Camera_StepAnim(s->cam, 0x1000);
     }
     if (s->unk_30 != NULL) {
         if (s->unk_4c != 3 && !(s->timer & 0x3ffff)) {

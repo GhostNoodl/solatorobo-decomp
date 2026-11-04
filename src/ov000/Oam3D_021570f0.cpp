@@ -28,7 +28,7 @@ void func_ov000_0215793c(void *p, s32 x, s32 y, s32 z);
 #define REG_TEXIMAGE_PARAM (*(vu32 *)0x40004a8)
 #define REG_TEXPLTT_BASE (*(vu32 *)0x40004ac)
 
-void func_ov000_021570f0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const Oam021570f0 *oam,
+void UiList_DrawArrowOam(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const Oam021570f0 *oam,
                          const ImgAttr021570f0 *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx) {
     void *c = (void *)ctx;
     s32 shift;

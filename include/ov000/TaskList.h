@@ -39,16 +39,16 @@ extern void *data_ov000_021ccd3c;
 extern struct GfxSys *gGfxSys; // Main/Gfx/GfxMgr.h
 extern u8 Task_vtbl[];
 extern u8 Task021cbce0_vtbl[];
-extern const char *data_0208cca0;
-extern void *data_0208ccc0;
+extern const char *ArcPath_Menu;
+extern void *ResName_CommonModel2;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *ptr);
 void Gfx3D_SendDL(void *a, s32 b);
-void func_ov000_0214c1ac(void);
+void FaceIcon_LoadPlayer(void);
 void TexObj_SetOamFuncArg(Model *model, s32 a, void *b);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
-void func_ov000_0214c210(void);
+void FaceIcon_ReleasePlayer(void);
 
 }
 

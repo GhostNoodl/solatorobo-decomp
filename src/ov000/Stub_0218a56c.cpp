@@ -73,7 +73,7 @@ u16 func_ov000_0218a5ec(const LerpAngle0218a5ec *self, s32 v) {
 // opcode followed by its operands (a value, a Lerp0218a56c or a LerpAngle0218a5ec).
 // The command stream is a const parameter, so its loads are not ordered against the stores; with the
 // ofs zero store written first, it is issued in the load latency slot in cases 20 to 22 (round swA).
-BOOL func_ov000_0218a670(FieldCam *self, const FieldCamZone *box, const u32 *code, FieldCamZoneResult *st) {
+BOOL FieldCam_ApplyZone(FieldCam *self, const FieldCamZone *box, const u32 *code, FieldCamZoneResult *st) {
     const u32 *end;
     if (st->pos.x < box->min.x || st->pos.x > box->max.x || st->pos.y < box->min.y ||
         st->pos.y > box->max.y || st->pos.z < box->min.z || st->pos.z > box->max.z) {

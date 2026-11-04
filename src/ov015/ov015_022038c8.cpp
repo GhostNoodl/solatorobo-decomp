@@ -301,7 +301,7 @@ extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360[];
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
-u16 *func_0206ef88(u16 id);
+u16 *Param_GetHarpoonInfo(u16 id);
 void *Param_Get(u16 id);
 void MsgBox_Init(void *p);
 void MsgBox_Open(void *p, s32 a, void *b, void *c, s32 d);
@@ -355,7 +355,7 @@ void Ov015HarpoonSelect_Start(Ov015Scene2c08 *self) {
         for (i = 0; i < 8; i++) {
             u16 *e;
             id = i | 0xa000;
-            e = func_0206ef88(id);
+            e = Param_GetHarpoonInfo(id);
             o = (UiListItem *)self->unk_3c->vfunc_74(Param_Get(id), id, 0xffff, *e);
             if (i > 0) {
                 o->unk_24 = 0xe;
@@ -367,7 +367,7 @@ void Ov015HarpoonSelect_Start(Ov015Scene2c08 *self) {
         for (i = 1; i < 8; i++) {
             u16 *e;
             id = i | 0xa000;
-            e = func_0206ef88(id);
+            e = Param_GetHarpoonInfo(id);
             self->unk_3c->vfunc_74(Param_Get(id), id, 0xffff, *e);
         }
         break;

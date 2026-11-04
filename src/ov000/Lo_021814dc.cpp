@@ -59,11 +59,11 @@ void *Heap_Alloc(u32 size);
 void Hit_ResetLists(void);
 void Unk0214a418_Create(void);
 SceneCmd *func_ov000_02188ba0(SceneCmd *self);
-void func_ov000_021b4eec(void);
+void FieldMgr_Create(void);
 void ActorMgr_Create(void);
 void *Group_Init_0218bb34(void *p);
 void EffectMgr_Create(void);
-void func_ov000_021bc274(void);
+void FieldFade_Create(void);
 void MessageQueue_Init(void *p);
 void func_ov000_02171464(void *p);
 void DataRes1530_Create(s32 a);
@@ -85,8 +85,8 @@ void MsgRes_Delete(void);
 void SceneStage_FreeScripts(SceneStage *self);
 void LangRes2_Delete(void);
 void LangData_DeleteRes(void);
-void func_ov000_021bc2d8(void);
-void func_ov000_021b4f28(void);
+void FieldFade_Destroy(void);
+void FieldMgr_Destroy(void);
 u16 ActorMgr_CountActors(ActorMgr *p, s32 a);
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
 void *Group_Clear(void *p);
@@ -98,16 +98,16 @@ s32 PauseNode_IsUpdatePaused(void *p, s32 a);
 void ObjPool_Update(void *p);
 void SceneStage_StartScript(SceneStage *self);
 BOOL StageRes_RunSlots(void);
-s32 func_ov000_021bc644(FieldFade *p);
+s32 Obj021bc644_Update(FieldFade *p);
 s32 func_ov000_02189194(SceneCmd *self);
 void Group_AddCamView(void *p);
-void func_ov000_0218be54(void *p);
+void Group_UpdateAll(void *p);
 void ActorMgr_Update(ActorMgr *p);
 void EffectMgr_Update(void *p);
 void GfxSys_UpdateFade(void);
 void ActorMgr_Draw(ActorMgr *p);
 void EffectMgr_Draw(void *p);
-void func_ov000_021bc6c0(FieldFade *p);
+void Obj021bc6c0_Draw(FieldFade *p);
 void func_0205a69c(void *p);
 }
 
@@ -128,7 +128,7 @@ void Field_Create(void) {
         }
         gSceneCmd = (FieldState *)p;
     }
-    func_ov000_021b4eec();
+    FieldMgr_Create();
     ActorMgr_Create();
     if (gGroup == NULL) {
         void *p = Heap_Alloc(0x48);
@@ -139,7 +139,7 @@ void Field_Create(void) {
     }
     EffectMgr_Create();
     *(void **)gEffectMgr = SceneCmd_Get()->pause;
-    func_ov000_021bc274();
+    FieldFade_Create();
     if (gMessageQueue == NULL) {
         VObj *obj = (VObj *)Heap_Alloc(0x120);
         if (obj != NULL) {
@@ -200,8 +200,8 @@ void Field_Destroy(void) {
     }
     LangRes2_Delete();
     LangData_DeleteRes();
-    func_ov000_021bc2d8();
-    func_ov000_021b4f28();
+    FieldFade_Destroy();
+    FieldMgr_Destroy();
     {
         u8 **scene = &gSceneMgr;
         // Overlay id: a link-time symbol in the original, so it comes from the
@@ -253,7 +253,7 @@ void Field_Update(void) {
     ObjPool_Update(gStageObjPool);
     SceneStage_StartScript(&SceneCmd_Get()->stage);
     StageRes_RunSlots();
-    r = func_ov000_021bc644(gFieldFade);
+    r = Obj021bc644_Update(gFieldFade);
     if (func_ov000_02189194(SceneCmd_Get()) != 0 && r != 0) {
         SceneCmd_Get()->unk_06 = 0;
         {
@@ -267,7 +267,7 @@ void Field_Update(void) {
         }
         Group_AddCamView(gGroup);
         if (gGroup != NULL) {
-            func_ov000_0218be54(gGroup);
+            Group_UpdateAll(gGroup);
         }
         if (gActorMgr != NULL) {
             ActorMgr_Update(gActorMgr);
@@ -291,7 +291,7 @@ void Field_Draw(void) {
         ActorMgr_Draw(gActorMgr);
     }
     EffectMgr_Draw(gEffectMgr);
-    func_ov000_021bc6c0(gFieldFade);
+    Obj021bc6c0_Draw(gFieldFade);
     func_0205a69c(gStageObjPool);
     if (data_ov000_021ccd60 != NULL) {
         data_ov000_021ccd60();
@@ -857,7 +857,7 @@ static inline BOOL IsActive(SceneRes *p) {
 }
 
 extern "C" {
-void func_0206228c(void);
+void StageVars_ResetScript(void);
 
 void SceneStage_RunCur(SceneStage *self) {
     if (self->cur == NULL) {
@@ -873,7 +873,7 @@ void SceneStage_RunCur(SceneStage *self) {
         self->unk_18 = 0;
     }
     if (self->cur == NULL) {
-        func_0206228c();
+        StageVars_ResetScript();
     }
 }
 }
@@ -892,7 +892,7 @@ static inline BOOL IsActive(SceneRes *p) {
 extern "C" {
 extern void *data_02149efc;
 BOOL StageRes_FindSlot(s32 id);
-void func_0206228c(void);
+void StageVars_ResetScript(void);
 
 static inline BOOL SceneCmd_HasKind(SceneCmd *q, s32 i, s32 end, s32 kind) {
     for (; i != end;) {
@@ -985,7 +985,7 @@ void SceneStage_StartScript(SceneStage *self) {
         }
     }
     if (self->cur == NULL) {
-        func_0206228c();
+        StageVars_ResetScript();
     }
 }
 }
@@ -1492,7 +1492,7 @@ extern s32 gFadeState[5];
 extern MessageQueue021cb980 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -1505,7 +1505,7 @@ BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -1513,12 +1513,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -1537,7 +1537,7 @@ s32 SceneCmd_Run03(SceneCmd *self) {
         self->step++;
         return 0;
     case 1:
-        func_0206c72c(gStageFlags, 0);
+        StageFlags_SaveForExit(gStageFlags, 0);
         CmdObj_Done(self);
         return 1;
     }
@@ -1588,7 +1588,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -1601,7 +1601,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -1609,12 +1609,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -1634,7 +1634,7 @@ s32 SceneCmd_Run04(SceneCmd *self) {
             GfxSys_StartFadeIn(0x8000, 0, -1);
         }
         gStageFlags->unk_009 = (u8)self->unk_a4;
-        func_0206c620(gStageFlags);
+        StageFlags_Save(gStageFlags);
         TaskHost_Create(7, 0);
         self->step++;
         return 0;
@@ -1773,7 +1773,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -1786,7 +1786,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -1794,12 +1794,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -1908,7 +1908,7 @@ Actor0218e640 *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_02062478(FieldId *id);
 void SceneStage_StartScript(SceneStage *self);
 void func_020624b8(void);
-void func_0206c72c(void *p, FieldId *id);
+void StageFlags_SaveForExit(void *p, FieldId *id);
 void GfxSys_SetFadePlanes(s32 a, s32 b);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void func_02062424(FieldId *id);
@@ -1983,7 +1983,7 @@ s32 SceneCmd_Run09(SceneCmd *self) {
         }
     }
     if (hasArg) {
-        func_0206c72c(gStageFlags, &self->unk_cd);
+        StageFlags_SaveForExit(gStageFlags, &self->unk_cd);
     }
     fade = 0xf000;
     if (self->unk_c9) {
@@ -2112,7 +2112,7 @@ void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
 void Ov003_LoadKindOverlay(void);
 void Group_AddCamView(void *p);
-void func_ov000_0218be54(void *p);
+void Group_UpdateAll(void *p);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void func_ov000_0216f844(Task118 *p, s32 a);
 
@@ -2283,12 +2283,12 @@ s32 SceneCmd_Run0a(SceneCmd *self) {
             break;
         case 1:
             if (FieldMgr_UpdateLoad(gFieldMgr)) {
-                func_ov000_021b5dc0(gFieldMgr);
-                func_ov000_021b628c(gFieldMgr);
+                FieldMgr_SetupBlock(gFieldMgr);
+                FieldMgr_PlacePlayerAtExit(gFieldMgr);
                 Ov003_LoadKindOverlay();
                 Group_AddCamView(gGroup);
                 if (gGroup != NULL) {
-                    func_ov000_0218be54(gGroup);
+                    Group_UpdateAll(gGroup);
                 }
                 self->unk_a8 = sub + 1;
             }
@@ -2517,7 +2517,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -2530,7 +2530,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -2538,12 +2538,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -2623,7 +2623,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -2636,7 +2636,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -2644,12 +2644,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -2722,7 +2722,7 @@ extern s32 gFadeState[5];
 extern MessageQueue021cb980 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -2735,7 +2735,7 @@ BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -2743,12 +2743,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -2778,7 +2778,7 @@ static inline BOOL MgrBusy(void) {
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg) {
     switch (self->step) {
     case 0:
-        MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, func_02061d54(0x25)));
+        MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, StageId_Strip(0x25)));
         self->step++;
     case 1:
         if (MgrBusy()) {
@@ -2853,7 +2853,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -2866,7 +2866,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -2874,12 +2874,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -2991,7 +2991,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -3004,7 +3004,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -3012,12 +3012,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -3111,7 +3111,7 @@ extern Obj0214a424 *gStageFlags;
 
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 void *MsgRes_GetString(void *p, s32 a);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
@@ -3180,7 +3180,7 @@ s32 SceneCmd_Run10(SceneCmd *self) {
     case 2:
         switch (self->step) {
         case 0:
-            MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, func_02061d54(0x28)));
+            MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, StageId_Strip(0x28)));
             self->step++;
             return 0;
         case 1:
@@ -3581,9 +3581,9 @@ typedef struct {
 
 extern "C" {
 extern MessageQueue021cb980 *gMessageQueue;
-extern const char *data_0208cca0;
-extern const char *data_0208cc94;
-extern char data_0214b105[];
+extern const char *ArcPath_Menu;
+extern const char *ArcPath_MenuBattle;
+extern char gCommonTextPath[];
 extern Obj02097e3c *gMovie;
 extern void *gSceneMgr;
 extern Ov002Obj021f0f9c *gOv002Stage;
@@ -3604,8 +3604,8 @@ void Movie_Load(void *p, s32 a, s32 b, s32 c);
 void LangRes2_Create(void);
 void LangData_CreateRes(void);
 void Movie_RequestStop(void *p);
-BOOL func_0206facc(void);
-BOOL func_0206ead8(void);
+BOOL LangRes2_Load(void);
+BOOL Param_LoadRes(void);
 void LangRes2_BindTables(void);
 void Param_BindTables(void);
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
@@ -3711,9 +3711,9 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
     case 0x15:
         switch (self->step) {
         case 0:
-            ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
-            ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
-            ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
+            ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0);
+            ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0);
+            ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0);
             LangRes2_Delete();
             LangData_DeleteRes();
             GfxSys_StopFade(-1);
@@ -3722,9 +3722,9 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
             return 0;
         case 1:
             if (gMovie->unk_149 == 0) {
-                ResMgr_Load(data_0214b105, 7, 0);
-                ResMgr_Load(data_0208cca0, 7, 0);
-                ResMgr_Load(data_0208cc94, 7, 0);
+                ResMgr_Load(gCommonTextPath, 7, 0);
+                ResMgr_Load(ArcPath_Menu, 7, 0);
+                ResMgr_Load(ArcPath_MenuBattle, 7, 0);
                 LangRes2_Create();
                 LangData_CreateRes();
                 self->step++;
@@ -3734,19 +3734,19 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
             break;
         case 2: {
             BOOL ok = TRUE;
-            if (!ResMgr_IsLoaded(data_0214b105, 7)) {
+            if (!ResMgr_IsLoaded(gCommonTextPath, 7)) {
                 ok = FALSE;
             }
-            if (!ResMgr_IsLoaded(data_0208cca0, 7)) {
+            if (!ResMgr_IsLoaded(ArcPath_Menu, 7)) {
                 ok = FALSE;
             }
-            if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
+            if (!ResMgr_IsLoaded(ArcPath_MenuBattle, 7)) {
                 ok = FALSE;
             }
-            if (!func_0206facc()) {
+            if (!LangRes2_Load()) {
                 ok = FALSE;
             }
-            if (!func_0206ead8()) {
+            if (!Param_LoadRes()) {
                 ok = FALSE;
             }
             if (ok) {
@@ -4169,7 +4169,7 @@ extern Obj02097e48 *gSndQueue;
 extern Mgr021ccd30 *gMessageQueue;
 void func_020623e0(void);
 void SceneStage_StartScript(SceneStage *self);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 void *MsgRes_GetString(void *p, s32 a);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 BOOL MessageQueue_GetById(Mgr021ccd30 *mgr, s32 a);
@@ -4212,7 +4212,7 @@ s32 SceneCmd_Run1d(SceneCmd *self) {
             CmdObj_Done(self);
             return 1;
         }
-        MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, func_02061d54(0x19)));
+        MessageQueue021cb980_Push0f(gMessageQueue, 0, MsgRes_GetString(gMsgRes, StageId_Strip(0x19)));
         self->step++;
         break;
     case 2:
@@ -4518,7 +4518,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -4531,7 +4531,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -4539,12 +4539,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -4967,7 +4967,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -4980,7 +4980,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -4988,12 +4988,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -5175,7 +5175,7 @@ extern s32 gFadeState[5];
 extern u8 *gMessageQueue;
 extern void *gMsgRes;
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0206c620(void *p);
+void StageFlags_Save(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 BOOL SceneStage_BindScripts(SceneStage *self, s32 a);
@@ -5188,7 +5188,7 @@ BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
-u16 func_02061d54(s32 a);
+u16 StageId_Strip(s32 a);
 u16 func_02062834(void);
 s32 SceneCmd_RunShopPrompt(SceneCmd *self, s32 arg);
 extern void *gSndMgr;
@@ -5196,12 +5196,12 @@ extern void *gSysCard;
 extern Obj02097e48 *gSndQueue;
 extern Flags021ccd44 *gTaskHost;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_0206c72c(void *p, s32 a);
+void StageFlags_SaveForExit(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
-BOOL func_02046e28(void *p);
+BOOL SysCard_CheckLocked(void *p);
 void SndMgr_RequestLoad_02049678(void *p, s32 a, s32 b, s32 c);
 BOOL SndMgr_IsLoadDone(void *p);
 void SceneCmd_Run23_Exit(void);
@@ -5220,7 +5220,7 @@ s32 SceneCmd_Run25(SceneCmd *self) {
         self->step++;
         return 0;
     case 1:
-        if (!func_02046e28(gSysCard)) {
+        if (!SysCard_CheckLocked(gSysCard)) {
             SndMgr_RequestLoad_02049678(gSndMgr, 4, self->unk_a4, -1);
             self->step++;
         }
@@ -5732,17 +5732,17 @@ typedef void (*Cb0218867c)(void);
 extern "C" {
 
 extern void *gDataRes;
-BOOL func_ov000_0214be28(u16 id);
+BOOL Quest_HasAvailable(u16 id);
 void MenuScript_Open(void);
 u32 MenuScript_IsLoaded(void);
 void MenuScript_Bind(void);
 void MenuScript_Run(u16 id);
-BOOL func_0206f954(void);
+BOOL Item_HasNewMovie(void);
 void *DataRes_GetTable(void *res, u32 idx);
 u32 DataRes_GetCount(void *res, u32 idx);
 u16 DataRes_ReadBitsAt_02059544(void *res, void *block, void *entries, int packed, u32 id);
 VObj *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_0206228c(void);
+void StageVars_ResetScript(void);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 s32 FX_Div(s32 a, s32 b);
 
@@ -5785,7 +5785,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
             self->step++;
             return 0;
         case 1:
-            LFLD(u16, g_0, 0x80) = func_ov000_0214be28(arg);
+            LFLD(u16, g_0, 0x80) = Quest_HasAvailable(arg);
             self->step = 100;
             break;
         }
@@ -5828,7 +5828,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
             if (MenuScript_IsLoaded()) {
                 MenuScript_Bind();
                 MenuScript_Run(arg);
-                LFLD(u16, g_2, 0x80) = func_0206f954();
+                LFLD(u16, g_2, 0x80) = Item_HasNewMovie();
                 self->step = 100;
             }
             break;
@@ -5941,7 +5941,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
                 o_2->stage.unk_18 = 0;
             }
             if (o_2->stage.cur == NULL) {
-                func_0206228c();
+                StageVars_ResetScript();
             }
         }
         CmdObj_Done(self);

@@ -112,7 +112,7 @@ typedef struct ShakeTable {
     ShakeEntry entries[8];
 } ShakeTable;
 
-extern const ShakeTable data_020829d0;
+extern const ShakeTable GameScene_ShakeTable;
 extern s32 gFadeState[5];
 
 extern void GfxSys_SetFadePlanes(int a, int b);
@@ -121,8 +121,8 @@ extern s32 Rand_UpTo(s32 max);
 extern void Gfx3D_SendDL(void *obj, int a);
 extern s32 Gfx3DState_NextPolyIdB(void *obj);
 extern void func_02052fcc(GameScene *scene);
-extern s32 func_020572f8(GameScene *scene, void *p);
-extern void *func_0203972c(void *blocks, u32 count);
+extern s32 SlideWinX_RenderText(GameScene *scene, void *p);
+extern void *GfxMgr_DrawBlocks(void *blocks, u32 count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
     int v[3];

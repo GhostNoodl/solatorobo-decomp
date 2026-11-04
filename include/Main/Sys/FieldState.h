@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 
-// A zone of the field camera (func_ov000_0218a670): the box the camera's point is tested
+// A zone of the field camera (FieldCam_ApplyZone): the box the camera's point is tested
 // against, followed by `len` bytes of camera commands.
 typedef struct FieldCamZone {
     /* 0x00 */ VecFx32 min;
@@ -38,7 +38,7 @@ typedef struct FieldCam {
             u8 unk_d8_2_f : 6;
         };
     };
-    /* 0xd9 */ u8 timer; // frames left of the set view (func_ov000_0218a358), counted down by the update
+    /* 0xd9 */ u8 timer; // frames left of the set view (FieldCam_SetTarget), counted down by the update
     /* 0xda */ union {
         u8 unk_da;
         struct {
@@ -59,7 +59,7 @@ typedef struct FieldCam {
     /* 0xfe */ s16 unk_fe;
     /* 0x100 */ s16 unk_100;
     /* 0x102 */ u8 unk_102[2];
-    // func_ov000_0218a358 pulls unk_e8 into [clampMin, clampMax], fully when unk_f4 is clampDist
+    // FieldCam_SetTarget pulls unk_e8 into [clampMin, clampMax], fully when unk_f4 is clampDist
     // and by unk_f4 / clampDist otherwise; the zone commands set the bounds.
     /* 0x104 */ VecFx32 clampMin;
     /* 0x110 */ VecFx32 clampMax;

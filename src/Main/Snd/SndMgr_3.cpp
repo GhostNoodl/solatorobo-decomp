@@ -79,11 +79,11 @@ SndHandle *SndMgr_LookupSe(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex) {
                 return NULL;
             }
             handle = &mgr->voice;
-            *outSeqArc = data_0208b688[group];
+            *outSeqArc = SndMgr_SeqArcTable[group];
             break;
         default:
             handle = &mgr->voice;
-            *outSeqArc = data_0208b688[group];
+            *outSeqArc = SndMgr_SeqArcTable[group];
             break;
     }
     return handle;

@@ -33,7 +33,7 @@ extern const ov006_Vec32 data_ov006_021eb758;
 
 void VEC_Normalize(const ov006_Vec32 *src, ov006_Vec32 *dst);
 const char *Tbl_GetResFile(u16 id);
-const char *func_020701d4(u16 id);
+const char *Tbl_GetResFileName(u16 id);
 s16 *Tbl_Elem_020706a0(u16 id);
 void ModelViewer_SetModel(ov006_Chr021d3498 *chr, const char *a, const char *b, const char *c, const char *d,
                          const char *e, int f, int g);
@@ -55,9 +55,9 @@ void ov006_CraftSelect_ShowCraft(ov006_Task021d3498 *self, u16 id, BOOL flag) {
         return;
     }
     a = Tbl_GetResFile(id);
-    b = func_020701d4(id);
+    b = Tbl_GetResFileName(id);
     c = Tbl_GetResFile(id);
-    d = func_020701d4(id);
+    d = Tbl_GetResFileName(id);
     if (flag) {
         ov006_Vec32 v;
         VEC_Normalize(&data_ov006_021eb758, &v);
@@ -157,7 +157,7 @@ Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
 const char *Tbl_GetResFile(u16 id);
-const char *func_020701d4(u16 id);
+const char *Tbl_GetResFileName(u16 id);
 int ResSet_UpdateLoad(ActorRes *self);
 
 static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
@@ -270,7 +270,7 @@ extern "C" {
 
 ActorRes *ResSet_Init(ActorRes *self);
 const char *Tbl_GetResFile(u16 id);
-const char *func_020701d4(u16 id);
+const char *Tbl_GetResFileName(u16 id);
 
 static inline ActorRes *ov006_NewModel60(void) {
     ActorRes *p = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
@@ -307,9 +307,9 @@ void ov006_CourseSelect_Load(ov006_TaskD37 *self) {
     self->unk68 = ov006_NewModel60();
     id = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC;
     a = Tbl_GetResFile(id);
-    b = func_020701d4(id);
+    b = Tbl_GetResFileName(id);
     c = Tbl_GetResFile(id);
-    d = func_020701d4(id);
+    d = Tbl_GetResFileName(id);
     ActorRes_SetName1(self->unk68, a, b);
     ActorRes_SetName2(self->unk68, c, d);
     self->unk68->unk_00 = 0;
@@ -347,7 +347,7 @@ Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
 const char *Tbl_GetResFile(u16 id);
-const char *func_020701d4(u16 id);
+const char *Tbl_GetResFileName(u16 id);
 int ResSet_UpdateLoad(ActorRes *self);
 
 BOOL ov006_CourseSelect_IsLoaded(ov006_TaskD37 *self) {

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_02041d8c(Model *model);
+void TexObj_ShrinkRes(Model *model);
 
 void Ov002Caption_Update(Ov002Caption *self);
 
@@ -12,15 +12,15 @@ void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id);
 void Ov002Hud_Update(Ov002Hud *self) {
     if (self->pending != 0) {
         if ((self->pending & 1) && Model_IsReady(self->unk_04, 0) != 0) {
-            func_02041d8c(self->unk_04);
+            TexObj_ShrinkRes(self->unk_04);
             self->pending &= ~1;
         }
         if ((self->pending & 2) && Model_IsReady(self->unk_08, 0) != 0) {
-            func_02041d8c(self->unk_08);
+            TexObj_ShrinkRes(self->unk_08);
             self->pending &= ~2;
         }
         if ((self->pending & 4) && Model_IsReady(self->unk_0c, 0) != 0) {
-            func_02041d8c(self->unk_0c);
+            TexObj_ShrinkRes(self->unk_0c);
             self->pending &= ~4;
         }
         if ((self->pending & 8) && Model_IsReady(self->unk_10, 0xffff) != 0) {

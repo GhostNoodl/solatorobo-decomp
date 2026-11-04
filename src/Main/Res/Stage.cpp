@@ -28,11 +28,11 @@ int (*gStageResDispatchFn)(StageResSlot *slot) = StageRes_DispatchSlot;
 
 // .bss, laid out in reverse order of definition from 0x02149efc.
 s32 gStageResSlotHead;
-void *data_02149f10;
+void *gStageLastObj3D;
 ObjPool *gStageObjPool;
-u32 data_02149f08;
+u32 gStageResBusy;
 s32 gStageResSlotTail;
-void *data_02149f00;
+void *gStageLastNode;
 u32 data_02149efc;
 StageResSlot gStageResSlots[0x40];
 
@@ -783,11 +783,11 @@ typedef struct BoxFaceIdx {
     u32 v[6][2][3];
 } BoxFaceIdx;
 
-extern const BoxFaceAttr data_02082a10;
-extern const BoxFaceIdx data_02082a78;
-extern const BoxFaceIdx data_02082b08;
+extern const BoxFaceAttr StageBox_FaceAttrs;
+extern const BoxFaceIdx StageBox_FaceIdxFlip;
+extern const BoxFaceIdx StageBox_FaceIdx;
 
-extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const VecFx16 *verts, const u32 (*indices)[3]);
+extern void HitTri_SetupQuad(BoxBounds *bounds, BoxTri *tri, u32 value, const VecFx16 *verts, const u32 (*indices)[3]);
 extern void HitMesh_Init(void *mesh);
 extern void HitMesh_SetRes(BoxMesh *mesh, BoxMeshRes *res);
 extern void HitMesh_Link(BoxMesh *mesh);
@@ -899,16 +899,16 @@ ObjPoolEntry *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int
     verts[7].x = -x;
     verts[7].y = -y;
     verts[7].z = -z;
-    attr = data_02082a10;
+    attr = StageBox_FaceAttrs;
     if (flip) {
-        BoxFaceIdx idx = data_02082a78;
+        BoxFaceIdx idx = StageBox_FaceIdxFlip;
         for (i = 0; i < 6; i++, tri += 2) {
-            func_0203ff94(&res->bounds, tri, attr.v[i], verts, idx.v[i]);
+            HitTri_SetupQuad(&res->bounds, tri, attr.v[i], verts, idx.v[i]);
         }
     } else {
-        BoxFaceIdx idx = data_02082b08;
+        BoxFaceIdx idx = StageBox_FaceIdx;
         for (i = 0; i < 6; i++, tri += 2) {
-            func_0203ff94(&res->bounds, tri, attr.v[i], verts, idx.v[i]);
+            HitTri_SetupQuad(&res->bounds, tri, attr.v[i], verts, idx.v[i]);
         }
     }
     {
@@ -1342,7 +1342,7 @@ BOOL StageRes_Run(StageRes *res, BOOL force) {
     }
     res->unk_58 = 0;
     res->unk_5a = 0;
-    data_02149f08 = 0;
+    gStageResBusy = 0;
     data_02149efc = 0;
     while (res->size > res->unk_54 * 2) {
         u16 *cmd = (u16 *)res->data + res->unk_54;
@@ -1633,7 +1633,7 @@ void StageRes_ResetSlots(void) {
     gStageResDispatchFn = StageRes_DispatchSlot;
     gStageResSlotHead = 0;
     gStageResSlotTail = 0;
-    data_02149f08 = 0;
+    gStageResBusy = 0;
     data_02149efc = 0;
     MI_CpuFill8(gStageResSlots, 0, sizeof(gStageResSlots));
 }
@@ -1656,7 +1656,7 @@ static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const c
 }
 
 static inline BOOL StageRes_IsBusy(void) {
-    return data_02149f08 != 0;
+    return gStageResBusy != 0;
 }
 
 BOOL StageRes_HasQueued(void) {
@@ -1732,7 +1732,7 @@ static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const c
 }
 
 static inline BOOL StageRes_IsBusy(void) {
-    return data_02149f08 != 0;
+    return gStageResBusy != 0;
 }
 
 StageResSlot *StageRes_PeekSlot(void) {
@@ -1940,7 +1940,7 @@ extern void func_0205ae68(void);
 extern u16 StageRes_GetValue(StageRes *res);
 extern void func_0205beb0(void);
 extern void func_0205bec8(u16 id);
-extern void func_0205bee4(void);
+extern void StageRes_SetBusy(void);
 extern int func_0205bf70(StageResSlot *slot);
 extern int StageCmd_Op09(StageResSlot *slot);
 extern int StageCmd_Op0a(StageResSlot *slot);
@@ -2062,7 +2062,7 @@ u16 StageRes_ExecCmd(StageRes *res, u16 *cmd) {
         break;
     case 0xf1:
         len++;
-        func_0205bee4();
+        StageRes_SetBusy();
         break;
     case 0xf2:
         len++;
@@ -2088,14 +2088,14 @@ namespace m_StageCmd_0 {
 extern "C" {
 
 extern void *gOv008Mgr;
-extern void func_ov008_021cf9b8(void *m, u32 id);
+extern void Ov008WorldMap_SelectById(void *m, u32 id);
 
 void func_0205beb0(void) {
     gSceneCmd->unk_c8 = TRUE;
 }
 
 void func_0205bec8(u16 id) {
-    func_ov008_021cf9b8(gOv008Mgr, id);
+    Ov008WorldMap_SelectById(gOv008Mgr, id);
 }
 
 }
@@ -2107,8 +2107,8 @@ namespace m_StageCmd {
 
 extern "C" {
 
-void func_0205bee4(void) {
-    data_02149f08 = 1;
+void StageRes_SetBusy(void) {
+    gStageResBusy = 1;
 }
 
 int StageRes_DispatchSlot(StageResSlot *slot) {
@@ -2341,7 +2341,7 @@ int StageCmd_Op0d(StageResSlot *slot) {
 }
 
 int StageCmd_Op0e(StageResSlot *slot) {
-    func_ov000_0214e7ac(slot->args[0]);
+    QuestWin_AddQuest(slot->args[0]);
     return 1;
 }
 
@@ -3231,7 +3231,7 @@ int StageCmd_Op3a(StageResSlot *slot) {
             Stage_FindObj(id, b);
         }
     }
-    if (data_02149f10 != NULL || data_02149f00 != NULL) {
+    if (gStageLastObj3D != NULL || gStageLastNode != NULL) {
         data_02fe1534.unk_80 = 1;
     } else {
         data_02fe1534.unk_80 = 0;
@@ -3282,10 +3282,10 @@ int StageCmd_Op3b(StageResSlot *slot) {
                 Stage_FindObj(id, b);
             }
         }
-        if (data_02149f10 != NULL) {
-            *(StageVec *)&pos = ((StageObj3D *)data_02149f10)->pos;
-        } else if (data_02149f00 != NULL) {
-            *(StageVec *)&pos = ((StageLightObj *)data_02149f00)->pos;
+        if (gStageLastObj3D != NULL) {
+            *(StageVec *)&pos = ((StageObj3D *)gStageLastObj3D)->pos;
+        } else if (gStageLastNode != NULL) {
+            *(StageVec *)&pos = ((StageLightObj *)gStageLastNode)->pos;
         } else {
             return 1;
         }
@@ -3379,7 +3379,7 @@ typedef struct StageLight2 {
     /* 0x94 */ StageRot rot;
 } StageLight2;
 
-extern StageLight2 *func_ov000_0218b9ec(StageLightParam *param, u8 *color, u8 *color2, int a, int b);
+extern StageLight2 *Group_CreateNode(StageLightParam *param, u8 *color, u8 *color2, int a, int b);
 extern void func_ov000_0218b7c0(StageLight2 *light, u32 idx, int mode);
 
 static inline void LightParam_Init(StageLightParam *p, u16 id) {
@@ -3409,8 +3409,8 @@ int StageCmd_Op3d(StageResSlot *slot) {
         id = slot->args[0];
         type = (id & 0xf000) >> 12;
         res = slot->res;
-        data_02149f10 = NULL;
-        data_02149f00 = NULL;
+        gStageLastObj3D = NULL;
+        gStageLastNode = NULL;
         lo = id & ~0xf000;
         LightParam_Init(&param, 0xffff);
         param.key.raw = lo | ((u32)(type << 28) >> 16);
@@ -3436,11 +3436,11 @@ int StageCmd_Op3d(StageResSlot *slot) {
             rot.y = (s32)(((s64)FX_Div(slot->args[2] << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12;
         }
     }
-    light = func_ov000_0218b9ec(&param, color, color2, 0, 0);
+    light = Group_CreateNode(&param, color, color2, 0, 0);
     light->pos = pos;
     light->rot = rot;
     func_ov000_0218b7c0(light, (u16)(param.key.raw >> 12), 2);
-    data_02149f00 = light;
+    gStageLastNode = light;
     return 1;
 }
 
@@ -3562,14 +3562,14 @@ int StageCmd_Op43(StageResSlot *slot) {
         u16 id = slot->args[0];
         u16 b = slot->args[1];
         if (id != 0) {
-            data_02149f10 = Stage_FindObj3D(id);
-            data_02149f00 = Stage_FindLight1(id, b);
-            if (data_02149f00 == NULL) {
-                data_02149f00 = Stage_FindLight2(id, b);
+            gStageLastObj3D = Stage_FindObj3D(id);
+            gStageLastNode = Stage_FindLight1(id, b);
+            if (gStageLastNode == NULL) {
+                gStageLastNode = Stage_FindLight2(id, b);
             }
         }
     }
-    if (data_02149f10 != NULL || data_02149f00 != NULL) {
+    if (gStageLastObj3D != NULL || gStageLastNode != NULL) {
         data_02fe1534.unk_80 = 1;
     } else {
         data_02fe1534.unk_80 = 0;
@@ -3582,7 +3582,7 @@ int StageCmd_Op44(StageResSlot *slot) {
     s16 rot[3];
     StageVec pos;
     StageRes *res;
-    if (data_02149f00 == NULL) {
+    if (gStageLastNode == NULL) {
         return 1;
     }
     res = slot->res;
@@ -3605,7 +3605,7 @@ int StageCmd_Op44(StageResSlot *slot) {
             rot[1] = (s32)(((s64)FX_Div(slot->args[4] << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12;
         }
     }
-    func_ov000_0218b60c(data_02149f00, color, &pos, rot);
+    func_ov000_0218b60c(gStageLastNode, color, &pos, rot);
     return 1;
 }
 
@@ -3623,8 +3623,8 @@ int StageCmd_Op45(StageResSlot *slot) {
     }
     rot = Stage_GetAngle(res, slot->args[3], 0xffff);
     if (slot->args[0] == 0xffff) {
-        o = (StageObj3D *)data_02149f10;
-        l = (StageLightObj *)data_02149f00;
+        o = (StageObj3D *)gStageLastObj3D;
+        l = (StageLightObj *)gStageLastNode;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
         l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
@@ -3662,8 +3662,8 @@ int StageCmd_Op46(StageResSlot *slot) {
     StageObj3D *o;
     StageLightObj *l;
     if (slot->args[0] == 0xffff) {
-        o = (StageObj3D *)data_02149f10;
-        l = (StageLightObj *)data_02149f00;
+        o = (StageObj3D *)gStageLastObj3D;
+        l = (StageLightObj *)gStageLastNode;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
         l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
@@ -3688,8 +3688,8 @@ int StageCmd_Op47(StageResSlot *slot) {
     StageLightObj *l;
     s16 v;
     if (slot->args[0] == 0xffff) {
-        o = (StageObj3D *)data_02149f10;
-        l = (StageLightObj *)data_02149f00;
+        o = (StageObj3D *)gStageLastObj3D;
+        l = (StageLightObj *)gStageLastNode;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
         l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
@@ -3721,7 +3721,7 @@ int StageCmd_Op48(StageResSlot *slot) {
     }
     id = slot->args[0];
     if (id == 0xffff) {
-        l = (StageObj3D *)data_02149f10;
+        l = (StageObj3D *)gStageLastObj3D;
     } else if (id != 0) {
         o = ActorMgr_GetGroup(gActorMgr, id & 0xf000);
     } else if (slot->args[1] == 0xffff) {
@@ -3757,7 +3757,7 @@ int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode) {
         return -0x63;
     }
     if (id == 0xffff) {
-        o = (StageObj3D *)data_02149f10;
+        o = (StageObj3D *)gStageLastObj3D;
     } else if (id != 0) {
         o = Stage_FindObj3DPtr(id);
     } else if (idx == 0xffff) {
@@ -3975,7 +3975,7 @@ int StageCmd_Op4f(StageResSlot *slot) {
     return 1;
 }
 
-u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx);
+u16 StageSlot_ReadPos(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx);
 extern void Robo021ca458_SetPosRot(StagePlayer *player, StageVec *pos, u16 *rot);
 extern void SceneCmd_Push0b(FieldState *state);
 
@@ -3992,7 +3992,7 @@ int StageCmd_Op50(StageResSlot *slot) {
         if (Field_HasEvent(9)) {
             return -0x63;
         }
-        func_020600cc(slot, &pos, rot, &idx);
+        StageSlot_ReadPos(slot, &pos, rot, &idx);
         if (idx == 0xfe) {
             data_02fe1534.unk_16 = 1;
             gFieldMgr->destExit = 0xff;
@@ -4060,7 +4060,7 @@ extern u16 SndQueue_Peek(SndQueue *queue);
 extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
+u16 StageSlot_ReadPos(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
     StageRes *res;
     u16 ang;
     ActorMgr_FindPlayer();
@@ -4331,8 +4331,8 @@ int func_02060898(u16 id, u16 idx, int val) {
     StageObj3D *o;
     StageLightObj *l;
     if (id == 0xffff) {
-        o = (StageObj3D *)data_02149f10;
-        l = (StageLightObj *)data_02149f00;
+        o = (StageObj3D *)gStageLastObj3D;
+        l = (StageLightObj *)gStageLastNode;
     } else if (id != 0) {
         o = Stage_FindObj3DPtr(id);
         l = (StageLightObj *)Group_FindById(gGroup, id, data_02fe1534.unk_4a & 0xff);
@@ -4643,7 +4643,7 @@ extern void SceneCmd_Push03(FieldState *state);
 extern void func_ov000_02182b0c(FieldState *state);
 extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
 extern void SceneCmd_Push29(FieldState *state, u16 a, u16 b);
-extern BOOL func_ov000_0214be8c(void);
+extern BOOL Quest_AllCleared(void);
 extern BOOL Actor_IsDead(StagePlayer *player);
 extern DataRes *gStageDataRes;
 extern u16 DataRes_ReadEntry(DataRes *res, u32 idx, int packed, int sub);
@@ -4903,7 +4903,7 @@ int func_02061c8c(StageResSlot *slot) {
     StageVars *shared = &data_02fe1534;
     switch (slot->args[0]) {
     case 0:
-        shared->unk_80 = func_ov000_0214be8c();
+        shared->unk_80 = Quest_AllCleared();
         break;
     case 1: {
         StagePlayer *player = ActorMgr_FindPlayer();
@@ -4936,7 +4936,7 @@ int func_02061c8c(StageResSlot *slot) {
     return 1;
 }
 
-u16 func_02061d54(u16 a) {
+u16 StageId_Strip(u16 a) {
     return a & ~0x8000;
 }
 
@@ -5149,7 +5149,7 @@ void StageVars_Reset(void) {
     shared->unk_56 = 0x8000;
 }
 
-void func_0206228c(void) {
+void StageVars_ResetScript(void) {
     data_02fe1534.unk_00 = 0;
     data_02fe1534.unk_42 = 0;
     data_02fe1534.unk_44 = 0;

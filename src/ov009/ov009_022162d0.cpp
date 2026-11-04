@@ -341,7 +341,7 @@ extern void *gSndMgr;
 extern void HitSphere_Link(ActorSub48 *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern u16 func_ov000_02198da8(ActorSub48 *p, u16 a);
+extern u16 Body_GetFaceAngle(ActorSub48 *p, u16 a);
 extern Actor *Target_Get(ActorSub4c *p);
 
 void Ov009ActExVt_022181f4_StateFly(Ov009ActExVt_022181f4 *self) {
@@ -386,7 +386,7 @@ void Ov009ActExVt_022181f4_StateFly(Ov009ActExVt_022181f4 *self) {
                 self->gravity = 0x29;
                 self->speed = Ov009_FxMulL(self->speed, 0xc00);
             } else {
-                self->moveYaw = func_ov000_02198da8(s48, self->moveYaw);
+                self->moveYaw = Body_GetFaceAngle(s48, self->moveYaw);
                 self->speed = Ov009_FxMulL(self->speed, 0x59a);
                 if (((s32)self->hit->unk_58) != 0 && n < 5) {
                     if (self->velY < 0xcd) {
@@ -545,7 +545,7 @@ extern const VecFx32 data_ov009_022161ec;
 extern Actor *Target_Get(ActorSub4c *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov009_02215714(Ov009ActExVt_0221802c *self);
+extern void Ov009ActExVt_0221802c_UpdateThrown(Ov009ActExVt_0221802c *self);
 extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
@@ -590,7 +590,7 @@ void Ov009ActExVt_0221802c_StateThrown(Ov009ActExVt_0221802c *self) {
         return;
     }
     if (p->kind == 0x1000) {
-        func_ov009_02215714(self);
+        Ov009ActExVt_0221802c_UpdateThrown(self);
         return;
     }
     switch (self->fsm->st) {

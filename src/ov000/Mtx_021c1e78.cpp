@@ -8,9 +8,9 @@ extern "C" {
 
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 BOOL Model021903b4_Draw(void *m);
-void func_ov000_021c2078(void *self);
+void Obj021c2114_RSInit(void *self);
 
-void func_ov000_021c1e78(Obj021c2114 *self) {
+void Obj021c2114_Draw(Obj021c2114 *self) {
     MtxFx33 m;
     MtxFx33 t;
     const fx16 *tbl = FX_SinCosTable_;
@@ -64,7 +64,7 @@ void func_ov000_021c1e78(Obj021c2114 *self) {
         data_ov000_021ccd74.jointRot = pm;
     }
     model = self->model;
-    NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c2078);
+    NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)Obj021c2114_RSInit);
     model->clearInit = 0;
     self->model->alpha = alpha;
     Model021903b4_Draw(self->model);

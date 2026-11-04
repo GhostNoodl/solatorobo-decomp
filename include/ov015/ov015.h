@@ -44,7 +44,7 @@ struct Ov015Vec : public VecFx32 {
     }
 };
 
-// The 4-byte record of func_0206ee20 (Main/Lang/ParamTbl.cpp) as ov015 reads it: the shop and
+// The 4-byte record of Param_GetFishItemInfo (Main/Lang/ParamTbl.cpp) as ov015 reads it: the shop and
 // reward code multiplies price by the count and splits a budget by it (func_ov015_022113e8).
 typedef struct Ov015ParamPrice {
     u16 unk_00;
@@ -338,8 +338,8 @@ struct Ov015ItemEnt {
 // Ov015Shared_Create into gOv015Shared).
 struct Ov015Shared : public VObj {
     s32 unk_04; // sequence kind (Ov015Main::unk_04)
-    u16 unk_08; // item id (price from func_0206ef88)
-    u16 unk_0a; // id of the func_0206f040 table that func_ov015_02211160 picks from
+    u16 unk_08; // item id (price from Param_GetHarpoonInfo)
+    u16 unk_0a; // id of the Param_GetFishingSpotInfo table that func_ov015_02211160 picks from
     u16 catchId; // fish caught (func_ov015_02211334)
     Ov015ItemEnt items[3]; // reward items for catchId
     s32 total; // value of items

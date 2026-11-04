@@ -18,7 +18,7 @@ extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
 extern BOOL Model0218fe1c_IsAnimDelayed(Model0218fe1c *model);
 extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *model, u16 a, BOOL b);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
-extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
+extern u16 Body_GetFaceAngle(ActorSub48 *ctl, u16 a);
 extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Actor_Move(Actor *self, s32 a);
 extern void Actor_MoveToPos(Actor *self, const VecFx32 *v, s32 a);
@@ -103,7 +103,7 @@ void Ov003Actor_StateAttack(Ov003Actor *self) {
             b = TRUE;
         }
         if (self->unk_c4 != NULL && self->unk_c4->type == 1 && a) {
-            if ((u16)(func_ov000_02198da8(ctl, self->moveYaw) - self->moveYaw - 0x4c00) < 0x6800) {
+            if ((u16)(Body_GetFaceAngle(ctl, self->moveYaw) - self->moveYaw - 0x4c00) < 0x6800) {
                 c = TRUE;
             } else {
                 a = FALSE;

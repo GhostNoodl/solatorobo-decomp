@@ -48,7 +48,7 @@ extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_FreeLo(void *ptr);
-extern BOOL func_02046e28(void *arg);
+extern BOOL SysCard_CheckLocked(void *arg);
 
 
 extern ResNode *ResMgr_Find(ResMgr *mgr, const char *name, int type);
@@ -293,7 +293,7 @@ void ResMgr_Init(ResMgr *mgr) {
 
 void ResMgr_Update(ResMgr *mgr) {
     ResNode *node;
-    if (func_02046e28(gSysCard)) {
+    if (SysCard_CheckLocked(gSysCard)) {
         return;
     }
     node = ResMgr_FindState(mgr, 4);

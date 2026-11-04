@@ -32,7 +32,7 @@ typedef struct SceneMgr {
 } SceneMgr; // size 0x38
 
 extern SceneMgr *gSceneMgr;
-extern SceneEntry data_02082998[];
+extern SceneEntry Scene_EntryTable[];
 
 // NitroSDK FS overlay load/unload
 extern BOOL FS_LoadOverlay(int target, s32 id);

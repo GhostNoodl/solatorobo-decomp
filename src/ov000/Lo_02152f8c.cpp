@@ -9,8 +9,8 @@
 
 extern "C" {
 
-extern u8 data_0208b3d0[];
-extern u8 data_020828f8[];
+extern u8 Gfx3D_PrimDLs[];
+extern u8 Gfx3D_PrimDLSizes[];
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
@@ -74,7 +74,7 @@ void UiObj_DrawTitle(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
     G3_Vec(0x1c, 0, -ratio, z);
     G3_Vec(0x1b, 0x100000, 0xe000, 0x1000);
     G3_Cmd1(0x20, ((u16)self->unk_4a));
-    NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 4), LFLD(u32, data_020828f8, 4));
+    NNS_G3dGeSendDL(LFLD(void *, Gfx3D_PrimDLs, 4), LFLD(u32, Gfx3D_PrimDLSizes, 4));
     G3_Cmd1(0x12, 1);
     x = 0xe4 - (self->scrollPos >> 12);
     h = self->caption->width;

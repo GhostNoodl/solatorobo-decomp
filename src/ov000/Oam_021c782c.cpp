@@ -22,7 +22,7 @@ static inline void SetPos021c782c(OamEntry021c782c *e, u16 x, u16 y) {
     e->y = y & 0x1ff;
 }
 
-OamEntry021c782c *func_ov000_021c782c(u8 *self, Req021c782c *req, OamEntry021c782c *buf, u16 *count) {
+OamEntry021c782c *LoBase021ccb54_021ccbe0_OamCallback(u8 *self, Req021c782c *req, OamEntry021c782c *buf, u16 *count) {
     u16 n = *count;
     OamEntry021c782c *e = &buf[n - 1];
     switch (req->type) {

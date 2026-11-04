@@ -2,11 +2,11 @@
 #include "Main/Res/ResArc.h"
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_0215e6f0 is 11 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): Obj0215e8b0_OamCallback is 11 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: register-only: the 0xfe00ffff x mask and the shifted x (backend vregs) swap sl/lr;
 // the 9 / 0 drafts need a no-op cast. History: docs/MATCHING.md rounds qpH, raC, raE, rgB, cvA (search for the
 // address); the full list is docs/UNMATCHED.md.
-// func_ov000_0215e6f0 (0x1c0 bytes, the OAM callback that Obj0215e8b0_LoadModel registers with type 5):
+// Obj0215e8b0_OamCallback (0x1c0 bytes, the OAM callback that Obj0215e8b0_LoadModel registers with type 5):
 // 11 / 0 (raw / register-masked). This file starts at 0x0215e8b0; the function fills the gap after
 // Obj_0215e5f8.c, so it goes at the top of this file once it matches. It is C++ (as C the BOOL test is
 // 97 / 97). The miss: in the four-entry branch the 0xfe00ffff x mask (node 170, created after codegen) is
@@ -57,7 +57,7 @@ static inline void SetPos0215e6f0(OamEntry0215e6f0 *e, s32 x, s32 y) {
     e->y = y;
 }
 
-OamEntry0215e6f0 *func_ov000_0215e6f0(void *self, Req0215e6f0 *req, OamEntry0215e6f0 *buf, u16 *count) {
+OamEntry0215e6f0 *Obj0215e8b0_OamCallback(void *self, Req0215e6f0 *req, OamEntry0215e6f0 *buf, u16 *count) {
     u16 n = *count;
     Obj0215e6f0 *o = req->obj;
     OamEntry0215e6f0 *e = &buf[n - 1];
@@ -94,17 +94,17 @@ typedef struct {
 
 extern "C" {
 
-extern const char *data_0208cb78;
-extern const char *data_0208cc9c;
-extern const char *data_0208cb84;
-extern const char *data_0208cc8c;
-extern const char *data_0208cb74;
-extern const char *data_0208cca0;
+extern const char *ResName_CommonModel;
+extern const char *ArcPath_MenuLoad;
+extern const char *ResName_WifiCells;
+extern const char *ArcPath_MenuWifi;
+extern const char *ResName_CommonCells;
+extern const char *ArcPath_Menu;
 void *Heap_Alloc(u32 size);
 void TexObj_SetOamFunc(Model *m, s32 a, void *cb, void *arg);
 struct Req0215e6f0;
 struct OamEntry0215e6f0;
-struct OamEntry0215e6f0 *func_ov000_0215e6f0(void *self, struct Req0215e6f0 *req, struct OamEntry0215e6f0 *buf, u16 *count);
+struct OamEntry0215e6f0 *Obj0215e8b0_OamCallback(void *self, struct Req0215e6f0 *req, struct OamEntry0215e6f0 *buf, u16 *count);
 
 static inline BOOL IsB4(Obj0215e8b0 *self) {
     return self->b4 ? TRUE : FALSE;
@@ -115,7 +115,7 @@ void Obj0215e8b0_LoadModel(Obj0215e8b0 *self) {
         return;
     }
     if (self->b3) {
-        MODEL_NEW(self->model, data_0208cb78, data_0208cc9c);
+        MODEL_NEW(self->model, ResName_CommonModel, ArcPath_MenuLoad);
         {
             ResList *a = ResMgr_GetArcList(self->model->name);
             void *b = ResList_FindType2(a, self->model->unk_04c);
@@ -125,9 +125,9 @@ void Obj0215e8b0_LoadModel(Obj0215e8b0 *self) {
         TexObj_SelectImage(self->model, 0, 0);
     } else {
         if (IsB4(self)) {
-            MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
+            MODEL_NEW(self->model, ResName_WifiCells, ArcPath_MenuWifi);
         } else {
-            MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
+            MODEL_NEW(self->model, ResName_CommonCells, ArcPath_Menu);
         }
         {
             ResList *a = ResMgr_GetArcList(self->model->name);
@@ -136,7 +136,7 @@ void Obj0215e8b0_LoadModel(Obj0215e8b0 *self) {
         }
         self->model->flags |= 2;
         TexObj_SelectImage(self->model, 0, 5);
-        TexObj_SetOamFunc(self->model, 5, (void *)func_ov000_0215e6f0, self);
+        TexObj_SetOamFunc(self->model, 5, (void *)Obj0215e8b0_OamCallback, self);
     }
     self->model->flags |= 0x80000;
     self->model->flags |= 0x200000;

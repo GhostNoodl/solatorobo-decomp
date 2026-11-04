@@ -1573,7 +1573,7 @@ void Ov009ActVt_0221707c_StateKnockBack(Ov009ActVt_0221707c *self) {
 
 void Ov009Names_Fill_022026c8(Ov009Names *self, u16 kind) {
     char *a = Tbl_GetResFile(kind);
-    char *b = func_020701d4(kind);
+    char *b = Tbl_GetResFileName(kind);
     TblActorParam *c = Tbl_GetActorParam(kind);
     const char *s;
     char *t;
@@ -1670,7 +1670,7 @@ void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     Ov003Actor_Init(self);
     kind = self->kind;
     a = Tbl_GetResFile(kind);
-    b = func_020701d4(kind);
+    b = Tbl_GetResFileName(kind);
     n = ((Ov009Names *)self->unk_34);
     STD_CopyString(n->unk_88, a);
     STD_CopyString(n->unk_a8, b);
@@ -1775,7 +1775,7 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
         s48->offset.y = 0x1800;
         s48->offset.z = 0;
     }
-    self->joint.joint = Model_FindResIdxByName(self->model, func_020701d4(self->kind), data_ov009_02216ba7);
+    self->joint.joint = Model_FindResIdxByName(self->model, Tbl_GetResFileName(self->kind), data_ov009_02216ba7);
     MTX_Identity43_(&self->joint.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)Ov009Part_StartCapture);
@@ -2289,7 +2289,7 @@ extern void SceneCmd_Push25(FieldState *g, s32 a);
 
 void Ov009Names_Fill_0220397c(Ov009Names *self, u16 kind) {
     char *a = Tbl_GetResFile(kind);
-    char *b = func_020701d4(kind);
+    char *b = Tbl_GetResFileName(kind);
     TblActorParam *c = Tbl_GetActorParam(kind);
     const char *s;
     char *t;

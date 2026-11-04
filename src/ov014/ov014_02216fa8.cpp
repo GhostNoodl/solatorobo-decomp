@@ -290,7 +290,7 @@ void Ov014ActEx_021fc24c_StateIdle(Ov014ActEx_021fc24c *self) {
 extern char data_ov014_02217209[];
 extern char data_ov014_02217218[];
 extern Ov003Actor *Target_Get(void *p);
-extern void func_ov014_021fcf00(Ov014ActEx_021fc24c *self);
+extern void Ov014ActEx_021fc24c_UpdateThrown(Ov014ActEx_021fc24c *self);
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
@@ -311,7 +311,7 @@ void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
             }
         }
         if (o->kind == 0x1000) {
-            func_ov014_021fcf00(self);
+            Ov014ActEx_021fc24c_UpdateThrown(self);
         } else {
             switch (self->fsm->st) {
             case 0: {
@@ -449,7 +449,7 @@ extern void Ov003Pickup_Update(Actor *self, s32 a);
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_021fcf00(Ov014ActEx_021fc24c *self) {
+void Ov014ActEx_021fc24c_UpdateThrown(Ov014ActEx_021fc24c *self) {
     VecFx32 d;
     Ov003Actor *list[0x20];
     switch (self->fsm->st) {

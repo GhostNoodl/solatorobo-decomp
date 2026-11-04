@@ -8,7 +8,7 @@ extern void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self);
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_02208a9c(Ov014ActEx_02208618 *self) {
+void Ov014ActEx_02208618_UpdateThrown(Ov014ActEx_02208618 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {

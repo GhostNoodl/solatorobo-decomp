@@ -7,9 +7,9 @@ extern "C" {
 extern void *GfxCamPos_Init(VecFx32 *eye);
 extern void GfxCamParam_Init(s32 *proj);
 extern void Heap_Free(void *ptr);
-extern void func_0204bcb0(Camera *cam);
+extern void Camera_UpdateMode(Camera *cam);
 extern 
-void func_0204bac8(Camera *cam);
+void Camera_ApplyShake(Camera *cam);
 extern s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
 extern u32 Rand_UpTo(u32 max);
@@ -113,7 +113,7 @@ void Camera_SetAnim(Camera *cam, void *anim) {
     cam->unk_b9 = 0;
 }
 
-void func_0204b924(Camera *cam, s32 speed) {
+void Camera_StepAnim(Camera *cam, s32 speed) {
     VecFx32 vec;
     CamAnimWork work;
     CamAnimResult res;
@@ -171,7 +171,7 @@ void func_0204b924(Camera *cam, s32 speed) {
     cam->at.z = vec.z;
 }
 
-void func_0204bac8(Camera *cam) {
+void Camera_ApplyShake(Camera *cam) {
     VecFx32 eye;
     VecFx32 at;
     VecFx32 ofs;
@@ -235,7 +235,7 @@ void func_0204bac8(Camera *cam) {
     }
 }
 
-void func_0204bcb0(Camera *cam) {
+void Camera_UpdateMode(Camera *cam) {
     VecFx32 eye;
     VecFx32 at;
     VecFx32 up;

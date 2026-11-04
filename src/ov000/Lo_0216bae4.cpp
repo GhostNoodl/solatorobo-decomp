@@ -21,7 +21,7 @@ typedef struct {
     u32 hi : 9;
 } LoTwBits;
 
-void func_ov000_0216bae4(LoTextHolder *self, void *text) {
+void LoTextHolder_SetText(LoTextHolder *self, void *text) {
     TextWin *win;
     if (self->win) {
         self->count++;

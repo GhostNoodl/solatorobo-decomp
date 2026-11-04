@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
+void FieldCam_SetTarget(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
     self->timer = a8;
     if (rot != NULL) {
         self->unk_f8 = *rot;

@@ -6,7 +6,7 @@ extern "C" {
 Actor *Actor_DtorBase(Actor *self);
 void Heap_Free(void *ptr);
 void *Heap_Alloc(u32 size);
-void func_0206e678(void);
+void LangData_LoadWorldInfo(void);
 
 Actor *Ov000ActVt_021cc7cc_Dtor(Actor *self) {
     Actor_DtorBase(self);
@@ -19,7 +19,7 @@ Actor *Ov000ActVt_021cc7cc_DtorDelete(Actor *self) {
     return self;
 }
 
-void func_ov000_021b4eec(void) {
+void FieldMgr_Create(void) {
     if (gFieldMgr == NULL) {
         FieldMgr *p = (FieldMgr *)Heap_Alloc(sizeof(FieldMgr));
         if (p != NULL) {
@@ -27,7 +27,7 @@ void func_ov000_021b4eec(void) {
         }
         gFieldMgr = p;
     }
-    func_0206e678();
+    LangData_LoadWorldInfo();
 }
 
 }

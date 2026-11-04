@@ -69,14 +69,14 @@ static inline void ov002_AddNode(Obj021efe6c *self, Obj021efeb8 *node) {
     }
     func_ov002_021da184(self, node);
     if (gStageFlags->bits18.mode == 1) {
-        func_ov000_021c9544(self->unk_76, self->pieces);
+        Parts_SumStats(self->unk_76, self->pieces);
         Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544(self->unk_76, self->pieces);
+        Parts_SumStats(self->unk_76, self->pieces);
     }
 }
 
-void func_ov002_021d98ac(Obj021efe6c *self) {
+void Obj021efe6c_LoadPieces(Obj021efe6c *self) {
     int i;
     Obj021efe6c_FreePieces(self);
     func_ov002_021da054(self);
@@ -132,10 +132,10 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
     }
     self->unk_8a = gStageFlags->unk_024;
     if (gStageFlags->bits18.mode == 1) {
-        func_ov000_021c9544(self->unk_76, self->pieces);
+        Parts_SumStats(self->unk_76, self->pieces);
         Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544(self->unk_76, self->pieces);
+        Parts_SumStats(self->unk_76, self->pieces);
     }
 }
 
