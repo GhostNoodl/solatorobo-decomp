@@ -8,7 +8,7 @@ Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 s32 History_PickFlagged(void *s, s32 *list, s32 count, BOOL push);
 BOOL History_SetState(void *s, s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(u16 a);
+void StageVars_SetEventScript(u16 a);
 void SceneStage_StartScript(void *p);
 BOOL StageRes_HasQueued(void);
 void StageRes_Push207(s32 a, s32 b);
@@ -59,7 +59,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         }
         if (sub->unk_18_1 && sub->unk_03 != 0xa && sub->unk_03 != 0xb) {
             Shared_SetEventActor(a->kind, a->id);
-            func_020627dc(a->unk_18);
+            StageVars_SetEventScript(a->unk_18);
             Ping021a09b8();
             if (StageRes_HasQueued()) {
                 done = TRUE;
@@ -95,7 +95,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         }
         if (sub->unk_18_1) {
             Shared_SetEventActor(a->kind, a->id);
-            func_020627dc(a->unk_18);
+            StageVars_SetEventScript(a->unk_18);
             Ping021a09b8();
             if (StageRes_HasQueued()) {
                 done = TRUE;
@@ -116,7 +116,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         }
         if (sub->unk_18_1 && sub->unk_03 != 0xa && sub->unk_03 != 0xb) {
             Shared_SetEventActor(a->kind, a->id);
-            func_020627dc(a->unk_18);
+            StageVars_SetEventScript(a->unk_18);
             Ping021a09b8();
             if (StageRes_HasQueued()) {
                 done = TRUE;

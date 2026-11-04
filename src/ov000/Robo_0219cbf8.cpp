@@ -82,7 +82,7 @@ extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Model0218fe1c_StopAnim(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
-void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
+void Lo021cb798_SetValue(Lo021cb798 *self, u16 a, u16 b);
 void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
 void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
 void ResSet_SetName3(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -168,7 +168,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
         w[0] = v = w[1];
         a = gMessageQueue->unk_11c;
         if (a != NULL && a->unk_58 != NULL) {
-            func_ov000_021697dc(a->unk_58, v, v);
+            Lo021cb798_SetValue(a->unk_58, v, v);
             a->unk_58->unk_0c |= 0x80;
         }
         self->hpObj->unk_0a = 0;

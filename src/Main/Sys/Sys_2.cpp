@@ -49,7 +49,7 @@ void Sys_UpdateFold(void) {
     gSysState->unk_1f = 0;
 }
 
-void func_0203d9e8(UnkSys *sys) {
+void Sys_InitHeaps(UnkSys *sys) {
     void *lo;
     u8 *start;
     u32 size;

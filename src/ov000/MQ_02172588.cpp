@@ -17,7 +17,7 @@ extern u8 Ov000Vt_021cb9b0_vtbl[];
 extern const char *ArcPath_MenuBattle;
 extern const char *ArcPath_Menu;
 extern char gCommonTextPath[];
-void func_ov000_021bd09c(void);
+void Bss021ccd74_FreeModels(void);
 
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;
@@ -68,7 +68,7 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
             } \
         } \
         self->unk_118 = NULL; \
-        func_ov000_021bd09c(); \
+        Bss021ccd74_FreeModels(); \
         ResMgr_ReleaseByName(gResMgr, ArcPath_MenuBattle, 7, 0); \
         ResMgr_ReleaseByName(gResMgr, ArcPath_Menu, 7, 0); \
         ResMgr_ReleaseByName(gResMgr, gCommonTextPath, 7, 0); \

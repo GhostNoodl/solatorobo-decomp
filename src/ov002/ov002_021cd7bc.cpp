@@ -94,8 +94,8 @@ void AsmodeusMenu_ShowMsg(Task021ef530 *self, int kind) {
 
 extern "C" {
 void SceneCmd_Push26(void *p);
-void func_02062524(void);
-BOOL func_020624d8(void);
+void StageVars_ClearSavedField(void);
+BOOL StageVars_HasSavedField(void);
 void MessageQueue_FreeBuffer(FieldPlayer *a, TimedBuffer021cb920 *b);
 
 typedef struct {
@@ -173,14 +173,14 @@ void AsmodeusMenu_UpdateActive(Task021ef530 *self) {
             if (!self->unk_48_1) {
                 FieldPlayer *t;
                 GfxSys_StartFadeOut(self->fadeLen, 2, -1);
-                if (func_020624d8()) {
+                if (StageVars_HasSavedField()) {
                     u8 buf[3];
                     buf[0] = data_02fe1534.unk_52;
                     buf[1] = data_02fe1534.unk_54;
                     buf[2] = data_02fe1534.unk_56;
                     SceneCmd_Push26(gSceneCmd);
                     SceneCmd_Push09(buf, 1);
-                    func_02062524();
+                    StageVars_ClearSavedField();
                 }
                 t = gMessageQueue;
                 if (t != NULL) {

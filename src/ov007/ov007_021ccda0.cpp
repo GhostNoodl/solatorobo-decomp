@@ -1013,7 +1013,7 @@ extern "C" {
 void Movie_Load(Movie *a, int b, int c, BOOL d);
 void Movie_RequestStop(Movie *a);
 void Gfx3D_DrawPrimScaled(int a, int b, int c, u32 d);
-void func_ov007_021cf474(Ov007Scene *s);
+void Ov007Title_DrawScene(Ov007Scene *s);
 
 }
 
@@ -1181,7 +1181,7 @@ void Ov007Title_Draw(Ov007Scene *s) {
         Ov007_SetupView1();
         break;
     case 5:
-        func_ov007_021cf474(s);
+        Ov007Title_DrawScene(s);
         break;
     case 7:
         Ov007_SetupView();

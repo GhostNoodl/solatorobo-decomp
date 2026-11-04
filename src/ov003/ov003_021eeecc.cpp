@@ -54,7 +54,7 @@ extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL Actor_IsDead(void);
 extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void func_020627ec(u16 a);
 extern void SceneStage_StartScript(void *p);
 
@@ -267,7 +267,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             }
             func_020627b4();
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(1);
+            StageVars_SetEventScript(1);
             func_020627ec(id);
             {
                 u8 *ac = &gSceneCmd->stageFlags;

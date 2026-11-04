@@ -6,19 +6,19 @@ extern char DSProt_BSS[];
 extern char DSProt_ClassifyInsn[];
 extern char Rc4_Init[];
 extern char Rc4_NextByte[];
-extern char func_ov004_021cd834[];
-extern char func_ov004_021cd97c[];
-void func_ov004_021ce574(u32 *t);
-s32 func_ov004_021cdb30(const u8 *key, const u8 *src, u8 *dst, u32 len);
-s32 func_ov004_021cdba8(const u8 *key, const u8 *src, u8 *dst, u32 len);
+extern char Rc4_EncryptCode[];
+extern char Rc4_DecryptCode[];
+void DSProt_DescrambleRanges(u32 *t);
+s32 DSProt_EncryptWithKey(const u8 *key, const u8 *src, u8 *dst, u32 len);
+s32 DSProt_DecryptWithKey(const u8 *key, const u8 *src, u8 *dst, u32 len);
 
-s32 func_ov004_021cdb30(const u8 *key, const u8 *src, u8 *dst, u32 len) {
+s32 DSProt_EncryptWithKey(const u8 *key, const u8 *src, u8 *dst, u32 len) {
     Rc4 ctx;
     DSPROT_FN(Ov004InitFn, 4)(&ctx, key, 0x10);
     return -(DSPROT_FN(Ov004CryptFn, 1)(&ctx, src, dst, len) == -1);
 }
 
-s32 func_ov004_021cdba8(const u8 *key, const u8 *src, u8 *dst, u32 len) {
+s32 DSProt_DecryptWithKey(const u8 *key, const u8 *src, u8 *dst, u32 len) {
     Rc4 ctx;
     DSPROT_FN(Ov004InitFn, 4)(&ctx, key, 0x10);
     return -(DSPROT_FN(Ov004CryptFn, 2)(&ctx, src, dst, len) == -1);
@@ -28,16 +28,16 @@ s32 func_ov004_021cdba8(const u8 *key, const u8 *src, u8 *dst, u32 len) {
 asm void func_ov004_021cdc20(void) {
     orr r0, pc, #0
     adds r0, r0, #4
-    bne func_ov004_021ce574
+    bne DSProt_DescrambleRanges
     dcd Rc4_Init+0x3200
     dcd DSProt_BSS+0x3284
-    dcd func_ov004_021cd834+0x3200
+    dcd Rc4_EncryptCode+0x3200
     dcd DSProt_BSS+0x3344
-    dcd func_ov004_021cd97c+0x3200
+    dcd Rc4_DecryptCode+0x3200
     dcd DSProt_BSS+0x33ac
-    dcd func_ov004_021cdb30+0x3200
+    dcd DSProt_EncryptWithKey+0x3200
     dcd DSProt_BSS+0x3274
-    dcd func_ov004_021cdba8+0x3200
+    dcd DSProt_DecryptWithKey+0x3200
     dcd DSProt_BSS+0x3274
     dcd Rc4_NextByte+0x3200
     dcd DSProt_BSS+0x3258

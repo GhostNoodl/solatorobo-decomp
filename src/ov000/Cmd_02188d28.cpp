@@ -11,7 +11,7 @@ u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 u32 DataRes_GetCount(void *a, int idx);
 void *DataRes_GetTable(void *a, int idx);
 u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, u16 d, u16 e);
-BOOL func_020624d8(void);
+BOOL StageVars_HasSavedField(void);
 
 void SceneCmd_Push0a(FieldId *id) {
     if (!ActorMgr_FindPlayer()) {
@@ -33,7 +33,7 @@ BOOL func_ov000_02188dfc(void) {
     if (DataRes_ReadEntry(gDataRes, 5, 1, 2) == 1) {
         return TRUE;
     }
-    if (func_020624d8()) {
+    if (StageVars_HasSavedField()) {
         n = 0;
         base = *(u8 **)((u8 *)gDataRes + 0x4c);
         tbl = (u16 *)DataRes_GetTable(gDataRes, 0);

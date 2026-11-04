@@ -8,7 +8,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021bc458(Obj021bc458 *self) {
+void FieldFade_End(Obj021bc458 *self) {
     self->flag = 1;
     self->unk_04 = 2;
 }

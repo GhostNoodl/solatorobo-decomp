@@ -8,7 +8,7 @@ void WH_CalcBufferSizes_02044a0c(WhConfig *cfg) {
     WH_CalcBufferSizes(cfg);
 }
 
-void func_02044a60(WhCbArg *arg) {
+void Wh_OnIndicate(WhCbArg *arg) {
     if (arg->errcode == 8) {
         gWhMgr->sysState = 8;
     }
@@ -17,7 +17,7 @@ void func_02044a60(WhCbArg *arg) {
 void func_02044a80(void) {
     WhMgr *wh = gWhMgr;
     WH_ChangeSysState(3);
-    if (WM_End((void (*)(void *))func_02044fc0) != 2) {
+    if (WM_End((void (*)(void *))Wh_OnEnd) != 2) {
         WH_ChangeSysState(8);
     } else {
         wh->initialized = FALSE;
@@ -32,7 +32,7 @@ void Wh_Create(void) {
     gSysState->align = 0x20;
     wh = (WhMgr *)Heap_Alloc(sizeof(WhMgr));
     if (wh != NULL) {
-        func_02044cb8(wh);
+        Wh_InitConfig(wh);
     }
     gWhMgr = wh;
     gSysState->align = 4;
@@ -46,7 +46,7 @@ BOOL WH_IsStopped_02044c80(void) {
     return WH_IsStopped(gWhMgr);
 }
 
-void func_02044cb8(WhMgr *wh) {
+void Wh_InitConfig(WhMgr *wh) {
     wh->flags = 0;
     wh->cfg.unk_00 = 1;
     wh->cfg.unk_02 = 0x70;
@@ -83,7 +83,7 @@ void func_02044cb8(WhMgr *wh) {
     wh->unk_84 = 0;
     wh->unk_88 = 0;
     wh->judgeCb = NULL;
-    wh->portCb = func_02045d98;
+    wh->portCb = Wh_OnStartParentMp;
     MI_CpuFill8(wh->unk_60, 0, sizeof(wh->unk_60));
     MI_CpuFill8(wh->wmBuf, 0, sizeof(wh->wmBuf));
     MI_CpuFill8(wh->bssDesc, 0, sizeof(wh->bssDesc));
@@ -98,7 +98,7 @@ void func_02044cb8(WhMgr *wh) {
 static inline BOOL WH_StateInInitialize(WhMgr *wh) {
     int result;
     WH_ChangeSysState(3);
-    result = WM_Initialize(wh->wmBuf, (void (*)(void *))func_02045004, wh->cfg.unk_00);
+    result = WM_Initialize(wh->wmBuf, (void (*)(void *))Wh_OnInitialize, wh->cfg.unk_00);
     if (result != 2) {
         WH_SetError(result);
         WH_ChangeSysState(9);
@@ -107,7 +107,7 @@ static inline BOOL WH_StateInInitialize(WhMgr *wh) {
     return TRUE;
 }
 
-BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
+BOOL Wh_Initialize(WhMgr *wh, void (*cb)(void *arg)) {
     u32 recvSize;
     u32 sendSize;
     if (wh->initialized) {
@@ -116,7 +116,7 @@ BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
     if (cb != NULL) {
         wh->indicateCb = cb;
     } else {
-        wh->indicateCb = (void (*)(void *))func_02044a60;
+        wh->indicateCb = (void (*)(void *))Wh_OnIndicate;
     }
     if (wh->recvBufRaw != NULL) {
         Heap_FreeHi(wh->recvBufRaw);
@@ -141,7 +141,7 @@ BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
 
 BOOL Wh_End(WhMgr *wh) {
     WH_ChangeSysState(3);
-    if (WM_End((void (*)(void *))func_02044fc0) != 2) {
+    if (WM_End((void (*)(void *))Wh_OnEnd) != 2) {
         WH_ChangeSysState(8);
         return FALSE;
     }
@@ -149,7 +149,7 @@ BOOL Wh_End(WhMgr *wh) {
     return TRUE;
 }
 
-void func_02044fc0(WhCbArg *arg) {
+void Wh_OnEnd(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_ChangeSysState(9);
         return;
@@ -158,7 +158,7 @@ void func_02044fc0(WhCbArg *arg) {
     gWhMgr->busy = FALSE;
 }
 
-void func_02045004(WhCbArg *arg) {
+void Wh_OnInitialize(WhCbArg *arg) {
     int result;
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
@@ -176,12 +176,12 @@ void func_02045004(WhCbArg *arg) {
 
 static inline BOOL WH_StateInEndChildMP(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(WM_EndMP((void (*)(void *))func_020468d0));
+    return WH_CheckResult(WM_EndMP((void (*)(void *))Wh_OnEndChildMp));
 }
 
 static inline BOOL WH_StateInEndParentMP(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(WM_EndMP((void (*)(void *))func_02045ef8));
+    return WH_CheckResult(WM_EndMP((void (*)(void *))Wh_OnEndParentMp));
 }
 
 static inline BOOL WH_EndScan(WhMgr *wh) {
@@ -193,7 +193,7 @@ static inline BOOL WH_EndScan(WhMgr *wh) {
     return TRUE;
 }
 
-void func_02045094(WhMgr *wh) {
+void Wh_Finalize(WhMgr *wh) {
     if (wh->sysState == 1) {
         return;
     }
@@ -233,11 +233,11 @@ void func_02045094(WhMgr *wh) {
     }
 }
 
-void func_02045498(WhMgr *wh, void (*cb)(BOOL)) {
+void Wh_ResetWithCallback(WhMgr *wh, void (*cb)(BOOL)) {
     WH_Reset(wh, cb);
 }
 
-void func_02045530(WhCbArg *arg) {
+void Wh_OnReset(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_ChangeSysState(8);
         WH_SetError(arg->errcode);
@@ -249,14 +249,14 @@ void func_02045530(WhCbArg *arg) {
     }
 }
 
-BOOL func_020455ac(WhMgr *wh) {
+BOOL Wh_StartMeasureChannel(WhMgr *wh) {
     u8 macAddr[8];
     u16 result;
     OS_GetMacAddress(macAddr);
     wh->channel = 0;
     wh->bestBusyRatio = 0x65;
     WH_ChangeSysState(3);
-    result = func_02045674(wh, 1);
+    result = Wh_MeasureChannel(wh, 1);
     if (result == 0x18) {
         WH_SetError(0x18);
         WH_ChangeSysState(8);
@@ -270,7 +270,7 @@ BOOL func_020455ac(WhMgr *wh) {
     return TRUE;
 }
 
-u16 func_02045674(WhMgr *wh, u16 channel) {
+u16 Wh_MeasureChannel(WhMgr *wh, u16 channel) {
     u32 allowed = WM_GetAllowedChannel();
     if (allowed == 0x8000) {
         WH_SetError(3);
@@ -288,10 +288,10 @@ u16 func_02045674(WhMgr *wh, u16 channel) {
             return 0x18;
         }
     }
-    return WM_MeasureChannel((void (*)(void *))func_02045770, 3, 0x11, channel, 0x1e);
+    return WM_MeasureChannel((void (*)(void *))Wh_OnMeasureChannel, 3, 0x11, channel, 0x1e);
 }
 
-void func_02045770(WhCbArg *arg) {
+void Wh_OnMeasureChannel(WhCbArg *arg) {
     u16 channel;
     u16 busy;
     u16 best;
@@ -316,7 +316,7 @@ void func_02045770(WhCbArg *arg) {
     }
     wh->bestBusyRatio = best;
     gWhMgr->channelBitmap = bitmap;
-    result = func_02045674(gWhMgr, channel + 1);
+    result = Wh_MeasureChannel(gWhMgr, channel + 1);
     if (result == 0x18) {
         WH_ChangeSysState(6);
         return;
@@ -361,7 +361,7 @@ s16 func_0204587c(WhMgr *wh, u16 bitmap) {
     return 0;
 }
 
-void func_0204593c(void *arg) {
+void Wh_OnSetGameInfo(void *arg) {
 }
 
 void Wh_SetGameInfo(WhMgr *wh, void *info, u16 length) {
@@ -369,13 +369,13 @@ void Wh_SetGameInfo(WhMgr *wh, void *info, u16 length) {
     wh->parentParam.userGameInfoLength = length;
 }
 
-void func_02045950(WhMgr *wh, void *info, int length) {
+void Wh_UpdateGameInfo(WhMgr *wh, void *info, int length) {
     wh->parentParam.userGameInfoLength = length;
     wh->parentParam.userGameInfo = info;
     u8 attr = 0;
     attr |= (u8)(wh->parentParam.entryFlag ? 1 : 0);
     attr |= (u8)(wh->parentParam.multiBootFlag ? 2 : 0);
-    WM_SetGameInfo(func_0204593c, info, length, wh->parentParam.ggid, wh->parentParam.tgid, attr);
+    WM_SetGameInfo(Wh_OnSetGameInfo, info, length, wh->parentParam.ggid, wh->parentParam.tgid, attr);
 }
 
 }

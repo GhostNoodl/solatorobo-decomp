@@ -141,7 +141,7 @@ void SndMgr_RequestBgm(void *p, s32 a);
 void SndMgr_StopSeqNo(void *p, int a, int b);
 void *ActorMgr_GetGroup(void *mgr, u16 id);
 void ActorGroup_BroadcastKind(void *p, u16 a, int b);
-void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
+void LoTimer_Stop(ov006_GObj021d6ff0 *p);
 void *MsgRes_GetString(void *a, int id);
 void ov006_ShowListWin(ov006_Task021d6ff0 *self, u16 a, char *text);
 ov006_Result021d6ff0 *Ov006Vt_021ec23c_Ctor(ov006_Result021d6ff0 *p);
@@ -264,7 +264,7 @@ static inline void ov006_Gauge_Finish(ov006_Gauge021d6ff0 *g, BOOL on) {
         } else {
             g->obj->flags &= ~0x20000;
         }
-        func_ov000_0216da78(g->obj);
+        LoTimer_Stop(g->obj);
     }
 }
 

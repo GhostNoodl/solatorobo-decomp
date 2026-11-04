@@ -9,7 +9,7 @@ void Obj0215fdfc_SetRange(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);
 void Obj021c2114_Release(void *p);
 
 
-void func_ov000_0216912c(Lo021cb7ec *self, s32 a, s32 b, s32 c, LoDE de) {
+void Lo021cb7ec_SetValue(Lo021cb7ec *self, s32 a, s32 b, s32 c, LoDE de) {
     if (self->unk_a0 != a) {
         self->unk_a0 = a;
         self->unk_5c = 0;

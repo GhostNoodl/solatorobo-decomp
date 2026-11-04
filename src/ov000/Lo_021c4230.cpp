@@ -113,8 +113,8 @@ extern "C" {
 
 extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-void func_ov000_021c47bc(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
-s32 func_ov000_021c4964(Win021c4460 *self, s32 n);
+void Win021c4964_MoveCursor(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
+s32 Win021c4964_Scroll(Win021c4460 *self, s32 n);
 
 void Win021c4460_Update(Win021c4460 *self) {
     u16 cur;
@@ -140,9 +140,9 @@ void Win021c4460_Update(Win021c4460 *self) {
     changed = FALSE;
     if (self->unk_bc == 0) {
         if (key & 0x40) {
-            func_ov000_021c47bc(self, 1, &moved, &scrolled);
+            Win021c4964_MoveCursor(self, 1, &moved, &scrolled);
         } else if (key & 0x80) {
-            func_ov000_021c47bc(self, 0, &moved, &scrolled);
+            Win021c4964_MoveCursor(self, 0, &moved, &scrolled);
         } else if (key & 0x200) {
             if (self->unk_9c > 0) {
                 changed = TRUE;
@@ -155,7 +155,7 @@ void Win021c4460_Update(Win021c4460 *self) {
             }
         }
     } else {
-        self->unk_bc = func_ov000_021c4964(self, self->unk_bc);
+        self->unk_bc = Win021c4964_Scroll(self, self->unk_bc);
         changed = TRUE;
         if (self->unk_bc == 0) {
             done = TRUE;

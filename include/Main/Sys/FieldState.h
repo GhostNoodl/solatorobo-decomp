@@ -67,7 +67,7 @@ typedef struct FieldCam {
 } FieldCam;
 SIZE_ASSERT(FieldCam, 0x120);
 
-// The field state gSceneCmd (ctor func_ov000_02188ba0, 0x214 bytes, built by
+// The field state gSceneCmd (ctor Obj02188ba0_Init, 0x214 bytes, built by
 // Field_Create). It starts with the event command runner that ov000/CmdObj.h declares
 // (state, the 16-entry event ring, the step callback) and holds the field camera.
 typedef struct FieldState {
@@ -114,8 +114,8 @@ typedef struct FieldState {
 } FieldState;
 SIZE_ASSERT(FieldState, 0x214);
 
-// Screen fade state gFieldFade: func_ov000_021bc3ec starts a fade (state 1, mode,
-// duration), func_ov000_021bc458 ends it (state 2); state 0 is idle.
+// Screen fade state gFieldFade: FieldFade_Start starts a fade (state 1, mode,
+// duration), FieldFade_End ends it (state 2); state 0 is idle.
 typedef struct FieldFade {
     /* 0x00 */ u32 flag0 : 1;
     /* 0x00 */ u32 flag1 : 1;

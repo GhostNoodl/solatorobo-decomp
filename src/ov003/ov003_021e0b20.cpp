@@ -29,7 +29,7 @@ extern char data_ov003_021f8531[];
 extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
 extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov003ActVt_021f82b8_State20(ActorEx *self) {
     switch (self->fsm->st) {
@@ -49,7 +49,7 @@ void Ov003ActVt_021f82b8_State20(ActorEx *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         p = self->unk_44;
         if (p != NULL) {

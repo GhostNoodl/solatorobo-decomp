@@ -961,7 +961,7 @@ extern BOOL Model0218fe1c_SetRes(Model0218fe1c *anim, void *res, s32 a, s32 b);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
-extern s32 func_ov000_0219a7bc(Actor *self, s32 a, VecFx32 *pos, s32 r, s32 b, Actor **list);
+extern s32 Finder_CollectInRadius(Actor *self, s32 a, VecFx32 *pos, s32 r, s32 b, Actor **list);
 extern Actor *Target_Get(ActorSub4c *p);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Actor_SendMsgU8(Actor *o, u16 id, s32 a);
@@ -1063,7 +1063,7 @@ void Ov003ActVt_021f9114_State06(Ov003Gate *self) {
             return;
         }
         VEC_Add(&data_ov003_021f6af0, &self->pos, &v);
-        n = func_ov000_0219a7bc(self, 0x10, &v, 0x299a, 0, list);
+        n = Finder_CollectInRadius(self, 0x10, &v, 0x299a, 0, list);
         if (n != 0) {
             for (i = 0; i < n; i++) {
                 Actor *sub;

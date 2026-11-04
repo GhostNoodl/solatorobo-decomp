@@ -171,7 +171,7 @@ extern void *gActorMgr;
 extern BOOL History_SetState(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Actor *Obj021984c8_GetActor(void *hit);
-extern s32 func_ov000_0219a5c8(Actor *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
+extern s32 Finder_CollectInBox(Actor *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
 extern BOOL Hit_Apply(void *hit, void *a, void *b, s32 c, u8 d, const VecFx32 *pos, s16 h, s32 i, s32 scale);
 
 static inline s32 Ov010g_FxMul(s32 a, s64 b) {
@@ -241,7 +241,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
                 s32 j;
                 rot.x = o->rx + 0x4000;
                 rot.y = o->ry;
-                n = func_ov000_0219a5c8(a, o->unk_04, &o->pos, &rot, Ov010_FxMul(o->unk_08, 0x500), Ov010_FxMul(o->unk_0a, 0xf000), list);
+                n = Finder_CollectInBox(a, o->unk_04, &o->pos, &rot, Ov010_FxMul(o->unk_08, 0x500), Ov010_FxMul(o->unk_0a, 0xf000), list);
                 if (n > 0) {
                     Actor *b;
                     const char *m3 = data_ov010_0220ef74;

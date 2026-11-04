@@ -7,12 +7,12 @@ extern void *gSndMgr;
 void *Actor_GetTargetSub44(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *Target_GetKindMask(void *p);
-void *func_ov000_021b2f08(Robo021ca458 *self, void *a, void *b, BOOL c);
+void *Robo021ca458_FindTargetPart(Robo021ca458 *self, void *a, void *b, BOOL c);
 void *SndMgr_PlayVolume(void *p, s32 id, s32 a, s32 b, s32 c);
 void *Obj021984c8_GetActor(void *p);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void func_ov000_021b3bd8(void *self);
-void func_ov000_021b3738(Robo021ca458 *self, void *t);
+void Robo021ca458_UpdateTargetMarker(Robo021ca458 *self, void *t);
 
 static inline Actor *FindActor021b2d48(u16 id) {
     ActorMgr *mgr = gActorMgr;
@@ -22,7 +22,7 @@ static inline Actor *FindActor021b2d48(u16 id) {
     return ActorMgr_GetActor(mgr, id);
 }
 
-void func_ov000_021b2d48(Robo021ca458 *self) {
+void Robo021ca458_UpdateTarget(Robo021ca458 *self) {
     u8 *res = NULL;
     BOOL flag = FALSE;
     Model0218fe1c *tgt = NULL;
@@ -48,7 +48,7 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
         }
     }
     if (search) {
-        res = (u8 *)func_ov000_021b2f08(self, tgt, sub, flag);
+        res = (u8 *)Robo021ca458_FindTargetPart(self, tgt, sub, flag);
     }
     if (res != NULL) {
         if (self->target != LFLD(u16, res, 0x20)) {
@@ -71,6 +71,6 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
         self->target = 0xffff;
     }
     func_ov000_021b3bd8(self);
-    func_ov000_021b3738(self, res);
+    Robo021ca458_UpdateTargetMarker(self, res);
 }
 }

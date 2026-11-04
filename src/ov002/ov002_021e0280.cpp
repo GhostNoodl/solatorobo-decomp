@@ -59,7 +59,7 @@ void func_ov002_021e0280(Obj021eff30 *self) {
     if (sh == NULL) {
         return;
     }
-    func_ov002_021e38f8(&org.x, sh);
+    Ov002Shape_GetOrigin(&org.x, sh);
     rows = sh->h;
     cols = sh->w;
     for (i = 0; i < rows; i++) {

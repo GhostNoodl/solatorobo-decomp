@@ -10,7 +10,7 @@
 extern "C" {
 
 extern u8 ResHandle_vtbl[];
-void func_ov000_021bd09c(void);
+void Bss021ccd74_FreeModels(void);
 void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
 void Obj021bbc68_Release(void *p);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
@@ -23,7 +23,7 @@ void Obj021bacf4_Release(void *p);
 void Obj021bb810_Release(void *p);
 
 void ListBuffer021cb940_Release(ListBuffer021cb940 *self) {
-    func_ov000_021bd09c();
+    Bss021ccd74_FreeModels();
     HEAP_DELETE(SlideWin *, self->win, p->unk_vf04());
     HEAP_DELETE_FN(self->unk_2c, TextBox_Release);
     HEAP_DELETE(VObj *, self->unk_30, p->vfunc_04());

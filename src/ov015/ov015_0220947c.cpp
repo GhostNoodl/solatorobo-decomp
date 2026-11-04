@@ -30,11 +30,11 @@ void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 void HitSphere_Unlink_0203f364(void *a);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
-void func_ov015_02209a50(Ov015Fish *self);
+void Ov015Fish_UpdateDepthFade(Ov015Fish *self);
 int HitSphere_Collide(void *a);
 extern u32 gHitSphereGroups;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void func_ov015_02209c90(Ov015Fish *self);
+void Ov015Fish_DrawOriented(Ov015Fish *self);
 void Ov015Shadow_DrawAt(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 BOOL Model021903b4_Draw(void *a);
 s32 Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
@@ -152,7 +152,7 @@ BOOL Ov015Fish_Update(Ov015Fish *self, BOOL b) {
             self->scaleMul = FX_Mul(FX_Div(0x3e8000 - t, 0x1f4000), 0x666) + 0x99a;
         }
     }
-    func_ov015_02209a50(self);
+    Ov015Fish_UpdateDepthFade(self);
     self->hit.prev = self->hit.pos;
     self->hit.pos = self->pos;
     self->hit.radius = self->radius;
@@ -161,7 +161,7 @@ BOOL Ov015Fish_Update(Ov015Fish *self, BOOL b) {
     return TRUE;
 }
 
-void func_ov015_02209a50(Ov015Fish *self) {
+void Ov015Fish_UpdateDepthFade(Ov015Fish *self) {
     s32 f;
     if (self->pos.y > -0xa000) {
         self->unk_8c = 0x1000;
@@ -209,13 +209,13 @@ static inline void Ov015_UpdateMove(Ov015Fish *self) {
 void Ov015Fish_Draw(Ov015Fish *self) {
     switch (self->drawMode) {
     case 0:
-        func_ov015_02209c90(self);
+        Ov015Fish_DrawOriented(self);
         break;
     case 1:
         Ov015_UpdateMove(self);
         break;
     case 2:
-        func_ov015_02209c90(self);
+        Ov015Fish_DrawOriented(self);
         Ov015_UpdateMove(self);
         break;
     }
@@ -228,7 +228,7 @@ static inline void Ov015_Cross09c90(const Ov015Vec *a, const Ov015Vec *b, Ov015V
     o->y = (s32)(((s64)a->z * b->x - (s64)a->x * b->z + 0x800) >> 12);
     o->z = (s32)(((s64)a->x * b->y - (s64)a->y * b->x + 0x800) >> 12);
 }
-void func_ov015_02209c90(Ov015Fish *self) {
+void Ov015Fish_DrawOriented(Ov015Fish *self) {
     Ov015Vec up;
     Ov015Vec x;
     Ov015Vec z;

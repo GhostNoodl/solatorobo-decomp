@@ -258,7 +258,7 @@ void Ov002StaffPhoto_Render(Ov002StaffPhoto *self) {
         } else {
             a.z = -0x1ccd;
         }
-        Gfx_DrawTexQuad(&a, &b, self->alpha, func_ov000_0214b8ec(self->photo));
+        Gfx_DrawTexQuad(&a, &b, self->alpha, Loader_GetTexAddr(self->photo));
     }
 }
 
@@ -719,7 +719,7 @@ int sprintf(char *dst, const char *fmt, ...);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
 void Ov002StaffLoader_Parse(Ov002StaffLoader *self);
 BOOL Ov002Staff_SpawnEntries(Ov002Staff *self, u16 start, int count);
-void func_ov002_021ee7f8(Ov002Staff *self);
+void Ov002Staff_UpdateNodes(Ov002Staff *self);
 
 static inline BOOL ov002_Staff_IsPaused(Ov002Staff *s) {
     return s->clock.flags.paused == 1 ? TRUE : FALSE;
@@ -815,7 +815,7 @@ void Ov002Staff_Step(void) {
         break;
     case 3:
     case 7:
-        func_ov002_021ee7f8(s);
+        Ov002Staff_UpdateNodes(s);
         break;
     case 8:
         switch (s->clock.sub) {
@@ -1007,7 +1007,7 @@ static inline BOOL ov002_flag3_7f8(Ov002Staff *self) {
     return self->clock.flags.done == 1 ? TRUE : FALSE;
 }
 
-void func_ov002_021ee7f8(Ov002Staff *self) {
+void Ov002Staff_UpdateNodes(Ov002Staff *self) {
     Ov002StaffNode *n;
     Ov002StaffNode *next;
     switch (self->clock.sub) {

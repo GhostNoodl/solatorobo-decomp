@@ -56,7 +56,7 @@ extern void *Lo021cad50_vtbl[];
 extern void Obj0215c1bc_SetText(void *a, s32 b, const char *c);
 extern void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 void SceneStage_StartScript(void *p);
 
 static inline BOOL Ov011Bar_FadeIdle(void) {
@@ -115,7 +115,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
         {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             g = gSceneCmd;
             g->stageFlags = 1;
             SceneStage_StartScript(&g->stageFlags);

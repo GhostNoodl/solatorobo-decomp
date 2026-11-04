@@ -29,7 +29,7 @@ void Ov002_ScaleAlphaMatCb(NNSG3dRS *rs) {
 }
 
 // onDecide of Obj021eff10_NewMsgList's list: stores the chosen item's id (-1: cancelled) at the owner.
-BOOL func_ov002_021e046c(UiList *self, UiListItem *item) {
+BOOL Obj021eff10_MsgListOnDecide(UiList *self, UiListItem *item) {
     s32 *out = (s32 *)self->owner;
     if (item != NULL) {
         *out = item->id;

@@ -33,7 +33,7 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
     return TRUE;
 }
 
-void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
+void Ov015FishState2c_SwayRight(Ov015FishState2c *self, Ov015Fish *p) {
     Ov015Vec pos(*(Ov015Vec *)&p->pos);
     Ov015Vec dir(*(Ov015Vec *)&p->dir);
     s32 m[9];
@@ -51,7 +51,7 @@ void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
     Ov015FishState2c_UpdateSwim(self);
 }
 
-void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
+void Ov015FishState2c_SwayLeft(Ov015FishState2c *self, Ov015Fish *p) {
     Ov015Vec pos(*(Ov015Vec *)&p->pos);
     Ov015Vec dir(*(Ov015Vec *)&p->dir);
     s32 m[9];

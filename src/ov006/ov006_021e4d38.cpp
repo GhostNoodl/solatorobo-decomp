@@ -10,8 +10,8 @@ typedef struct ov006_Unk02097e40 {
 extern "C" {
 
 extern ov006_Unk02097e40 *gWhMgr;
-void func_02045094(ov006_Unk02097e40 *p);
-void func_02045498(ov006_Unk02097e40 *p, int a);
+void Wh_Finalize(ov006_Unk02097e40 *p);
+void Wh_ResetWithCallback(ov006_Unk02097e40 *p, int a);
 BOOL WH_IsStopped_02044c80(void);
 BOOL Wh_End(ov006_Unk02097e40 *p);
 
@@ -54,7 +54,7 @@ void ov006_Menu_State07(ov006_Menu *self) {
             self->stateTime = 0;
             return;
         }
-        func_02045094(gWhMgr);
+        Wh_Finalize(gWhMgr);
         self->stateTime = 10;
         if (self->unk1D8 != NULL && self->unk1D8->obj != NULL) {
             self->unk1D8->obj->flags |= 2;
@@ -66,7 +66,7 @@ void ov006_Menu_State07(ov006_Menu *self) {
             }
         } else {
             if (gWhMgr->unk2C == 8 || gWhMgr->unk2C == 9) {
-                func_02045498(gWhMgr, 0);
+                Wh_ResetWithCallback(gWhMgr, 0);
             }
             return;
         }

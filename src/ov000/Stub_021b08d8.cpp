@@ -28,7 +28,7 @@ void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 BOOL History_SetState(void *s, s32 a, s32 b);
-void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
+void Lo021cb840_SetValue(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 
 static inline void SetPal(Model0218fe1c *sub) {
     sub->color = 0x73ea;
@@ -76,7 +76,7 @@ void Robo021ca458_Mode5_State0e(Robo021ca458 *self) {
             }
             p = gMessageQueue->unk_11c;
             if (p != NULL && p->unk_70 != NULL) {
-                func_ov000_02168e18(p->unk_70, t, 0x23, &ofs);
+                Lo021cb840_SetValue(p->unk_70, t, 0x23, &ofs);
             }
             self->unk_b08 = 0x166;
         } else {

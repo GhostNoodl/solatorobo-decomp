@@ -14,7 +14,7 @@ extern const char *ResName_TextCells;
 extern char gCommonTextPath[];
 void *Heap_Alloc(u32 size);
 
-void func_ov000_021bce90(void) {
+void Bss021ccd74_LoadModels(void) {
     void *res;
     Model *m;
     res = ResList_FindType2(ResMgr_GetArcList(ArcPath_Menu), ResName_CommonCells);

@@ -28,8 +28,8 @@ extern "C" {
 extern void *gSndMgr;
 extern void *gFieldFade;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_021bc3ec(void *p, s32 a, s32 b);
-void func_ov000_021bc458(void *p);
+void FieldFade_Start(void *p, s32 a, s32 b);
+void FieldFade_End(void *p);
 
 void Menu021ca94c_PreUpdate(Lo0214c934 *self) {
     switch (self->state) {
@@ -55,14 +55,14 @@ void Menu021ca94c_PreUpdate(Lo0214c934 *self) {
         return;
     }
     if (self->unk_204 == 0) {
-        func_ov000_021bc3ec(gFieldFade, 3, 0xa000);
+        FieldFade_Start(gFieldFade, 3, 0xa000);
     }
     if (self->unk_200->vfunc_8c() != 0) {
         return;
     }
     HEAP_DELETE_VOBJ(self->unk_200);
     self->bits.b1 = 0;
-    func_ov000_021bc458(gFieldFade);
+    FieldFade_End(gFieldFade);
     self->unk_204 = 0;
 }
 

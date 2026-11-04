@@ -134,7 +134,7 @@ BOOL ov006_Menu_RequestShutdown(ov006_Menu *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4c84(ov006_Menu *self) {
+BOOL ov006_Menu_RequestScan(ov006_Menu *self) {
     if (self->state == 4) {
         return TRUE;
     }
@@ -145,7 +145,7 @@ BOOL func_ov006_021e4c84(ov006_Menu *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4cb4(ov006_Menu *self) {
+BOOL ov006_Menu_RequestHost(ov006_Menu *self) {
     if (self->state == 6) {
         return TRUE;
     }
@@ -156,7 +156,7 @@ BOOL func_ov006_021e4cb4(ov006_Menu *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4ce8(ov006_Menu *self, const void *src) {
+BOOL ov006_Menu_RequestConnect(ov006_Menu *self, const void *src) {
     if (self->state == 5) {
         return TRUE;
     }

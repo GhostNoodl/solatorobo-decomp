@@ -152,7 +152,7 @@ static inline void WH_ChangeSysState(int state) {
     gWhMgr->sysState = state;
 }
 
-// The API entry points (func_020459cc, func_02046070) write the state through this accessor. At O2 the
+// The API entry points (Wh_ParentConnect, Wh_StartScan) write the state through this accessor. At O2 the
 // inline's result is evaluated before the stored value, which gives those functions' register order
 // (round raA); the callbacks use WH_ChangeSysState.
 static inline int *WH_SysState(WhMgr *wh) {
@@ -174,36 +174,36 @@ static inline void WH_CalcBufferSizes(WhConfig *cfg) {
     cfg->childSendSize = (cfg->childSize + 0x21) & ~0x1f;
 }
 
-void func_02044fc0(WhCbArg *arg);
+void Wh_OnEnd(WhCbArg *arg);
 void func_02044a80(void);
 extern void OS_GetMacAddress(u8 *macAddr);
-void func_02045004(WhCbArg *arg);
-void func_02045530(WhCbArg *arg);
-void func_02044cb8(WhMgr *wh);
-void func_02045d98(void *arg);
-u16 func_02045674(WhMgr *wh, u16 channel);
-void func_02045770(WhCbArg *arg);
-void func_02045ab4(WhCbArg *arg);
-void func_02045b68(WhCbArg *arg);
-void func_02045d58(WhCbArg *arg);
-void func_02045ef8(WhCbArg *arg);
-void func_020461e4(WhCbArg *arg);
-void func_020468d0(WhCbArg *arg);
+void Wh_OnInitialize(WhCbArg *arg);
+void Wh_OnReset(WhCbArg *arg);
+void Wh_InitConfig(WhMgr *wh);
+void Wh_OnStartParentMp(void *arg);
+u16 Wh_MeasureChannel(WhMgr *wh, u16 channel);
+void Wh_OnMeasureChannel(WhCbArg *arg);
+void Wh_OnSetParentParam(WhCbArg *arg);
+void Wh_OnStartParent(WhCbArg *arg);
+void Wh_OnEndParent(WhCbArg *arg);
+void Wh_OnEndParentMp(WhCbArg *arg);
+void Wh_OnStartScan(WhCbArg *arg);
+void Wh_OnEndChildMp(WhCbArg *arg);
 
 extern int WM_EndScan(void (*cb)(void *arg));
 extern int WM_StartConnectEx(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);
 extern int WM_StepDataSharing(void *dsInfo, const void *data, void *recv);
 extern void *WM_GetSharedDataAddress(void *dsInfo, void *recv, u16 aid);
-void func_02046418(WhCbArg *arg);
-void func_020465c8(WhCbArg *arg);
-void func_02046774(WhCbArg *arg);
-void func_020467b4(WhCbArg *arg);
-BOOL func_020460d0(WhMgr *wh);
-void func_02045094(WhMgr *wh);
+void Wh_OnEndScan(WhCbArg *arg);
+void Wh_OnStartChild(WhCbArg *arg);
+void Wh_OnEndChild(WhCbArg *arg);
+void Wh_OnStartChildMp(WhCbArg *arg);
+BOOL Wh_BeginScan(WhMgr *wh);
+void Wh_Finalize(WhMgr *wh);
 
 static inline BOOL WH_StateInReset(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(WM_Reset((void (*)(void *))func_02045530));
+    return WH_CheckResult(WM_Reset((void (*)(void *))Wh_OnReset));
 }
 
 static inline void WH_Reset(WhMgr *wh, void (*cb)(BOOL)) {

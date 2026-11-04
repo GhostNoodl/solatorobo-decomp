@@ -183,7 +183,7 @@ void *Heap_Alloc(u32 size);
 Info0219433c *Tbl_FindEntry_0206fef8(u16 id);
 Data0219433c *Tbl_Elem_020704b4(u16 id);
 void *ResSet_Init(void *p);
-void func_ov000_02193e5c(void *p, u16 id);
+void ActorRes_SetFromTbl(void *p, u16 id);
 void *Shadow_Ctor(void *p);
 void Shadow_Load(void *p);
 void *History_Init(void *p);
@@ -286,7 +286,7 @@ void ActorEx_Init(Actor0219433c *self) {
     self->unk_b0 = &d->param;
     if (info->b0 || info->b1 || self->unk_b0->unk_02_3) {
         self->unk_34 = NewRes0219433c();
-        func_ov000_02193e5c(self->unk_34, self->id);
+        ActorRes_SetFromTbl(self->unk_34, self->id);
     }
     if (info->b12 != 0) {
         self->unk_3c = NewA0219433c();
@@ -318,7 +318,7 @@ void ActorEx_Init(Actor0219433c *self) {
             u16 id = ((u16 *)&self->unk_4c->ids)[i + 2];
             if (id != 0xffff && (u16)(id & 0xf000) != 0) {
                 self->res[i] = NewRes0219433c();
-                func_ov000_02193e5c(self->res[i], id);
+                ActorRes_SetFromTbl(self->res[i], id);
             }
         }
     }

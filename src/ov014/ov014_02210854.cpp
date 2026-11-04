@@ -32,7 +32,7 @@ extern u8 data_ov014_02216cb8[];
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Rot16 *rot, u16 a);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 
-Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
+Ov003Actor *Ov014Act_0220f9d0_SpawnChild4816(Ov014Act_0220f9d0 *self) {
     VecFx32 v;
     VecFx32 base;
     Ov014SpawnDesc desc;
@@ -90,7 +90,7 @@ Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
 
 extern const VecFx32 data_ov014_02216c0c;
 
-Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
+Ov003Actor *Ov014Act_0220f9d0_SpawnChild4815(Ov014Act_0220f9d0 *self) {
     VecFx32 pos;
     VecFx32 d;
     Ov014SpawnDesc desc;

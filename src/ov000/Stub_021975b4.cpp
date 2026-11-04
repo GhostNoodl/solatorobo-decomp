@@ -29,7 +29,7 @@ extern "C" {
 Obj0219bf90 *ActorMgr_FindPlayer(void);
 void func_020627b4(void);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 void SceneStage_StartScript(u8 *p);
 s32 StageRes_HasQueued(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -39,7 +39,7 @@ void func_ov000_021974b0(Obj021975b4 *self) {
     Obj0219bf90 *p = ActorMgr_FindPlayer();
     func_020627b4();
     Shared_SetEventActor(self->unk_0e, self->unk_0c);
-    func_020627dc(0x8002);
+    StageVars_SetEventScript(0x8002);
     {
         FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;
@@ -67,7 +67,7 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     Obj0219bf90 *p;
     func_020627b4();
     Shared_SetEventActor(self->unk_0e, self->unk_0c);
-    func_020627dc(0x8003);
+    StageVars_SetEventScript(0x8003);
     {
         FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;

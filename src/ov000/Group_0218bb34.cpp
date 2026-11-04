@@ -170,7 +170,7 @@ void Group_UpdateAll(Group *g) {
         GroupNode *n = g->head;
         while (n != NULL) {
             GroupNode *next = n->next;
-            func_ov000_0218ac98(n);
+            GroupNode_Update(n);
             n = next;
         }
     }

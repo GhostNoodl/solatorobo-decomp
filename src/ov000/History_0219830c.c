@@ -45,7 +45,7 @@ void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void HitSphere_Init(ActorSub48 *self);
 void HitSphere_Link(ActorSub48 *self);
 void HitSphere_Unlink_0203f364(ActorSub48 *self);
-void func_ov000_02198ad8(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
+void Body_CheckGround(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = gActorMgr;
@@ -238,7 +238,7 @@ void ActorSub48_UpdatePos(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
             }
             Vec_RotateY(&ofs, &self->offset, rot != NULL ? rot[1] : actor->rot_y);
             VEC_Add(&base, &ofs, &base);
-            func_ov000_02198ad8(self, &base, &ofs);
+            Body_CheckGround(self, &base, &ofs);
             if (pos != NULL) {
                 pos->x = base.x;
                 pos->y = base.y;

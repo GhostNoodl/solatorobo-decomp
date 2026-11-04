@@ -410,7 +410,7 @@ end:
             d.z = FxMul_021a6280(d.z, 0x733);
             d.y = self->height;
             VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &o);
-            func_ov000_021899d8(&o, NULL, 0x8ccd, 1, 0x2333, 0x1000);
+            Field_SetCamTarget(&o, NULL, 0x8ccd, 1, 0x2333, 0x1000);
         }
     }
 }

@@ -33,7 +33,7 @@ extern void OS_EnableITCM(void);
 extern void OS_EnableDTCM(void);
 extern void *OS_AllocFromArenaLo(int id, u32 size, int align);
 extern BOOL OS_IsRunOnTwl(void);
-void func_0203d9e8(UnkSys *sys);
+void Sys_InitHeaps(UnkSys *sys);
 void func_0203d80c(void);
 /* TWL only */
 extern void func_0228f87c(int a);
@@ -68,7 +68,7 @@ void Sys_Init(void) {
     sys->node.unk_6_0 = 0;
     sys->node.unk_6_2 = 0;
     sys->node.unk_6_4 = 0;
-    func_0203d9e8(gSysState);
+    Sys_InitHeaps(gSysState);
     sys = gSysState;
     if (OS_IsRunOnTwl()) {
         func_0228f87c(0);

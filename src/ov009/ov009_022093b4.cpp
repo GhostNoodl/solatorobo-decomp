@@ -24,7 +24,7 @@ extern void Model0218fe1c_SetReverse(Model0218fe1c *m);
 extern void Model0218fe1c_ClearReverse(Model0218fe1c *m);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
     switch (self->fsm->st) {
     case 0:
@@ -85,7 +85,7 @@ void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
             History_SetState(self->fsm, 1, 0);
             if (self->unk_312 != 0) {
                 Shared_SetEventActor(self->kind, self->id);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 self->unk_312 = 0;
             }
@@ -201,7 +201,7 @@ void Ov009ActVt_02217594_StateAttack2(Ov009ActVt_02217594 *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         self->unk_312 = 0;
         self->unk_b6 = 0xb4;

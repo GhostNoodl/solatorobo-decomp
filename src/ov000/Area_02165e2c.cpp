@@ -13,7 +13,7 @@ static inline BOOL Active02165e2c(LoAnimC *c) {
     return TRUE;
 }
 
-Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area) {
+Item0216607c *Lo021cb6b0_FindFloor(Lo021cb6b0 *self, Node0216607c *area) {
     LoAnimC *c;
     u8 j;
     u8 i;

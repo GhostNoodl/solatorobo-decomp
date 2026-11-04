@@ -52,7 +52,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, u16 *rot, u16 a);
 
-void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
+void Ov014Act_02209280_SpawnChild481e(Ov014Act_02209280 *self, s16 a, s32 kind) {
     Ov014SpawnDescB desc;
     VecFx32 pos;
     u16 rot[3];

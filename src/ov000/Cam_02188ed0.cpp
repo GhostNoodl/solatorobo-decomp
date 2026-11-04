@@ -26,7 +26,7 @@ static inline BOOL IsBusy(void) {
     return func_ov000_021700c4(c->unk_11c);
 }
 
-void func_ov000_02188ed0(SceneCmd *self) {
+void SceneCmd_ApplyPendingCam(SceneCmd *self) {
     FieldCam *s = &data_ov000_021ccd50.scene->cam;
     if (self->unk_d3) {
         s->unk_e8 = self->unk_d8;

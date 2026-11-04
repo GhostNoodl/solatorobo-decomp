@@ -26,7 +26,7 @@ void Obj021efe6c_Update(Obj021efe6c *self) {
             x = **pp;
         }
     }
-    func_ov002_021d7320(o, x, 0x1000);
+    Obj021efe4c_PlaySndCues(o, x, 0x1000);
     for (n = self->pieces; n != NULL; n = n->next) {
         n->vfunc_0c();
     }

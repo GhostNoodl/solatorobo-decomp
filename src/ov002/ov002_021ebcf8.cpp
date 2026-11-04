@@ -43,7 +43,7 @@ static inline void ov002_addPair(Ov002ResList *list, char *a, char *b, s32 kind)
     }
 }
 
-void func_ov002_021ebcf8(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out) {
+void Ov002StageFile_LoadObj075cList(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out) {
     Hdr021ebcf8 hdr;
     Rec021ebcf8 rec;
     s32 n;

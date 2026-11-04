@@ -13,7 +13,7 @@ void GroupNode_SetSpawnRange(GroupNode *u, s32 a, s32 b) {
     u->despawnRange = FX_MUL(a, 0x39000);
     u->despawnHeight = FX_MUL(b, 0x16000);
     u->fadeStart = FX_MUL(a, 0x32000);
-    func_ov000_0218b420(u);
+    GroupNode_UpdateBounds(u);
 }
 
 static inline void Unit0218b700_SetSize(GroupNode *u, s32 a, s32 b) {
@@ -25,12 +25,12 @@ static inline void Unit0218b700_SetSize(GroupNode *u, s32 a, s32 b) {
     u->despawnRange = FX_MUL(a, 0x39000);
     u->despawnHeight = FX_MUL(b, 0x16000);
     u->fadeStart = FX_MUL(a, 0x32000);
-    func_ov000_0218b420(u);
+    GroupNode_UpdateBounds(u);
 }
 
 // Case 6 comes before case 3 in the first switch (the compiler cross-jumps the identical bodies),
 // and the mode 5 path edits a copy of the flag byte so the bits are stored once.
-void func_ov000_0218b7c0(GroupNode *u, s32 kind, s32 mode) {
+void GroupNode_SetupKind(GroupNode *u, s32 kind, s32 mode) {
     s32 x = 0x1000;
     s32 y = x;
     if (mode == 5) {
@@ -49,17 +49,17 @@ void func_ov000_0218b7c0(GroupNode *u, s32 kind, s32 mode) {
         case 6:
             u->flags.unk_0 = 0;
             u->flags.useRange = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             u->flags.useHeight = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             u->flags.unk_5 = 1;
             break;
         case 3:
             u->flags.unk_0 = 0;
             u->flags.useRange = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             u->flags.useHeight = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             u->flags.unk_5 = 1;
             break;
         case 4:
@@ -71,13 +71,13 @@ void func_ov000_0218b7c0(GroupNode *u, s32 kind, s32 mode) {
         case 2:
             u->flags.unk_0 = 0;
             u->flags.useRange = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             u->flags.useHeight = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             break;
         case 3:
             u->flags.useHeight = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             x = 0x2000;
             y = 0x1ccd;
             u->flags.useAngle = 0;
@@ -85,7 +85,7 @@ void func_ov000_0218b7c0(GroupNode *u, s32 kind, s32 mode) {
             break;
         case 4:
             u->flags.useHeight = 0;
-            func_ov000_0218b420(u);
+            GroupNode_UpdateBounds(u);
             y = 0x1ccd;
             x = 0x2000;
             u->flags.useAngle = 0;

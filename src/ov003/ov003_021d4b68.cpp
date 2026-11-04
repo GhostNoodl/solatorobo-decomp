@@ -464,7 +464,7 @@ extern u8 Ov003_GetMaxCombo(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern Ov003KbPlayer *ActorMgr_FindPlayer(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 static inline BOOL Ov003Kb_GameBusy(FieldState *g) {
     return g->head != g->tail;
@@ -581,7 +581,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             Ov003KbPlayer *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_b24_1) {
                 Shared_SetEventActor(self->kind, self->id);
-                func_020627dc(3);
+                StageVars_SetEventScript(3);
                 gSceneCmd->stageFlags = 1;
             }
         }

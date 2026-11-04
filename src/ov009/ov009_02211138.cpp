@@ -4,7 +4,7 @@ extern "C" {
 
 extern char data_ov009_022179b4[];
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
     VecFx32 d;
@@ -19,7 +19,7 @@ void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
     if (VEC_Distance(&self->pos, &self->unk_f0) <= 0xf6) {
         self->pos = self->unk_f0;
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
     }

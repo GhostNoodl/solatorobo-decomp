@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *a, Ov002Shape *b) {
+BOOL Ov002Shape_IsBlockedAt(const Vec2 *pos, const Vec2 *d, Ov002Shape *a, Ov002Shape *b) {
     Vec2 p;
     Vec2 out;
     p.x = pos->x + d->x;
@@ -10,7 +10,7 @@ BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *a, Ov002Sha
     return !Ov002Shape_FitInMap(&p, a, b, &out);
 }
 
-BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *a2) {
+BOOL Obj021efeb8_CanPlace(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *a2) {
     Vec2 p;
     Vec2 q;
     p.x = self->unk_54;

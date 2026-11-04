@@ -67,7 +67,7 @@ static inline void ov002_AddNode(Obj021efe6c *self, Obj021efeb8 *node) {
     } else {
         self->pieces = node;
     }
-    func_ov002_021da184(self, node);
+    Obj021efe6c_MarkPieceCells(self, node);
     if (gStageFlags->bits18.mode == 1) {
         Parts_SumStats(self->unk_76, self->pieces);
         Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
@@ -79,7 +79,7 @@ static inline void ov002_AddNode(Obj021efe6c *self, Obj021efeb8 *node) {
 void Obj021efe6c_LoadPieces(Obj021efe6c *self) {
     int i;
     Obj021efe6c_FreePieces(self);
-    func_ov002_021da054(self);
+    Obj021efe6c_RebuildCells(self);
     MI_CpuCopy8((u8 *)gStageFlags + 0x2a, self->unk_08, sizeof(self->unk_08));
     for (i = 0; i < 0x25; i++) {
         Ent98ac *e = (Ent98ac *)((u8 *)gStageFlags + 0x8e) + i;

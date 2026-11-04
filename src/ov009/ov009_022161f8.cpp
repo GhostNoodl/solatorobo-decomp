@@ -2097,7 +2097,7 @@ extern void Field_ShakeCamera(s32 a, s32 b);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void Drop_SpawnWeighted(void *a, void *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
-extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
+extern void Drop_SpawnCoins(u16 id, const VecFx32 *pos, const u16 *rot);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Target_SetActor(void *p, Ov003Actor *a);
 
@@ -2192,7 +2192,7 @@ void Ov009Act_02202788_StateDie(Ov009Act_02202788 *self) {
     case 10:
         c = Tbl_GetActorParam(self->kind);
         Drop_SpawnWeighted(c->dropIds, c->dropRates, 2, &self->pos, &self->rot_x, 1);
-        func_ov000_0219b5dc(self->unk_b0->unk_06, &self->pos, &self->rot_x);
+        Drop_SpawnCoins(self->unk_b0->unk_06, &self->pos, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;
         break;

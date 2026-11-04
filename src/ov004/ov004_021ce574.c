@@ -32,7 +32,7 @@ static inline void FlushCaches(void) {
     }
 }
 
-void func_ov004_021ce574(u32 *t) {
+void DSProt_DescrambleRanges(u32 *t) {
     u32 *h = t - 3;
     h[2] = 0;
     h[1] = 0;
@@ -54,7 +54,7 @@ void func_ov004_021ce574(u32 *t) {
     FlushCaches();
 }
 
-u8 *func_ov004_021ce634(u32 key, u8 *enc, u32 len) {
+u8 *DSProt_DecryptForCall(u32 key, u8 *enc, u32 len) {
     u32 k[4];
     len -= (u32)DSProt_BSS + 0x3200;
     k[0] = key ^ len;
@@ -67,7 +67,7 @@ u8 *func_ov004_021ce634(u32 key, u8 *enc, u32 len) {
     return enc;
 }
 
-u32 func_ov004_021ce6f8(u32 key, u32 arg, u32 len) {
+u32 DSProt_EncryptAfterCall(u32 key, u32 arg, u32 len) {
     u32 k[4];
     u8 *p = (u8 *)arg;
     len -= (u32)DSProt_BSS + 0x3200;

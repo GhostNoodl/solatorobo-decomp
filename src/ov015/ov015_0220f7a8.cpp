@@ -130,7 +130,7 @@ void Ov015Result_StartCatchScene(Ov015Result *self) {
         p4->res.arc = b[n].arc;
         p4->res.name = b[n].name;
         p4->res.item = NULL;
-        func_ov002_021e50d8(p4, c[n].arc, c[n].name);
+        Ov002Obj021f07d4_AddTexLink(p4, c[n].arc, c[n].name);
         t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0, 0x78000, 3, 0, 0x1000);
         t->res.arc = d[n].arc;
         t->res.name = d[n].name;

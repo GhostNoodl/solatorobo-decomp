@@ -6,13 +6,13 @@
 extern char DSProt_BSS[];
 extern char data_ov004_021cf7d4[];
 extern char data_ov004_021cf7d8[];
-extern char func_ov004_021ce634[];
-extern char func_ov004_021ce6f8[];
-void func_ov004_021ce7d8(void);
+extern char DSProt_DecryptForCall[];
+extern char DSProt_EncryptAfterCall[];
+void DSProt_CallEncrypted(void);
 void func_ov004_021ce848(void);
-void func_ov004_021ce574(void);
+void DSProt_DescrambleRanges(void);
 
-asm void func_ov004_021ce7d8(void) {
+asm void DSProt_CallEncrypted(void) {
     stmfd sp!, {r0, r1, r2, r3}
     str r10, [r12, #0x10]
     mov r10, r12
@@ -44,12 +44,12 @@ asm void func_ov004_021ce7d8(void) {
 asm void func_ov004_021ce848(void) {
     orr r0, pc, #0
     adds r0, r0, #4
-    bne func_ov004_021ce574
-    dcd func_ov004_021ce6f8+0x3200
+    bne DSProt_DescrambleRanges
+    dcd DSProt_EncryptAfterCall+0x3200
     dcd DSProt_BSS+0x32d4
-    dcd func_ov004_021ce634+0x3200
+    dcd DSProt_DecryptForCall+0x3200
     dcd DSProt_BSS+0x32bc
-    dcd func_ov004_021ce7d8+0x3200
+    dcd DSProt_CallEncrypted+0x3200
     dcd DSProt_BSS+0x3268
     dcd 0x00000000
     dcd 0x00000000

@@ -466,7 +466,7 @@ extern "C" {
 void *ResSet_Init(void *p);
 void *ResSet_ReleaseAll(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
-void func_ov000_02193e5c(void *p, s32 a);
+void ActorRes_SetFromTbl(void *p, s32 a);
 BOOL ResSet_UpdateLoad(void *p);
 
 BOOL Ov011Fx_Init(Ov011Fx *self) {
@@ -502,7 +502,7 @@ BOOL Ov011Fx_Init(Ov011Fx *self) {
     }
     MTX_Identity33_(&self->mtx);
     Ov003ActorSub40_ForceState(&self->state, 0);
-    func_ov000_02193e5c(self->anim, 0x4812);
+    ActorRes_SetFromTbl(self->anim, 0x4812);
     Ov003Ticker_Start_021d7d24(self->s5c, 0, 0, 1, 0);
     Ov003Ticker_Start_021d7d24(self->s68, 0, 0, 1, 0);
     Ov003Ticker_Start_021d7d24(self->s74, 0, 0, 1, 0);
@@ -765,7 +765,7 @@ void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
 void *ResSet_ReleaseAll(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
-void func_ov000_02193e5c(void *p, s32 a);
+void ActorRes_SetFromTbl(void *p, s32 a);
 BOOL ResSet_UpdateLoad(void *p);
 s32 Tbl_FindEntry_0206fef8(u32 id);
 void Model0218fe1c_Setup(void *a, void *b, s32 c);
@@ -926,7 +926,7 @@ BOOL Ov011Chr_Init(Ov011Chr *self, u16 id, const VecFx32 *off, u16 c, s16 d, s16
     self->mode = 0;
     self->off = *off;
     self->unk_24 = 0;
-    func_ov000_02193e5c(self->anim, 0x4812);
+    ActorRes_SetFromTbl(self->anim, 0x4812);
     a = Ov011_FindActorN(self->id);
     if (a != NULL) {
         VecFx32 p;

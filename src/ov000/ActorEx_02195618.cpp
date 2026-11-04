@@ -17,7 +17,7 @@ extern "C" {
 
 extern Act02195618Entry ActorEx_StateTable[];
 void HitMesh_Unlink_0203f920(void *p);
-void func_ov000_0219af3c(u8 *self, void *p);
+void Actor_UpdateMarker(u8 *self, void *p);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
@@ -59,7 +59,7 @@ void ActorEx_RunState(ActorEx *self) {
     }
     if (self->unk_5c != NULL) {
         if (PlayerIdle02195618()) {
-            func_ov000_0219af3c((u8 *)self, self->unk_5c);
+            Actor_UpdateMarker((u8 *)self, self->unk_5c);
             if (!self->unk_cc_7) {
                 s32 r;
                 ActorSub44 *hit = self->unk_44;

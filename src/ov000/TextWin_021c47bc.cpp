@@ -62,7 +62,7 @@ static inline void Win021c4964_Update(Win021c4964 *self) {
     self->unk_c4 = FX_Div(self->unk_9c << 12, self->unk_98 << 12);
 }
 
-void func_ov000_021c47bc(Win021c4964 *self, s32 up, u8 *moved, u8 *scrolled) {
+void Win021c4964_MoveCursor(Win021c4964 *self, s32 up, u8 *moved, u8 *scrolled) {
     if (up != 0) {
         if (--self->unk_a8 < 0) {
             self->unk_a8 = 0;
@@ -101,7 +101,7 @@ void func_ov000_021c47bc(Win021c4964 *self, s32 up, u8 *moved, u8 *scrolled) {
     Win021c4964_Update(self);
 }
 
-s32 func_ov000_021c4964(Win021c4964 *self, s32 n) {
+s32 Win021c4964_Scroll(Win021c4964 *self, s32 n) {
     if (n < 0) {
         if (self->unk_9c <= 0) {
             n = 0;

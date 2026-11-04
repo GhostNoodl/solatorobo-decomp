@@ -63,7 +63,7 @@ void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del) {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021da054(Obj021efe6c *self) {
+void Obj021efe6c_RebuildCells(Obj021efe6c *self) {
     s32 j;
     s32 i;
     s32 rows;
@@ -95,7 +95,7 @@ void func_ov002_021da054(Obj021efe6c *self) {
         }
     }
     for (p = self->pieces; p != NULL; p = p->next) {
-        func_ov002_021da184(self, p);
+        Obj021efe6c_MarkPieceCells(self, p);
     }
 }
 
@@ -107,7 +107,7 @@ typedef struct Bits021da184 {
 
 void Ov002_TransformAbout(s32 *out, s32 *m, s32 *p, s32 *q, s32 *t);
 
-void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj) {
+void Obj021efe6c_MarkPieceCells(Obj021efe6c *self, Obj021efeb8 *obj) {
     Ov002Shape *g;
     s32 j;
     Ov002Cell *e;
@@ -120,7 +120,7 @@ void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj) {
     u8 cols;
     pos[0] = obj->unk_54;
     pos[1] = obj->unk_58;
-    func_ov002_021e38f8(org, &obj->shape);
+    Ov002Shape_GetOrigin(org, &obj->shape);
     cols = obj->shape.w;
     rows = obj->shape.h;
     Ov002_QuarterRotMtx(m, obj->shape.rot);

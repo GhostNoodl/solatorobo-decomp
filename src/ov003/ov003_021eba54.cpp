@@ -167,7 +167,7 @@ extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern Ov003PartSrc *Tbl_Elem_020704b4(u16 id);
 extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     if (s != NULL) {
@@ -280,7 +280,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         self->hit->radius = self->radius;
         func_020627b4();
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(0x8001);
+        StageVars_SetEventScript(0x8001);
         sfxOn = 1;
         gSceneCmd->stageFlags = sfxOn;
     } else {

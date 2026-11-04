@@ -18,7 +18,7 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 
-void func_ov000_02161994(Lo021cacd8 *self, s32 a1, s32 *pos, s32 y) {
+void Lo021cacd8_DrawArrows(Lo021cacd8 *self, s32 a1, s32 *pos, s32 y) {
     s32 t;
     s32 off;
     u8 alpha;

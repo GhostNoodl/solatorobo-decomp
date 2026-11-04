@@ -21,7 +21,7 @@ extern const ov006_Ent021e9c5c data_ov006_021eb858[];
 extern u16 data_ov006_021eb894[];
 extern void *gSndMgr;
 
-s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot16 *rot, s32 r, s32 a, void **list);
+s32 Finder_CollectInBox(Actor *self, u16 mask, const VecFx32 *pos, Rot16 *rot, s32 r, s32 a, void **list);
 Actor *Obj021984c8_GetActor(void *p);
 void *Actor_SpawnKind(s32 id, VecFx32 *pos, Rot16 *rot, u16 a, u16 b);
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
@@ -53,7 +53,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             void *list[0x20];
             rot = self->look2;
             rot.x += 0x4000;
-            if (func_ov000_0219a5c8(self, 0x80, &self->pos, &rot, 0x3c000, 0xc8000, list) && list[0] != NULL) {
+            if (Finder_CollectInBox(self, 0x80, &self->pos, &rot, 0x3c000, 0xc8000, list) && list[0] != NULL) {
                 tgt = Obj021984c8_GetActor(list[0])->id;
             }
             pos = self->pos;

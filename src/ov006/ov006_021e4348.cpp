@@ -19,9 +19,9 @@ extern void *ov006_ObjectHolder_vtbl;
 extern ov006_Unk02097e40 *gWhMgr;
 
 void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a);
-BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
+BOOL Wh_Initialize(ov006_Unk02097e40 *a, int b);
 void Wh_SetGgid(ov006_Unk02097e40 *a, u32 b);
-void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
+void Wh_SetChildSsid(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
 int WM_GetLinkLevel(void);
 BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data);
@@ -72,9 +72,9 @@ void ov006_Menu_Load(ov006_Menu *self) {
         break;
     }
     case 2:
-        func_02044e38(gWhMgr, 0);
+        Wh_Initialize(gWhMgr, 0);
         Wh_SetGgid(gWhMgr, 0x401336);
-        func_02046a78(gWhMgr, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
+        Wh_SetChildSsid(gWhMgr, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
         gWhMgr->unk80 = (void *)ov006_Menu_ReceiveData;
         gSysState->vblankFunc = NULL;
         ov006_Menu_SetState(self, 3);

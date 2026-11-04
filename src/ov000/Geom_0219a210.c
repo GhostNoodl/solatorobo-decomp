@@ -52,7 +52,7 @@ s32 Geom_SnapToGround(VecFx32 *pos, s32 up, s32 down) {
     return ret;
 }
 
-u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask) {
+u16 Hit_FindOpenDir(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask) {
     VecFx32 a;
     VecFx32 b;
     u16 result;

@@ -369,7 +369,7 @@ void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
 
 u8 *Param_GetEntry(u16 id);
-BOOL func_ov002_021e38f8(s32 *out, Ov002Shape *shape);
+BOOL Ov002Shape_GetOrigin(s32 *out, Ov002Shape *shape);
 void Obj021efe9c_LoadPartModel(Obj021efe9c *self);
 
 static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
@@ -378,7 +378,7 @@ static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
     v = ParamKind_GetShape(self->unk_4b = info[1]);
     MI_CpuCopy8(v, &self->shape, sizeof(self->shape));
-    func_ov002_021e38f8(self->unk_5c, v);
+    Ov002Shape_GetOrigin(self->unk_5c, v);
 }
 
 void Obj021efe9c_Draw(Obj021efe9c *self);
@@ -431,14 +431,14 @@ void Obj021efe4c_Release(Obj021efe4c *self);
 void Obj021efe4c_Init(Obj021efe4c *self);
 void Obj021efe4c_SetupBoxModels(Obj021efe4c *self);
 void Obj021efe4c_UpdateBoxMesh(Obj021efe4c *self);
-void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range);
+void Obj021efe4c_PlaySndCues(Obj021efe4c *self, s32 t, s32 range);
 void Obj021efe6c_Init(Obj021efe6c *self);
 void Obj021efe6c_LoadPieces(Obj021efe6c *self);
 void Obj021efe6c_CommitToFlags(Obj021efe6c *self);
 void Obj021efe6c_AppendPiece(Obj021efe6c *self, Obj021efeb8 *node);
 void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del);
-void func_ov002_021da054(Obj021efe6c *self);
-void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj);
+void Obj021efe6c_RebuildCells(Obj021efe6c *self);
+void Obj021efe6c_MarkPieceCells(Obj021efe6c *self, Obj021efeb8 *obj);
 u8 *func_ov002_021dd9d4(Obj021efe6c *self);
 u16 func_ov002_021d9e30(Obj021efeb8 *self);
 void Obj021efe9c_GetCell(Obj021efe9c *self, Vec2 *out);
@@ -530,7 +530,7 @@ typedef struct Bits021e0420 {
 extern VFunc Ov002Vt_021f0ce8_vtbl[];
 int Ov002Shape_FitInMap(Vec2 *pos, Ov002Shape *map, Ov002Shape *shape, Vec2 *out);
 void Obj021efe9c_ClampToBoard(Obj021efe9c *self, Ov002Shape *map);
-void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *map);
+void Obj021efe9c_Rotate(Obj021efe9c *self, s32 d, Ov002Shape *map);
 
 
 typedef struct Bits021e2f04 {
@@ -602,7 +602,7 @@ typedef struct Ov002ResNames {
 extern u8 data_ov002_021ef650[];
 
 void LoBase021ccb54_021ccbe0_Setup(void *self);
-void func_ov000_021c4ab8(void *self);
+void Obj021c4ab8_UpdateScrollBar(void *self);
 extern VecFx16 data_ov002_021ef038[]; // the list frame outline (Ov002RowList_Setup)
 
 extern VFunc Ov002Vt_021f075c_vtbl[];
@@ -676,8 +676,8 @@ void Gfx3DState_Init(void *p);
 void Ov002Stage_Init(Ov002Stage *self);
 
 BOOL Ov002Shape_Overlaps(Vec2 *a, Vec2 *b, Ov002Shape *c, Ov002Shape *d, Vec2 *out);
-BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *map, Ov002Shape *shape);
-BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *map);
+BOOL Ov002Shape_IsBlockedAt(const Vec2 *pos, const Vec2 *d, Ov002Shape *map, Ov002Shape *shape);
+BOOL Obj021efeb8_CanPlace(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *map);
 void Ov002Obj021f075c_UpdateAnims(Ov002Obj021f075c *self);
 extern VFunc Ov002Vt_021f0694_vtbl[];
 
@@ -697,7 +697,7 @@ extern u8 data_ov002_021ef651[];
 extern u8 data_ov002_021ef665[];
 extern VFunc Ov002Vt_021f000c_vtbl[];
 
-void *func_ov000_0214b8ec(void *p);
+void *Loader_GetTexAddr(void *p);
 void Gfx_DrawTexQuad(VecFx32 *a, VecFx32 *b, s32 c, void *d);
 extern VecFx32 data_ov002_021ef124;
 
@@ -723,7 +723,7 @@ void Ov002Snd021f0cf8_Load(Ov002Snd021f0cf8 *self, void *src);
 
 extern VFunc Ov002Vt_021f06e4_vtbl[];
 
-void func_ov002_021e6290(Ov002Obj021f075c *self);
+void Ov002Obj021f075c_ResetAnim(Ov002Obj021f075c *self);
 
 void *Param_Get(u16 id);
 void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b);

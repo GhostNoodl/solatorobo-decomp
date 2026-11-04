@@ -5,8 +5,8 @@ extern "C" {
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void Ov015FishState2c_UpdateWake(Ov015FishState2c *self);
 void Ov015FishState2c_UpdateSwim(Ov015FishState2c *self);
-void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p);
-void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p);
+void Ov015FishState2c_SwayRight(Ov015FishState2c *self, Ov015Fish *p);
+void Ov015FishState2c_SwayLeft(Ov015FishState2c *self, Ov015Fish *p);
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);
 s32 Rand_UpTo(s32 max);
 extern u8 Ov015FishState18_vtbl[];
@@ -166,7 +166,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         break;
     }
     case 3:
-        func_ov015_0220ac40(self, p);
+        Ov015FishState2c_SwayRight(self, p);
         if (self->unk_06 <= 0) {
             p->unk_bc = 3;
             self->step = 5;
@@ -174,7 +174,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         }
         break;
     case 4:
-        func_ov015_0220ad68(self, p);
+        Ov015FishState2c_SwayLeft(self, p);
         if (self->unk_06 <= 0) {
             p->unk_bc = 2;
             self->step = 6;

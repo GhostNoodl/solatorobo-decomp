@@ -25,7 +25,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 void Actor_TurnToActor(Actor *self, void *other, s32 a);
 s32 Rand_UpTo(s32 max);
 u16 FX_Atan2(s32 x, s32 z);
-u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
+u16 Hit_FindOpenDir(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 
 static inline BOOL GBusy02197ee0(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -129,7 +129,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         } else {
             p.y += self->centerY;
             ang = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
-            ang = func_ov000_0219a36c(&p, radius, (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000)), 5, 0, 0xc0000000);
+            ang = Hit_FindOpenDir(&p, radius, (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000)), 5, 0, 0xc0000000);
         }
         Polar02197ee0(&p, radius, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
         p.y = self->pos.y;

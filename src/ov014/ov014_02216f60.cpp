@@ -207,10 +207,10 @@ void Ov014Act_021fa6a0_StateIdle(Ov014Act_021fa6a0 *self) {
 
 extern char data_ov014_022170fe[];
 extern char data_ov014_02217104[];
-extern void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n);
+extern void Ov014Act_021fa6a0_SpawnChild4822(Ov014Act_021fa6a0 *self, s16 n);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 void SceneStage_StartScript(void *p);
 
 void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
@@ -238,7 +238,7 @@ void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
         break;
     case 2:
         if (Effect_Find_020657b0(gEffectMgr, self->unk_120) == NULL) {
-            func_ov014_021fbb90(self, 1);
+            Ov014Act_021fa6a0_SpawnChild4822(self, 1);
             self->fsm->st = 10;
         }
         break;
@@ -283,7 +283,7 @@ void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
             Model0218fe1c_SetAnimSpeed(self->model, 0x1ec);
             Model0218fe1c_SetLoop(self->model);
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             g = (u8 *)gSceneCmd;
             g[0xac] = 1;
             SceneStage_StartScript(g + 0xac);
@@ -296,7 +296,7 @@ void Ov014Act_021fa6a0_State21(Ov014Act_021fa6a0 *self) {
 
 extern const VecFx32 data_ov014_0221645c;
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void func_ov014_021fbab8(Ov014Act_021fa6a0 *self, s16 n);
+extern void Ov014Act_021fa6a0_SpawnChild4821(Ov014Act_021fa6a0 *self, s16 n);
 
 void Ov014Act_021fa6a0_StateAttack(Ov014Act_021fa6a0 *self) {
     VecFx32 v;
@@ -344,7 +344,7 @@ void Ov014Act_021fa6a0_StateAttack(Ov014Act_021fa6a0 *self) {
                 self->unk_11c = 10;
             }
         }
-        func_ov014_021fbab8(self, b + self->unk_11c);
+        Ov014Act_021fa6a0_SpawnChild4821(self, b + self->unk_11c);
         self->fsm->timer = 0;
         self->fsm->st++;
     }
@@ -421,7 +421,7 @@ void Ov014Act_021fa6a0_StateAttack2(Ov014Act_021fa6a0 *self) {
     case 2:
         if (Effect_Find_020657b0(gEffectMgr, self->unk_120) == NULL) {
             SndMgr_PlayAt(gSndMgr, 0xa01, &self->pos, 0);
-            func_ov014_021fbb90(self, 0);
+            Ov014Act_021fa6a0_SpawnChild4822(self, 0);
             self->fsm->st = 10;
         }
         break;
@@ -589,7 +589,7 @@ void Ov014Act_021fa6a0_StateDie(Ov014Act_021fa6a0 *self) {
     }
 }
 
-void func_ov014_021fbab8(Ov014Act_021fa6a0 *self, s16 n) {
+void Ov014Act_021fa6a0_SpawnChild4821(Ov014Act_021fa6a0 *self, s16 n) {
     Ov014SpawnDesc desc;
     Ov003Actor *o;
     Ov014Spawn_Init(&desc, 0xffff);
@@ -609,7 +609,7 @@ void func_ov014_021fbab8(Ov014Act_021fa6a0 *self, s16 n) {
     }
 }
 
-void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n) {
+void Ov014Act_021fa6a0_SpawnChild4822(Ov014Act_021fa6a0 *self, s16 n) {
     Ov014SpawnDesc desc;
     VecFx32 v;
     Ov003Actor *o;

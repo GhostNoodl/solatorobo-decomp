@@ -38,7 +38,7 @@ void Ov009ActVt_022167fc_State20(Ov003Actor *self) {
 extern char data_ov009_02216ac8[];
 extern char data_ov009_02216ab0[];
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void Field_ShakeCameraY(u8 a, u8 b);
 void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
     ActorSub40 *st = self->fsm;
@@ -56,7 +56,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         m = self->model;
         m->visible = 1;
@@ -92,7 +92,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void Field_ShakeCamera(u8 a, u8 b);
-extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
+extern void Drop_SpawnCoins(u16 id, const VecFx32 *pos, const u16 *rot);
 extern void Ov003_AddExp(u16 id);
 void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
     VecFx32 p;
@@ -132,7 +132,7 @@ void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
             s32 s = self->radius + (self->radius >> 3);
             o->SetScaleXYZ(s, s, s);
         }
-        func_ov000_0219b5dc(self->unk_b0->unk_06, &p, &self->rot_x);
+        Drop_SpawnCoins(self->unk_b0->unk_06, &p, &self->rot_x);
         Ov003_AddExp(self->unk_b0->unk_04);
         n = gStageFlags->unk_00a + 1;
         if (n >= 0xffff) {

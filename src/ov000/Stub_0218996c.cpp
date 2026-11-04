@@ -31,7 +31,7 @@ void Field_ShakeCameraY(u8 a, u8 b) {
     s->base.shakeCur = b;
 }
 
-void func_ov000_021899d8(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7) {
+void Field_SetCamTarget(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7) {
     FieldCam *s = &data_ov000_021ccd50.scene->cam;
     if (s == NULL) {
         return;

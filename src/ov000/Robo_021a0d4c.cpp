@@ -29,8 +29,8 @@ void func_ov000_0219a088(void *p);
 void func_ov000_0219a0b0(void *p, u8 *self);
 void Lo0216b474_Ask(Lo0216b474 *p, s32 want, BOOL part22);
 void func_ov000_021b1110(u8 *self, s32 a);
-void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
-void func_ov000_0216a438(Lo021cb744 *self, u16 a, s32 b, BOOL c);
+void Lo021cb798_SetValue(Lo021cb798 *self, u16 a, u16 b);
+void Lo021cb744_SetValue(Lo021cb744 *self, u16 a, s32 b, BOOL c);
 
 static inline Actor *GetObj021a0d4c(u16 id) {
     if (gActorMgr == NULL) {
@@ -148,7 +148,7 @@ static inline BOOL Ok021a0d4c(Robo021ca458 *self) {
 static inline void Bar021a0d4c(u16 a, u16 b) {
     ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_58 != NULL) {
-        func_ov000_021697dc(g->unk_58, a, b);
+        Lo021cb798_SetValue(g->unk_58, a, b);
         g->unk_58->unk_0c |= 0x80;
     }
 }
@@ -156,7 +156,7 @@ static inline void Bar021a0d4c(u16 a, u16 b) {
 static inline void Mark021a0d4c(u16 a, s32 b, BOOL c) {
     ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_64 != NULL) {
-        func_ov000_0216a438(g->unk_64, a, b, c);
+        Lo021cb744_SetValue(g->unk_64, a, b, c);
     }
 }
 

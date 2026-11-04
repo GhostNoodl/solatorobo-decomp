@@ -6,7 +6,7 @@ extern "C" {
 BOOL func_020621f8(void);
 Actor *Group_SpawnActor(void *mgr, GroupActorDesc *desc, s32 a, s32 b, u16 c);
 
-void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
+void Drop_SpawnCoins(u16 amount, s32 a, s32 b) {
     s32 n;
     if (func_020621f8()) {
         return;

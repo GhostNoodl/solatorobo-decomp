@@ -21,7 +21,7 @@ BOOL func_ov000_0219aca8(void *a, void *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, 
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void Field_ShakeCamera(s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 
 static inline Actor *FindActor_02191f18(u16 id) {
     if (gActorMgr == NULL) {
@@ -370,7 +370,7 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
     case 24:
         if (actor != NULL) {
             Shared_SetEventActor(actor->kind, actor->id);
-            func_020627dc(5);
+            StageVars_SetEventScript(5);
             gSceneCmd->stageFlags = 1;
         }
         break;

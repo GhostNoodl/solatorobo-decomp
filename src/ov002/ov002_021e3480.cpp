@@ -12,7 +12,7 @@ void Ov002RowList_Setup(Ov002RowList *self) {
     self->unk_90->width = self->unk_b0 << 12;
     self->unk_b8 = 0x6000;
     self->unk_c0 = (self->height - 8) << 12;
-    func_ov000_021c4ab8(self);
+    Obj021c4ab8_UpdateScrollBar(self);
 }
 
 }

@@ -10,7 +10,7 @@ extern char data_ov003_021f8537[];
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s32 a, s32 b);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void *Tbl_GetResFile(s32 id);
 extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL ResSet_UpdateLoad(ActorRes *p);
@@ -32,7 +32,7 @@ void Ov003ActVt_021f82b8_State21(ActorEx *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         self->fsm->st = 0x7fff;
         break;

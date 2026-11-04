@@ -46,7 +46,7 @@ static inline BOOL Ov015_InTable(const u16 *tbl, s32 n, s32 id) {
     return found;
 }
 
-void func_ov015_022113e8(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget) {
+void Ov015Shared_RollItems(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget) {
     s32 cnt;
     s32 i;
     s32 j;

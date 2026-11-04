@@ -41,7 +41,7 @@ void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
-void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
+void Lo021cb840_SetValue(void *self, s32 a, s32 b, VecFx32 *p);
 
 static inline Actor *FindActor_021a9be8(u16 id) {
     if (gActorMgr == NULL) {
@@ -332,7 +332,7 @@ void Robo021ca458_State0f(Robo021ca458 *self) {
         if (p == NULL) return;
         x = LFLD(u8 *, p, 0x70);
         if (x == NULL) return;
-        func_ov000_02168e18(x, tm, 0x20, &z);
+        Lo021cb840_SetValue(x, tm, 0x20, &z);
     }
 }
 }

@@ -6,7 +6,7 @@ extern "C" {
 
 extern char data_ov013_0220be7c[];
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Actor_IsDead(Ov003Actor *a);
@@ -36,7 +36,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
         if (pct <= 0x14 && pl != NULL && !Actor_IsDead(pl)) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(5);
+            StageVars_SetEventScript(5);
             g = gSceneCmd;
             g->stageFlags = 1;
             SceneStage_StartScript(&g->stageFlags);
@@ -117,7 +117,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         {
             ActorSub44 *n = self->unk_44;

@@ -20,17 +20,17 @@ extern u8 func_ov004_021cd4c0[];
 extern u8 func_ov004_021cd548[];
 extern u8 func_ov004_021cd5d0[];
 extern u8 func_ov004_021cd658[];
-extern u8 func_ov004_021cf544[];
-extern u8 func_ov004_021cf5cc[];
-extern u8 func_ov004_021cf654[];
-extern u8 func_ov004_021cf6dc[];
+extern u8 DSProt_RomCheckA_Stub[];
+extern u8 DSProt_RomCheckB_Stub[];
+extern u8 DSProt_EmuCheckA_Stub[];
+extern u8 DSProt_EmuCheckB_Stub[];
 
 #define ENC(p) ((p) + 0x3200)
 #define DEC(x) ((u32)(x) - 0x3200)
 
 #pragma force_active on
 
-u32 func_ov004_021cdc6c(u32 a, u32 b) {
+u32 DSProt_RunRomCheckA(u32 a, u32 b) {
     u32 list[32];
     Ov004Call ctx;
     u32 *lp;
@@ -38,7 +38,7 @@ u32 func_ov004_021cdc6c(u32 a, u32 b) {
     u32 *tbl;
     tbl = (u32 *)DEC(ENC(data_ov004_021cf86c));
     ctx.ok = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868))];
-    list[0] = (u32)ENC(func_ov004_021cf544);
+    list[0] = (u32)ENC(DSProt_RomCheckA_Stub);
     list[2] = 0;
     list[1] = (u32)ENC(func_ov004_021cd5d0);
     ctx.fn = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868)) ^ 1];
@@ -82,7 +82,7 @@ u32 func_ov004_021cdc6c(u32 a, u32 b) {
     return ctx.fn(a, b);
 }
 
-u32 func_ov004_021cde0c(u32 a, u32 b) {
+u32 DSProt_RunRomCheckB(u32 a, u32 b) {
     u32 list[32];
     Ov004Call ctx;
     u32 *lp;
@@ -90,7 +90,7 @@ u32 func_ov004_021cde0c(u32 a, u32 b) {
     u32 *tbl;
     tbl = (u32 *)DEC(ENC(data_ov004_021cf86c));
     ctx.ok = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868))];
-    list[0] = (u32)ENC(func_ov004_021cf5cc);
+    list[0] = (u32)ENC(DSProt_RomCheckB_Stub);
     list[2] = 0;
     list[1] = (u32)ENC(func_ov004_021cd658);
     ctx.fn = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868)) ^ 1];
@@ -134,7 +134,7 @@ u32 func_ov004_021cde0c(u32 a, u32 b) {
     return ctx.fn(a, b);
 }
 
-u32 func_ov004_021cdfac(u32 a, u32 b) {
+u32 DSProt_RunEmuCheckA(u32 a, u32 b) {
     u32 list[32];
     Ov004Call ctx;
     u32 *lp;
@@ -142,7 +142,7 @@ u32 func_ov004_021cdfac(u32 a, u32 b) {
     u32 *tbl;
     tbl = (u32 *)DEC(ENC(data_ov004_021cf86c));
     ctx.ok = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868))];
-    list[0] = (u32)ENC(func_ov004_021cf654);
+    list[0] = (u32)ENC(DSProt_EmuCheckA_Stub);
     list[2] = 0;
     list[1] = (u32)ENC(func_ov004_021cd4c0);
     ctx.fn = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868)) ^ 1];
@@ -186,7 +186,7 @@ u32 func_ov004_021cdfac(u32 a, u32 b) {
     return ctx.fn(a, b);
 }
 
-u32 func_ov004_021ce14c(u32 a, u32 b) {
+u32 DSProt_RunEmuCheckB(u32 a, u32 b) {
     u32 list[32];
     Ov004Call ctx;
     u32 *lp;
@@ -194,7 +194,7 @@ u32 func_ov004_021ce14c(u32 a, u32 b) {
     u32 *tbl;
     tbl = (u32 *)DEC(ENC(data_ov004_021cf86c));
     ctx.ok = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868))];
-    list[0] = (u32)ENC(func_ov004_021cf6dc);
+    list[0] = (u32)ENC(DSProt_EmuCheckB_Stub);
     list[2] = 0;
     list[1] = (u32)ENC(func_ov004_021cd548);
     ctx.fn = (u32 (*)(u32, u32))tbl[*(u32 *)DEC(ENC(data_ov004_021cf868)) ^ 1];

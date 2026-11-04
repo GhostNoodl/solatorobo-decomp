@@ -7,7 +7,7 @@ extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {
     self->fsm->st++;
     self->fsm->timer = 0;
@@ -69,7 +69,7 @@ void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
         st->timer++;
         if (st->timer > 0x3c) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();

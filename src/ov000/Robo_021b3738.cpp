@@ -59,7 +59,7 @@ static inline BOOL IsShown_021b3738(ActorMarker *p) {
     return Shown_021b3738(p) ? TRUE : FALSE;
 }
 
-void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
+void Robo021ca458_UpdateTargetMarker(Robo021ca458 *self, ActorSub44 *hit) {
     VecFx32 pos;
     VecFx32 ofs;
     MtxFx33 m;

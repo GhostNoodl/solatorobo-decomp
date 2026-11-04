@@ -18,7 +18,7 @@ extern s32 gFadeState[5];
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self);
 u8 *Lo021cb6b0_HandleInput(Lo021cb6b0 *self);
-Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area);
+Item0216607c *Lo021cb6b0_FindFloor(Lo021cb6b0 *self, Node0216607c *area);
 void Lo021cb6b0_BuildMap(Lo021cb6b0 *self, u8 *tgt);
 void func_ov000_02166180(Lo021cb6b0 *self);
 s32 FX_Div(s32 a, s32 b);
@@ -162,7 +162,7 @@ void Lo021cb6b0_UpdateMap(Lo021cb6b0 *self) {
             if (area == NULL) {
                 return;
             }
-            e = func_ov000_02165e2c(self, area);
+            e = Lo021cb6b0_FindFloor(self, area);
             if (e != w->cur) {
                 if (e == NULL || w->cur == NULL) {
                     if (!FieldState_HasCmd(gSceneCmd, 0x14)) {

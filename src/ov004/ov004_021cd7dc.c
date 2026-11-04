@@ -17,7 +17,7 @@ u8 Rc4_NextByte(Rc4 *c) {
     return c->s[(a + b) & 0xff];
 }
 
-s32 func_ov004_021cd834(Rc4 *c, u8 *src, u8 *dst, u32 len) {
+s32 Rc4_EncryptCode(Rc4 *c, u8 *src, u8 *dst, u32 len) {
     u32 i;
     u8 prev = 0;
     if (len & 3) {
@@ -50,7 +50,7 @@ s32 func_ov004_021cd834(Rc4 *c, u8 *src, u8 *dst, u32 len) {
     return 0;
 }
 
-s32 func_ov004_021cd97c(Rc4 *c, u8 *src, u8 *dst, u32 len) {
+s32 Rc4_DecryptCode(Rc4 *c, u8 *src, u8 *dst, u32 len) {
     long i;
     u32 w;
     u8 k;

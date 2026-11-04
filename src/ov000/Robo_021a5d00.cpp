@@ -62,7 +62,7 @@ static inline void Fx021a5d00(Robo021ca458 *self, ActorSub4c *info) {
         VecFx32 v;
         v = self->pos;
         v.y += self->height;
-        func_ov000_021899d8(&v, NULL, 0x8000, 1, 0x1000, 0x1000);
+        Field_SetCamTarget(&v, NULL, 0x8000, 1, 0x1000, 0x1000);
     }
     self->unk_44->unk_22_1 = 0;
 }

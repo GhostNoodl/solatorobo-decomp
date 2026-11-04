@@ -6,7 +6,7 @@ extern "C" {
 
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *gSndMgr;
-void func_0206281c(void);
+void StageVars_ClearChoice(void);
 u32 Rand_GetGlobal(void);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
@@ -22,7 +22,7 @@ BOOL Lo021cb0b8_OnDecide(UiList *self, void *msg) {
             SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             return TRUE;
         }
-        func_0206281c();
+        StageVars_ClearChoice();
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }

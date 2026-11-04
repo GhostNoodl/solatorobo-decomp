@@ -24,7 +24,7 @@ namespace m_021d2410 {
 extern "C" {
 
 
-u32 func_ov002_021e4c30(int which);
+u32 Ov002_GetRecordValue(int which);
 
 u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
 
@@ -38,7 +38,7 @@ BOOL LibraryMenu_List3cOnDecide(UiObj *self, ListRow *ev) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (ev != NULL) {
         u16 idx = ev->index;
-        s32 n = Ov002LevelTable_GetLevel(&owner->unk_4c[idx], func_ov002_021e4c30(idx));
+        s32 n = Ov002LevelTable_GetLevel(&owner->unk_4c[idx], Ov002_GetRecordValue(idx));
         if (n <= 0) {
             UiObj *p;
             SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
@@ -123,7 +123,7 @@ extern VFunc Lo021cadcc_vtbl[];
 extern VFunc Lo021cb5a8_vtbl[];
 void *ResMgr_FindArcType0(void *a, void *b);
 void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src);
-u32 func_ov002_021e4c30(int which);
+u32 Ov002_GetRecordValue(int which);
 u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
 void LoBase021ccb54_021ccbe0_CtorBase(Ov002RowList *self);
 void ListRow_Init(ListRow *self);
@@ -191,7 +191,7 @@ void LibraryMenu_Start(Task021ef99c *self) {
         }
         q->index = i;
         ListRowGauge_SetText(q, self->unk_4c[i].label);
-        val = func_ov002_021e4c30(i);
+        val = Ov002_GetRecordValue(i);
         lvl = Ov002LevelTable_GetLevel(&self->unk_4c[i], val);
         if (lvl != 3) {
             s32 lo = 0;

@@ -53,7 +53,7 @@ extern "C" {
 s32 Finder_FindPartsSorted(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
 s32 Finder_FindParts(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
 Act_021b2f08 *Obj021984c8_GetActor(Part_021b2f08 *p);
-BOOL func_ov000_02199c70(void *sub, u16 kind);
+BOOL Target_HasKind(void *sub, u16 kind);
 void *Target_Get(void *p);
 
 static inline void Init_021b2f08(FQ_021b2f08 *fq) {
@@ -90,7 +90,7 @@ static inline Act_021b2f08 *Get_021b2f08(Robo021ca458 *self, Part_021b2f08 *p) {
     return a;
 }
 
-Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 flag) {
+Part_021b2f08 *Robo021ca458_FindTargetPart(Robo021ca458 *self, u16 tgt, void *sub, u8 flag) {
     FQ_021b2f08 fq;
     u8 *s;
     Part_021b2f08 *list[0x20];
@@ -190,7 +190,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
     if (tgt != 0) {
         for (i = 0; i < n; i++) {
             a = Get_021b2f08(self, list[i]);
-            if (a != NULL && func_ov000_02199c70(sub, a->kind)) {
+            if (a != NULL && Target_HasKind(sub, a->kind)) {
                 res = list[i];
                 break;
             }

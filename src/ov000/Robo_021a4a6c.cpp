@@ -521,7 +521,7 @@ end:
         if (c == 0) {
             return;
         }
-        func_ov000_021899d8(&o, NULL, c, 1, e, 0x1000);
+        Field_SetCamTarget(&o, NULL, c, 1, e, 0x1000);
     }
 }
 

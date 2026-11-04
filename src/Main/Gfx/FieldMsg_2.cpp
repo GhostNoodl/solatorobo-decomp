@@ -39,7 +39,7 @@ BOOL Field_IsIdle_02055a4c(void) {
 }
 
 void func_02055a78(void) {
-    func_ov000_021bc458(gFieldFade);
+    FieldFade_End(gFieldFade);
 }
 
 void func_02055a90(s32 *p) {

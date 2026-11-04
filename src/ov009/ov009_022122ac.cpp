@@ -6,13 +6,13 @@ extern "C" {
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 extern void func_ov000_02184508(void *g);
-extern void func_ov000_0216912c(void *o, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
+extern void Lo021cb7ec_SetValue(void *o, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 static inline void Ov009_Notify(u16 id, u16 b, u16 c, const VecFx32 *pos) {
     FieldActor *o = gMessageQueue->unk_11c;
     void *q;
     if (o != NULL && (q = o->unk_60) != NULL) {
-        func_ov000_0216912c(q, id, 0, b, c, pos);
+        Lo021cb7ec_SetValue(q, id, 0, b, c, pos);
     }
 }
 

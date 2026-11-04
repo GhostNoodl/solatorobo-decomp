@@ -70,7 +70,7 @@ extern void Field_ShakeCamera(u8 a, u8 b);
 extern Ov003FvPlayer *ActorMgr_FindPlayer(void);
 extern void FieldMgr_SetIdVec(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 extern void SceneCmd_Push27(FieldState *g, s32 a, s32 b, s32 c);
 extern void SceneCmd_Push09(FieldId *c, s32 a);
@@ -162,7 +162,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
                     FieldMgr_SetIdVec(gFieldMgr, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 r = area->col44.c[0];
                 g = area->col44.c[1];
@@ -264,7 +264,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
                     FieldMgr_SetIdVec(gFieldMgr, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 r = area->col.c[0];
                 g = area->col.c[1];

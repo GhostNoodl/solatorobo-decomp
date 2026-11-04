@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_02160fc8(Lo021cacd8 *self) {
+void Lo021cacd8_Reset(Lo021cacd8 *self) {
     self->unk_84 = NULL;
     self->count = 1;
     self->max = 10;

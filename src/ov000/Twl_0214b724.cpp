@@ -28,7 +28,7 @@ Data02034f5c *ResList_FindType5(void *a, char *name);
 void Vram_FreeRes(void *p);
 void ResMgr_ReleaseArchive(void *a, char *name, s32 b);
 void Heap_FreeArray(void *p);
-void func_ov000_0214b910(TwlLoader *self);
+void Loader_StepLoadTex(TwlLoader *self);
 
 extern void *data_ov000_021c9838;
 
@@ -99,7 +99,7 @@ void TwlLoader_Load(TwlLoader *self) {
             }
             break;
         case 1:
-            func_ov000_0214b910(self);
+            Loader_StepLoadTex(self);
             break;
         }
     }

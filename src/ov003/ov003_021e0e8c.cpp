@@ -121,7 +121,7 @@ extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern Ov003Table34 data_ov003_021f62f0[];
 extern Ov003SpawnTable *data_ov003_021f5fac[];
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, Ov003Table34 *entry, s32 a, s32 b);
-extern void func_ov000_02193e5c(ActorRes *res, s32 id);
+extern void ActorRes_SetFromTbl(ActorRes *res, s32 id);
 extern void Ov003Res_SetNames(ActorRes *res, u16 id);
 
 static inline BOOL Ov003Event_SetMode(ActorEx *self, s16 mode) {
@@ -290,7 +290,7 @@ void Ov003ActVt_021f8638_Init(Ov003Spawner *self) {
         u16 id = e->ids[0];
         u16 kind = (u16)(id >> 12);
         if (kind == 4) {
-            func_ov000_02193e5c(&self->res, id);
+            ActorRes_SetFromTbl(&self->res, id);
         } else if (kind == 5) {
             Ov003Res_SetNames(&self->res, id);
         }
@@ -580,7 +580,7 @@ extern void *gGroup;
 extern const Ov003SpotDef data_ov003_021f6428[];
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, const void *c, const void *d);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -590,7 +590,7 @@ void Ov003ActVt_021f8638_State21(ActorEx *self) {
     self->unk_1c = 0;
     History_SetState(self->fsm, 1, 0);
     Shared_SetEventActor(self->kind, self->id);
-    func_020627dc(4);
+    StageVars_SetEventScript(4);
     gSceneCmd->stageFlags = 1;
 }
 
@@ -3124,7 +3124,7 @@ extern void *Model0218fe1c_SetAnimFrame(Model0218fe1c *model, s32 a);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
 extern void Actor_SendMsg(Actor *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void func_020627ec(s32 a);
 extern s32 Rand_UpTo(s32 max);
 extern void Group_UpdateActor(void *mgr, s32 a, Actor *obj);
@@ -3186,7 +3186,7 @@ void Ov003ActVt_021f8768_State06(ActorEx *self) {
         }
         self->targetObj->target = 0xffff;
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         func_020627ec(self->unk_93_1);
         gSceneCmd->stageFlags = 1;
         self->fsm->st++;
@@ -3259,7 +3259,7 @@ void Ov003ActVt_021f86d0_State20(ActorEx *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         func_020627ec(1);
         gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
@@ -3302,7 +3302,7 @@ void Ov003ActVt_021f86d0_State21(ActorEx *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         func_020627ec(100);
         gSceneCmd->stageFlags = 1;
         Group_UpdateActor(gGroup, 0, self);
@@ -3623,7 +3623,7 @@ void Ov003ActVt_021f8f20_State0e(Ov003ActExPath *self) {
 }
 
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
-extern s32 func_ov000_0219a7bc(Actor *self, s32 a, VecFx32 *pos, s32 r, s32 b, Actor **list);
+extern s32 Finder_CollectInRadius(Actor *self, s32 a, VecFx32 *pos, s32 r, s32 b, Actor **list);
 
 static inline BOOL Ov003MapId_Equal(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
@@ -3649,7 +3649,7 @@ void Ov003ActVt_021f8e88_State0a(ActorEx *self) {
             v = self->pos;
             v.y -= 0x2800;
             found = FALSE;
-            n = func_ov000_0219a7bc(self, 0x10, &v, 0x8000, 0x5000, list);
+            n = Finder_CollectInRadius(self, 0x10, &v, 0x8000, 0x5000, list);
             if (n != 0) {
                 for (i = 0; i < n; i++) {
                     if (list[i] != NULL) {

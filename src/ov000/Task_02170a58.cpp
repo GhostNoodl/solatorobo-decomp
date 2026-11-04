@@ -21,7 +21,7 @@ extern u8 Lo021cb894_vtbl[];
 void *Heap_Alloc(u32 size);
 void Lo0216b474_Init(Lo0216b474 *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
-void func_ov000_021bce90(void);
+void Bss021ccd74_LoadModels(void);
 BOOL MsgRes_BindGlobal(void);
 BOOL MissionCard_Update(void *p);
 BOOL SceneCondCard_Update(void *p);
@@ -103,7 +103,7 @@ void ListBuffer021cb940_Update(ListBuffer021cb940 *self) {
             LoTicker_Init(tk);
         }
         self->ticker = tk;
-        func_ov000_021bce90();
+        Bss021ccd74_LoadModels();
         self->state = 2;
     }
     case 2:

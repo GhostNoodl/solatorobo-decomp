@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_0218af9c(GroupNode *self);
+void GroupNode_UpdateSpawned(GroupNode *self);
 
 extern Group *gGroup;
 Actor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32 *pos, const Rot16 *rot, u16 id);
@@ -19,20 +19,20 @@ static inline BOOL GroupNode_InField(GroupNode *self) {
     return r;
 }
 
-void func_ov000_0218ac98(GroupNode *self) {
+void GroupNode_Update(GroupNode *self) {
     switch (self->state) {
     case 1:
         if (!GroupNode_InField(self)) {
             return;
         }
-        func_ov000_0218adf0(self);
+        GroupNode_SpawnInView(self);
         if (self->count != 0) {
             self->state = 2;
         }
         break;
     case 2: {
         BOOL done;
-        func_ov000_0218af9c(self);
+        GroupNode_UpdateSpawned(self);
         if (self->count != 0) {
             return;
         }
@@ -65,7 +65,7 @@ void func_ov000_0218ac98(GroupNode *self) {
 }
 
 
-void func_ov000_0218adf0(GroupNode *self) {
+void GroupNode_SpawnInView(GroupNode *self) {
     GroupView seg;
     VecFx32 pos;
     u8 i;

@@ -5,12 +5,12 @@ extern "C" {
 BOOL Ov015Fish_HitTest(Ov015Fish *self, void *a);
 void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
-void func_ov015_0221234c(Ov015Obj292c *self);
-void func_ov015_022123c4(Ov015Obj292c *self);
+void Ov015Obj292c_ShowMarker(Ov015Obj292c *self);
+void Ov015Obj292c_HideMarker(Ov015Obj292c *self);
 Ov015Fish *Ov015Obj30_FindHookedFish(Ov015Obj30 *self);
 BOOL Ov015Fish_HitTestWide(Ov015Fish *self, void *a);
 
-BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
+BOOL Ov015Obj30_WaitHit(Ov015Obj30 *self) {
     BOOL r = FALSE;
     Ov015Fish *found;
     Ov015Node *n;
@@ -55,9 +55,9 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         t.y += d;
         if (t.y < 0) t.y = 0;
         self->unk_10->unk_24 = t;
-        func_ov015_0221234c(self->unk_10);
+        Ov015Obj292c_ShowMarker(self->unk_10);
     } else {
-        func_ov015_022123c4(self->unk_10);
+        Ov015Obj292c_HideMarker(self->unk_10);
     }
     self->ship->unk_d3e = 0x1000;
     for (n = self->fishList->head; n != NULL; n = n->next) {

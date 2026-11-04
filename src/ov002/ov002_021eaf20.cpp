@@ -6,9 +6,9 @@ extern char data_ov002_021f0d00[];
 
 extern char data_ov002_021f0d0f[];
 
-void func_ov002_021eb298(Ov002StageFile *self);
+void Ov002StageFile_ParseLinks(Ov002StageFile *self);
 
-void func_ov002_021ebcf8(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out);
+void Ov002StageFile_LoadObj075cList(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out);
 
 void Ov002StageFile_BuildCameras(Ov002StageFile *self);
 
@@ -16,7 +16,7 @@ void Ov002StageFile_BuildModels(Ov002StageFile *self);
 
 void Ov002StageFile_BuildEnv(Ov002StageFile *self);
 
-void func_ov002_021eb870(Ov002StageFile *self);
+void Ov002StageFile_LoadObj070cList(Ov002StageFile *self);
 
 void Ov002_MakeSlideName(void *dst, u32 size, void *src, int mode, u8 idx);
 
@@ -57,10 +57,10 @@ void Ov002StageFile_BuildScene(Ov002StageFile *self) {
     char bufC[0x20];
     s32 end;
     Hdr021eaf20 hdr;
-    func_ov002_021eb298(self);
-    func_ov002_021ebcf8(self, 2, self->unk_1c, self->unk_44);
-    func_ov002_021ebcf8(self, 3, self->unk_20, self->unk_48);
-    func_ov002_021ebcf8(self, 3, self->unk_24, self->unk_4c);
+    Ov002StageFile_ParseLinks(self);
+    Ov002StageFile_LoadObj075cList(self, 2, self->unk_1c, self->unk_44);
+    Ov002StageFile_LoadObj075cList(self, 3, self->unk_20, self->unk_48);
+    Ov002StageFile_LoadObj075cList(self, 3, self->unk_24, self->unk_4c);
     Ov002StageFile_BuildCameras(self);
     Ov002StageFile_BuildModels(self);
     d = self->unk_28;
@@ -74,7 +74,7 @@ void Ov002StageFile_BuildScene(Ov002StageFile *self) {
         src += stride;
     }
     Ov002StageFile_BuildEnv(self);
-    func_ov002_021eb870(self);
+    Ov002StageFile_LoadObj070cList(self);
     Ov002_MakeSlideName(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
     Ov002_MakeSlideFileName(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
     Ov002Obj021f06bc_New(bufA, bufB);
@@ -214,7 +214,7 @@ static inline void ov002_initEnt(Ov002ObjLink *e) {
     e->res2 = NULL;
 }
 
-void func_ov002_021eb298(Ov002StageFile *self) {
+void Ov002StageFile_ParseLinks(Ov002StageFile *self) {
     Rec021eb298 rec;
     s32 hdr[2];
     u8 *d;

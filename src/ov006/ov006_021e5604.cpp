@@ -30,8 +30,8 @@ extern ov006_Net021e5604 *gWhMgr;
 
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e5604 *net);
 void WH_CalcBufferSizes_02044a0c(ov006_NetParam021e5604 *param);
-BOOL func_020464e0(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
-void func_02045094(ov006_Net021e5604 *net);
+BOOL Wh_ChildConnect(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
+void Wh_Finalize(ov006_Net021e5604 *net);
 int Wh_GetError(ov006_Net021e5604 *net);
 void ov006_Menu_VBlankB(void);
 
@@ -91,10 +91,10 @@ void ov006_Menu_State05(ov006_Menu *self) {
         return;
     }
     case 11:
-        if (func_020464e0(gWhMgr, 4, &self->unk34)) {
+        if (Wh_ChildConnect(gWhMgr, 4, &self->unk34)) {
             ov006_Menu_Advance(self);
         } else {
-            func_02045094(gWhMgr);
+            Wh_Finalize(gWhMgr);
             self->stateTime = 10;
             return;
         }

@@ -160,7 +160,7 @@ extern char data_ov014_02217a7e[];
 extern void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 extern void Model0218fe1c_ClearLoop(void *p);
 extern void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
-extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 b);
+extern void Ov014Act_02209280_SpawnChild481e(Ov014Act_02209280 *self, s16 a, s32 b);
 
 void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
     ActorSub40 *st = self->fsm;
@@ -225,7 +225,7 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         g->cam.base.shakeTime = 5;
         g->cam.base.shakeLen = 7;
         g->cam.base.shakeCur = 7;
-        func_ov014_02209fa0(self, (s16)self->step->a, self->step->op);
+        Ov014Act_02209280_SpawnChild481e(self, (s16)self->step->a, self->step->op);
         self->unk_f8--;
         self->unk_f4 ^= 1;
         self->fsm->st++;

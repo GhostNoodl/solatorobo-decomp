@@ -11,13 +11,13 @@ typedef struct {
 } Ov003EvPlayer;
 
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 void Ov003Actor_State20(Ov003Actor *self) {
     if (self->unk_b0->unk_0a_5) {
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
     }
     History_SetState(self->fsm, 1, 0);

@@ -33,7 +33,7 @@ void Ov003ActVt_021f8188_Start(Ov003Prop *self) {
 
 extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov003Prop_State21(Ov003Prop *self) {
     ActorSub40 *w = self->work;
@@ -50,7 +50,7 @@ void Ov003Prop_State21(Ov003Prop *self) {
         w->timer++;
         if (w->timer > 100) {
             Shared_SetEventActor(self->unk_0e, self->unk_0c);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             self->work->timer = 0;
             self->work->st++;

@@ -15,7 +15,7 @@ typedef struct {
 extern "C" {
 
 extern Robo021b06dcEntry Robo021ca458_Mode5StateTable[];
-void func_ov000_021697dc(Lo021cb798 *p, u16 a, u16 b);
+void Lo021cb798_SetValue(Lo021cb798 *p, u16 a, u16 b);
 void Lo0216b474_Ask(Lo0216b474 *p, s32 want, BOOL part22);
 
 static inline BOOL PlayerIdle021b06dc(void) {
@@ -36,7 +36,7 @@ static inline void SetGauge021b06dc(u16 a, u16 b) {
     // gMessageQueue is the field's MessageQueue021cb980 (Main/Sys/Field.h's view of it is FieldPlayer)
     ListBuffer021cb940 *o = (ListBuffer021cb940 *)gMessageQueue->unk_11c;
     if (o != NULL && o->unk_58 != NULL) {
-        func_ov000_021697dc(o->unk_58, a, b);
+        Lo021cb798_SetValue(o->unk_58, a, b);
         o->unk_58->unk_0c |= 0x80;
     }
 }

@@ -270,7 +270,7 @@ typedef struct Ov015PickTable {
 extern Ov015PickTable *Param_GetFishingSpotInfo(u16 id);
 extern s32 Rand_UpTo(s32 max);
 
-u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
+u32 Ov015Shared_BuildFishList(Ov015Shared *self, u16 *out, u32 n) {
     u32 cnt = 0;
     MIi_CpuClearFast(0xffff, out, n * 2);
     switch ((u32)self->unk_04) {

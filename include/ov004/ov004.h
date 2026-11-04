@@ -19,7 +19,7 @@ public:
     virtual s32 v20(...);
     virtual s32 v24(...);
 
-    // The 0xac ov000 object built by Actor_Ctor (allocated in func_ov004_021cce88).
+    // The 0xac ov000 object built by Actor_Ctor (allocated in Ov004_Create).
     u8 unk_04[0x12];
     u8 unk_16;
     u8 unk_17[0xb];

@@ -41,7 +41,7 @@ extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
     VecFx32 p;
@@ -110,7 +110,7 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
         case 2:
             if (Model0218fe1c_IsAnimDone(self->model)) {
                 Shared_SetEventActor(self->kind, self->id);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 Group_UpdateActor(gGroup, 0, self);
                 self->vfunc_08();
@@ -153,7 +153,7 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
             if (Model0218fe1c_IsAnimDone(self->model)) {
                 Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
                 Shared_SetEventActor(self->kind, self->id);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 Group_UpdateActor(gGroup, 0, self);
                 self->vfunc_08();

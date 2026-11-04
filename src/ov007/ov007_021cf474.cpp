@@ -64,7 +64,7 @@ static inline void Ov007_SetToon(Gfx3DState *st, const u16 *tbl) {
 
 extern "C" {
 
-void func_ov007_021cf474(Ov007Scene *s) {
+void Ov007Title_DrawScene(Ov007Scene *s) {
     int snd;
     u8 alpha;
     s32 i;

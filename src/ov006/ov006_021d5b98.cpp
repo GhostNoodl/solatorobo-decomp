@@ -115,7 +115,7 @@ extern ov006_Unk02097e48 *gSndQueue;
 
 void LangData_LocalizePath(char *dst, const char *src);
 void *ResSet_Init(void *p);
-void func_ov000_02193e5c(void *p, u16 id);
+void ActorRes_SetFromTbl(void *p, u16 id);
 void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
 
@@ -145,7 +145,7 @@ BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
             p = ResSet_Init(p);
         }
         self->unk70[i] = p;
-        func_ov000_02193e5c(p, data_ov006_021eb7a8[i]);
+        ActorRes_SetFromTbl(p, data_ov006_021eb7a8[i]);
     }
     {
         ov006_Info021d6140 *info = (ov006_Info021d6140 *)gOv006SlotManager->info;

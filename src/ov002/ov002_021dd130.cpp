@@ -182,7 +182,7 @@ extern VFunc Ov000Vt_021cb1b0_vtbl[];
 
 extern VFunc Ov000Vt_021cb0b8_vtbl[];
 
-BOOL func_ov002_021e046c(UiList *self, UiListItem *item);
+BOOL Obj021eff10_MsgListOnDecide(UiList *self, UiListItem *item);
 
 void *Obj021eff10_NewMsgList(Obj021eff10 *self, char *text, u16 msgId) {
     Lo021cb0b8 *p;
@@ -207,7 +207,7 @@ void *Obj021eff10_NewMsgList(Obj021eff10 *self, char *text, u16 msgId) {
     p->msgId = msgId;
     self->unk_0c->text = text;
     self->unk_0c->key = 1;
-    self->unk_0c->onDecide = func_ov002_021e046c;
+    self->unk_0c->onDecide = Obj021eff10_MsgListOnDecide;
     self->unk_0c->owner = (u8 *)self + 0x1c;
     self->unk_0c->vfunc_08();
     self->unk_0c->posZ = -0x1666;

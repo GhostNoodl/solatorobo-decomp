@@ -1,12 +1,12 @@
 #include "Main/Net/Wh.h"
 
-// Built at O2, like WhScan.cpp: func_020459cc only gets its register order at O2 (round raA), and every
+// Built at O2, like WhScan.cpp: Wh_ParentConnect only gets its register order at O2 (round raA), and every
 // other function here matches at O2 and at O4.
 #pragma optimization_level 2
 
 extern "C" {
 
-BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
+BOOL Wh_ParentConnect(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     wh->recvSize = wh->cfg.parentRecvSize;
     wh->sendSize = wh->cfg.parentSendSize;
     wh->connectMode = mode;
@@ -26,7 +26,7 @@ BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     case 3: {
         int result;
         *WH_SysState(gWhMgr) = 3;
-        result = WM_SetParentParameter((void (*)(void *))func_02045ab4, &wh->parentParam);
+        result = WM_SetParentParameter((void (*)(void *))Wh_OnSetParentParam, &wh->parentParam);
         if (result != 2) {
             WH_SetError(result);
             *WH_SysState(gWhMgr) = 8;
@@ -43,7 +43,7 @@ static inline BOOL WH_StateInStartParent(WhMgr *wh) {
     if (wh->sysState == 4 || wh->sysState == 5) {
         return TRUE;
     }
-    result = WM_StartParent((void (*)(void *))func_02045b68);
+    result = WM_StartParent((void (*)(void *))Wh_OnStartParent);
     if (result != 2) {
         WH_SetError(result);
         return FALSE;
@@ -53,7 +53,7 @@ static inline BOOL WH_StateInStartParent(WhMgr *wh) {
     return TRUE;
 }
 
-void func_02045ab4(WhCbArg *arg) {
+void Wh_OnSetParentParam(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
         WH_ChangeSysState(8);
@@ -79,7 +79,7 @@ static inline BOOL WH_StateInStartParentMP(void) {
     return TRUE;
 }
 
-void func_02045b68(WhCbArg *arg) {
+void Wh_OnStartParent(WhCbArg *arg) {
     u16 bit = 1 << arg->aid;
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
@@ -114,7 +114,7 @@ void func_02045b68(WhCbArg *arg) {
     }
 }
 
-void func_02045d58(WhCbArg *arg) {
+void Wh_OnEndParent(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
         return;
@@ -122,7 +122,7 @@ void func_02045d58(WhCbArg *arg) {
     WH_ChangeSysState(1);
 }
 
-void func_02045d98(void *p) {
+void Wh_OnStartParentMp(void *p) {
     WhCbArg *arg = (WhCbArg *)p;
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
@@ -159,13 +159,13 @@ BOOL Wh_SetEntry(WhMgr *wh, BOOL enabled) {
     return WH_CheckResult(WM_SetEntry(NULL, enabled));
 }
 
-void func_02045ef8(WhCbArg *arg) {
+void Wh_OnEndParentMp(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
         WH_Reset(gWhMgr, NULL);
         return;
     }
-    if (!WH_CheckResult(WM_EndParent((void (*)(void *))func_02045d58))) {
+    if (!WH_CheckResult(WM_EndParent((void (*)(void *))Wh_OnEndParent))) {
         WH_Reset(gWhMgr, NULL);
     }
 }

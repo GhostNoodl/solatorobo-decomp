@@ -19,7 +19,7 @@ extern void *gSndMgr;
 void *StageId_Strip(s32 a);
 void *MsgRes_GetString(void *a, void *b);
 void Lo021cb0b8_Setup(Obj0215e5f8 *self);
-void func_0206281c(void);
+void StageVars_ClearChoice(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void Ov000Vt_021cafc0_Setup(Obj0215e5f8 *self) {
@@ -38,7 +38,7 @@ BOOL Ov000Vt_021cafc0_OnDecide(Obj0215e5f8 *self, Msg0215e634 *msg) {
         return self->unk_84(self, msg);
     }
     if (msg == NULL) {
-        func_0206281c();
+        StageVars_ClearChoice();
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }

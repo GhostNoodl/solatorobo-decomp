@@ -17,7 +17,7 @@ typedef struct Rec021eb870 {
     u32 flags;
 } Rec021eb870;
 
-void func_ov002_021eb870(Ov002StageFile *self) {
+void Ov002StageFile_LoadObj070cList(Ov002StageFile *self) {
     u8 *p = self->unk_30;
     s32 hdr[2];
     Rec021eb870 rec;

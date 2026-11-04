@@ -10,7 +10,7 @@ void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void Ov015FishInfo_Dtor(Ov015FishInfo *p);
 BOOL Ov015Obj292c_Setup(Ov015Obj292c *self);
-void func_ov015_022123c4(Ov015Obj292c *self);
+void Ov015Obj292c_HideMarker(Ov015Obj292c *self);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 BOOL Ov015Fish_Update(Ov015Fish *self, s32 a);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
@@ -24,9 +24,9 @@ int Ov015Obj292c_IsLoaded(Ov015Obj292c *self);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
 void Ov015Obj290_Reset(Ov015Obj290 *self);
-void func_ov015_021ff9e8(Ov015Obj30 *self);
-BOOL func_ov015_021ffb90(Ov015Obj30 *self);
-BOOL func_ov015_021ffdd4(Ov015Obj30 *self);
+void Ov015Obj30_Prepare(Ov015Obj30 *self);
+BOOL Ov015Obj30_WaitThrow(Ov015Obj30 *self);
+BOOL Ov015Obj30_WaitHit(Ov015Obj30 *self);
 Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self);
 s32 func_ov015_02209fb8(s32 x);
 void Ov015List_Remove(Ov015List *self, Ov015Fish *fish);
@@ -73,15 +73,15 @@ BOOL Ov015Obj30_Run(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov015List
         self->step = 2;
     }
     case 2:
-        func_ov015_021ff9e8(self);
+        Ov015Obj30_Prepare(self);
         self->step = 3;
     case 3:
-        if (!func_ov015_021ffb90(self)) {
+        if (!Ov015Obj30_WaitThrow(self)) {
             break;
         }
         self->step = 4;
     case 4:
-        if (!func_ov015_021ffdd4(self)) {
+        if (!Ov015Obj30_WaitHit(self)) {
             break;
         }
         if (self->fish != NULL) {
@@ -111,7 +111,7 @@ BOOL Ov015Obj30_Run(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov015List
                 q->pos.z = Ov015_FxMul64(t, -0x73000) - 0x37000;
             }
             data_ov015_0221332c.unk_00 = func_ov015_02209fb8((self->fish)->pos.z);
-            func_ov015_02211334(gOv015Shared, (self->fish)->info.id);
+            Ov015Shared_SetCatch(gOv015Shared, (self->fish)->info.id);
             n = self->fishList->head;
             while (n != NULL) {
                 obj = n->fish;
@@ -218,7 +218,7 @@ void *Ov015Shadow_Dtor(Ov015Shadow *self) {
     return self;
 }
 
-void func_ov015_021ff9e8(Ov015Obj30 *self) {
+void Ov015Obj30_Prepare(Ov015Obj30 *self) {
     Ov015Node *n;
     s32 cnt;
     s32 i;
@@ -238,7 +238,7 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         p->scale.z = v;
     }
     self->unk_10->unk_30 = self->info->unk_08;
-    func_ov015_022123c4(self->unk_10);
+    Ov015Obj292c_HideMarker(self->unk_10);
     self->unk_14->animSpeed = self->info->unk_0c;
     self->unk_14->vfunc_14();
     self->ship->unk_d3c = 2;
@@ -265,11 +265,11 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
 
 
 BOOL Ov015Fish_HitTest(Ov015Fish *self, void *a);
-void func_ov015_0221234c(Ov015Obj292c *self);
+void Ov015Obj292c_ShowMarker(Ov015Obj292c *self);
 void func_ov015_02212250(Ov015Obj292c *self, s32 a);
 void Ov015Ship_Update(Ov015Ship *p);
 
-BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
+BOOL Ov015Obj30_WaitThrow(Ov015Obj30 *self) {
     BOOL r = FALSE;
     Ov015Fish *found;
     Ov015Node *n;
@@ -304,9 +304,9 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         t.y += d;
         if (t.y < 0) t.y = 0;
         self->unk_10->unk_24 = t;
-        func_ov015_0221234c(self->unk_10);
+        Ov015Obj292c_ShowMarker(self->unk_10);
     } else {
-        func_ov015_022123c4(self->unk_10);
+        Ov015Obj292c_HideMarker(self->unk_10);
     }
     func_ov015_02212250(self->unk_10, 0);
     for (n = self->fishList->head; n != NULL; n = n->next) {

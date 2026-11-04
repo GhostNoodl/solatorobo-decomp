@@ -12,7 +12,7 @@ extern u8 Menu021ca94c_vtbl[];
 extern u8 TextWin_vtbl[];
 extern void *gSndMgr;
 
-void func_0206281c(void);
+void StageVars_ClearChoice(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 VObj *Lo021caac8_Dtor(VObj *self) {
@@ -49,9 +49,9 @@ VObj *Menu021ca94c_Dtor(VObj *self) {
 
 // A UiItemFn (decide callback of the list UiList_HandleInput opens): item id 0 sets
 // data_02fe1534.unk_7c, id 1 clears it, and no item (cancel) only plays the sound.
-BOOL func_ov000_021521ec(UiList *self, UiListItem *item) {
+BOOL UiList_ChoiceOnDecide(UiList *self, UiListItem *item) {
     if (item == NULL) {
-        func_0206281c();
+        StageVars_ClearChoice();
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }

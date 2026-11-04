@@ -10,7 +10,7 @@ extern u8 data_ov000_021c9b2e[];
 void Obj0215fdfc_SetRange(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);
 
 
-void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p) {
+void Lo021cb840_SetValue(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p) {
     self->unk_9c = p->x;
     self->unk_a0 = p->y;
     self->unk_a4 = p->z;

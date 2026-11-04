@@ -11,7 +11,7 @@ Ov007Rs_SetPolyIdCallback kind:function(arm,size=0x18) addr:0x021ce020
 Ov007Title_State5 kind:function(arm,size=0xf48) addr:0x021ce038
 Ov007Title_State4 kind:function(arm,size=0x258) addr:0x021cef80
 Ov007Title_Draw kind:function(arm,size=0x29c) addr:0x021cf1d8
-func_ov007_021cf474 kind:function(arm,size=0x5c8) addr:0x021cf474
+Ov007Title_DrawScene kind:function(arm,size=0x5c8) addr:0x021cf474
 data_ov007_021cfa3c kind:data(any) addr:0x021cfa3c
 data_ov007_021cfa50 kind:data(any) addr:0x021cfa50
 data_ov007_021cfa54 kind:data(any) addr:0x021cfa54

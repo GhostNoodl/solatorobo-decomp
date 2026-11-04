@@ -35,7 +35,7 @@ void Ov009ActVt_02216954_Start(Ov003Actor *self) {
 
 extern char data_ov009_02216ab0[];
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
     ActorSub40 *st = self->fsm;
     ActorSub44 *s44;
@@ -70,7 +70,7 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
         st->timer++;
         if (st->timer > 0x2d) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
         }

@@ -58,7 +58,7 @@ typedef struct {
 
 extern "C" {
 
-u8 *func_ov000_02165e2c(Obj02165a20 *self, Area02165a20 *area);
+u8 *Lo021cb6b0_FindFloor(Obj02165a20 *self, Area02165a20 *area);
 
 static inline Area02165a20 *GetArea02165a20(Sub02165a20 *w, u8 i) {
     return i >= w->count ? NULL : &w->areas[i];
@@ -127,7 +127,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
         }
         return;
     }
-    p->key = func_ov000_02165e2c(self, dst)[0x14];
+    p->key = Lo021cb6b0_FindFloor(self, dst)[0x14];
     dst->dist = 0;
     p->queue[p->tail++] = dst;
     while (p->head != p->tail) {

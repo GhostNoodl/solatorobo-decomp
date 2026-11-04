@@ -459,7 +459,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
 };
 SIZE_ASSERT(ObjBase021cac0c_021cb6f0, 0x9c);
 
-// Vtable Lo021cacd8_vtbl (0xa0 bytes, init func_ov000_02160fc8): a count selector; methods in
+// Vtable Lo021cacd8_vtbl (0xa0 bytes, init Lo021cacd8_Reset): a count selector; methods in
 // Lo_02160ff8.cpp .. Lo_0216150c.cpp, Lo_02161798.cpp (draws count / max), Lo_02161994.cpp (the arrows).
 // Slot 0x54 (Lo021cacd8_PostUpdate) steps count by 1 (up/down) or 10 (left/right) within 1..max and
 // calls onDone with TRUE for A and FALSE for B.
@@ -471,7 +471,7 @@ struct Lo021cacd8 : public UiObj {
     u16 max;        // 0x8a (10 after the init)
     s32 price;      // 0x8c per unit (the shop sells count of an item for price * count)
     Lo021cacd8Fn onDone; // 0x90
-    s32 unk_94;     // arrow timer (func_ov000_02161994)
+    s32 unk_94;     // arrow timer (Lo021cacd8_DrawArrows)
     s32 upAlpha;    // 0x98 fades in while count < max
     s32 downAlpha;  // 0x9c fades in while count > 1
 };
@@ -568,7 +568,7 @@ struct Lo021cb744 : public ObjBase021cac0c_021cb6f0 {
     u8 unk_a5[0x1];
     u16 unk_a6;
     s32 unk_a8;
-    u8 unk_ac; // func_ov000_0216a438
+    u8 unk_ac; // Lo021cb744_SetValue
 };
 
 // Vtable Lo021cb798_vtbl; methods in Lo_021699f0.cpp, Lo_02169c14.cpp, Lo_02169d40.cpp.

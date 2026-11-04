@@ -28,7 +28,7 @@ static inline BOOL IsMode4(void) {
     return r;
 }
 
-void func_ov000_021bc3ec(Timer021bc3ec *t, s32 v, s32 n) {
+void FieldFade_Start(Timer021bc3ec *t, s32 v, s32 n) {
     if (n == 0) {
         n = 1;
     }

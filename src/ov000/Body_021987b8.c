@@ -77,7 +77,7 @@ void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void HitSphere_Unlink_0203f364(Body *self);
 void HitSphere_Link(Body *self);
 s32 HitSphere_Collide(Body *self);
-void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel);
+void Body_CheckGround(Body *self, VecFx32 *pos, const VecFx32 *vel);
 
 static inline void VEC_Copy(VecFx32 *d, const VecFx32 *s) {
     d->x = s->x;
@@ -158,7 +158,7 @@ void Body_Update(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *rot) {
         VEC_Add(&v, &push, &v);
         self->unk_54 = self->unk_50;
     }
-    func_ov000_02198ad8(self, &v, &off);
+    Body_CheckGround(self, &v, &off);
     if (actor != NULL) {
         VEC_Copy(&actor->pos, &v);
     } else {

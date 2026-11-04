@@ -52,11 +52,11 @@ void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
-void func_ov000_02188ed0(SceneCmd *self);
+void SceneCmd_ApplyPendingCam(SceneCmd *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void MessageQueue021cb980_Push05(void *p);
 BOOL SceneStage_LoadGroup(SceneStage *self, u16 id);
-void func_02062424(FieldId *id);
+void StageVars_SetEnterField(FieldId *id);
 void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
@@ -207,7 +207,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
     if (busy) {
         return 1;
     }
-    func_ov000_02188ed0(self);
+    SceneCmd_ApplyPendingCam(self);
     switch (self->state) {
     case 2:
         self->state = 3;
@@ -290,7 +290,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
         if (!SceneStage_LoadGroup(&self->stage, 0xffff)) {
             break;
         }
-        func_02062424(&self->unk_cd);
+        StageVars_SetEnterField(&self->unk_cd);
         SndQueue_ResetNodes_0204aa10(gSndQueue.queue);
         gSndQueue.queue->flag2 = 0;
         self->unk_d0 = self->unk_ca;

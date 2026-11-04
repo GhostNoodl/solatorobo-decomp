@@ -119,8 +119,8 @@ Ov010Obj022020c8_Launch2 kind:function(arm,size=0xa0) addr:0x02202560
 Ov010Obj022020c8_SetHitTest kind:function(arm,size=0x8) addr:0x02202600
 Ov010ActVt_0220fe6c_Start kind:function(arm,size=0x148) addr:0x02202608
 Ov010ActVt_0220fe6c_Update kind:function(arm,size=0xe8) addr:0x02202750
-func_ov010_02202838 kind:function(arm,size=0xb4) addr:0x02202838
-func_ov010_022028ec kind:function(arm,size=0xb4) addr:0x022028ec
+Ov010ActVt_0220fe6c_Mode00 kind:function(arm,size=0xb4) addr:0x02202838
+Ov010ActVt_0220fe6c_Mode01 kind:function(arm,size=0xb4) addr:0x022028ec
 Ov010Obj022020c8_State20 kind:function(arm,size=0x4) addr:0x022029a0
 Ov010Obj022020c8_State21 kind:function(arm,size=0x2f8) addr:0x022029a4
 Ov010Obj022020c8_State22 kind:function(arm,size=0x100) addr:0x02202c9c
@@ -157,7 +157,7 @@ Ov010Obj02210154_StateShoot kind:function(arm,size=0x310) addr:0x02205c30
 Ov010Obj02210154_StateKnockBack kind:function(arm,size=0x4cc) addr:0x02205f40
 Ov010Obj02210154_StateDie kind:function(arm,size=0x34c) addr:0x0220640c
 Ov010Obj02210154_StateMove kind:function(arm,size=0x2c) addr:0x02206758
-func_ov010_02206784 kind:function(arm,size=0x1f0) addr:0x02206784
+Ov010Obj02210154_MoveToRingPoint kind:function(arm,size=0x1f0) addr:0x02206784
 func_ov010_02206974 kind:function(arm,size=0x5e0) addr:0x02206974
 Ov010Obj02210154_SetFlagsF1F2 kind:function(arm,size=0x10) addr:0x02206f54
 Ov010Obj02210154_State28 kind:function(arm,size=0x6c) addr:0x02206f64
@@ -254,7 +254,7 @@ Ov010Obj0220a6b0_StateFly kind:function(arm,size=0xec) addr:0x0220c2a4
 Ov010Obj0220a6b0_StateDie kind:function(arm,size=0x10c) addr:0x0220c390
 Ov010Obj0220a6b0_ClearFields kind:function(arm,size=0x104) addr:0x0220c49c
 func_ov010_0220c5a0 kind:function(arm,size=0x1b8) addr:0x0220c5a0
-func_ov010_0220c758 kind:function(arm,size=0x448) addr:0x0220c758
+Ov010ActVt_02210378_StateA02_03 kind:function(arm,size=0x448) addr:0x0220c758
 Ov010ActVt_02210378_State01 kind:function(arm,size=0x624) addr:0x0220cba0
 Ov010ActVt_02210378_State02 kind:function(arm,size=0x214) addr:0x0220d1c4
 Ov010ActVt_02210378_State03 kind:function(arm,size=0x3a4) addr:0x0220d3d8
@@ -346,7 +346,7 @@ data_ov010_0220efdc kind:data(any) addr:0x0220efdc
 data_ov010_0220efe8 kind:data(any) addr:0x0220efe8 weak
 data_ov010_0220eff4 kind:data(byte[0xc]) addr:0x0220eff4
 data_ov010_0220f000 kind:data(any) addr:0x0220f000
-data_ov010_0220f00c kind:data(any) addr:0x0220f00c
+Ov010ActVt_0220fe6c_ModeTable kind:data(any) addr:0x0220f00c
 data_ov010_0220f024 kind:data(any) addr:0x0220f024
 data_ov010_0220f028 kind:data(any) addr:0x0220f028
 data_ov010_0220f02c kind:data(any) addr:0x0220f02c
@@ -400,7 +400,7 @@ data_ov010_0220f570 kind:data(any) addr:0x0220f570
 data_ov010_0220f57c kind:data(any) addr:0x0220f57c
 data_ov010_0220f588 kind:data(any) addr:0x0220f588
 data_ov010_0220f594 kind:data(byte[0xc]) addr:0x0220f594
-data_ov010_0220f5a0 kind:data(any) addr:0x0220f5a0
+Ov010ActVt_02210378_StateATable kind:data(any) addr:0x0220f5a0
 Ov010ActVt_02210378_StateTable kind:data(any) addr:0x0220f5b8
 __sinit_ov010_0220f5dc.cpp kind:function(arm,size=0x24c) addr:0x0220f5dc local
 __sinit_ov010_0220f828.cpp kind:function(arm,size=0x48) addr:0x0220f828 local

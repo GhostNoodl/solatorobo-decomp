@@ -5,7 +5,7 @@ extern "C" {
 
 extern char data_ov015_022132ac[];
 extern char data_ov015_022132bb[];
-void func_ov015_02212430(Ov015Obj292c *self);
+void Ov015Obj292c_MoveByPad(Ov015Obj292c *self);
 s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
 extern u8 Ov015Obj290_vtbl[];
 void *Model0218fe1c_FreeAnims(void *a);
@@ -74,7 +74,7 @@ BOOL Ov015Obj292c_Setup(Ov015Obj292c *self) {
 
 void func_ov015_02212250(Ov015Obj292c *self, s32 a) {
     if (a == 0) {
-        func_ov015_02212430(self);
+        Ov015Obj292c_MoveByPad(self);
     }
 }
 
@@ -108,7 +108,7 @@ static inline BOOL Ov015_MarkerShown(ActorMarker *m) {
     return m->show == 1 ? TRUE : FALSE;
 }
 
-void func_ov015_0221234c(Ov015Obj292c *self) {
+void Ov015Obj292c_ShowMarker(Ov015Obj292c *self) {
     ActorMarker *o = self->marker;
     if (o == NULL) {
         return;
@@ -124,7 +124,7 @@ void func_ov015_0221234c(Ov015Obj292c *self) {
     }
 }
 
-void func_ov015_022123c4(Ov015Obj292c *self) {
+void Ov015Obj292c_HideMarker(Ov015Obj292c *self) {
     ActorMarker *o = self->marker;
     if (o == NULL) {
         return;
@@ -139,7 +139,7 @@ void func_ov015_022123c4(Ov015Obj292c *self) {
     }
 }
 
-void func_ov015_02212430(Ov015Obj292c *self) {
+void Ov015Obj292c_MoveByPad(Ov015Obj292c *self) {
     u16 pad = gPad->cur;
     if (pad & 0x20) {
         self->pos.x -= self->unk_30;

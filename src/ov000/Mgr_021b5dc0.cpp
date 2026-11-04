@@ -119,7 +119,7 @@ void FieldMgr_SetupBlock(FieldMgr *self) {
             } else if (g->unk_ca.c[0] == 0x12) {
                 mode = 5;
             }
-            func_ov000_0218b7c0(o, kind, mode);
+            GroupNode_SetupKind(o, kind, mode);
         }
     }
     if (self->unk_1f0 != 0xffff) {

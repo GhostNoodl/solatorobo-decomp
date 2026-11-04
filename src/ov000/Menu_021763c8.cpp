@@ -2292,7 +2292,7 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-void func_ov000_021762e4(void *a, s32 mode) {
+void StoreMenu_AddStockItem(void *a, s32 mode) {
     Task021cbee0 *t = (Task021cbee0 *)LoFindTask(4);
     UiList021cb4a8 *m;
     UiListItem *r;
@@ -3512,7 +3512,7 @@ void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void Obj0215d990_SetMsg(void *self, s32 a);
-void func_ov000_02160fc8(void *self);
+void Lo021cacd8_Reset(void *self);
 void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
 void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, void *arg);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
@@ -3674,7 +3674,7 @@ void SellMenu_Start(Task021cbe60 *self, void *g) {
         *(void **)o = UiObj_vtbl;
         o->vfunc_28();
         *(void **)o = Lo021cacd8_vtbl;
-        func_ov000_02160fc8(o);
+        Lo021cacd8_Reset(o);
     }
     self->unk_54 = (Lo021cacd8 *)o;
     ((Lo021cacd8 *)o)->posX = 0x64;
@@ -6989,7 +6989,7 @@ void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void TexObj_DrawCell(void *a, void *b, void *c, int d);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
-s32 func_ov000_0214b8ec(void *p);
+s32 Loader_GetTexAddr(void *p);
 void Gfx_DrawTexQuad(VecFx32 *pos, VecFx32 *col, s32 a, s32 b);
 
 // Model_SetPos from a vector, storing each coordinate as it is read.
@@ -7076,7 +7076,7 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
     v.x = pos->x + 0xbe000;
     v.y = pos->y + 0x6e000;
     v.z = -0x1c4d;
-    Gfx_DrawTexQuad(&v, &c, 0x1f, func_ov000_0214b8ec(self->unk_6c));
+    Gfx_DrawTexQuad(&v, &c, 0x1f, Loader_GetTexAddr(self->unk_6c));
     }
 }
 

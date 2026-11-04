@@ -72,7 +72,7 @@ void Ov008Caption_Update(Ov008Caption *o) {
     } while (again);
 }
 
-void func_ov008_021ccf44(Ov008Panel *o) {
+void Ov008Panel_Update(Ov008Panel *o) {
     s32 t = 0;
     Model *m;
     switch (o->state) {

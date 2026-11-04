@@ -51,7 +51,7 @@ void Ov014Act_0220f9d0_StateHurt(Ov014Act_0220f9d0 *self) {
 
 extern char data_ov014_02217d88[];
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void SceneStage_StartScript(void *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
@@ -71,7 +71,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         ActorSub44 *n;
         EffectObj *e;
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(5);
+        StageVars_SetEventScript(5);
         g = gSceneCmd;
         g->stageFlags = 1;
         SceneStage_StartScript((u8 *)g + 0xac);

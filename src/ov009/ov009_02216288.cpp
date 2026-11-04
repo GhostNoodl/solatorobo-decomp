@@ -129,7 +129,7 @@ extern void *gSndMgr;
 extern s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 extern void SndMgr_SetSlotVolume_0204a058(void *mgr, s32 h, s32 a, s32 b);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov009ActPair110_State20(Ov009ActPair110 *self) {
     VecFx32 d;
@@ -150,7 +150,7 @@ void Ov009ActPair110_State20(Ov009ActPair110 *self) {
         self->pos = self->unk_f0;
         self->unk_b6 = 0x1e;
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         SndMgr_SetSlotVolume_0204a058(gSndMgr, self->unk_10c, 0x28, 0x1c2);
         break;
@@ -330,7 +330,7 @@ void Ov009ActPair110_StateDie(Ov003Actor *self) {
 
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 void Ov009ActVt_02217f60_State21(Ov009ActVt_02217f60 *self) {
     VecFx32 p0;
@@ -350,7 +350,7 @@ void Ov009ActVt_02217f60_State21(Ov009ActVt_02217f60 *self) {
     if (t == 300) {
         SndMgr_StopSeqArc(gSndMgr, self->unk_10c);
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
     }
     if (t > 0x1e0) {
@@ -547,7 +547,7 @@ namespace m_0220e434 {
 extern "C" {
 
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov009ActVt_02217eb4_State20(Ov009ActVt_02217eb4 *self) {
     VecFx32 d;
@@ -562,7 +562,7 @@ void Ov009ActVt_02217eb4_State20(Ov009ActVt_02217eb4 *self) {
     self->pos = self->unk_f0;
     self->unk_b6 = 0x96;
     Shared_SetEventActor(self->kind, self->id);
-    func_020627dc(4);
+    StageVars_SetEventScript(4);
     gSceneCmd->stageFlags = 1;
 }
 
@@ -1113,7 +1113,7 @@ extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
     VecFx32 v;
     ActorSub40 *st = self->fsm;
@@ -1169,7 +1169,7 @@ void Ov009ActPair110_State21(Ov009ActVt_02217b58 *self) {
         }
         if (st->timer == 0) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
@@ -1322,7 +1322,7 @@ extern void Model0218fe1c_PauseAnim(void *m);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 void Ov009ActVt_02217e08_State20(Ov009ActVt_02217e08 *self) {
     ActorSub40 *st = self->fsm;
     ActorSub44 *s44;
@@ -1377,7 +1377,7 @@ void Ov009ActVt_02217e08_State20(Ov009ActVt_02217e08 *self) {
         st->timer++;
         if (st->timer > 0x1e) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
         }

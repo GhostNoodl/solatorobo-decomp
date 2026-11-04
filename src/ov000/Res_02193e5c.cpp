@@ -50,7 +50,7 @@ char *Tbl_GetEntryData(s32 id, s32 n);
 char *Path_SkipDir(const char *path);
 void ResSet_SetFile(Res02193e5c *p, char *name, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
+void ActorRes_SetFromTbl(Res02193e5c *res, s32 id) {
     ResParam02193e5c *param;
     ResInfo02193e5c *info;
     char *name;

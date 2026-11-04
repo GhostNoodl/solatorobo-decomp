@@ -15,7 +15,7 @@ static inline s32 DistSq(const VecFx32 *a, const VecFx32 *b) {
 }
 
 
-void func_ov000_0216d474(Obj0216c954 *self) {
+void Obj0216c954_ComputeRange(Obj0216c954 *self) {
     VecFx32 pts[0x20];
     s32 n;
     s32 i;

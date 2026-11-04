@@ -4,12 +4,12 @@
 #pragma force_active on
 
 extern char DSProt_BSS[];
-extern char func_ov004_021cd050[];
-extern char func_ov004_021cd16c[];
-extern char func_ov004_021cd288[];
-extern char func_ov004_021cd3a4[];
-void func_ov004_021ce574(void);
-extern char func_ov004_021ce7d8[];
+extern char DSProt_IsEmuCheckAStubIntact[];
+extern char DSProt_IsEmuCheckBStubIntact[];
+extern char DSProt_IsRomCheckAStubIntact[];
+extern char DSProt_IsRomCheckBStubIntact[];
+void DSProt_DescrambleRanges(void);
+extern char DSProt_CallEncrypted[];
 void func_ov004_021cd4c0(void);
 void func_ov004_021cd548(void);
 void func_ov004_021cd5d0(void);
@@ -48,10 +48,10 @@ asm void func_ov004_021cd4c0(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cd050+0x3200
+    dcd DSProt_IsEmuCheckAStubIntact+0x3200
     dcd DSProt_BSS+0x3310
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
 asm void func_ov004_021cd548(void) {
@@ -86,10 +86,10 @@ asm void func_ov004_021cd548(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cd16c+0x3200
+    dcd DSProt_IsEmuCheckBStubIntact+0x3200
     dcd DSProt_BSS+0x3310
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
 asm void func_ov004_021cd5d0(void) {
@@ -124,10 +124,10 @@ asm void func_ov004_021cd5d0(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cd288+0x3200
+    dcd DSProt_IsRomCheckAStubIntact+0x3200
     dcd DSProt_BSS+0x3310
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
 asm void func_ov004_021cd658(void) {
@@ -162,16 +162,16 @@ asm void func_ov004_021cd658(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cd3a4+0x3200
+    dcd DSProt_IsRomCheckBStubIntact+0x3200
     dcd DSProt_BSS+0x3310
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
 asm void func_ov004_021cd6e0(void) {
     orr r0, pc, #0
     adds r0, r0, #4
-    bne func_ov004_021ce574
+    bne DSProt_DescrambleRanges
     dcd func_ov004_021cd4c0+0x3200
     dcd DSProt_BSS+0x3270
     dcd func_ov004_021cd548+0x3200

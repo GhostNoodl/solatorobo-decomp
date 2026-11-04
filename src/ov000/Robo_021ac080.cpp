@@ -11,7 +11,7 @@ extern char data_ov000_021cc6c0[];
 extern char data_ov000_021cc636[];
 extern void *gSndMgr;
 void Shared_ChangeFlags(s32 a, s32 b);
-u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
+u16 Hit_FindOpenDir(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 BOOL History_SetState(void *p, s32 a, s32 b);
@@ -71,7 +71,7 @@ void Robo021ca458_State1b(Robo021ca458 *self) {
         self->friction = 0;
         v = self->pos;
         v.y += self->centerY - 0x119a;
-        self->moveYaw = func_ov000_0219a36c(&v, 0x2000, self->rot_y, 4, 0, 0xffffffff);
+        self->moveYaw = Hit_FindOpenDir(&v, 0x2000, self->rot_y, 4, 0, 0xffffffff);
         SndMgr_PlayAt(gSndMgr, 0xf, &self->pos, 0);
         self->fsm->st++;
         break;

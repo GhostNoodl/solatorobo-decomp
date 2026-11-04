@@ -29,7 +29,7 @@ typedef struct FieldActor {
     /* 0x00 */ u8 unk_00[0x54];
     /* 0x54 */ FieldActorState *state;
     /* 0x58 */ u8 unk_58[0x8];
-    /* 0x60 */ void *unk_60; // passed to func_ov000_0216912c by the ov009 actors
+    /* 0x60 */ void *unk_60; // passed to Lo021cb7ec_SetValue by the ov009 actors
 } FieldActor;
 
 struct TimedBuffer021cb920;
@@ -47,7 +47,7 @@ typedef struct FieldPlayer {
 extern FieldPlayer *gMessageQueue;
 extern BOOL MessageQueue_GetById(FieldPlayer *player, int id);
 extern BOOL ListBuffer021cb940_IsBusy(void *p);
-extern void func_ov000_021bc458(FieldFade *fade);
+extern void FieldFade_End(FieldFade *fade);
 
 
 static inline BOOL Field_IsPlayerBusy(void) {

@@ -7,7 +7,7 @@ extern "C" {
 extern char data_ov000_021cc5e3[];
 extern MessageQueue021cb980 *gMessageQueue;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
-void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
+void Lo021cb798_SetValue(Lo021cb798 *self, u16 a, u16 b);
 BOOL History_SetState(void *a, s32 b, s32 c);
 
 u16 Body_GetFaceAngle(ActorSub48 *body, u16 angle);
@@ -58,7 +58,7 @@ void Robo021ca458_RestoreHp(Robo021ca458 *self) {
     o = gMessageQueue->unk_11c;
     if (o != NULL && o->unk_58 != NULL) {
         o->unk_58->unk_0c_7 = 0;
-        func_ov000_021697dc(o->unk_58, v, v);
+        Lo021cb798_SetValue(o->unk_58, v, v);
         o->unk_58->unk_0c_7 = 1;
     }
     self->model->visible = 1;

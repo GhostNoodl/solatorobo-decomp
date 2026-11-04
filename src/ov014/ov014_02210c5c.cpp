@@ -24,7 +24,7 @@ extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
+Ov003Actor *Ov014Act_0220f9d0_SpawnChild4814(Ov014Act_0220f9d0 *self) {
     VecFx32 pos;
     Ov014Vec16 rot;
     Ov014SpawnDesc desc;
@@ -62,7 +62,7 @@ Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     return o;
 }
 
-Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
+Ov003Actor *Ov014Act_0220f9d0_SpawnChild4806(Ov014Act_0220f9d0 *self) {
     Ov014SpawnDesc desc;
     VecFx32 pos;
     Ov014Vec16 rot;

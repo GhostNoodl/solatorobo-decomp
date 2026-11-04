@@ -75,7 +75,7 @@ BOOL Hit_Apply(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 h, 
     return ret;
 }
 
-s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, void *rot, s32 r, s32 a, void **list);
+s32 Finder_CollectInBox(Actor *self, u16 mask, const VecFx32 *pos, void *rot, s32 r, s32 a, void **list);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline s32 FxMul0219aae8(s32 a, s32 b) {
@@ -117,7 +117,7 @@ BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, vo
         }
         VEC_Add(&pos, &dv, &pos);
     }
-    n = func_ov000_0219a5c8(a, mask, &pos, rot, r, rr, list);
+    n = Finder_CollectInBox(a, mask, &pos, rot, r, rr, list);
     for (k = 0; k < n; k++) {
         if (list[k] != NULL) {
             if (Hit_Apply(list[k], a, b, c, d, &pos, h, i, 0x1000)) {

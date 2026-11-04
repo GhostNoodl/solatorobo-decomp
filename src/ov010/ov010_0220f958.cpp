@@ -1327,13 +1327,13 @@ namespace Ov010T6974 {
 }
 
 extern "C" {
-extern void func_ov010_02206784(Ov010Obj02210154 *self);
+extern void Ov010Obj02210154_MoveToRingPoint(Ov010Obj02210154 *self);
 extern void func_ov010_02206974(Ov010Obj02210154 *self);
 
 void Ov010Obj02210154_StateMove(Ov010Obj02210154 *self) {
     switch (self->step.b) {
     case 1:
-        func_ov010_02206784(self);
+        Ov010Obj02210154_MoveToRingPoint(self);
         break;
     case 2:
         func_ov010_02206974(self);
@@ -1348,7 +1348,7 @@ extern u16 FX_Atan2(s32 y, s32 x);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 
-void func_ov010_02206784(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_MoveToRingPoint(Ov010Obj02210154 *self) {
     switch (self->fsm->st) {
     case 0: {
         VecFx32 p;

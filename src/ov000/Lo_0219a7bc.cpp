@@ -31,7 +31,7 @@ s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
 s32 Finder_CollectActors(Finder *self, Query *q, void **out, s32 max);
 BOOL History_SetState(void *a, s32 b, s32 c);
 
-s32 func_ov000_0219a7bc(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list) {
+s32 Finder_CollectInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list) {
     FinderQuery fq;
     fq.q.unk_18 = 0;
     fq.q.unk_1c = 0;

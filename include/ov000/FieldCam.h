@@ -25,7 +25,7 @@ typedef struct FieldCamZoneResult {
 
 u16 Camera_GetYaw(Camera *cam);
 void FieldCam_Apply(FieldCam *self);
-void func_ov000_021899d8(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7);
+void Field_SetCamTarget(const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7);
 void FieldCam_SetTarget(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 BOOL FieldCam_ApplyZone(FieldCam *self, const FieldCamZone *zone, const u32 *code, FieldCamZoneResult *st);
 

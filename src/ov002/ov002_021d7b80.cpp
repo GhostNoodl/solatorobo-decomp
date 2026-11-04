@@ -34,7 +34,7 @@ void Ov002Vt_021efeb8_Setup(Obj021efeb8 *self) {
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
     v = ParamKind_GetShape(self->unk_4b = info[1]);
     MI_CpuCopy8(v, &self->shape, sizeof(self->shape));
-    func_ov002_021e38f8(self->unk_5c, v);
+    Ov002Shape_GetOrigin(self->unk_5c, v);
 }
 
 }

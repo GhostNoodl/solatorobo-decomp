@@ -30,7 +30,7 @@ extern void *gSndMgr;
 void HitSphere_Unlink_0203f364(void *a);
 void Group_UpdateActor(void *a, s32 b, void *c);
 void Shared_SetEventActor(u16 kind, u16 id);
-void func_020627dc(u16 sfx);
+void StageVars_SetEventScript(u16 sfx);
 void func_020627c8(void);
 void SceneStage_StartScript(u8 *p);
 u16 LangData_GetIndex(u32 a, u32 b);
@@ -83,7 +83,7 @@ static inline void Die0219763c(VObj *obj) {
     }
     if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
         Shared_SetEventActor(self->unk_0e, self->unk_0c);
-        func_020627dc(0x63);
+        StageVars_SetEventScript(0x63);
         {
             FieldState *pl = gSceneCmd;
             ((u8 *)pl)[0xac] = 1;

@@ -115,7 +115,7 @@ u16 Target_LerpToDest(Target *self, VecFx32 *pos, u16 t, u16 dur) {
     return t;
 }
 
-BOOL func_ov000_02199c70(Target *self, u16 kind) {
+BOOL Target_HasKind(Target *self, u16 kind) {
     BOOL found = FALSE;
     s32 i;
 

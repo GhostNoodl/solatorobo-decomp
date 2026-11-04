@@ -18,8 +18,8 @@ struct Ov010Handler { s32 key; void (*fn)(void); s32 adj; };
 
 extern "C" {
 
-void func_ov010_02202838(void);
-void func_ov010_022028ec(void);
+void Ov010ActVt_0220fe6c_Mode00(void);
+void Ov010ActVt_0220fe6c_Mode01(void);
 
 extern const Ov010Rot data_ov010_0220efc8;
 extern const VecFx32 data_ov010_0220efd0;
@@ -27,7 +27,7 @@ extern const VecFx32 data_ov010_0220efdc;
 extern const VecFx32 data_ov010_0220efe8;
 extern const VecFx32 data_ov010_0220eff4;
 extern const VecFx32 data_ov010_0220f000;
-extern const Ov010Handler data_ov010_0220f00c[2];
+extern const Ov010Handler Ov010ActVt_0220fe6c_ModeTable[2];
 extern const Ov010Rot data_ov010_0220fe30;
 extern const VecFx32 data_ov010_0220fe38;
 extern const VecFx32 data_ov010_0220fe44;
@@ -36,7 +36,7 @@ extern const VecFx32 data_ov010_0220fe50;
 static inline fx32 K(fx32 v) { return v; }
 
 const VecFx32 data_ov010_0220f000 = {0, 0, 0};
-const Ov010Handler data_ov010_0220f00c[2] = {{0, func_ov010_02202838, 0}, {1, func_ov010_022028ec, 0}};
+const Ov010Handler Ov010ActVt_0220fe6c_ModeTable[2] = {{0, Ov010ActVt_0220fe6c_Mode00, 0}, {1, Ov010ActVt_0220fe6c_Mode01, 0}};
 const Ov010Rot data_ov010_0220efc8 = {0, 0, 0};
 const Ov010Rot data_ov010_0220fe30 = data_ov010_0220efc8;
 const VecFx32 data_ov010_0220efdc = {-0x1000, 0, 0};
@@ -260,7 +260,7 @@ void Ov010ActVt_0220fe6c_Update(Ov010Cls *self) {
     if (!Ov010_GIdle()) {
         return;
     }
-    *(Ov010FnTbl2 *)tbl = *(const Ov010FnTbl2 *)data_ov010_0220f00c;
+    *(Ov010FnTbl2 *)tbl = *(const Ov010FnTbl2 *)Ov010ActVt_0220fe6c_ModeTable;
     key = self->unk_d4;
     for (i = 0; i < 2; i++) {
         if (key == ((const Ov010FnEnt *)tbl)[i].key && *(s32 *)&tbl[i].fn != 0) {
@@ -279,7 +279,7 @@ namespace m_02202838 {
 extern "C" {
 extern BOOL History_SetState(void *a, s32 b, s32 c);
 
-void func_ov010_02202838(Obj022020c8 *self) {
+void Ov010ActVt_0220fe6c_Mode00(Obj022020c8 *self) {
     ActorSub40 *m = self->fsm;
     switch (m->current) {
     case 0x20:
@@ -304,7 +304,7 @@ void func_ov010_02202838(Obj022020c8 *self) {
     }
 }
 
-void func_ov010_022028ec(Obj022020c8 *self) {
+void Ov010ActVt_0220fe6c_Mode01(Obj022020c8 *self) {
     ActorSub40 *m = self->fsm;
     switch (m->current) {
     case 0x20:

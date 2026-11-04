@@ -13,7 +13,7 @@ extern u8 data_ov010_0220f024[];
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 
 void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
     ActorSub40 *w = self->fsm;
@@ -61,7 +61,7 @@ void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
     }
     case 100:
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         self->fsm->st = 0x65;
         self->unk_1fc = 1;

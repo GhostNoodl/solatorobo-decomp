@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
+void Obj021efe4c_PlaySndCues(Obj021efe4c *self, s32 t, s32 range) {
     Ov002SndCue *p = self->cue;
     s32 v;
     if (p == NULL || self->cues == NULL) {

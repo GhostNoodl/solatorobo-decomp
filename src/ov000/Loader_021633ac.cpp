@@ -5,8 +5,8 @@
 extern "C" {
 extern u8 TextWin_vtbl[];
 extern u8 MainVt_0208bbc8_vtbl[];
-void func_ov000_021bc3ec(FieldFade *fade, s32 mode, s32 duration);
-void func_ov000_021bc458(FieldFade *fade);
+void FieldFade_Start(FieldFade *fade, s32 mode, s32 duration);
+void FieldFade_End(FieldFade *fade);
 void MsgRes_Reset_0204bfcc(MsgRes *res);
 void MsgRes_OpenLocalized(MsgRes *res, const char *arc, const char *name);
 BOOL MsgRes_Bind(MsgRes *res);
@@ -35,7 +35,7 @@ BOOL MsgBox_Update(MsgBox *self) {
     SlideWin *o;
     switch (self->state) {
     case 0:
-        func_ov000_021bc3ec(gFieldFade, 3, 0xa000);
+        FieldFade_Start(gFieldFade, 3, 0xa000);
         self->res = MsgRes_New(self->arcName, self->name);
         self->state = 1;
     case 1:
@@ -71,7 +71,7 @@ BOOL MsgBox_Update(MsgBox *self) {
         break;
     case 3:
         if (!self->win->unk_vf8c()) {
-            func_ov000_021bc458(gFieldFade);
+            FieldFade_End(gFieldFade);
             self->state = 4;
         }
         break;

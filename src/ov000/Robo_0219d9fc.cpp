@@ -28,7 +28,7 @@ void Ov003SlotUser_StartCapture(void *p);
 void func_ov000_021b4130(Robo021ca458 *self, BOOL a);
 void ActorMarker_Draw(void *p);
 void Shadow_Draw(void *shadow, void *pos);
-void func_ov000_02167fac(Lo021cb6f0 *self, s32 a, s32 b);
+void Lo021cb6f0_SetValue(Lo021cb6f0 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_0219d9fc(u16 id) {
     if (gActorMgr == NULL) {
@@ -383,7 +383,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             if (self->unk_b24_1) {
                 ListBuffer021cb940 *o = gMessageQueue->unk_11c;
                 if (o != NULL && o->unk_6c != NULL) {
-                    func_ov000_02167fac(o->unk_6c, self->unk_9ac, self->unk_9ae);
+                    Lo021cb6f0_SetValue(o->unk_6c, self->unk_9ac, self->unk_9ae);
                 }
             }
         }

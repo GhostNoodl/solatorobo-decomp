@@ -9,7 +9,7 @@
 #include "Main/Math/Rot16.h"
 
 // The C++ view of the scene command object gSceneCmd (Main/Sys/FieldState.h is the C
-// view of the same 0x214 bytes: ctor func_ov000_02188ba0, allocated by Field_Create, freed
+// view of the same 0x214 bytes: ctor Obj02188ba0_Init, allocated by Field_Create, freed
 // by Field_Destroy). Its event runner is the CmdObj base, so the overlay 0 command
 // handlers (the pointer-to-member callbacks of SceneCmd_Table) take it as `self`.
 
@@ -37,7 +37,7 @@ public:
     /* 0x0d0 */ FieldId unk_d0;
     /* 0x0d3 */ u8 unk_d3;
     /* 0x0d4 */ u32 event; // FieldState::event
-    // 0xd3..0xf0: the camera target that func_ov000_02188ed0 hands to the field camera
+    // 0xd3..0xf0: the camera target that SceneCmd_ApplyPendingCam hands to the field camera
     // (FieldCam_SetTarget: position, rotation, distance and the two s16 rates).
     /* 0x0d8 */ VecFx32 unk_d8;
     /* 0x0e4 */ Rot16 unk_e4;

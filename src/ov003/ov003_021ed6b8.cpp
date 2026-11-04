@@ -129,7 +129,7 @@ extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL Actor_IsDead(void);
 extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void func_020627ec(u16 a);
 extern void SceneStage_StartScript(void *p);
 
@@ -198,7 +198,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
         }
         func_020627b4();
         Shared_SetEventActor(self->unk_0e, self->unk_0c);
-        func_020627dc(self->kind);
+        StageVars_SetEventScript(self->kind);
         func_020627ec(id);
         {
             u8 *ac = &gSceneCmd->stageFlags;
@@ -353,7 +353,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
                 if (ActorMgr_FindPlayer() != NULL && !Actor_IsDead()) {
                     func_020627b4();
                     Shared_SetEventActor(self->unk_0e, self->unk_0c);
-                    func_020627dc(0);
+                    StageVars_SetEventScript(0);
                     func_020627ec(0);
                     {
                         u8 *ac = &gSceneCmd->stageFlags;

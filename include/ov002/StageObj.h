@@ -76,7 +76,7 @@ typedef struct Ov002ResName {
     char *item; // name of the model or animation inside it, NULL: name
 } Ov002ResName;
 
-// Texture link record (0x1c bytes) appended by Ov002Obj021f07d4_AddLink / func_ov002_021e50d8: a texture
+// Texture link record (0x1c bytes) appended by Ov002Obj021f07d4_AddLink / Ov002Obj021f07d4_AddTexLink: a texture
 // file bound to the model of the object whose unk_4c matches id (Ov002Obj021f07d4_Load loads it).
 typedef struct Ov002ObjLink {
     s32 id;
@@ -142,7 +142,7 @@ struct Ov002Obj021f075c : public Ov002Obj {
     union {
         u32 unk_e8;
         struct {
-            u8 started : 1; // set by func_ov002_021e6290
+            u8 started : 1; // set by Ov002Obj021f075c_ResetAnim
             u8 done : 1;    // frame passed unk_8c
             u8 stopped : 1; // Ov002Obj021f075c_RemoveAnims on a kind 3 object
             u8 unk_e8_3 : 5;
@@ -255,8 +255,8 @@ struct Ov002Cam021f0828 : public Ov002Cam021f0854 {
 };
 SIZE_ASSERT(Ov002Cam021f0828, 0xcc);
 
-// Texture pair node (0x50) the stage reader can collect (func_ov002_021eb298, Ov002StageFile_BuildModels,
-// func_ov002_021ebcf8): two names and the kind of the record that named them.
+// Texture pair node (0x50) the stage reader can collect (Ov002StageFile_ParseLinks, Ov002StageFile_BuildModels,
+// Ov002StageFile_LoadObj075cList): two names and the kind of the record that named them.
 typedef struct Ov002ResNode {
     char a[0x20];
     char b[0x20];
@@ -284,13 +284,13 @@ struct Ov002StageFile : public VObj {
     u8 unk_0d[3];
     u8 *unk_10;   // camera records (Ov002StageFile_BuildCameras)
     u8 *unk_14;   // model records (Ov002StageFile_BuildModels)
-    u8 *unk_18;   // texture link records (func_ov002_021eb298)
-    u8 *unk_1c;   // kind 2 animation records (func_ov002_021ebcf8)
+    u8 *unk_18;   // texture link records (Ov002StageFile_ParseLinks)
+    u8 *unk_1c;   // kind 2 animation records (Ov002StageFile_LoadObj075cList)
     u8 *unk_20;   // kind 3 animation records
     u8 *unk_24;   // kind 3 animation records
     u8 *unk_28;   // kind 6 records
     u8 *unk_2c;   // kind 10 records (Ov002StageFile_BuildEnv)
-    u8 *unk_30;   // effect records (func_ov002_021eb870)
+    u8 *unk_30;   // effect records (Ov002StageFile_LoadObj070cList)
     u8 *unk_34;   // three more record blocks found by Ov002StageFile_FindChunks
     u8 *unk_38;
     u8 *unk_3c;
@@ -359,7 +359,7 @@ void Ov002Obj_Init(Ov002Obj *self);
 void Ov002Obj_Detach(Ov002Obj *self);
 void Ov002Obj_AddChild(Ov002Obj *self, Ov002Obj *item);
 Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min);
-void func_ov002_021e50d8(Ov002Obj021f07d4 *self, char *arc, char *name);
+void Ov002Obj021f07d4_AddTexLink(Ov002Obj021f07d4 *self, char *arc, char *name);
 void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self);
 void Ov002Obj021f075c_RemoveAnims(Ov002Obj021f075c *self);
 void Ov002Stage_Create(void);

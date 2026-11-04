@@ -24,7 +24,7 @@ extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 extern void Field_ShakeCamera(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, VecFx32 *pos, u16 *rot, s32 d);
-extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
+extern void Drop_SpawnCoins(u16 id, VecFx32 *pos, u16 *rot);
 
 void Ov003Actor_StateDie(Ov003Actor *self) {
     u16 idx = self->targetObj->unk_06;
@@ -120,7 +120,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         }
         res = Tbl_GetActorParam(self->kind);
         Drop_SpawnWeighted(res->dropIds, res->dropRates, 2, &v, &self->rot_x, 1);
-        func_ov000_0219b5dc(self->unk_b0->unk_06, &v, &self->rot_x);
+        Drop_SpawnCoins(self->unk_b0->unk_06, &v, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;
         break;

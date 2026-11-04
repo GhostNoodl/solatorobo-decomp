@@ -19,12 +19,12 @@ u16 Shared_GetMarkRot(void);
 void Shared_ClearMark(void);
 BOOL Shared_HasPendingPos(void);
 void Shared_TakePendingPos(VecFx32 *v);
-BOOL func_02062620(void);
-u16 func_02062588(void);
-BOOL func_02062648(void);
-u16 func_020625ac(void);
-BOOL func_02062670(void);
-s32 func_020625d0(void);
+BOOL Shared_HasPendingCamPitch(void);
+u16 Shared_TakePendingCamPitch(void);
+BOOL Shared_HasPendingCamYaw(void);
+u16 Shared_TakePendingCamYaw(void);
+BOOL Shared_HasPendingCamDist(void);
+s32 Shared_TakePendingCamDist(void);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Robo021ca458_SetPosRot(Robo021ca458 *pl, VecFx32 *pos, u16 *rot);
 void TouchQuad_Init(void *q, u16 a, u16 b, u16 c, u16 d);
@@ -102,16 +102,16 @@ void FieldMgr_PlacePlayerAtExit(FieldMgr *self) {
             cam->unk_e8 = t;
             cam->unk_da_1 = 1;
         }
-        if (func_02062620()) {
-            cam->unk_f8.x = func_02062588();
+        if (Shared_HasPendingCamPitch()) {
+            cam->unk_f8.x = Shared_TakePendingCamPitch();
             cam->unk_da_4 = 1;
         }
-        if (func_02062648()) {
-            cam->unk_f8.y = func_020625ac();
+        if (Shared_HasPendingCamYaw()) {
+            cam->unk_f8.y = Shared_TakePendingCamYaw();
             cam->unk_da_5 = 1;
         }
-        if (func_02062670()) {
-            cam->unk_f4 = func_020625d0();
+        if (Shared_HasPendingCamDist()) {
+            cam->unk_f4 = Shared_TakePendingCamDist();
             cam->unk_da_2 = 1;
         }
         cam->base.smooth = 0;

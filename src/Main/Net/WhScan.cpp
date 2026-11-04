@@ -1,26 +1,26 @@
 #include "Main/Net/Wh.h"
 
 // Built at O2 like the rest of the WH helper code: at O4 the scan loop in
-// func_020460d0 gets its exit branch inverted.
+// Wh_BeginScan gets its exit branch inverted.
 #pragma optimization_level 2
 
 extern "C" {
 
-BOOL func_02046070(WhMgr *wh, const u16 *bssid, u16 channel) {
+BOOL Wh_StartScan(WhMgr *wh, const u16 *bssid, u16 channel) {
     *WH_SysState(gWhMgr) = 2;
     wh->scanChannel = channel;
     wh->scanParam.channel = 0;
     wh->scanParam.bssid[2] = bssid[2];
     wh->scanParam.bssid[1] = bssid[1];
     wh->scanParam.bssid[0] = bssid[0];
-    if (!func_020460d0(wh)) {
+    if (!Wh_BeginScan(wh)) {
         *WH_SysState(gWhMgr) = 8;
         return FALSE;
     }
     return TRUE;
 }
 
-BOOL func_020460d0(WhMgr *wh) {
+BOOL Wh_BeginScan(WhMgr *wh) {
     u32 allowed = WM_GetAllowedChannel();
     if (allowed == 0x8000) {
         WH_SetError(3);
@@ -45,12 +45,12 @@ BOOL func_020460d0(WhMgr *wh) {
     }
     wh->scanParam.scanBuf = wh->bssDesc;
     wh->scanParam.maxChannelTime = WM_GetDispersionScanPeriod();
-    return WH_CheckResult(WM_StartScan((void (*)(void *))func_020461e4, &wh->scanParam));
+    return WH_CheckResult(WM_StartScan((void (*)(void *))Wh_OnStartScan, &wh->scanParam));
 }
 
 static inline BOOL WH_StateInEndScan(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(WM_EndScan((void (*)(void *))func_02046418));
+    return WH_CheckResult(WM_EndScan((void (*)(void *))Wh_OnEndScan));
 }
 
 static inline BOOL WH_IsValidGameInfo(WhScanCbArg *arg) {
@@ -60,7 +60,7 @@ static inline BOOL WH_IsValidGameInfo(WhScanCbArg *arg) {
     return FALSE;
 }
 
-void func_020461e4(WhCbArg *cbArg) {
+void Wh_OnStartScan(WhCbArg *cbArg) {
     WhScanCbArg *arg = (WhScanCbArg *)cbArg;
     WhMgr *wh;
     u8 *bssDesc;
@@ -106,7 +106,7 @@ void func_020461e4(WhCbArg *cbArg) {
         break;
     }
     }
-    if (!func_020460d0(gWhMgr)) {
+    if (!Wh_BeginScan(gWhMgr)) {
         WH_ChangeSysState(8);
     }
 }

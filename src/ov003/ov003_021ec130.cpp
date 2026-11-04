@@ -22,7 +22,7 @@ extern u8 Ov003ActVt_021f99e8_vtbl[];
 extern char data_ov003_021f99d8[];
 extern const Ov003GmTable data_ov003_021f99c8;
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void func_020627b4(void);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
@@ -41,7 +41,7 @@ extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
     Shared_SetEventActor(self->kind, self->id);
-    func_020627dc(4);
+    StageVars_SetEventScript(4);
     gSceneCmd->stageFlags = 1;
     History_SetState(self->fsm, 1, 0);
 }

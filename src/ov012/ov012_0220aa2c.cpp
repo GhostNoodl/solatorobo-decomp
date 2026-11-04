@@ -61,7 +61,7 @@ void Ov012ActExVt_0220b1e8_StateDie(Ov012ActExVt_0220b1e8 *self) {
 }
 
 extern "C" {
-void func_ov012_02206508(Ov012ActExVt_0220b1e8 *self) {
+void Ov012ActExVt_0220b1e8_SpawnChildren(Ov012ActExVt_0220b1e8 *self) {
     u8 i;
     for (i = 1; i < 3; i++) {
         Ov012SpawnDesc d;

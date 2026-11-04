@@ -159,7 +159,7 @@ BOOL Obj0216c954_Update(Obj0216c954 *self) {
                 TexObj_SelectImage(self->model, 0, 8);
                 TexObj_SetOamFunc(self->model, 6, (void *)Obj0216c954_OamCallback, self);
             }
-            func_ov000_0216d474(self);
+            Obj0216c954_ComputeRange(self);
         }
         break;
     case 6:

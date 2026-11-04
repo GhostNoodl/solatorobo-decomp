@@ -10,7 +10,7 @@ struct Ov008Pos16 {
 extern Ov008Pos16 data_ov008_021d02fc[];
 void Ov008WorldMap_DrawScene(Ov008Mgr *m);
 BOOL Model021903b4_Draw(void *p);
-void func_ov008_021ccf44(Ov008Panel *p);
+void Ov008Panel_Update(Ov008Panel *p);
 
 static inline void Ov008_SetPos(Model *e, Ov008Pos16 *p) {
     s32 x = p->x - 0x80;
@@ -88,7 +88,7 @@ void Ov008WorldMap_UpdateCaption(Ov008Mgr *m) {
             m->unk_11c = 0x80000;
         }
     }
-    func_ov008_021ccf44(m->panel);
+    Ov008Panel_Update(m->panel);
     if (m->flags.b4 == 1) {
         m->unk_11c += FX_Mul(m->unk_11c, 0x666);
         if (Ov008_Abs(m->unk_11c) > 0x80000) {

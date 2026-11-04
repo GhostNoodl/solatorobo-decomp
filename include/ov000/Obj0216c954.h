@@ -59,7 +59,7 @@ typedef struct Obj0216c954 {
         };
     };
     s32 state; // 0x04 2: start, 3: done, 4: hidden, 5: load, 6: wait for the load, 7: shown, 8: slide
-    s32 mode; // 0x08 0: no effect; 2: no range limit (func_ov000_0216d474)
+    s32 mode; // 0x08 0: no effect; 2: no range limit (Obj0216c954_ComputeRange)
     struct Model *model; // 0x0c
     Obj021c2114 *effect; // 0x10
     s32 range; // 0x14 squared distance within which a spawn position is pointed at
@@ -86,7 +86,7 @@ void Obj0216c9b0_Release(Obj0216c954 *self);
 void Obj0216c954_SetCount(Obj0216c954 *self, s32 count, s32 total);
 BOOL Obj0216c954_Update(Obj0216c954 *self);
 void Obj0216c954_Draw(Obj0216c954 *self);
-void func_ov000_0216d474(Obj0216c954 *self);
+void Obj0216c954_ComputeRange(Obj0216c954 *self);
 void Obj021c2114_Draw(Obj021c2114 *self);
 void Obj021c2114_Ctor(Obj021c2114 *self);
 void Obj021c2114_Release(Obj021c2114 *self);

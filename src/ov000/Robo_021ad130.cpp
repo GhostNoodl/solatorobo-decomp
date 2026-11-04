@@ -52,7 +52,7 @@ static inline void Fx021ad130(Robo021ca458 *self) {
     VecFx32 v;
     v = *(VecFx32 *)((u8 *)self + 0x70);
     v.y += self->height;
-    func_ov000_021899d8(&v, NULL, 0x8ccd, 1, 0x1000, 0x1000);
+    Field_SetCamTarget(&v, NULL, 0x8ccd, 1, 0x1000, 0x1000);
 }
 
 static inline BOOL QHas021ad130(const s32 *w) {

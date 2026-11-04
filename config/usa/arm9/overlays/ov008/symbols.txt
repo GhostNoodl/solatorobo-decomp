@@ -1,6 +1,6 @@
 Ov008Menu_AddItem kind:function(arm,size=0x98) addr:0x021ccda0
 Ov008Caption_Update kind:function(arm,size=0x10c) addr:0x021cce38
-func_ov008_021ccf44 kind:function(arm,size=0x328) addr:0x021ccf44
+Ov008Panel_Update kind:function(arm,size=0x328) addr:0x021ccf44
 Ov008WorldMap_OamCallback0 kind:function(arm,size=0x170) addr:0x021cd26c
 Ov008WorldMap_OamCallback1 kind:function(arm,size=0x6c) addr:0x021cd3dc
 Ov008WorldMap_Create kind:function(arm,size=0x44) addr:0x021cd448

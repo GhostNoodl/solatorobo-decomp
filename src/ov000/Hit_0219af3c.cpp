@@ -61,7 +61,7 @@ static inline BOOL Special0219af3c(Tgt0219af3c *t) {
     return r;
 }
 
-void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
+void Actor_UpdateMarker(Actor *self, ActorMarker *p) {
     Robo021ca458 *pl;
     Tgt0219af3c *tgt;
     u8 type;

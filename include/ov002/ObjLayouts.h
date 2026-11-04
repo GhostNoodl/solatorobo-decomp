@@ -142,7 +142,7 @@ typedef struct Ov002Cell {
 } Ov002Cell;
 
 // Sound cue of the field animation (6 bytes; table data_ov002_021eeffc, ended by a negative time):
-// func_ov002_021d7320 plays sound id when the animation frame passes time.
+// Obj021efe4c_PlaySndCues plays sound id when the animation frame passes time.
 typedef struct Ov002SndCue {
     s16 time;
     s16 unk_02;
@@ -167,7 +167,7 @@ struct Obj021efe4c : public VObj {
     MtxFx33 rot;            // identity after the ctor
     VecFx32 scale;          // 0x1000 after the ctor
     u8 visible;
-    u8 unk_5d;              // set: the cues are played forward (func_ov002_021d7320)
+    u8 unk_5d;              // set: the cues are played forward (Obj021efe4c_PlaySndCues)
     u8 unk_5e[0x2];
     Ov002SndCue *cues;      // data_ov002_021eeffc
     Ov002SndCue *cue;       // next cue for the animation frame
@@ -178,7 +178,7 @@ struct Obj021efe4c : public VObj {
 SIZE_ASSERT(Obj021efe4c, 0x70);
 
 // Vtable Ov002Vt_021efe6c_vtbl, 0xc8 bytes (ctor Obj021efe6c_Init): the board. pieces heads the
-// piece list, cells is the field's w x h cell array (func_ov002_021da054), unk_08 counts per item id.
+// piece list, cells is the field's w x h cell array (Obj021efe6c_RebuildCells), unk_08 counts per item id.
 // unk_90.. move the camera from unk_98/unk_a4 to unk_b0/unk_bc.
 struct Obj021efe6c : public VObj {
     Obj021efe4c *field;

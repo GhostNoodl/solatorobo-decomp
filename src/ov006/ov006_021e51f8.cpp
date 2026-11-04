@@ -31,13 +31,13 @@ extern "C" {
 extern ov006_Net021e51f8 *gWhMgr;
 
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e51f8 *net);
-BOOL func_020455ac(ov006_Net021e51f8 *net);
+BOOL Wh_StartMeasureChannel(ov006_Net021e51f8 *net);
 int Wh_GetError(ov006_Net021e51f8 *net);
 u16 Wh_SelectChannel(ov006_Net021e51f8 *net);
 void WH_CalcBufferSizes_02044a0c(ov006_NetParam021e51f8 *param);
 void Wh_SetGameInfo(ov006_Net021e51f8 *net, void *data, u32 size);
-void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
-BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
+void Wh_UpdateGameInfo(ov006_Net021e51f8 *net, void *data, u32 size);
+BOOL Wh_ParentConnect(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
 BOOL Wh_SetEntry(ov006_Net021e51f8 *net, BOOL enabled);
 u16 WM_GetNextTgid(void);
 void ov006_Menu_VBlankA(void);
@@ -60,7 +60,7 @@ static inline void ov006_Menu_Error(int code) {
 
 static inline BOOL ov006_Net_StartParent(u16 channel) {
     u16 tgid = WM_GetNextTgid();
-    return func_020459cc(gWhMgr, 3, tgid, channel);
+    return Wh_ParentConnect(gWhMgr, 3, tgid, channel);
 }
 
 static inline BOOL ov006_Menu_HasPeer(ov006_Menu *menu) {
@@ -98,7 +98,7 @@ void ov006_Menu_State06(ov006_Menu *self) {
         if (gWhMgr->state != 1) {
             return;
         }
-        func_020455ac(gWhMgr);
+        Wh_StartMeasureChannel(gWhMgr);
         ov006_Menu_Advance(self);
         return;
     case 2: {
@@ -182,7 +182,7 @@ void ov006_Menu_State06(ov006_Menu *self) {
             }
             if (self->unkF4[0x17] != n) {
                 self->unkF4[0x17] = n;
-                func_02045950(gWhMgr, self->unkF4, 0x66);
+                Wh_UpdateGameInfo(gWhMgr, self->unkF4, 0x66);
             }
         }
         return;

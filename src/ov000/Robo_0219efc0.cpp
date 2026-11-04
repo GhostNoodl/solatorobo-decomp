@@ -13,9 +13,9 @@ extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 u16 Pad_LookupDir(void *pad, void *p);
-void func_ov000_021b3738(Robo021ca458 *self, void *t);
-void func_ov000_021b2d48(Robo021ca458 *self);
-void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
+void Robo021ca458_UpdateTargetMarker(Robo021ca458 *self, void *t);
+void Robo021ca458_UpdateTarget(Robo021ca458 *self);
+void Lo021cb840_SetValue(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 void Shared_ChangeFlags(s32 a, s32 b);
 BOOL func_ov000_0219b3b4(void *p);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -79,7 +79,7 @@ static inline void Gauge_0219efc0(s32 a, s32 b, VecFx32 *p) {
     if (o->unk_70 == NULL) {
         return;
     }
-    func_ov000_02168e18(o->unk_70, a, b, p);
+    Lo021cb840_SetValue(o->unk_70, a, b, p);
 }
 
 struct RgbEq_0219efc0Self {
@@ -167,7 +167,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
     if (self->unk_b24_0 || self->unk_b24_12 == 2) {
         self->target = 0xffff;
         self->unk_b24_4 = 0;
-        func_ov000_021b3738(self, NULL);
+        Robo021ca458_UpdateTargetMarker(self, NULL);
         return;
     }
     if (!self->unk_b29_1 && !self->unk_b28_2 && self->unk_b2e == 0 &&
@@ -197,7 +197,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
         }
         return;
     }
-    func_ov000_021b2d48(self);
+    Robo021ca458_UpdateTarget(self);
     p = self->unk_ba4;
     if (p != NULL && self->unk_b24_1 && self->unk_b24_12 == 0) {
         if (p->unk_06_4) {

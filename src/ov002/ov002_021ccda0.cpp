@@ -106,7 +106,7 @@ extern VFunc Lo021cadcc_vtbl[];
 extern VFunc TimedBuffer021cb920_vtbl[];
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
-BOOL func_020624d8(void);
+BOOL StageVars_HasSavedField(void);
 BOOL func_ov000_02188dfc(void);
 void Buffer0216f144_Init(void *p);
 void func_ov000_0216f828(void *p);
@@ -222,7 +222,7 @@ void AsmodeusMenu_Start(Task021ef530 *self) {
     }
     self->unk_44->slideMode = 1;
     self->unk_44->vfunc_08();
-    self->unk_48_1 = !func_020624d8();
+    self->unk_48_1 = !StageVars_HasSavedField();
     self->unk_48_0 = func_ov000_02188dfc() != 0;
     if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 0) {
         self->unk_48_2 = 1;

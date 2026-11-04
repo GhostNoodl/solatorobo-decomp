@@ -31,7 +31,7 @@ struct Ov015ShipCfg {
 
 // The overlay's vector: a VecFx32 with a user-declared (empty) default constructor and a member-wise
 // copy constructor. Both are load-bearing: copy-initialised locals (func_ov015_021fd0f4,
-// Ov015FishingMenu_Draw, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
+// Ov015FishingMenu_Draw, Ov015Obj30_WaitThrow, ...) are built field by field, where a plain VecFx32 (or a
 // class with only the implicit copy) is copied as one 12-byte block. Being derived from VecFx32, it
 // passes to the SDK's VecFx32 * parameters without a cast. (Ov015Vec, which spelled the copy as a
 // mem-initialiser list, gives the same code and is merged into it.)
@@ -45,7 +45,7 @@ struct Ov015Vec : public VecFx32 {
 };
 
 // The 4-byte record of Param_GetFishItemInfo (Main/Lang/ParamTbl.cpp) as ov015 reads it: the shop and
-// reward code multiplies price by the count and splits a budget by it (func_ov015_022113e8).
+// reward code multiplies price by the count and splits a budget by it (Ov015Shared_RollItems).
 typedef struct Ov015ParamPrice {
     u16 unk_00;
     u16 price;
@@ -339,8 +339,8 @@ struct Ov015ItemEnt {
 struct Ov015Shared : public VObj {
     s32 unk_04; // sequence kind (Ov015Main::unk_04)
     u16 unk_08; // item id (price from Param_GetHarpoonInfo)
-    u16 unk_0a; // id of the Param_GetFishingSpotInfo table that func_ov015_02211160 picks from
-    u16 catchId; // fish caught (func_ov015_02211334)
+    u16 unk_0a; // id of the Param_GetFishingSpotInfo table that Ov015Shared_BuildFishList picks from
+    u16 catchId; // fish caught (Ov015Shared_SetCatch)
     Ov015ItemEnt items[3]; // reward items for catchId
     s32 total; // value of items
     s32 unk_2c;
@@ -356,9 +356,9 @@ void func_ov015_022090fc(NNSG3dRS *rs);
 void func_ov015_02211954(NNSG3dRS *rs);
 void func_ov015_022119d0(NNSG3dRS *rs);
 
-void func_ov015_02211334(Ov015Shared *self, u16 id);
-void func_ov015_022113e8(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget);
-u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n);
+void Ov015Shared_SetCatch(Ov015Shared *self, u16 id);
+void Ov015Shared_RollItems(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget);
+u32 Ov015Shared_BuildFishList(Ov015Shared *self, u16 *out, u32 n);
 
 struct Ov015Flags18 {
     u16 b0 : 1;

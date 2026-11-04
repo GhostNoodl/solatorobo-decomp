@@ -44,11 +44,11 @@ extern "C" {
 extern const Ov003EnEntry Ov003Actor_StateTable[];
 extern Ov003Game30 *gMessageQueue;
 extern void func_ov000_0219a088(void *p);
-extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
+extern void Actor_UpdateMarker(Ov003Actor *self, void *icon);
 extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *a, s32 rot);
 extern void ActorMarker_Update(void *p);
-extern void func_ov000_021697dc(void *p, u16 a, u16 b);
-extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
+extern void Lo021cb798_SetValue(void *p, u16 a, u16 b);
+extern void Lo021cb7ec_SetValue(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 extern Ov003EnPl *ActorMgr_FindPlayer(void);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
@@ -83,14 +83,14 @@ static inline BOOL Ov003_GameIdleP(FieldState *g) {
 static inline void Ov003_Call5c(u16 a, u16 b) {
     Ov003Mgr11c *m = gMessageQueue->unk_11c;
     if (m != NULL && m->unk_5c != NULL) {
-        func_ov000_021697dc(m->unk_5c, a, b);
+        Lo021cb798_SetValue(m->unk_5c, a, b);
     }
 }
 
 static inline void Ov003_Call60(u16 id, u16 a, u16 b, const VecFx32 *pos) {
     Ov003Mgr11c *m = gMessageQueue->unk_11c;
     if (m != NULL && m->unk_60 != NULL) {
-        func_ov000_0216912c(m->unk_60, id, 0, a, b, pos);
+        Lo021cb7ec_SetValue(m->unk_60, id, 0, a, b, pos);
     }
 }
 
@@ -138,7 +138,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         if (self->unk_5c != NULL && Ov003_GameIdleP(gSceneCmd)) {
             VecFx32 pos;
             s32 r;
-            func_ov000_0219af3c(self, self->unk_5c);
+            Actor_UpdateMarker(self, self->unk_5c);
             if (self->unk_44 != NULL) {
                 pos = self->unk_44->pos;
                 if (self->unk_44->unk_22_4) {

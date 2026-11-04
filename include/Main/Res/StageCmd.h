@@ -19,7 +19,7 @@ extern BOOL Item_Set_0206f5e4(u16 id, int a);
 extern void SceneCmd_Push10(FieldState *state, s32 id);
 extern void SceneCmd_Push0e(FieldState *state, s32 a);
 extern void SceneCmd_Push0f(FieldState *state, s32 a);
-extern void func_ov000_021762e4(u16 a, s32 b);
+extern void StoreMenu_AddStockItem(u16 a, s32 b);
 extern void QuestWin_AddQuest(s32 a);
 extern void SceneCmd_Push0a(u8 *buf);
 extern void SceneCmd_Push09(u8 *buf, int a);
@@ -153,7 +153,7 @@ extern void MessageQueue021cb980_Push0b_0c(FieldPlayer *player, int a, s32 b, s3
 extern void ListBuffer021cb940_SetEventCount(FieldActor *actor, s32 a, s32 b);
 extern void MessageQueue021cb980_Push0d_0e(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
 extern bool func_ov000_021705ec(FieldActor *actor);
-extern void func_ov000_0216da78(FieldActorState *st);
+extern void LoTimer_Stop(FieldActorState *st);
 extern void *MsgRes_GetString(void *msg, u16 id);
 extern void MessageQueue021cb980_Push0f(FieldPlayer *player, s32 a, void *str);
 extern void SceneCmd_Push1b(FieldState *state, s32 a);

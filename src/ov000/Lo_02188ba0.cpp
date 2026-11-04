@@ -49,7 +49,7 @@ extern "C" {
 void PauseNode_Init(void *node);
 void *Ov000Vt_021cc3a0_Ctor(void *p);
 
-Obj02188ba0 *func_ov000_02188ba0(Obj02188ba0 *self) {
+Obj02188ba0 *Obj02188ba0_Init(Obj02188ba0 *self) {
     s32 i;
     PauseNode_Init(self->unk_08);
     for (i = 0; i < 0x10; i++) {

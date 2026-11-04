@@ -85,7 +85,7 @@ typedef struct Node0216607c {
 // One item of a node (0x18 bytes): its node, map position and kind.
 struct Item0216607c {
     Node0216607c *node;
-    s32 lo; // the player's y range the item covers (func_ov000_02165e2c)
+    s32 lo; // the player's y range the item covers (Lo021cb6b0_FindFloor)
     s32 hi;
     s32 a; // map position
     s32 b;
@@ -105,7 +105,7 @@ typedef struct LoAnimC {
     u8 pad[0x84];
     Node0216607c *frames[0x20];
     u8 cnt;
-    u8 key; // the item key the path follows (func_ov000_02165e2c)
+    u8 key; // the item key the path follows (Lo021cb6b0_FindFloor)
     u16 state;
     u16 idx;
     u16 timer;

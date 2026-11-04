@@ -8,7 +8,7 @@
 extern "C" {
 
 extern Ov008Mgr *gOv008Mgr;
-void func_02062524(void);
+void StageVars_ClearSavedField(void);
 void SceneCmd_Push26(void *p);
 Ov008Def *Lang_GetGroup(u8 id);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
@@ -77,7 +77,7 @@ BOOL Ov008WorldMap_DialogOnDecide(Ov008Menu *self, Ov008Sel *sel) {
             b = FALSE;
         }
         if (b) {
-            func_02062524();
+            StageVars_ClearSavedField();
             SceneCmd_Push26(gSceneCmd);
             gOv008Mgr->flags.b1 = 1;
             SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);

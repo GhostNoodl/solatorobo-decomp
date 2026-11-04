@@ -2327,7 +2327,7 @@ int StageCmd_Op0b(StageResSlot *slot) {
 }
 
 int StageCmd_Op0c(StageResSlot *slot) {
-    func_ov000_021762e4(slot->args[0], slot->args[1]);
+    StoreMenu_AddStockItem(slot->args[0], slot->args[1]);
     return 1;
 }
 
@@ -3155,7 +3155,7 @@ int StageCmd_Op35(StageResSlot *slot) {
         }
         break;
     case 3:
-        func_ov000_0216da78(st);
+        LoTimer_Stop(st);
         break;
     }
     return 1;
@@ -3380,7 +3380,7 @@ typedef struct StageLight2 {
 } StageLight2;
 
 extern StageLight2 *Group_CreateNode(StageLightParam *param, u8 *color, u8 *color2, int a, int b);
-extern void func_ov000_0218b7c0(StageLight2 *light, u32 idx, int mode);
+extern void GroupNode_SetupKind(StageLight2 *light, u32 idx, int mode);
 
 static inline void LightParam_Init(StageLightParam *p, u16 id) {
     int k;
@@ -3439,7 +3439,7 @@ int StageCmd_Op3d(StageResSlot *slot) {
     light = Group_CreateNode(&param, color, color2, 0, 0);
     light->pos = pos;
     light->rot = rot;
-    func_ov000_0218b7c0(light, (u16)(param.key.raw >> 12), 2);
+    GroupNode_SetupKind(light, (u16)(param.key.raw >> 12), 2);
     gStageLastNode = light;
     return 1;
 }
@@ -3918,7 +3918,7 @@ int StageCmd_Op4e(StageResSlot *slot) {
     return 1;
 }
 
-void func_0205fc88(u32 flags) {
+void Stage_ApplyPlayerFlags(u32 flags) {
     StagePlayer *player = ActorMgr_FindPlayer();
     if (player != NULL) {
         if (flags & 1) {
@@ -4030,7 +4030,7 @@ int StageCmd_Op50(StageResSlot *slot) {
             SceneCmd_Push0b(gSceneCmd);
             return -0x63;
         }
-        func_0205fc88(flags);
+        Stage_ApplyPlayerFlags(flags);
         break;
     }
     return 1;
@@ -4045,7 +4045,7 @@ namespace m_StageCmd_9 {
 
 extern "C" {
 
-extern void func_0205fc88(u32 flags);
+extern void Stage_ApplyPlayerFlags(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
@@ -4088,7 +4088,7 @@ int StageCmd_Op51(StageResSlot *slot) {
         SceneCmd_Push0b(gSceneCmd);
         return -0x63;
     }
-    func_0205fc88(slot->args[0]);
+    Stage_ApplyPlayerFlags(slot->args[0]);
     return 1;
 }
 
@@ -4116,7 +4116,7 @@ namespace m_StageCmd_10 {
 
 extern "C" {
 
-extern void func_0205fc88(u32 flags);
+extern void Stage_ApplyPlayerFlags(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
@@ -4250,7 +4250,7 @@ namespace m_StageCmd_11 {
 
 extern "C" {
 
-extern void func_0205fc88(u32 flags);
+extern void Stage_ApplyPlayerFlags(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
@@ -4434,7 +4434,7 @@ namespace m_StageCmd_12 {
 
 extern "C" {
 
-extern void func_0205fc88(u32 flags);
+extern void Stage_ApplyPlayerFlags(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
@@ -4630,7 +4630,7 @@ extern SndMgr *gSndMgr;
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, u16 id);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, int a);
-extern void func_ov000_021bc3ec(FieldFade *fade, u16 a, s32 b);
+extern void FieldFade_Start(FieldFade *fade, u16 a, s32 b);
 extern void SceneCmd_Push27(FieldState *state, int a, int b, int c);
 extern void GfxSys_SetFadePlanes(int a, int b);
 extern void GfxSys_StartFadeOut(int a, int b, int c);
@@ -4716,7 +4716,7 @@ int StageCmd_Op6d(StageResSlot *slot) {
     if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    func_ov000_021bc3ec(gFieldFade, slot->args[0], slot->args[1] << 12);
+    FieldFade_Start(gFieldFade, slot->args[0], slot->args[1] << 12);
     return 1;
 }
 
@@ -4724,7 +4724,7 @@ int StageCmd_Op6e(StageResSlot *slot) {
     if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    func_ov000_021bc458(gFieldFade);
+    FieldFade_End(gFieldFade);
     return 1;
 }
 
@@ -5213,7 +5213,7 @@ void func_02062410(void) {
     data_02fe1534.unk_42 = 6;
 }
 
-void func_02062424(const StageColor *c) {
+void StageVars_SetEnterField(const StageColor *c) {
     data_02fe1534.unk_44 = 1;
     data_02fe1534.unk_46 = c->r;
     data_02fe1534.unk_48 = c->g;
@@ -5225,7 +5225,7 @@ void func_02062424(const StageColor *c) {
     data_02fe1534.unk_80 = gFieldMgr->destExit;
 }
 
-void func_02062478(const StageColor *c) {
+void StageVars_SetExitField(const StageColor *c) {
     data_02fe1534.unk_44 = 2;
     data_02fe1534.unk_4c = c->r;
     data_02fe1534.unk_4e = c->g;
@@ -5233,24 +5233,24 @@ void func_02062478(const StageColor *c) {
     data_02fe1534.unk_80 = gFieldMgr->destExit;
 }
 
-void func_020624b8(void) {
+void StageVars_ClearExitField(void) {
     data_02fe1534.unk_4c = 0xffff;
     data_02fe1534.unk_4e = 0xffff;
     data_02fe1534.unk_50 = 0xffff;
 }
 
-BOOL func_020624d8(void) {
+BOOL StageVars_HasSavedField(void) {
     u16 v = data_02fe1534.unk_52;
     return (v != 0xffff && v != 0x8000) ? TRUE : FALSE;
 }
 
-void func_02062500(const StageColor *c) {
+void StageVars_SetSavedField(const StageColor *c) {
     data_02fe1534.unk_52 = c->r;
     data_02fe1534.unk_54 = c->g;
     data_02fe1534.unk_56 = c->b;
 }
 
-void func_02062524(void) {
+void StageVars_ClearSavedField(void) {
     data_02fe1534.unk_52 = 0x8000;
     data_02fe1534.unk_54 = 0x8000;
     data_02fe1534.unk_56 = 0x8000;
@@ -5266,17 +5266,17 @@ void Shared_TakePendingPos(StageVec *out) {
     out->z = z << 4;
 }
 
-u16 func_02062588(void) {
+u16 Shared_TakePendingCamPitch(void) {
     data_02fe1534.posFlags &= ~2;
     return data_02fe1534.unk_3c;
 }
 
-u16 func_020625ac(void) {
+u16 Shared_TakePendingCamYaw(void) {
     data_02fe1534.posFlags &= ~4;
     return data_02fe1534.unk_3e;
 }
 
-s32 func_020625d0(void) {
+s32 Shared_TakePendingCamDist(void) {
     s16 v = data_02fe1534.unk_40;
     data_02fe1534.posFlags &= ~8;
     return v << 4;
@@ -5286,15 +5286,15 @@ BOOL Shared_HasPendingPos(void) {
     return Shared_TestFlag(1) ? TRUE : FALSE;
 }
 
-BOOL func_02062620(void) {
+BOOL Shared_HasPendingCamPitch(void) {
     return Shared_TestFlag(2) ? TRUE : FALSE;
 }
 
-BOOL func_02062648(void) {
+BOOL Shared_HasPendingCamYaw(void) {
     return Shared_TestFlag(4) ? TRUE : FALSE;
 }
 
-BOOL func_02062670(void) {
+BOOL Shared_HasPendingCamDist(void) {
     return Shared_TestFlag(8) ? TRUE : FALSE;
 }
 
@@ -5349,7 +5349,7 @@ void func_020627c8(void) {
     data_02fe1534.unk_22 = 0;
 }
 
-void func_020627dc(u16 a) {
+void StageVars_SetEventScript(u16 a) {
     data_02fe1534.unk_28 = a;
 }
 
@@ -5365,11 +5365,11 @@ void func_0206280c(u16 a) {
     data_02fe1534.unk_80 = a;
 }
 
-void func_0206281c(void) {
+void StageVars_ClearChoice(void) {
     data_02fe1534.unk_7c = 0xffff;
 }
 
-u16 func_02062834(void) {
+u16 StageVars_GetChoice(void) {
     return data_02fe1534.unk_7c;
 }
 

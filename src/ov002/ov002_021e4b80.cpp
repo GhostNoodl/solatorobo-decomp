@@ -44,7 +44,7 @@ char *Ov002StrTable_GetDesc(Ov002StrTable *self, u32 idx) {
     return self->pairs[idx].desc;
 }
 
-u32 func_ov002_021e4c30(int which) {
+u32 Ov002_GetRecordValue(int which) {
     u32 r = 0;
     switch (which) {
     case 0:
@@ -313,7 +313,7 @@ typedef struct Rec021e50d8 {
     s32 g;
 } Rec021e50d8;
 
-void func_ov002_021e50d8(Ov002Obj021f07d4 *self, s32 a, s32 b) {
+void Ov002Obj021f07d4_AddTexLink(Ov002Obj021f07d4 *self, s32 a, s32 b) {
     Rec021e50d8 rec;
     rec.id = 0;
     rec.a = a;
@@ -716,7 +716,7 @@ BOOL Ov002Obj021f07d4_Setup(Ov002Obj021f07d4 *self) {
 namespace m_021e5a10 {
 extern "C" {
 
-void func_ov002_021e5fe4(Ov002Obj021f075c *p);
+void Ov002Obj021f075c_Reload(Ov002Obj021f075c *p);
 
 BOOL Ov002Obj021f07d4_Update(Ov002Obj021f07d4 *self) {
     Ov002Obj021f075c *n;
@@ -735,7 +735,7 @@ BOOL Ov002Obj021f07d4_Update(Ov002Obj021f07d4 *self) {
         if (self->unk_1e8 != NULL) {
             Ov002Obj021f075c_RemoveAnims(self->unk_1e8);
         }
-        func_ov002_021e5fe4(n);
+        Ov002Obj021f075c_Reload(n);
         self->unk_1e8 = n;
     }
     n = NULL;
@@ -960,7 +960,7 @@ static inline void ov002_021e5fe4_Load(NNSG3dAnmObj **slot, void *set, char *nam
     }
 }
 
-void func_ov002_021e5fe4(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_Reload(Ov002Obj021f075c *self) {
     char name[0x10];
     Ov002Obj021f07d4 *obj = (Ov002Obj021f07d4 *)self->owner;
     void *mdl = obj->unk_60;
@@ -977,7 +977,7 @@ void func_ov002_021e5fe4(Ov002Obj021f075c *self) {
     ov002_021e5fe4_Load(&self->unk_70, self->unk_60[3], name, mdl, tex, (u8 *)obj + 0x68);
     ov002_021e5fe4_Load(&self->unk_74, self->unk_60[4], name, mdl, tex, (u8 *)obj + 0x68);
     Ov002Obj021f075c_UpdateAnims(self);
-    func_ov002_021e6290(self);
+    Ov002Obj021f075c_ResetAnim(self);
 }
 
 void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self) {
@@ -1001,10 +1001,10 @@ void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self) {
     self->unk_64->priority = 0x7f;
     self->unk_64->numMapData = 0;
     Ov002Obj021f075c_UpdateAnims(self);
-    func_ov002_021e6290(self);
+    Ov002Obj021f075c_ResetAnim(self);
 }
 
-void func_ov002_021e6290(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_ResetAnim(Ov002Obj021f075c *self) {
     NNSG3dAnmObj *m;
     s32 cur;
     s32 lim;

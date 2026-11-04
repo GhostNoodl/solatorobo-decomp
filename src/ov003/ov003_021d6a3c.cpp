@@ -22,7 +22,7 @@ u16 LangData_GetIndex(int a, int b);
 Ov003Player *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
 void Shared_SetEventActor(u16 kind, u16 id);
-void func_020627dc(u16 sfx);
+void StageVars_SetEventScript(u16 sfx);
 void SceneStage_StartScript(u8 *p);
 void Ov003_AddExp(u16 id);
 void Group_UpdateActor(void *mgr, s32 a, void *obj);
@@ -61,7 +61,7 @@ extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOO
     if (pl != NULL && !Actor_IsDead()) {
         if (sound) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(2);
+            StageVars_SetEventScript(2);
             {
                 FieldState *g = gSceneCmd;
                 g->stageFlags = 1;

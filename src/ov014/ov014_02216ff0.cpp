@@ -368,7 +368,7 @@ BOOL Ov014Act_021fd4d4_Draw(Ov014Act_021fd4d4 *self) {
 }
 
 extern const Ov014PmfEntry data_ov014_022168c4[];
-extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
+extern void Actor_UpdateMarker(Ov003Actor *self, void *icon);
 extern void ActorMarker_Update(void *icon);
 extern void Geom_AddRotatedOffset(VecFx32 *pos, VecFx32 *v, u16 ang);
 
@@ -391,7 +391,7 @@ void Ov014Act_021fd4d4_RunState(Ov014Act_021fd4d4 *self) {
         if (self->unk_5c != NULL && Ov014_GameIdle()) {
             VecFx32 pos;
             s32 r;
-            func_ov000_0219af3c(self, self->unk_5c);
+            Actor_UpdateMarker(self, self->unk_5c);
             if (self->unk_44 != NULL) {
                 Ov014D8a4Sub44 *s44 = (Ov014D8a4Sub44 *)self->unk_44;
                 pos = s44->pos;
@@ -831,7 +831,7 @@ extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern void Model0218fe1c_ResumeAnim(void *a);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 
 void Ov014Act_021fd4d4_State21(Ov014Act_021fd4d4 *self) {
     VecFx32 v1;
@@ -874,7 +874,7 @@ void Ov014Act_021fd4d4_State21(Ov014Act_021fd4d4 *self) {
             self->unk_f4 ^= 0x40;
             self->unk_93_4 = 1;
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
         }
         if (Ov014_GameIdle()) {
@@ -959,7 +959,7 @@ void Ov014Act_021fd4d4_State22(Ov014Act_021fd4d4 *self) {
             if (w->timer >= 0x32) {
                 SndMgr_Stop(gSndMgr, 0x38);
                 Shared_SetEventActor(self->kind, self->id);
-                func_020627dc(4);
+                StageVars_SetEventScript(4);
                 gSceneCmd->stageFlags = 1;
                 self->fsm->timer = 0;
                 self->fsm->st++;
@@ -1406,7 +1406,7 @@ static inline BOOL Ov014_PlBusy(Ov003Actor *pl) {
 }
 
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void SceneStage_StartScript(void *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, VecFx32 *pos, s32 a);
@@ -1427,7 +1427,7 @@ void Ov014Act_021fd4d4_StateDie(Ov014Act_021fd4d4 *self) {
             ActorSub44 *n;
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(5);
+            StageVars_SetEventScript(5);
             g = gSceneCmd;
             g->stageFlags = 1;
             SceneStage_StartScript(&g->stageFlags);

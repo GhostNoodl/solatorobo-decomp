@@ -36,7 +36,7 @@ static inline s32 FxMul0218af9c(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_ov000_0218af9c(GroupNode *self) {
+void GroupNode_UpdateSpawned(GroupNode *self) {
     unsigned long on;
     s32 dist;
     BOOL any;

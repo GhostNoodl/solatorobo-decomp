@@ -18,7 +18,7 @@ extern void *Ov008Menu_vtbl;
 extern char gCommonTextPath[];
 extern u8 *gStageFlags;
 s32 MsgRes_GetString(void *p, s32 id);
-BOOL func_020624d8(void);
+BOOL StageVars_HasSavedField(void);
 void UiList_SetMarkModel(void *list, const char *arc, const char *file, int part);
 Ov008SaveEnt *DataRes_GetTable(void *res, u32 idx);
 u32 DataRes_GetCount(void *res, u32 idx);
@@ -103,7 +103,7 @@ void Ov008WorldMap_BuildMenu(Ov008Mgr *m) {
     if (m->menu->serial == 0) {
         Ov008_AddEntry(m, 0);
     }
-    if (func_020624d8()) {
+    if (StageVars_HasSavedField()) {
         Ov008Menu *u = m->menu;
         u->va8(UiList_GetItemById(u, data_02fe1534.unk_52));
     } else {

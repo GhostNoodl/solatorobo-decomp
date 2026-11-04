@@ -8,7 +8,7 @@ Ov004V *data_ov004_021cf864;
 
 #pragma force_active on
 
-void *func_ov004_021ccda0(s32 a, s32 b) {
+void *Ov004_OnCheckFail(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
     u8 *x = (u8 *)ActorMgr_FindPlayer();
     u32 v = (o->unk_16 |= 4);
@@ -27,7 +27,7 @@ void *func_ov004_021ccda0(s32 a, s32 b) {
     return o;
 }
 
-void *func_ov004_021ccdfc(s32 a, s32 b) {
+void *Ov004_OnCheckPass(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
     u8 *x = (u8 *)ActorMgr_FindPlayer();
     u32 v = (o->unk_16 = o->unk_16 & ~4);
@@ -57,7 +57,7 @@ void *func_ov004_021cce5c(void *a, s32 b) {
     return o;
 }
 
-void *func_ov004_021cce88(void) {
+void *Ov004_Create(void) {
     Ov004V *o;
     u32 k;
     func_ov004_021ce50c();
@@ -68,14 +68,14 @@ void *func_ov004_021cce88(void) {
     }
     data_ov004_021cf864 = o;
     k = *(u32 *)0x2fffc3c & 1;
-    data_ov004_021cf86c[k] = (void *)func_ov004_021ccdfc;
+    data_ov004_021cf86c[k] = (void *)Ov004_OnCheckPass;
     data_ov004_021cf868 = k;
-    data_ov004_021cf86c[k ^ 1] = (void *)func_ov004_021ccda0;
+    data_ov004_021cf86c[k ^ 1] = (void *)Ov004_OnCheckFail;
     data_ov004_021cf860 = func_ov004_021cce5c;
     return o;
 }
 
-void func_ov004_021ccf10(void) {
+void Ov004_Destroy(void) {
     void *saved;
     if (data_ov004_021cf860 != NULL) {
         data_ov004_021cf860(data_ov004_021cf864, 0x2010000);

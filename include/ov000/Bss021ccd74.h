@@ -6,8 +6,8 @@
 
 struct Model;
 
-// data_ov000_021ccd74 (.bss): three models made by func_ov000_021bce90 and freed by
-// func_ov000_021bd09c, the alpha cap that ActorMarker_DrawKind0b sets each frame, and a pending matrix and
+// data_ov000_021ccd74 (.bss): three models made by Bss021ccd74_LoadModels and freed by
+// Bss021ccd74_FreeModels, the alpha cap that ActorMarker_DrawKind0b sets each frame, and a pending matrix and
 // offset that Obj021c2114_Draw posts and Obj021c2114_JointCallback consumes (and clears).
 typedef struct Bss021ccd74 {
     /* 0x00 */ s8 alpha; // the polygon alpha cap of ActorMarker_MatCallback0b (0..30, from the drawn object's alpha)

@@ -322,7 +322,7 @@ extern "C" {
 
 extern const char data_ov011_022078e1[];
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 s32 Rand_PlusMinus(s32 max);
 
 void Ov011SceneActor_State20(Ov011SceneActor *self) {
@@ -366,7 +366,7 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
     case 2:
         if (++s->timer > 60) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             self->model->alpha = 0x1f;
             History_SetState(self->fsm, 1, 0);

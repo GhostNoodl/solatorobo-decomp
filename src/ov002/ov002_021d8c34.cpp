@@ -3,7 +3,7 @@
 extern "C" {
 
 
-void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *arg) {
+void Obj021efe9c_Rotate(Obj021efe9c *self, s32 d, Ov002Shape *arg) {
     s32 n;
     s32 r;
     if (self->unk_a4 != 0 && self->unk_ac != 1) {

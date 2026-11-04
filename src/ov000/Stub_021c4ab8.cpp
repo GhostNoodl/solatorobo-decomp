@@ -15,7 +15,7 @@ extern "C" {
 
 s32 FX_Div(s32 a, s32 b);
 
-void func_ov000_021c4ab8(Obj021c4ab8 *self) {
+void Obj021c4ab8_UpdateScrollBar(Obj021c4ab8 *self) {
     if (self->unk_98 < self->unk_20) {
         self->unk_c8 = 0x1000;
     } else {

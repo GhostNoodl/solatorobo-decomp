@@ -11,19 +11,19 @@ void func_ov004_021ce848(void);
 void func_ov004_021cf764(void);
 extern char DSProt_BSS[];
 extern char data_ov004_021cf7bc[];
-extern char func_ov004_021ce7d8[];
-extern char func_ov004_021cdc6c[];
-extern char func_ov004_021cde0c[];
-extern char func_ov004_021cdfac[];
-extern char func_ov004_021ce14c[];
-void func_ov004_021ce574(u32 *t);
-BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
-BOOL func_ov004_021ce374(u32 addr, s32 arg);
-BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-void func_ov004_021ce484(void);
+extern char DSProt_CallEncrypted[];
+extern char DSProt_RunRomCheckA[];
+extern char DSProt_RunRomCheckB[];
+extern char DSProt_RunEmuCheckA[];
+extern char DSProt_RunEmuCheckB[];
+void DSProt_DescrambleRanges(u32 *t);
+BOOL DSProt_EntryRomCheckA(u32 addr, s32 arg);
+BOOL DSProt_EntryEmuCheckA(u32 addr, s32 arg);
+BOOL DSProt_EntryRomCheckB(u32 addr, s32 arg);
+void DSProt_EntryEmuCheckB(void);
 void func_ov004_021ce50c(void);
 
-asm BOOL func_ov004_021ce2ec(u32 addr, s32 arg) {
+asm BOOL DSProt_EntryRomCheckA(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -55,13 +55,13 @@ asm BOOL func_ov004_021ce2ec(u32 addr, s32 arg) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdc6c+0x3200
+    dcd DSProt_RunRomCheckA+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
-asm BOOL func_ov004_021ce374(u32 addr, s32 arg) {
+asm BOOL DSProt_EntryEmuCheckA(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -93,13 +93,13 @@ asm BOOL func_ov004_021ce374(u32 addr, s32 arg) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdfac+0x3200
+    dcd DSProt_RunEmuCheckA+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
-asm BOOL func_ov004_021ce3fc(u32 addr, s32 arg) {
+asm BOOL DSProt_EntryRomCheckB(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -131,13 +131,13 @@ asm BOOL func_ov004_021ce3fc(u32 addr, s32 arg) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cde0c+0x3200
+    dcd DSProt_RunRomCheckB+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
-asm void func_ov004_021ce484(void) {
+asm void DSProt_EntryEmuCheckB(void) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -169,10 +169,10 @@ asm void func_ov004_021ce484(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021ce14c+0x3200
+    dcd DSProt_RunEmuCheckB+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
-    dcd func_ov004_021ce7d8+0x68000000
+    dcd DSProt_CallEncrypted+0x68000000
 }
 
 asm void func_ov004_021ce50c(void) {
@@ -188,14 +188,14 @@ asm void func_ov004_021ce50c(void) {
     stmia r0!, {r1, r2, r3, r4, r5, r6, r7, r8, r9, r10}
     orr r0, pc, #0
     adds r0, r0, #4
-    bne func_ov004_021ce574
-    dcd func_ov004_021ce2ec+0x3200
+    bne DSProt_DescrambleRanges
+    dcd DSProt_EntryRomCheckA+0x3200
     dcd DSProt_BSS+0x3270
-    dcd func_ov004_021ce374+0x3200
+    dcd DSProt_EntryEmuCheckA+0x3200
     dcd DSProt_BSS+0x3270
-    dcd func_ov004_021ce3fc+0x3200
+    dcd DSProt_EntryRomCheckB+0x3200
     dcd DSProt_BSS+0x3270
-    dcd func_ov004_021ce484+0x3200
+    dcd DSProt_EntryEmuCheckB+0x3200
     dcd DSProt_BSS+0x3270
     dcd 0x00000000
     dcd 0x00000000

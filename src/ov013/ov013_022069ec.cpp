@@ -6,7 +6,7 @@ extern "C" {
 extern char data_ov013_0220be7c[];
 extern void Field_ShakeCamera(u8 a, u8 b);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(s32 a);
+void StageVars_SetEventScript(s32 a);
 
 
 void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
@@ -75,7 +75,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
         break;

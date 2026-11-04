@@ -12,7 +12,7 @@ extern "C" {
 
 extern ov006_Net021e5050 *gWhMgr;
 extern u8 data_ov006_021eb840[];
-BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
+BOOL Wh_StartScan(ov006_Net021e5050 *net, void *data, int a);
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e5050 *net);
 void ov006_Menu_PruneNodes(ov006_Menu *self);
 void ov006_Menu_SortNodes(ov006_Menu *self);
@@ -51,7 +51,7 @@ void ov006_Menu_State04(ov006_Menu *self) {
         if (gWhMgr->unk2C != 1) {
             return;
         }
-        func_02046070(gWhMgr, data_ov006_021eb840, 0);
+        Wh_StartScan(gWhMgr, data_ov006_021eb840, 0);
         self->unk2C = 1;
         self->stateTime = 20;
         self->unk10 = 30;

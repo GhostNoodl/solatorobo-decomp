@@ -4,10 +4,10 @@
 
 // DSProtect: these check that the first instructions of a protection stub haven't been patched.
 // The stubs are referenced as data so that the offset folds into the pool relocation.
-extern u8 func_ov004_021cf544[];
-extern u8 func_ov004_021cf5cc[];
-extern u8 func_ov004_021cf654[];
-extern u8 func_ov004_021cf6dc[];
+extern u8 DSProt_RomCheckA_Stub[];
+extern u8 DSProt_RomCheckB_Stub[];
+extern u8 DSProt_EmuCheckA_Stub[];
+extern u8 DSProt_EmuCheckB_Stub[];
 
 #define CHECK_STUB(stub, bad, good)                                \
     u8 *p = (u8 *)((u32)((stub) + 0x3200) - 0x6400);              \
@@ -29,20 +29,20 @@ extern u8 func_ov004_021cf6dc[];
     if (p[0x3200 + 15] != 0x12) return (bad);                      \
     return (good);
 
-u32 func_ov004_021cd050(void) {
-    CHECK_STUB(func_ov004_021cf654, 0xc127, 0xb975)
+u32 DSProt_IsEmuCheckAStubIntact(void) {
+    CHECK_STUB(DSProt_EmuCheckA_Stub, 0xc127, 0xb975)
 }
 
-u32 func_ov004_021cd16c(void) {
-    CHECK_STUB(func_ov004_021cf6dc, 0xaa65, 0xb177)
+u32 DSProt_IsEmuCheckBStubIntact(void) {
+    CHECK_STUB(DSProt_EmuCheckB_Stub, 0xaa65, 0xb177)
 }
 
-u32 func_ov004_021cd288(void) {
-    CHECK_STUB(func_ov004_021cf544, 0xc127, 0xb975)
+u32 DSProt_IsRomCheckAStubIntact(void) {
+    CHECK_STUB(DSProt_RomCheckA_Stub, 0xc127, 0xb975)
 }
 
-u32 func_ov004_021cd3a4(void) {
-    CHECK_STUB(func_ov004_021cf5cc, 0xaa65, 0xb177)
+u32 DSProt_IsRomCheckBStubIntact(void) {
+    CHECK_STUB(DSProt_RomCheckB_Stub, 0xaa65, 0xb177)
 }
 
 #pragma force_active reset

@@ -43,7 +43,7 @@ void LoTimer_Setup(LoTimer *self, s32 mode, s32 limit, s32 c) {
     self->b7 = 0;
 }
 
-void func_ov000_0216da78(LoTimer *self) {
+void LoTimer_Stop(LoTimer *self) {
     s32 v = self->time;
     self->b9 = 1;
     self->b16 = 0;

@@ -16,7 +16,7 @@ extern ov006_Unk02097e40 *gWhMgr;
 
 BOOL ov006_Menu_UpdateNode(ov006_Menu *self, const ov006_MenuData *data);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
-BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
+BOOL Wh_StepDataSharing(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int Wh_GetError(ov006_Unk02097e40 *a);
 ov006_MenuEntry *Wh_GetSharedData(ov006_Unk02097e40 *a, int idx);
 void OS_GetOwnerInfo(void *a);
@@ -62,7 +62,7 @@ static inline void ov006_Menu_UpdateConnection(void) {
     if (menu->unk15F != 0) {
         return;
     }
-    if (func_020469d4(gWhMgr, ov006_Menu_GetEntry(menu, func_02046ab4(gWhMgr)))) {
+    if (Wh_StepDataSharing(gWhMgr, ov006_Menu_GetEntry(menu, func_02046ab4(gWhMgr)))) {
         status = 0;
     } else {
         status = Wh_GetError(gWhMgr);

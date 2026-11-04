@@ -37,7 +37,7 @@ extern "C" {
 s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
 BOOL Hit_PointInRotCylinder(void *o, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a);
 
-s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a, void **list) {
+s32 Finder_CollectInBox(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a, void **list) {
     s32 ret;
     if (a == 0 || rot == NULL || (rot->x == 0 && rot->y == 0 && rot->z == 0)) {
         Finder f;

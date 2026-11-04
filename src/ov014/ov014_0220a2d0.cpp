@@ -65,7 +65,7 @@ void Ov014Act_02209280_SpawnShot(Ov014Act_02209280 *self, u16 a) {
     self->target_id = o->id;
 }
 
-void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c) {
+void Ov014Act_02209280_SpawnChild4819(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c) {
     Ov014SpawnDesc desc;
     VecFx32 pos;
     Ov014Vec16 rot;

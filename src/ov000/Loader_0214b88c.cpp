@@ -62,7 +62,7 @@ BOOL Loader_IsDone(Loader *self) {
     return self->unk_08 == 2;
 }
 
-u32 func_ov000_0214b8ec(Loader *self) {
+u32 Loader_GetTexAddr(Loader *self) {
     return self->unk_10;
 }
 
@@ -73,7 +73,7 @@ u8 func_ov000_0214b8f4(Loader *self) {
     return 1;
 }
 
-void func_ov000_0214b910(Loader *self) {
+void Loader_StepLoadTex(Loader *self) {
     Data02034f5c *entry;
     void *data;
     char *name;

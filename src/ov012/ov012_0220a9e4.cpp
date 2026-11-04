@@ -629,7 +629,7 @@ extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 extern VecFx32 data_ov012_0220a618;
 extern void Model0218fe1c_PauseAnim(void *p);
 extern void Model0218fe1c_ResumeAnim(void *p);
-extern void func_ov012_02205254(Ov012Act_02202b10 *self);
+extern void Ov012Act_02202b10_SpawnShot(Ov012Act_02202b10 *self);
 
 void Ov012Act_02202b10_StateShoot(Ov012Act_02202b10 *self) {
     VecFx32 p;
@@ -756,7 +756,7 @@ void Ov012Act_02202b10_StateAttack(Ov012Act_02202b10 *self) {
         if (self->model->anim_state == 1) {
             EffectObj *e;
             SndMgr_PlayAt(gSndMgr, 0x2b, &self->pos, 0);
-            func_ov012_02205254(self);
+            Ov012Act_02202b10_SpawnShot(self);
             e = Effect_SpawnId(0x12d, &self->pos);
             v.x = -0x1000;
             v.y = 0x2ccd;
@@ -1001,7 +1001,7 @@ extern void Model0218fe1c_ResumeAnim(void *p);
 extern void Model0218fe1c_SetReverse(void *p);
 extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 extern BOOL func_ov012_02205080(Ov012Act_02202b10 *self, s32 a);
-extern void func_ov012_022053a4(Ov012Act_02202b10 *self);
+extern void Ov012Act_02202b10_SpawnAimedShot(Ov012Act_02202b10 *self);
 
 void Ov012Act_02202b10_StateAttack3(Ov012Act_02202b10 *self) {
     VecFx32 v;
@@ -1038,7 +1038,7 @@ void Ov012Act_02202b10_StateAttack3(Ov012Act_02202b10 *self) {
             SndMgr_PlayAt(gSndMgr, 0x404, &self->pos, 0);
             self->unk_f0 ^= 0x100000;
             Model0218fe1c_ResumeAnim(self->model);
-            func_ov012_022053a4(self);
+            Ov012Act_02202b10_SpawnAimedShot(self);
             e = Effect_SpawnId(0x68, &self->pos);
             e->SetScaleAll(0x800);
             e->SetRotXYZ(0xbfff, self->rot_y, 0);
@@ -1266,7 +1266,7 @@ BOOL func_ov012_02205080(Ov012Act_02202b10 *self, s32 a) {
 }
 
 extern "C" {
-void func_ov012_02205254(Ov012Act_02202b10 *self) {
+void Ov012Act_02202b10_SpawnShot(Ov012Act_02202b10 *self) {
     Ov012SpawnDesc d;
     VecFx32 v;
     Ov003Actor *o;
@@ -1300,7 +1300,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
 }
 
 extern "C" {
-void func_ov012_022053a4(Ov012Act_02202b10 *self) {
+void Ov012Act_02202b10_SpawnAimedShot(Ov012Act_02202b10 *self) {
     Ov012SpawnDesc d;
     VecFx32 v;
     Ov003Actor *o;
@@ -1379,7 +1379,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(5);
+        StageVars_SetEventScript(5);
         {
             u8 *g = (u8 *)gSceneCmd;
             g[0xac] = 1;

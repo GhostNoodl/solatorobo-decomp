@@ -38,7 +38,7 @@ void Actor_TurnToActor(Actor *self, void *other, s32 a);
 void Field_ShakeCamera(u8 a, u8 b);
 s32 SndMgr_PlayPan(void *mgr, s32 id, s32 pan);
 void Shared_SetEventActor(u16 a, u16 b);
-void func_020627dc(u16 a);
+void StageVars_SetEventScript(u16 a);
 void SceneStage_StartScript(void *p);
 void Model0218fe1c_SetAnimDelay(void *model, u16 delay, BOOL force);
 s32 Rand_PlusMinus(s32 max);
@@ -49,7 +49,7 @@ void Target_Set(void *a, void *b);
 u8 *Target_Get(void *p);
 u16 Actor_YawToPos(Actor *self, void *target);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 pan);
-void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
+void Lo021cb894_SetValue(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
 void Shared_ChangeFlags(u16 clear, u16 set);
 
 static inline Actor *FindActor_021a7af0(u16 id) {
@@ -109,7 +109,7 @@ static inline void Gauge_021a7af0(s32 a, s32 b, VecFx32 *p, VecFx32 *q) {
     if (o->unk_74 == NULL) {
         return;
     }
-    func_ov000_02168490(o->unk_74, a, b, p, q);
+    Lo021cb894_SetValue(o->unk_74, a, b, p, q);
 }
 
 static inline BOOL Flag19_021a7af0(FieldMgr *g) {
@@ -519,7 +519,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     } else if (k == 3) {
                         FieldState *g;
                         Shared_SetEventActor(t->kind, t->id);
-                        func_020627dc(5);
+                        StageVars_SetEventScript(5);
                         g = gSceneCmd;
                         g->stageFlags = stop;
                         SceneStage_StartScript((u8 *)g + 0xac);
@@ -675,7 +675,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     self->unk_b24_27 = 1;
                 }
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &w);
-                func_ov000_021899d8(&w, NULL, t->radius + 0x8ccd, 1, 0x2000, 0x1000);
+                Field_SetCamTarget(&w, NULL, t->radius + 0x8ccd, 1, 0x2000, 0x1000);
             }
             u.x = 0;
             u.y = -0x2000;

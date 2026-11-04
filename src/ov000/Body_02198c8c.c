@@ -143,7 +143,7 @@ static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) 
     return n;
 }
 
-void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
+void Body_CheckGround(Body *self, VecFx32 *pos, const VecFx32 *vel) {
     s32 y0;
     self->check.x = pos->x;
     self->check.y = pos->y;

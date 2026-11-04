@@ -237,7 +237,7 @@ void Robo021ca458_State1e(Robo021ca458 *self) {
     {
         v = self->pos;
         v.y += self->centerY;
-        func_ov000_021899d8(&v, NULL, 0x6ccd, 1, 0x1000, 0x1000);
+        Field_SetCamTarget(&v, NULL, 0x6ccd, 1, 0x1000, 0x1000);
     }
 }
 

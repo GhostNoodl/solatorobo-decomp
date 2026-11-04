@@ -931,10 +931,10 @@ extern void *ov006_EntryWait_vtbl;
 
 BOOL func_0201fd04(void);
 BOOL ov006_Menu_RequestStart(ov006_Menu *self);
-BOOL func_ov006_021e4c84(ov006_Menu *self);
+BOOL ov006_Menu_RequestScan(ov006_Menu *self);
 BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
-BOOL func_ov006_021e4cb4(ov006_Menu *self);
-BOOL func_ov006_021e4ce8(ov006_Menu *self, ov006_MenuData *data);
+BOOL ov006_Menu_RequestHost(ov006_Menu *self);
+BOOL ov006_Menu_RequestConnect(ov006_Menu *self, ov006_MenuData *data);
 void ov006_Menu_ReleaseObj(ov006_Menu *self);
 ov006_MenuNode *ov006_Menu_FindNode(ov006_Menu *self, int id);
 void *MsgRes_GetString(void *a, int id);
@@ -957,7 +957,7 @@ BOOL ov006_GroupSelect_IsLoaded(ov006_TaskD0 *self) {
         break;
     case 1:
         if (gOv006Menu->state == 3) {
-            func_ov006_021e4c84(gOv006Menu);
+            ov006_Menu_RequestScan(gOv006Menu);
             self->step = 2;
         }
         break;
@@ -1059,7 +1059,7 @@ void ov006_GroupSelect_UpdateActive(ov006_TaskD0 *self) {
         UiListItem *node = UiList_GetCurrent(self->unk104);
         if (node->unk_10 == 0) {
             if (node->id == 4) {
-                func_ov006_021e4cb4(gOv006Menu);
+                ov006_Menu_RequestHost(gOv006Menu);
                 gOv006Menu->unk15E = 2;
                 SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 ov006_TaskD0_Close(self);
@@ -1073,7 +1073,7 @@ void ov006_GroupSelect_UpdateActive(ov006_TaskD0 *self) {
         } else {
             ov006_MenuNode *menu = ov006_Menu_FindNode(gOv006Menu, node->unk_10);
             if (menu != NULL) {
-                func_ov006_021e4ce8(gOv006Menu, &menu->data);
+                ov006_Menu_RequestConnect(gOv006Menu, &menu->data);
                 gOv006Menu->unk15E = 2;
                 SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->subStep = 1;

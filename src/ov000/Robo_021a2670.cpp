@@ -22,7 +22,7 @@ void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 void Robo021ca458_WalkByPad(Robo021ca458 *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL History_SetState(void *st, s32 a, s32 b);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_ov000_02168e18(void *a, s32 b, s32 c, VecFx32 *v);
+void Lo021cb840_SetValue(void *a, s32 b, s32 c, VecFx32 *v);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 x, s32 z);
@@ -151,7 +151,7 @@ void Robo021ca458_State03(Robo021ca458 *self) {
                 }
                 g = LFLD(u8 *, g, 0x11c);
                 if (g != NULL && LFLD(u8 *, g, 0x70) != NULL) {
-                    func_ov000_02168e18(LFLD(u8 *, g, 0x70), t, 0x1e, &v);
+                    Lo021cb840_SetValue(LFLD(u8 *, g, 0x70), t, 0x1e, &v);
                 }
             }
         }

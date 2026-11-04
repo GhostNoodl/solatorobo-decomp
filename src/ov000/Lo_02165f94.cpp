@@ -50,7 +50,7 @@ u8 *Lo021cb6b0_HandleInput(Lo021cb6b0 *self) {
     return p->rgb;
 }
 
-Node0216607c *func_ov000_0216607c(Lo021cb6b0 *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
+Node0216607c *Lo021cb6b0_FindNodeIndex(Lo021cb6b0 *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
     Ctx0216607c *ctx = self->unk_30;
     Item0216607c **lst;
     u8 i;
@@ -286,7 +286,7 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
-        nd = func_ov000_0216607c(self, h->frames[0], &j, TRUE);
+        nd = Lo021cb6b0_FindNodeIndex(self, h->frames[0], &j, TRUE);
         if (nd != NULL) {
             k = p->markCount++;
             o = &p->marks[k];
@@ -314,7 +314,7 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
             if (en == NULL) {
                 continue;
             }
-            nd = func_ov000_0216607c(self, en, &j, FALSE);
+            nd = Lo021cb6b0_FindNodeIndex(self, en, &j, FALSE);
             if (nd == NULL) {
                 continue;
             }

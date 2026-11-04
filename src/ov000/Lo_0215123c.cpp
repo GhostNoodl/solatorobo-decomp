@@ -63,11 +63,11 @@ void QuestWin_Draw(Lo021ca9c4 *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov000_021512b4 is 23 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): LoStatusWin_Draw is 23 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: register-only: the -0x191a depth constant swaps with bx (bx lives across the
 // virtual calls, so it stays an object). History: docs/MATCHING.md rounds smW, qpH, raC, raE, mtA, cvA (search for
 // the address); the full list is docs/UNMATCHED.md.
-// func_ov000_021512b4 (0x2d8 bytes, the status-window text layout): 23 / 0 (raw / register-masked), round
+// LoStatusWin_Draw (0x2d8 bytes, the status-window text layout): 23 / 0 (raw / register-masked), round
 // smW's b2 draft. The real signature is (obj, a, pos, c) (round smV; a and c are unused). Left: the -0x191a
 // text-depth constant (ROM r6, ours r5) swaps with bx and the first (0x100 - w) >> 1 (ROM r5, ours r6).
 // ramerge (round qpH, multi-target 34:6 47:5 71:5 76:6 151:6) finds exactly two fixes: bx (node 47) numbered
@@ -159,7 +159,7 @@ struct LoStatusWin {
     LoTextWin unk_3f8;
 };
 
-void func_ov000_021512b4(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
+void LoStatusWin_Draw(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
     s32 bx;
     s32 h;
     s32 x;

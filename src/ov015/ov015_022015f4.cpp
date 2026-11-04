@@ -62,7 +62,7 @@ BOOL Ov015Game_Setup(Ov015Game *self) {
         l->count = 0;
     }
     self->fishList = l;
-    n = func_ov015_02211160(gOv015Shared, ids, 3);
+    n = Ov015Shared_BuildFishList(gOv015Shared, ids, 3);
     Ov015Info38_Set(&self->info, gOv015Shared->unk_08, self->ship->modelIdx);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];

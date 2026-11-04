@@ -947,7 +947,7 @@ void Ov012Lift_State20(Ov012Lift *self) {
                 self->unk_10c ^= 0x40;
             }
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             if (self->unk_f0 == 0) {
                 History_SetState(self->fsm, 1, 0);
@@ -1005,7 +1005,7 @@ void Ov012Lift_State21(Ov012Lift *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         break;
     }
@@ -1056,7 +1056,7 @@ void Ov012Lift_State22(Ov012Lift *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         self->fsm->timer = 0;
         History_SetState(self->fsm, 1, 0);
@@ -2561,7 +2561,7 @@ namespace m_021ff674 {
 extern "C" {
 extern const VecFx32 data_ov012_0220a4d4[];
 extern const VecFx32 data_ov012_0220a4bc[];
-void func_ov012_021ff8b4(Ov012Act_021fee1c *self, s32 idx);
+void Ov012Act_021fee1c_SpawnShot(Ov012Act_021fee1c *self, s32 idx);
 
 void Ov012Act_021fee1c_StateShoot(Ov012Act_021fee1c *self) {
     s32 off;
@@ -2645,7 +2645,7 @@ void Ov012Act_021fee1c_StateShoot(Ov012Act_021fee1c *self) {
         return;
     }
     case 3:
-        func_ov012_021ff8b4(self, self->targetObj->unk_1e);
+        Ov012Act_021fee1c_SpawnShot(self, self->targetObj->unk_1e);
         self->fsm->st++;
         return;
     case 4: {
@@ -2777,7 +2777,7 @@ void Ov012Act_021fee1c_StateDie(Ov012Act_021fee1c *self) {
 
 extern "C" {
 extern const VecFx32 data_ov012_0220a4d4[];
-void func_ov012_021ff8b4(Ov012Act_021fee1c *self, s32 idx) {
+void Ov012Act_021fee1c_SpawnShot(Ov012Act_021fee1c *self, s32 idx) {
     Ov012SpawnDesc d;
     VecFx32 v;
     VecFx32 dir;

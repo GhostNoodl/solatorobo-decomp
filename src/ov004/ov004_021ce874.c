@@ -26,7 +26,7 @@ extern void OS_GetMacAddress(u8 *mac);
 extern void OS_GetOwnerInfo(OSOwnerInfo *info);
 extern u8 data_ov004_021cf7dc[];
 
-s32 func_ov004_021ce874(Ov004Call *c) {
+s32 DSProt_EmuCheckA(Ov004Call *c) {
     u8 mac[6];
     OSOwnerInfo info;
     s32 i;
@@ -57,7 +57,7 @@ end:
     return r * 0xc1;
 }
 
-s32 func_ov004_021ce934(Ov004Call *c) {
+s32 DSProt_EmuCheckB(Ov004Call *c) {
     u8 mac[6];
     OSOwnerInfo info;
     s32 i;

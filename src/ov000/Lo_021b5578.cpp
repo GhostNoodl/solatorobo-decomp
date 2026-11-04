@@ -193,7 +193,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
                     } else if (ids[0] == 0xa || ids[0] == 0xe || ids[0] == 0xf || ids[0] == 0x10) {
                         mode = 4;
                     }
-                    func_ov000_0218b7c0(o, kind, mode);
+                    GroupNode_SetupKind(o, kind, mode);
                 }
             }
         }

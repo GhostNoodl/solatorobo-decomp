@@ -47,7 +47,7 @@ extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
 extern BOOL History_HasState(ActorSub40 *w, u8 a, s32 b, s32 c);
 extern u32 Rand_UpTo(u32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
-extern u16 func_ov000_0219a36c(VecFx32 *pos, s32 r, u16 ang, s32 a, u8 b, u32 c);
+extern u16 Hit_FindOpenDir(VecFx32 *pos, s32 r, u16 ang, s32 a, u8 b, u32 c);
 
 }
 
@@ -348,7 +348,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
         ang = FX_Atan2(pos.x - self->pos.x, pos.z - self->pos.z);
         ang = (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000));
         if (self->unk_c4->type == 3) {
-            ang = func_ov000_0219a36c(&pos, r, ang, 5, 0, -1);
+            ang = Hit_FindOpenDir(&pos, r, ang, 5, 0, -1);
         }
         pos.x += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2] + 0x800) >> 12);
         pos.z += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2 + 1] + 0x800) >> 12);

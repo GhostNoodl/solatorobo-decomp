@@ -6,12 +6,12 @@ extern "C" {
 
 extern Ov009Path data_ov009_02215cf4[];
 extern u8 data_ov009_02216ab6[];
-extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
+extern void Lo021cb7ec_SetValue(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 static inline void Ov009_Notify(u16 id, u16 a, u16 b, const VecFx32 *pos) {
     FieldActor *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_60 != NULL) {
-        func_ov000_0216912c(g->unk_60, id, 0, a, b, pos);
+        Lo021cb7ec_SetValue(g->unk_60, id, 0, a, b, pos);
     }
 }
 

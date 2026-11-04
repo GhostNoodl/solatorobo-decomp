@@ -18,7 +18,7 @@ extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 s32 Ov013Boss_ChooseAttack(Ov013Boss *self);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 
 void Ov013Boss_Start(Ov013Boss *self) {
     ActorSub48 *m;
@@ -122,7 +122,7 @@ void Ov013Boss_State20(Ov013Boss *self) {
         s->timer++;
         if (s->timer > 0x14) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
         }

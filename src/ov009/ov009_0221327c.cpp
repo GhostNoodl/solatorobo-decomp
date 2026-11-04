@@ -54,7 +54,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 static inline Ov003Actor *Ov009_FindActor4(u16 id) {
     if (gActorMgr == NULL) {
         return NULL;
@@ -110,7 +110,7 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
         }
         if (st->timer == 0) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();

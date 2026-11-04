@@ -12,7 +12,7 @@ extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 extern void Model0218fe1c_ClearLoop(Model0218fe1c *p);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c);
+extern void Ov014Act_02209280_SpawnChild4819(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c);
 
 void func_ov014_0220d274(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
@@ -121,7 +121,7 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         if (v.z < 0x3000) {
             v.z = 0x3000;
         }
-        func_ov014_0220a490(self, &v, 0, 0x23, 0x28);
+        Ov014Act_02209280_SpawnChild4819(self, &v, 0, 0x23, 0x28);
         self->unk_f8--;
         if (self->unk_f8 != 0) {
             self->fsm->timer = t;

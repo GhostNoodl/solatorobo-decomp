@@ -10,7 +10,7 @@ extern s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 extern VecFx32 data_ov009_02215f98[];
 extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 extern void Shared_SetEventActor(u16 kind, u16 id);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern void SndMgr_SetSlotVolume_0204a058(void *mgr, s32 a, s32 b, s32 c);
 
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
@@ -100,7 +100,7 @@ void Ov009ActVt_022178f0_State21(Ov009ActVt_022178f0 *self) {
             return;
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         SndMgr_SetSlotVolume_0204a058(gSndMgr, self->unk_10c, 0x14, 0x1c2);
         History_SetState(self->fsm, 1, 0);
@@ -123,7 +123,7 @@ void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
         st->timer++;
         if (st->timer > 0xf) {
             Shared_SetEventActor(self->kind, self->id);
-            func_020627dc(4);
+            StageVars_SetEventScript(4);
             gSceneCmd->stageFlags = 1;
             SndMgr_StopSeqArc(gSndMgr, self->unk_10c);
             self->fsm->timer = 0;

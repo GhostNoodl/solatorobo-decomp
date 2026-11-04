@@ -5,7 +5,7 @@ extern "C" {
 
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void SceneCmd_Push25(void *p, s32 a);
-extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
+extern void Lo021cb7ec_SetValue(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     GroupNode *p;

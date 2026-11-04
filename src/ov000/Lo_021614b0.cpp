@@ -20,8 +20,8 @@ typedef struct {
 } LoGlyph;
 
 extern s32 gFadeState[5];
-void func_ov000_02161798(Lo021cacd8 *self, s32 a, s32 b, s32 c);
-void func_ov000_02161994(Lo021cacd8 *self, s32 a, s32 b, s32 c);
+void Lo021cacd8_DrawCount(Lo021cacd8 *self, s32 a, s32 b, s32 c);
+void Lo021cacd8_DrawArrows(Lo021cacd8 *self, s32 a, s32 b, s32 c);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
@@ -38,8 +38,8 @@ void Lo021cacd8_DrawBody(Lo021cacd8 *self, s32 a, s32 b, s32 c) {
         return;
     }
     self->vfunc_64(a, b, c);
-    func_ov000_02161798(self, a, b, c);
-    func_ov000_02161994(self, a, b, c);
+    Lo021cacd8_DrawCount(self, a, b, c);
+    Lo021cacd8_DrawArrows(self, a, b, c);
     self->flags |= 0x200;
 }
 

@@ -32,7 +32,7 @@ static inline BOOL ov002_TryMove(Obj021efe9c *g, s32 dx, s32 dy, Ov002Shape *map
     }
     d.x = dx;
     d.y = dy;
-    if (func_ov002_021e4578((Vec2 *)&g->unk_54, &d, map, &g->shape)) {
+    if (Ov002Shape_IsBlockedAt((Vec2 *)&g->unk_54, &d, map, &g->shape)) {
         g->unk_54 += d.x;
         g->unk_58 += d.y;
         if (g->unk_ac == 1) {
@@ -79,7 +79,7 @@ void Obj021eff30_Step01(Obj021eff30 *self) {
         if (self->unk_10->unk_ac != 1) {
             return;
         }
-        if (!func_ov002_021e45c4(self->unk_10, unit->pieces, unit->field->map)) {
+        if (!Obj021efeb8_CanPlace(self->unk_10, unit->pieces, unit->field->map)) {
             self->unk_18 = 0x14;
             return;
         }
@@ -132,9 +132,9 @@ void Obj021eff30_Step01(Obj021eff30 *self) {
         return;
     }
     if (trg & 0x100) {
-        func_ov002_021d8c34(self->unk_10, -1, map);
+        Obj021efe9c_Rotate(self->unk_10, -1, map);
     } else if (trg & 0x200) {
-        func_ov002_021d8c34(self->unk_10, 1, map);
+        Obj021efe9c_Rotate(self->unk_10, 1, map);
     }
     ov002_SyncCursor(self);
     SndMgr_PlayPan(gSndMgr, 0x47, 6);

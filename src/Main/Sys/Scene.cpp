@@ -25,7 +25,7 @@ extern void GfxMgr_FreeTemporary(GfxMgr *mgr);
 extern void GfxSys_SetBackdrop(GfxSys *sys, u16 color);
 extern void GfxSys_SetBackdropSub(GfxSys *sys, u16 color);
 extern void Gfx3DState_SetDefaults(void *obj);
-extern BOOL func_02046ac4(void);
+extern BOOL Wh_DestroyIfStopped(void);
 extern void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 extern void GX_DispOn(void);
 void SceneMgr_Update(SceneMgr *mgr);
@@ -124,7 +124,7 @@ void SceneMgr_Update(SceneMgr *mgr) {
             }
             mgr->state = 2;
         case 2:
-            if (!func_02046ac4()) {
+            if (!Wh_DestroyIfStopped()) {
                 gGfxSys->nextState = 1;
                 SndMgr_StopAllSeq(gSndMgr, 0);
                 gSndMgr->unk_5b = FALSE;

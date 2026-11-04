@@ -12,7 +12,7 @@ extern ov006_Net021e58e4 *gWhMgr;
 extern void *gMsgRes;
 
 void *MsgRes_GetString(void *a, int id);
-void func_02045094(ov006_Net021e58e4 *net);
+void Wh_Finalize(ov006_Net021e58e4 *net);
 BOOL Wh_End(ov006_Net021e58e4 *net);
 
 static inline void ov006_Menu_Advance(ov006_Menu *self) {
@@ -49,7 +49,7 @@ static inline void ov006_Menu_OpenDialog(ov006_Menu *self) {
     h->obj->vfunc_70();
     ov006_Menu_Advance(self);
     gSysState->vblankFunc = NULL;
-    func_02045094(gWhMgr);
+    Wh_Finalize(gWhMgr);
 }
 
 static inline void ov006_Menu_WaitReady(ov006_Menu *self) {

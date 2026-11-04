@@ -80,7 +80,7 @@ void Ov012ActExVt_0220b1e8_Start(Ov012ActExVt_0220b1e8 *self) {
 
 extern "C" {
 extern void Ov012ActExVt_0220b1e8_HitNearby(Ov012ActExVt_0220b1e8 *self);
-extern void func_ov012_02206508(Ov012ActExVt_0220b1e8 *self);
+extern void Ov012ActExVt_0220b1e8_SpawnChildren(Ov012ActExVt_0220b1e8 *self);
 extern void Ov012ActExVt_0220b1e8_UpdateThrown(Ov012ActExVt_0220b1e8 *self);
 extern const VecFx32 data_ov012_0220a84c[];
 
@@ -165,7 +165,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
             o->SetScaleAll(0x2000);
             SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
             SndMgr_PlayVolume(gSndMgr, 0x4f, 0x6e, -1, -1);
-            func_ov012_02206508(self);
+            Ov012ActExVt_0220b1e8_SpawnChildren(self);
             self->fsm->st = 10;
         }
         if (self->hit->unk_50 & 0x60000000) {

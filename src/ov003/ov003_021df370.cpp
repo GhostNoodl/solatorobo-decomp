@@ -19,7 +19,7 @@ extern const u8 data_ov003_021f4c50[];
 extern Actor *Actor_SpawnKind(s32 id, const void *pos, const void *rot, u16 a, u16 b);
 extern Actor *ActorMgr_FindKind(ActorMgr *mgr, s32 a, s32 b);
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 extern u16 Camera_GetYaw(Camera *cam);
 extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Model0218fe1c_StopAnim(void *p);
@@ -217,7 +217,7 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
             Effect_SpawnId(3, &p);
         }
         Shared_SetEventActor(self->kind, self->id);
-        func_020627dc(4);
+        StageVars_SetEventScript(4);
         gSceneCmd->stageFlags = 1;
         self->fsm->st++;
         break;

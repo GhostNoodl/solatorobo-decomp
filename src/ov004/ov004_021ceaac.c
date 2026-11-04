@@ -103,7 +103,7 @@ extern u32 DSProt_Crc32(const u8 *p, u32 n);
         return (ret);                          \
     } while (0)
 
-s32 func_ov004_021ceaac(Ov004Call *c) {
+s32 DSProt_RomCheckA(Ov004Call *c) {
     u8 cmd1[8];
     u8 cmd0[8];
     u32 crc[16];
@@ -162,7 +162,7 @@ s32 func_ov004_021ceaac(Ov004Call *c) {
     return 0xb3cf;
 }
 
-s32 func_ov004_021ceff8(Ov004Call *c) {
+s32 DSProt_RomCheckB(Ov004Call *c) {
     u8 cmd1[8];
     u8 cmd0[8];
     u32 crc[16];

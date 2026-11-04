@@ -4,8 +4,8 @@
 // The spawn groups (gGroup, a Group of 0x48 bytes built by Group_Init_0218bb34).
 // Each GroupNode (0xa4 bytes, ctor GroupNode_Init, made by Group_CreateNode) spawns its
 // actor from `spawn` (Group_SpawnActor) once one of the views the field camera registered this
-// frame (Group_AddCamView) is inside its spawn volume (func_ov000_0218adf0), and removes the
-// actor again once every view has left its despawn volume (func_ov000_0218af9c). The spawned
+// frame (Group_AddCamView) is inside its spawn volume (GroupNode_SpawnInView), and removes the
+// actor again once every view has left its despawn volume (GroupNode_UpdateSpawned). The spawned
 // actors are recorded in `entries` (GroupNode_UpdateEntry).
 
 #include "types.h"
@@ -44,7 +44,7 @@ typedef struct GroupView {
 typedef struct GroupNodeFlags {
     u8 unk_0 : 1;
     u8 useRange : 1;
-    u8 useHeight : 1; // without it the spawn volume has no height limit (func_ov000_0218b420)
+    u8 useHeight : 1; // without it the spawn volume has no height limit (GroupNode_UpdateBounds)
     u8 useAngle : 1; // the despawn range shrinks with the view's angle to the actor
     u8 toGround : 1; // the spawn position is moved down onto the ground (Geom_SnapToGround)
     u8 unk_5 : 1; // GroupNode_UpdateEntry keeps the entry's position and field
@@ -64,9 +64,9 @@ typedef struct GroupNode {
     FieldId fieldFilter; // 0xff: any; GroupNode_Refresh drops the node once the field differs
     VecFx32 spawnMin; // the spawn volume around pos (HitVolume_TestSegment)
     VecFx32 spawnMax;
-    VecFx32 despawnMin; // the volume the actor must leave to be removed (func_ov000_0218af9c)
+    VecFx32 despawnMin; // the volume the actor must leave to be removed (GroupNode_UpdateSpawned)
     VecFx32 despawnMax;
-    // The volumes are rebuilt from these by func_ov000_0218b420 and scaled by GroupNode_SetSpawnRange.
+    // The volumes are rebuilt from these by GroupNode_UpdateBounds and scaled by GroupNode_SetSpawnRange.
     fx32 spawnRange; // the spawn volume's half width, and the range from a view when useRange is set
     fx32 despawnRange;
     fx32 spawnHeight;
@@ -110,13 +110,13 @@ extern "C" {
 
 GroupNode *GroupNode_Init(GroupNode *self);
 GroupNode *Group_CreateNode(GroupActorDesc *desc, const FieldId *fieldId, const FieldId *fieldFilter, VecFx32 *pos, Rot16 *rot);
-void func_ov000_0218b420(GroupNode *self);
+void GroupNode_UpdateBounds(GroupNode *self);
 void func_ov000_0218b60c(GroupNode *self, const FieldId *fieldId, const VecFx32 *pos, const Rot16 *rot);
 void GroupNode_SetSpawnRange(GroupNode *self, s32 scaleXZ, s32 scaleY);
-void func_ov000_0218b7c0(GroupNode *self, s32 kind, s32 mode);
+void GroupNode_SetupKind(GroupNode *self, s32 kind, s32 mode);
 void GroupNode_Refresh(GroupNode *self);
-void func_ov000_0218ac98(GroupNode *self);
-void func_ov000_0218adf0(GroupNode *self);
+void GroupNode_Update(GroupNode *self);
+void GroupNode_SpawnInView(GroupNode *self);
 void Group_Add(Group *g, GroupNode *node);
 s32 Group_GetSpawnPositions(Group *g, s32 max, VecFx32 *out, s32 kind, u16 id);
 void Obj0218c208_AddPoint(Group *self, const VecFx32 *pos, u16 yaw);

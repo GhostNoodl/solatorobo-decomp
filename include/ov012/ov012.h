@@ -432,7 +432,7 @@ extern void Actor_TurnToPos(void *self, const void *v, s32 a);
 
 extern "C" {
 extern void Shared_SetEventActor(u16 a, u16 b);
-extern void func_020627dc(s32 a);
+extern void StageVars_SetEventScript(s32 a);
 }
 
 

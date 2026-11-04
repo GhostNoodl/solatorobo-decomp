@@ -1460,7 +1460,7 @@ struct Ov010Mtx33 {
 };
 
 extern "C" {
-extern const Ov010AcEntry data_ov010_0220f5a0[];
+extern const Ov010AcEntry Ov010ActVt_02210378_StateATable[];
 extern const Ov010AcEntry Ov010ActVt_02210378_StateTable[];
 extern void func_ov010_0220c5a0(Obj0220a6b0 *self);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -1482,8 +1482,8 @@ void Ov010ActVt_02210378_Update(Obj0220a6b0 *self) {
         u32 i;
         u8 key = self->fsmA.current;
         for (i = 0; i < 2; i++) {
-            if (key == data_ov010_0220f5a0[i].key && *(s32 *)&data_ov010_0220f5a0[i].fn != 0) {
-                (self->*data_ov010_0220f5a0[i].fn)();
+            if (key == Ov010ActVt_02210378_StateATable[i].key && *(s32 *)&Ov010ActVt_02210378_StateATable[i].fn != 0) {
+                (self->*Ov010ActVt_02210378_StateATable[i].fn)();
                 break;
             }
         }
@@ -2286,7 +2286,7 @@ static inline VecFx32 Ov010_RandPoint(s32 type, s32 *a, Ov010Circle *b) {
     return v;
 }
 
-void func_ov010_0220c758(Obj0220a6b0 *self) {
+void Ov010ActVt_02210378_StateA02_03(Obj0220a6b0 *self) {
     u16 t;
     s32 *ap;
     Ov010Circle *bp;

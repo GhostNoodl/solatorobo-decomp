@@ -27,16 +27,16 @@ extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern char data_ov014_02217d4c[];
 extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
-extern Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self);
+extern Ov003Actor *Ov014Act_0220f9d0_SpawnChild4816(Ov014Act_0220f9d0 *self);
 extern char data_ov014_02217d1d[];
 extern char data_ov014_02217d52[];
 extern char data_ov014_02217d5e[];
 extern char data_ov014_02217d64[];
 extern void Model0218fe1c_ClearLoop(Model0218fe1c *a);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
-extern Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self);
-extern Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self);
-extern Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self);
+extern Ov003Actor *Ov014Act_0220f9d0_SpawnChild4806(Ov014Act_0220f9d0 *self);
+extern Ov003Actor *Ov014Act_0220f9d0_SpawnChild4815(Ov014Act_0220f9d0 *self);
+extern Ov003Actor *Ov014Act_0220f9d0_SpawnChild4814(Ov014Act_0220f9d0 *self);
 
 static inline void Ov014_TimerTick(ActorSub40 *s) {
     if (s->timer != 0) {
@@ -115,16 +115,16 @@ void Ov014Act_0220f9d0_StateShoot(Ov014Act_0220f9d0 *self) {
         }
         switch (p->op) {
         case 0:
-            func_ov014_02210878(self);
+            Ov014Act_0220f9d0_SpawnChild4816(self);
             break;
         case 1:
-            func_ov014_02210a78(self);
+            Ov014Act_0220f9d0_SpawnChild4815(self);
             break;
         case 2:
-            func_ov014_02210c5c(self);
+            Ov014Act_0220f9d0_SpawnChild4814(self);
             break;
         default:
-            func_ov014_02210878(self);
+            Ov014Act_0220f9d0_SpawnChild4816(self);
             break;
         }
         self->model->anim_state = 0;
@@ -205,7 +205,7 @@ void Ov014Act_0220f9d0_StateAttack(Ov014Act_0220f9d0 *self) {
         if (self->model->anim_state != 1) {
             return;
         }
-        func_ov014_02210d9c(self);
+        Ov014Act_0220f9d0_SpawnChild4806(self);
         Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d64, 0, (VecFx32 *)((u8 *)self + 0x118));
         SndMgr_PlayAt(gSndMgr, 0x1b, (VecFx32 *)((u8 *)self + 0x118), 0);
         SndMgr_PlayAt(gSndMgr, 0x3e, (VecFx32 *)((u8 *)self + 0x118), 0);
