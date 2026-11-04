@@ -60,8 +60,8 @@ deadstore	src/ov006/ov006_021dc054.cpp	ov006_Label_Update	legit: dead initialise
 
 # --- src: parameters
 paramlocal	src/ov000/Hit_0219a8bc.cpp	Hit_Apply	legit: real parameter (callers pass it) that the body overwrites
-paramlocal	src/ov000/Lo_02161994.cpp	func_ov000_02161994	legit: real parameter (the caller passes it) that the body overwrites
-paramlocal	src/ov000/Robo_021b2f08.cpp	func_ov000_021b2f08	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/ov000/Lo_02161994.cpp	Lo021cacd8_DrawArrows	legit: real parameter (the caller passes it) that the body overwrites
+paramlocal	src/ov000/Robo_021b2f08.cpp	Robo021ca458_FindTargetPart	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/ov015/ov015_02200a18.cpp	func_ov015_02200bf4	legit: real parameter (callers pass spd), overwritten on some paths only
 paramlocal	src/Main/Gfx/SlideWin_3.cpp	SlideWinX_RenderText	legit: real parameter (the caller passes it) that the body overwrites
 paramlocal	src/Main/Res/Stage.cpp	StageRes_ApplyArith	legit: real parameter (the caller passes it) that the body overwrites
